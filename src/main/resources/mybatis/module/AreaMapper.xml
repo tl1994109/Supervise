@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.area.mapper.AreaMapper">
+    
+    <resultMap type="Area" id="AreaResult">
+        <result property="id"    column="Id"    />
+        <result property="name"    column="Name"    />
+        <result property="pid"    column="Pid"    />
+    </resultMap>
+	
+	<sql id="selectAreaVo">
+        select Id, Name, Pid from sys_area
+    </sql>
+	
+    <select id="selectAreaList" parameterType="Area" resultMap="AreaResult">
+        <include refid="selectAreaVo"/>
+        <where>  
+            <if test="id != null and id != ''"> and Id = #{id}</if>
+             <if test="name != null and name != ''"> and Name = #{name}</if>
+             <if test="pid != null and pid != ''"> and Pid = #{pid}</if>
+         </where>
+    </select>
+    
+    <select id="selectAreaById" parameterType="long" resultMap="AreaResult">
+        <include refid="selectAreaVo"/>
+        where Id = #{id}
+    </select>
+    
+    <!-- 根据pid分类获取获取省市区  -->
+    <select id="selectProvinceByPid" parameterType="long" resultMap="AreaResult">
+        <include refid="selectAreaVo"/>
+        where Pid = #{pid}
+    </select>
+        
+    <insert id="insertArea" parameterType="Area">
+        insert into sys_area
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null and id != '' ">Id,</if>
+			<if test="name != null and name != '' ">Name,</if>
+			<if test="pid != null and pid != '' ">Pid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null and id != ''">#{id},</if>
+			<if test="name != null and name != ''">#{name},</if>
+			<if test="pid != null and pid != ''">#{pid},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateArea" parameterType="Area">
+        update sys_area
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">Name = #{name},</if>
+            <if test="pid != null  ">Pid = #{pid},</if>
+        </trim>
+        where Id = #{id}
+    </update>
+
+	<delete id="deleteAreaById" parameterType="Integer">
+        delete from sys_area where Id = #{id}
+    </delete>
+	
+    <delete id="deleteAreaByIds" parameterType="String">
+        delete from sys_area where Id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

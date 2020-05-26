@@ -1,0 +1,472 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+<style type="text/css">
+	.colStyle {
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+</style>
+
+<body class="gray-bg">
+<div class="container-div">
+	<div class="col-sm-12 select-info search-collapse">
+		<!--<form id="case" class="form-horizontal">-->
+			<!--<div class="form-group select-info-container">-->
+				<!--&lt;!&ndash;<label>线索ID：</label>&ndash;&gt;-->
+				<input type="hidden"  name="id" id="id" th:value="${id}">
+		        <input type="hidden"  name="index" id="index" th:value="${index}">
+		        <!--<input type="hidden"  name="name" id="name" th:value="${name}">-->
+				<!--&lt;!&ndash;<label>线索来源(1系统策略筛查 2信访录入)：</label>&ndash;&gt;-->
+				<!--<input type="hidden"  name="clueSource">-->
+
+				<!--<div class="col-sm-4">-->
+					<!--<label>可疑点：</label>-->
+					<!--<input type="text"  name="dubvioStrategyName">-->
+				<!--</div>-->
+				<!--<div class="col-sm-4">-->
+					<!--<label>反映人：</label>-->
+					<!--<input type="text"  name="clueFyr">-->
+				<!--</div>-->
+				<!--<div class="col-sm-4">-->
+					<!--<label>反映对象：</label>-->
+					<!--<input type="text"  name="clueFydx">-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="form-group select-info-container">-->
+				<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+				<!--&lt;!&ndash;&lt;!&ndash;<label>反映电话：</label>&ndash;&gt;&ndash;&gt;-->
+				<!--<input type="hidden"  name="clueFyrdh">-->
+				<!--&lt;!&ndash;</div>&ndash;&gt;-->
+				<!--<div class="col-sm-4">-->
+					<!--<label>案号：</label>-->
+					<!--<input type="text"  name="jbxxAh">-->
+				<!--</div>-->
+
+				<!--<div class="col-sm-4">-->
+					<!--<label>反映问题：</label>-->
+					<!--<input type="text"  name="clueFywt">-->
+				<!--</div>-->
+				<!--<div class="col-sm-4">-->
+					<!--<label>法官姓名：</label>-->
+					<!--<input type="text"  name="jbxxCbrName">-->
+				<!--</div>-->
+			<!--</div>-->
+
+			<!--<div class="form-group select-info-container">-->
+				<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+				<!--&lt;!&ndash;<label>法官ID：</label>&ndash;&gt;-->
+				<!--&lt;!&ndash;<label>案件编号：</label>&ndash;&gt;-->
+				<!--<input type="hidden"  name="jbxxAjbh">-->
+				<!--<input type="hidden"  name="jbxxCbrId">-->
+				<!--&lt;!&ndash;<label>线索状态：</label>&ndash;&gt;-->
+				<!--<input type="hidden"  name="clueStatus">-->
+				<!--&lt;!&ndash;<label>违纪事件ID：</label>&ndash;&gt;-->
+				<!--<input type="hidden"  name="dubvioId">-->
+				<!--&lt;!&ndash;<label>策略ID：</label>&ndash;&gt;-->
+				<!--<input type="hidden"  name="dubvioStrategyId">-->
+				<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+				<!--<div class="col-sm-4">-->
+					<!--<label>被告人：</label>-->
+					<!--<input type="text"  name="jbxxBgr">-->
+				<!--</div>-->
+				<!--<div class="col-sm-4">-->
+					<!--<label>承办庭名称：</label>-->
+					<!--<input type="text"  name="jbxxCbtName">-->
+				<!--</div>-->
+				<!--<div class="col-sm-4">-->
+					<!--<label>案件类别：</label>-->
+					<!--<input type="text"  name="jbxxAjlb">-->
+				<!--</div>-->
+				<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+				<!--&lt;!&ndash;<label>收案日期：</label>&ndash;&gt;-->
+				<!--<input type="hidden"  name="jbxxSarq">-->
+				<!--&lt;!&ndash;</div>&ndash;&gt;-->
+				<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+				<!--&lt;!&ndash;<label>承办庭ID：</label>&ndash;&gt;-->
+				<!--<input type="hidden"  name="jbxxCbtId">-->
+				<!--&lt;!&ndash;</div>&ndash;&gt;-->
+				<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+				<!--&lt;!&ndash;<label>立案日期：</label>&ndash;&gt;-->
+				<!--<input type="hidden"  name="jbxxLarq">-->
+				<!--&lt;!&ndash;</div>&ndash;&gt;-->
+				<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+				<!--&lt;!&ndash;<label>分案日期：</label>&ndash;&gt;-->
+				<!--<input type="hidden"  name="jbxxFarq">-->
+				<!--&lt;!&ndash;</div>&ndash;&gt;-->
+				<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+				<!--&lt;!&ndash;<label>开庭日期：</label>&ndash;&gt;-->
+				<!--<input type="hidden"  name="jbxxKtrq">-->
+				<!--&lt;!&ndash;</div>&ndash;&gt;-->
+				<!--&lt;!&ndash;<label>结案日期：</label>&ndash;&gt;-->
+				<!--<input type="hidden"  name="jbxxJarq">-->
+				<!--&lt;!&ndash;<label>归档日期：</label>&ndash;&gt;-->
+				<!--<input type="hidden"  name="jbxxGdrq">-->
+			<!--</div>-->
+
+			<!--<div class="form-group select-info-container">-->
+				<!--<div class="col-sm-4">-->
+					<!--<label>风险等级：</label>-->
+					<!--<select id="risksLevel" name="risksLevel" th:with="type=${@dict.getType('risks_grades')}">-->
+						<!--<option value="">请选择</option>-->
+						<!--<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+					<!--</select>-->
+				<!--</div>-->
+				<!--<div class="col-sm-4">-->
+					<!--<label>创建时间：</label>-->
+					<!--<input type="text"   class="time-input" id="startTime" placeholder="请选择" name="params[createTime]"/>-->
+				<!--</div>-->
+				<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+				<!--&lt;!&ndash;<label>流程ID：</label>&ndash;&gt;-->
+				<!--&lt;!&ndash;<input type="text"  name="processId">&ndash;&gt;-->
+				<!--&lt;!&ndash;</div>&ndash;&gt;-->
+			<!--</div>-->
+
+			<!--<div class="form-group select-info-container">-->
+				<!--<div class="col-sm-12 select-info-btn">-->
+					<!--<a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>-->
+					<!--<a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</form>-->
+	</div>
+	<!--<div class="btn-group hidden-xs" id="toolbar" role="group">-->
+		<!--<a class="btn btn-success" onclick="operateComponent.add('module/clue/add','信访录入 ')" shiro:hasPermission="module:clue:add">-->
+			<!--<i class="fa fa-plus"></i> 信访录入-->
+		<!--</a>-->
+		<!--<a class="btn btn-primary btn-detail disabled" onclick="$.operate.detail()" shiro:hasPermission="module:clue:detail">-->
+			<!--<i class="fa fa-plus"></i> 详细-->
+		<!--</a>-->
+		<!--<a class="btn btn-warning btn-edit disabled" onclick="operateComponent.edit('','module/clue/edit/{id}','线索 ')" shiro:hasPermission="module:clue:edit">-->
+			<!--<i class="fa fa-plus"></i> 编辑-->
+		<!--</a>-->
+		<!--<a class="btn btn-danger btn-del disabled" onclick="operateComponent.removeAll('module/clue/remove')" shiro:hasPermission="module:clue:remove">-->
+			<!--<i class="fa fa-trash-o"></i> 批量删除-->
+		<!--</a>-->
+	<!--</div>-->
+
+	<div class="col-sm-12 select-table table-striped">
+		<table id="bootstrap-table" data-mobile-responsive="true"></table>
+	</div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:dubvioEvent:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:dubvioEvent:remove')}]];
+    var releaseFlag = [[${@permission.hasPermi('module:processMatter:addDubvioEvent')}]];
+    var listFlag = [[${@permission.hasPermi('module:dubvioEvent:list')}]];
+    var datas_18 = [[${@dict.getType('risks_grades')}]];
+    var prefix = ctx + "module/dubvioEvent";
+    var id=$("#id").val();
+    var name=$("#name").val();
+    $(function() {
+
+
+        var options = {
+            url: prefix + "/eventFyrDetailById",
+            search: false,
+            queryParams: queryParams,
+            columns: [
+            //     {
+            //     checkbox: true
+            // },
+
+                {
+                    field : 'dubvioStrategyName',
+                    title : '可疑点',
+                },
+                // {
+                //     field : 'jbxxAh',
+                //     title : '案号',
+                //     formatter:function(value,row,index){
+                //         //return "<a style='text-decoration:none' onclick='clueDetail("+row.dubvioId+")' ><font color='blue'>" + row.jbxxAh +"</font></a>";
+                //         var id= '"' +  row.clueId + '"';
+				//
+                //         if(row.jbxxAh== null){
+                //             return "<font color='blue'>暂无案号</font>";
+                //         }else {
+                //             return "<a style='text-decoration:none' onclick='clueDetail(" + id + ")' ><font color='blue'>" + row.jbxxAh + "</font></a>";
+                //         }
+                //         }
+                // },
+                {
+                    field : 'dubvioFyr',
+                    title : '反映人',
+                },
+                {
+                    field : 'dubvioFydx',
+                    title : '被反映人',
+                },
+                {
+                    field : 'dubvioFywt',
+                    title : '反映问题',
+                    class:'colStyle',
+                    width:120,
+                    formatter:paramsMatter
+                },
+
+                {
+                    field : 'jbxxCbtName',
+                    title : '承办庭名称',
+                },
+                {
+                    field : 'jbxxAjlb',
+                    title : '案件类别',
+                },
+                {
+                    field : 'createTime',
+                    title : '创建时间',
+                },
+                // {
+                //     field : 'ms',
+                //     title : '民事',
+                //     formatter:function(value,row,index){
+                //         var ms="1";
+                //      return "<a style='text-decoration:none' onclick='clueDetail("+row.id+","+ms+")' ><font color='blue'>" + row.ms +"</font></a>";
+                //     }
+				//
+				//
+				//
+                // },
+                // {
+                //     field : 'xs',
+                //     title : '刑事',
+                //     formatter:function(value,row,index){
+                //         var xs="2";
+                //         return "<a style='text-decoration:none' onclick='clueDetail("+row.id+","+xs+" )' ><font color='blue'>" + row.xs +"</font></a>";
+                //     }
+                // },
+                // {
+                //     field : 'xz',
+                //     title : '行政',
+                //     formatter:function(value,row,index){
+                //         var xz="3";
+                //         return "<a style='text-decoration:none' onclick='clueDetail("+row.id+","+xz+" )' ><font color='blue'>" + row.xz +"</font></a>";
+                //     }
+				//
+                // },
+                // {
+                //     field : 'zx',
+                //     title : '执行',
+                //     formatter:function(value,row,index){
+                //         var zx="4";
+                //         return "<a style='text-decoration:none' onclick='clueDetail("+row.id+","+zx+" )' ><font color='blue'>" + row.xz +"</font></a>";
+                //     }
+                // },
+				//
+                // {
+                //     field : 'total',
+                //     title : '总数',
+                //     formatter:function(value,row,index){
+                //         var total="5";
+                //         return "<a style='text-decoration:none' onclick='clueDetail("+row.id+","+total+" )' ><font color='blue'>" + row.total +"</font></a>";
+                //     }
+                // },
+                // {
+                //     field : 'clueFywt',
+                //     title : '反映问题',
+                // },
+                // {
+                //     field : 'clueStatus',
+                //     title : '线索状态',
+                //     visible: false
+                // },
+                // {
+                //     field : 'dubvioId',
+                //     title : '违纪事件ID',
+                //     visible: false
+                // },
+                // {
+                //     field : 'dubvioStrategyId',
+                //     title : '策略ID',
+                //     visible: false
+                // },
+				//
+                // {
+                //     field : 'jbxxAjbh',
+                //     title : '案件编号',
+                //     visible: false
+                // },
+                // {
+                //     field : 'jbxxAh',
+                //     title : '案号',
+                // },
+                // {
+                //     field : 'jbxxCbrId',
+                //     title : '法官ID',
+                //     visible: false
+                // },
+                // {
+                //     field : 'jbxxCbrName',
+                //     title : '法官姓名',
+                //     visible: false
+                // },
+                // {
+                //     field : 'jbxxBgr',
+                //     title : '被告人',
+                //     visible: false
+                // },
+                // {
+                //     field : 'jbxxCbtId',
+                //     title : '承办庭ID',
+                //     visible: false
+                // },
+                // {
+                //     field : 'jbxxCbtName',
+                //     title : '承办庭名称',
+                // },
+                // {
+                //     field : 'jbxxAjlb',
+                //     title : '案件类别',
+                // },
+                // {
+                //     field : 'jbxxSarq',
+                //     title : '收案日期',
+                //     visible: false
+                // },
+                // {
+                //     field : 'jbxxLarq',
+                //     title : '立案日期',
+                //     visible: false
+                // },
+                // {
+                //     field : 'jbxxFarq',
+                //     title : '分案日期',
+                //     visible: false
+                // },
+                // {
+                //     field : 'jbxxKtrq',
+                //     title : '开庭日期',
+                //     visible: false
+                // },
+                // {
+                //     field : 'jbxxJarq',
+                //     title : '结案日期',
+                //     visible: false
+                // },
+                // {
+                //     field : 'jbxxGdrq',
+                //     title : '归档日期',
+                //     visible: false
+                // },
+                // {
+                //     field : 'risksLevel',
+                //     title : '风险等级',
+                //     formatter: function(value, row, index) {
+                //         return initSimpleTabl.selectDictLabel(datas_18, value);
+                //     }
+                // },
+                // {
+                //     field : 'createTime',
+                //     title : '创建时间',
+                // },
+                // {
+                //     field : 'processId',
+                //     title : '流程ID',
+                //     visible: false
+                // },
+                // {
+                //     field : 'processStatus',
+                //     title : '流程状态 (审核状态（0通过 1 待审核 2 创建未发布）)',
+                //     visible: false
+                // },
+                // {
+                //     field : 'clueRemarks',
+                //     title : '备注',
+                //     visible: false
+                // },
+                // {
+                //     title: '操作',
+                //     align: 'center',
+                //     formatter: function(value, row, index) {
+                //         var actions = [];
+                //         //actions.push('<a class="btn btn-warning btn-xs ' + releaseFlag + '" href="#" onclick="release(\'' + row.clueId  + '\');"><i class="fa fa-plus"></i>问题处置</a> ');
+				//
+                //         if(row.processStatus=="2"){
+                //             actions.push('<a class="btn btn-warning btn-xs ' + releaseFlag + '" href="#" onclick="release(\'' + row.clueId  + '\');"><i class="fa fa-plus"></i>问题处置</a> ');
+                //         }else if(row.processStatus=="0"){
+                //             actions.push('<a href="#" onclick="selectProcess(\'' + row.clueId + '\');" class="btn btn-primary btn-rounded btn-xs"  title="点击可查看流程执行过程">已通过</a> ');
+				//
+                //         }else if(row.processStatus=="1"){
+                //             actions.push('<a href="#" onclick="selectProcess(\'' + row.clueId + '\');" class="btn btn-primary btn-rounded btn-xs" title="点击可查看流程执行过程">待审核</a> ');
+                //         }
+                //         actions.push('<a class="btn btn-info btn-xs ' + listFlag + '" href="#" onclick="detail(\'' + row.clueId + '\')"><i class="fa fa-list-ul"></i>可疑点详情</a> ');
+                //         //actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="operateComponent.edit(\'' + row.clueId + '\'\,\'module/clue/edit/{id}\'\,\'线索 \')"><i class="fa fa-edit"></i>编辑</a> ');
+                //         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="operateComponent.remove(\'' + row.clueId + '\'\,\'module/clue/remove\'\,\'线索 \')"><i class="fa fa-remove"></i>删除</a>');
+                //         return actions.join('');
+                //     }
+                // }
+                ]
+        };
+        initSimpleTabl.init(options);
+    });
+
+    function queryParams(params) {
+        var id=$("#id").val();
+        var index=$("#index").val();
+        return {
+            pageSize:       params.limit,
+            pageNum:        params.offset / params.limit + 1,
+            searchValue:    params.search,
+            orderByColumn:  params.sort,
+            isAsc:          params.order,
+            id:   id,
+            index:index
+        };
+    }
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime', theme: 'molv'});
+        laydate.render({elem: '#endTime_12', theme: 'molv'});
+        laydate.render({elem: '#startTime_13', theme: 'molv'});
+        laydate.render({elem: '#endTime_13', theme: 'molv'});
+        laydate.render({elem: '#startTime_14', theme: 'molv'});
+        laydate.render({elem: '#endTime_14', theme: 'molv'});
+        laydate.render({elem: '#startTime_15', theme: 'molv'});
+        laydate.render({elem: '#endTime_15', theme: 'molv'});
+        laydate.render({elem: '#startTime_16', theme: 'molv'});
+        laydate.render({elem: '#endTime_16', theme: 'molv'});
+        laydate.render({elem: '#startTime_17', theme: 'molv'});
+        laydate.render({elem: '#endTime_17', theme: 'molv'});
+    });
+
+
+    // function release(clueId){
+    //     $.modal.openFull("问题处置", prefix+"/release/" + clueId);
+    // }
+	//
+    // function selectProcess(clueId){
+    //     $.modal.open("查看流程履历", ctx + "module/processResume?matterId=" + clueId);
+    // }
+
+    // /*策略列表-详细*/
+    // function detail(clueId) {
+    //     var url = prefix + '/detail/' + clueId;
+    //     createMenuItem(url, "策略详情");
+    // }
+	//
+    function clueDetail(clueId){
+        var url = prefix + '/edits?clueId='+clueId ;
+        createMenuItem(url, "案件详情");
+    }
+
+    function paramsMatter(value, row, index) {
+
+        var values = row.clueFywt;//获取当前字段的值
+        //替换空格，因为字符串拼接的时候如果遇到空格，会自动将后面的部分截掉，所有这里用html的转义符
+        // 代替
+        if(values !=null && values!=""){
+            values = values.replace(/\s+/g,'');
+            return "<p style='text-overflow:ellipsis;overflow: hidden;white-space:nowrap;width: 120px;margin: 0px' title="+values+">"+row.clueFywt+"</p>";
+        }
+        return "";
+    }
+
+</script>
+</body>
+</html>

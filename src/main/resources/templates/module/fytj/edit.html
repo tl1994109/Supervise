@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+<div class="col-sm-12 select-info search-collapse">
+<form class="form-horizontal m" id="form-fytj-edit" th:object="${fytj}">
+
+    <input type="hidden" id="id"  name="id"  th:field="*{id}" >
+                <div class="form-group select-info-container">
+
+
+                    <div class="col-sm-4">
+                        <label>经办法院：</label>
+                        <input type="text"  name="jbfyName" th:field="*{jbfyName}">
+                    </div>
+
+    
+
+
+
+                    <div class="col-sm-4">
+                        <label>经办法院编号：</label>
+                        <input type="text"  name="jbfyId" th:field="*{jbfyId}">
+                    </div>
+
+    
+
+
+
+                    <div class="col-sm-4">
+                        <label>旧存数量：</label>
+                        <input type="text"  name="jc" th:field="*{jc}">
+                    </div>
+
+    
+
+                </div>
+
+                <div class="form-group select-info-container">
+
+
+                    <div class="col-sm-4">
+                        <label>新收数量：</label>
+                        <input type="text"  name="xs" th:field="*{xs}">
+                    </div>
+
+    
+
+
+
+                    <div class="col-sm-4">
+                        <label>未结数量：</label>
+                        <input type="text"  name="wj" th:field="*{wj}">
+                    </div>
+
+    
+
+
+
+                    <div class="col-sm-4">
+                        <label>已结数量：</label>
+                        <input type="text"  name="yj" th:field="*{yj}">
+                    </div>
+
+    
+
+                </div>
+
+                <div class="form-group select-info-container">
+
+
+                    <div class="col-sm-4">
+                        <label>总计数量：</label>
+                        <input type="text"  name="count" th:field="*{count}">
+                    </div>
+
+    
+
+
+
+                    <div class="col-sm-4">
+                        <label>创建时间：</label>
+                        <input type="text"  name="createTime" th:field="*{createTime}">
+                    </div>
+
+    
+
+
+
+                    <div class="col-sm-4">
+                        <label>统计时间：</label>
+                        <input type="text"  name="countTime" th:field="*{countTime}">
+                    </div>
+
+    
+
+                </div>
+
+    <div class="form-group">
+        <div class="form-control-static col-sm-offset-5">
+            <button type="submit" class="btn btn-primary">提交</button>
+            <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+        </div>
+    </div>
+    </form>
+</div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+    $(function() {
+    $('.summernote').summernote({
+        height : '220px',
+        lang : 'zh-CN'
+    });
+
+
+
+    });
+
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+    });
+
+    var prefix = ctx + "module/fytj"
+    $("#form-fytj-edit").validate({
+        rules:{
+                id:{
+                required:true,
+            },
+        },
+        submitHandler: function(form) {
+
+            var row=0;
+
+            $.operate.save(prefix + "/edit", $('#form-fytj-edit').serialize());
+        }
+    });
+</script>
+</body>
+</html>

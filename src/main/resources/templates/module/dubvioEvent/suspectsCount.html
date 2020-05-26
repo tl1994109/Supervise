@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:clue:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:clue:remove')}]];
+    var releaseFlag = [[${@permission.hasPermi('module:processMatter:addDubvioEvent')}]];
+    var listFlag = [[${@permission.hasPermi('module:clue:list')}]];
+    var datas_18 = [[${@dict.getType('risks_grades')}]];
+    var prefix = ctx + "module/statistics";
+    $(function() {
+        var options = {
+            url: prefix + "/getSuspectsCountByTribunal",
+            search: false,
+            showFooter: true,
+            queryParams: queryParams,
+            columns: [
+                {
+                    field : 'id',
+                    title : '承办庭编号',
+                },
+                {
+                    field : 'jbxx_cbt_name',
+                    title : '承办庭名称',
+
+                },
+                {
+                    field : 'count',
+                    title : '数量',
+                    formatter:function(value,row,index){
+                        if (row.count==0){
+                            return "<font >"+row.count+"</font>";
+                        }else {
+                            return "<a style='text-decoration:none' onclick='cbtDetail("+row.id+")' ><font color='blue'>" + row.count +"</font></a>";
+                        }
+                    },
+                    footerFormatter:function (value) {
+                        var sumBalance = 0;
+                        for (var i in value) {
+                            sumBalance += parseFloat(value[i].count);
+                        }
+                        return "总数：" + sumBalance;
+                    }
+                },
+            ]
+        };
+        initSimpleTabl.init(options);
+    });
+
+    function queryParams(params) {
+        return {
+            pageSize:       params.limit,
+            pageNum:        params.offset / params.limit + 1,
+            searchValue:    params.search,
+            orderByColumn:  params.sort,
+            isAsc:          params.order
+        };
+    }
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime', theme: 'molv'});
+        laydate.render({elem: '#endTime_12', theme: 'molv'});
+        laydate.render({elem: '#startTime_13', theme: 'molv'});
+        laydate.render({elem: '#endTime_13', theme: 'molv'});
+        laydate.render({elem: '#startTime_14', theme: 'molv'});
+        laydate.render({elem: '#endTime_14', theme: 'molv'});
+        laydate.render({elem: '#startTime_15', theme: 'molv'});
+        laydate.render({elem: '#endTime_15', theme: 'molv'});
+        laydate.render({elem: '#startTime_16', theme: 'molv'});
+        laydate.render({elem: '#endTime_16', theme: 'molv'});
+        laydate.render({elem: '#startTime_17', theme: 'molv'});
+        laydate.render({elem: '#endTime_17', theme: 'molv'});
+    });
+
+    function cbtDetail(id){
+        var url = prefix + '/suspectsDetailByTribunal?id='+id;
+        createMenuItem(url, "承办庭可疑点详情");
+    }
+
+</script>
+</body>
+</html>

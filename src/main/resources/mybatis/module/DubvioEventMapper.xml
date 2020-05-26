@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.dubvioEvent.mapper.DubvioEventMapper">
+
+    <resultMap type="DubvioEvent" id="DubvioEventResult">
+        <result property="dubvioId"    column="dubvio_id"    />
+        <result property="dubvioStrategyId"    column="dubvio_strategy_id"    />
+        <result property="dubvioStrategyName"    column="dubvio_strategy_name"    />
+        <result property="jbxxAjbh"    column="jbxx_ajbh"    />
+        <result property="jbxxAh"    column="jbxx_ah"    />
+        <result property="jbfyId"    column="jbfy_id"    />
+        <result property="jbxxCbrId"    column="jbxx_cbr_id"    />
+        <result property="jbxxCbrName"    column="jbxx_cbr_name"    />
+        <result property="jbxxBgr"    column="jbxx_bgr"    />
+        <result property="jbxxCbtId"    column="jbxx_cbt_id"    />
+        <result property="jbxxCbtName"    column="jbxx_cbt_name"    />
+        <result property="jbxxAjlb"    column="jbxx_ajlb"    />
+        <result property="jbxxSarq"    column="jbxx_sarq"    />
+        <result property="jbxxLarq"    column="jbxx_larq"    />
+        <result property="jbxxFarq"    column="jbxx_farq"    />
+        <result property="jbxxKtrq"    column="jbxx_ktrq"    />
+        <result property="jbxxJarq"    column="jbxx_jarq"    />
+        <result property="jbxxGdrq"    column="jbxx_gdrq"    />
+        <result property="risksLevel"    column="risks_level"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="pid"  column="processInstand"   />
+        <result property="deleteFlag"  column="delete_flag"   />
+        <result property="deleteBy"  column="delete_by"   />
+        <result property="dubvioSource"  column="dubvio_source"   />
+        <result property="dubvioFyr"  column="dubvio_fyr"   />
+        <result property="dubvioFyrdh"  column="dubvio_fyrdh"   />
+        <result property="dubvioFydx"  column="dubvio_fydx"   />
+        <result property="dubvioFywt"  column="dubvio_fywt"   />
+        <result property="updateTime"    column="update_time"    />
+        <result property="ajmc"    column="ajmc" />
+        <result property="jbfyName"    column="jbfyName"    />
+        <result property="dubvioCzjg"    column="dubvio_czjg"    />
+        <result property="jbxxXfxh"    column="jbxx_xfxh"    />
+        <result property="jbxxXfly"    column="jbxx_xfly"    />
+        <result property="jbxxXffysj"    column="jbxx_xffysj"    />
+        <result property="jbxxXfczqk"    column="jbxx_xfczqk"    />
+        <result property="jbxxXfcbr"    column="jbxx_xfcbr"    />
+        <result property="jbxxXfczjg"    column="jbxx_xfczjg"    />
+        <result property="jbxxXfbz"    column="jbxx_xfbz"    />
+        <result property="xfDeptId"    column="xf_deptId"    />
+        <result property="dubvioStatus"    column="dubvioStatus"    />
+
+
+    </resultMap>
+
+	<sql id="selectDubvioEventVo">
+        SELECT
+	dubvio_id,
+	jbxx_xfxh,
+	jbxx_xfly,
+	jbxx_xffysj,
+	jbxx_xfczqk,
+	jbxx_xfcbr,
+	jbxx_xfczjg,
+	jbxx_xfbz,
+	STATUS,
+	dubvio_strategy_id,
+	dubvio_strategy_name,
+	a.jbfy_id,
+	a.jbxx_ajbh,
+	a.jbxx_ah,
+	jbxx_cbr_id,
+	jbxx_cbr_name,
+	jbxx_bgr,
+	jbxx_cbt_id,
+	jbxx_cbt_name,
+	a.jbxx_ajlb,
+	jbxx_sarq,
+	jbxx_larq,
+	jbxx_farq,
+	jbxx_ktrq,
+	jbxx_jarq,
+	jbxx_gdrq,
+	risks_level,
+	processInstand,
+    create_time,
+	dubvio_source,
+	dubvio_fyr,
+	dubvio_fyrdh,
+	dubvio_fydx,
+	dubvio_fywt,
+	dubvio_czjg,
+	delete_flag,
+b.jbxx_ajmc as ajmc
+FROM
+	busi_dubvio_event a LEFT JOIN busi_dubvio_event_detail b on a.jbxx_ajbh=b.jbxx_ajbh
+    </sql>
+
+    <select id="selectDubvioEventList" parameterType="DubvioEvent" resultMap="DubvioEventResult">
+        <include refid="selectDubvioEventVo"/>
+        <where>
+            <if test="dubvioId != null and dubvioId != ''"> and dubvio_id like concat('%',#{dubvioId},'%')</if>
+             <if test="dubvioStrategyId != null and dubvioStrategyId != ''"> and dubvio_strategy_id like concat('%',#{dubvioStrategyId},'%')</if>
+             <if test="dubvioStrategyName != null and dubvioStrategyName != ''"> and dubvio_strategy_name like concat('%',#{dubvioStrategyName},'%')</if>
+             <if test="jbfyId != null and jbfyId != ''"> and a.jbfy_id like concat('%',#{jbfyId},'%')</if>
+             <if test="jbxxAjbh != null and jbxxAjbh != ''"> and a.jbxx_ajbh like concat('%',#{jbxxAjbh},'%')</if>
+             <if test="jbxxAh != null and jbxxAh != ''"> and a.jbxx_ah like concat('%',#{jbxxAh},'%')</if>
+             <if test="jbxxCbrId != null and jbxxCbrId != ''"> and jbxx_cbr_id like concat('%',#{jbxxCbrId},'%')</if>
+             <if test="jbxxCbrName != null and jbxxCbrName != ''"> and jbxx_cbr_name like concat('%',#{jbxxCbrName},'%')</if>
+             <if test="jbxxBgr != null and jbxxBgr != ''"> and jbxx_bgr like concat('%',#{jbxxBgr},'%')</if>
+             <if test="jbxxCbtId != null and jbxxCbtId != ''"> and jbxx_cbt_id like concat('%',#{jbxxCbtId},'%')</if>
+             <if test="jbxxCbtName != null and jbxxCbtName != ''"> and jbxx_cbt_name like concat('%',#{jbxxCbtName},'%')</if>
+             <if test="jbxxAjlb != null and jbxxAjlb != ''"> and a.jbxx_ajlb like concat('%',#{jbxxAjlb},'%')</if>
+             <if test="jbxxSarq != null and jbxxSarq != ''"> and jbxx_sarq like concat('%',#{jbxxSarq},'%')</if>
+             <if test="jbxxLarq != null and jbxxLarq != ''"> and jbxx_larq like concat('%',#{jbxxLarq},'%')</if>
+             <if test="jbxxFarq != null and jbxxFarq != ''"> and jbxx_farq like concat('%',#{jbxxFarq},'%')</if>
+             <if test="jbxxKtrq != null and jbxxKtrq != ''"> and jbxx_ktrq like concat('%',#{jbxxKtrq},'%')</if>
+             <if test="jbxxJarq != null and jbxxJarq != ''"> and jbxx_jarq like concat('%',#{jbxxJarq},'%')</if>
+             <if test="jbxxGdrq != null and jbxxGdrq != ''"> and jbxx_gdrq like concat('%',#{jbxxGdrq},'%')</if>
+             <if test="risksLevel != null and risksLevel != ''"> and risks_level like concat('%',#{risksLevel},'%')</if>
+            <if test="status != null and status != ''"> and status =#{status}</if>
+            <if test="pid != null and pid != ''"> and processInstand like concat('%',#{pid},'%')</if>
+             <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+            <if test="dubvioSource != null and dubvioSource != ''"> and dubvio_source like concat('%',#{dubvioSource},'%')</if>
+            <if test="dubvioFyr != null and dubvioFyr != ''"> and dubvio_fyr like concat('%',#{dubvioFyr},'%')</if>
+            <if test="dubvioFyrdh != null and dubvioFyrdh != ''"> and dubvio_fyrdh like concat('%',#{dubvioFyrdh},'%')</if>
+            <if test="dubvioFydx != null and dubvioFydx != ''"> and dubvio_fydx like concat('%',#{dubvioFydx},'%')</if>
+            <if test="dubvioFywt != null and dubvioFywt != ''"> and dubvio_fywt like concat('%',#{dubvioFywt},'%')</if>
+            <if test="dubvioCzjg != null and dubvioCzjg != ''"> and dubvio_czjg like concat('%',#{dubvioCzjg},'%')</if>
+            <if test="xfDeptId != null and xfDeptId != ''"> and xf_deptId like concat('%',#{xfDeptId},'%')</if>
+            <if test="deleteFlag != null and deleteFlag != ''"> and delete_flag like concat('%',#{deleteFlag},'%')</if>
+            <if test="dubvioStatus != null and dubvioStatus != ''"> or  status =#{dubvioStatus}</if>
+            ORDER BY     update_time   desc
+         </where>
+    </select>
+
+    <select id="selectDubvioEventById" parameterType="String" resultMap="DubvioEventResult">
+        <include refid="selectDubvioEventVo"/>
+        where dubvio_id = #{dubvioId}
+    </select>
+
+    <insert id="insertDubvioEvent" parameterType="DubvioEvent">
+        insert into busi_dubvio_event
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="dubvioId != null  and dubvioId != ''  ">dubvio_id,</if>
+           <if test="dubvioStrategyId != null  and dubvioStrategyId != ''  ">dubvio_strategy_id,</if>
+           <if test="dubvioStrategyName != null  and dubvioStrategyName != ''  ">dubvio_strategy_name,</if>
+           <if test="jbfyId != null and jbfyId != ''"> jbfy_id,</if>
+           <if test="jbxxAjbh != null  and jbxxAjbh != ''  ">jbxx_ajbh,</if>
+           <if test="jbxxAh != null  and jbxxAh != ''  ">jbxx_ah,</if>
+           <if test="jbxxCbrId != null  and jbxxCbrId != ''  ">jbxx_cbr_id,</if>
+           <if test="jbxxCbrName != null  and jbxxCbrName != ''  ">jbxx_cbr_name,</if>
+           <if test="jbxxBgr != null  and jbxxBgr != ''  ">jbxx_bgr,</if>
+           <if test="jbxxCbtId != null  and jbxxCbtId != ''  ">jbxx_cbt_id,</if>
+           <if test="jbxxCbtName != null  and jbxxCbtName != ''  ">jbxx_cbt_name,</if>
+           <if test="jbxxAjlb != null  and jbxxAjlb != ''  ">jbxx_ajlb,</if>
+           <if test="jbxxSarq != null  and jbxxSarq != ''  ">jbxx_sarq,</if>
+           <if test="jbxxLarq != null  and jbxxLarq != ''  ">jbxx_larq,</if>
+           <if test="jbxxFarq != null  and jbxxFarq != ''  ">jbxx_farq,</if>
+           <if test="jbxxKtrq != null  and jbxxKtrq != ''  ">jbxx_ktrq,</if>
+           <if test="jbxxJarq != null  and jbxxJarq != ''  ">jbxx_jarq,</if>
+           <if test="jbxxGdrq != null  and jbxxGdrq != ''  ">jbxx_gdrq,</if>
+           <if test="risksLevel != null  and risksLevel != ''  ">risks_level,</if>
+            <if test="status != null  and status != ''  ">status,</if>
+           <if test="createTime != null  ">create_time,</if>
+            <if test="pid != null  and pid != ''  ">processInstand,</if>
+            <if test="dubvioSource != null  and dubvioSource != ''  ">dubvio_source,</if>
+            <if test="dubvioFyr != null  and dubvioFyr != ''  ">dubvio_fyr,</if>
+            <if test="dubvioFyrdh != null  and dubvioFyrdh != ''  ">dubvio_fyrdh,</if>
+            <if test="dubvioFydx != null  and dubvioFydx != ''  ">dubvio_fydx,</if>
+            <if test="dubvioFywt != null  and dubvioFywt != ''  ">dubvio_fywt,</if>
+            <if test="dubvioCzjg != null  and dubvioCzjg != ''  ">dubvio_czjg,</if>
+            <if test="jbxxXfxh != null  and jbxxXfxh != ''  ">jbxx_xfxh,</if>
+            <if test="jbxxXfly != null  and jbxxXfly != ''  ">jbxx_xfly,</if>
+            <if test="jbxxXffysj != null  and jbxxXffysj != ''  ">jbxx_xffysj,</if>
+            <if test="jbxxXfczqk != null  and jbxxXfczqk != ''  ">jbxx_xfczqk,</if>
+            <if test="jbxxXfcbr != null  and jbxxXfcbr != ''  ">jbxx_xfcbr,</if>
+            <if test="jbxxXfczjg != null  and jbxxXfczjg != ''  ">jbxx_xfczjg,</if>
+            <if test="jbxxXfbz != null  and jbxxXfbz != ''  ">jbxx_xfbz,</if>
+            <if test="xfDeptId != null  and xfDeptId != ''  ">xf_deptId,</if>
+            <if test="updateTime != null    ">update_Time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="dubvioId != null  and dubvioId != ''  ">#{dubvioId},</if>
+        <if test="dubvioStrategyId != null  and dubvioStrategyId != ''  ">#{dubvioStrategyId},</if>
+        <if test="dubvioStrategyName != null  and dubvioStrategyName != ''  ">#{dubvioStrategyName},</if>
+        <if test="jbfyId != null and jbfyId != ''"> #{jbfyId},</if>
+        <if test="jbxxAjbh != null  and jbxxAjbh != ''  ">#{jbxxAjbh},</if>
+        <if test="jbxxAh != null  and jbxxAh != ''  ">#{jbxxAh},</if>
+        <if test="jbxxCbrId != null  and jbxxCbrId != ''  ">#{jbxxCbrId},</if>
+        <if test="jbxxCbrName != null  and jbxxCbrName != ''  ">#{jbxxCbrName},</if>
+        <if test="jbxxBgr != null  and jbxxBgr != ''  ">#{jbxxBgr},</if>
+        <if test="jbxxCbtId != null  and jbxxCbtId != ''  ">#{jbxxCbtId},</if>
+        <if test="jbxxCbtName != null  and jbxxCbtName != ''  ">#{jbxxCbtName},</if>
+        <if test="jbxxAjlb != null  and jbxxAjlb != ''  ">#{jbxxAjlb},</if>
+        <if test="jbxxSarq != null  and jbxxSarq != ''  ">#{jbxxSarq},</if>
+        <if test="jbxxLarq != null  and jbxxLarq != ''  ">#{jbxxLarq},</if>
+        <if test="jbxxFarq != null  and jbxxFarq != ''  ">#{jbxxFarq},</if>
+        <if test="jbxxKtrq != null  and jbxxKtrq != ''  ">#{jbxxKtrq},</if>
+        <if test="jbxxJarq != null  and jbxxJarq != ''  ">#{jbxxJarq},</if>
+        <if test="jbxxGdrq != null  and jbxxGdrq != ''  ">#{jbxxGdrq},</if>
+        <if test="risksLevel != null  and risksLevel != ''  ">#{risksLevel},</if>
+        <if test="status != null  and status != ''  ">#{status},</if>
+        <if test="pid != null  and pid != ''  ">#{pid},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="dubvioSource != null  and dubvioSource != ''  ">#{dubvioSource},</if>
+        <if test="dubvioFyr != null  and dubvioFyr != ''  ">#{dubvioFyr},</if>
+        <if test="dubvioFyrdh != null  and dubvioFyrdh != ''  ">#{dubvioFyrdh},</if>
+        <if test="dubvioFydx != null  and dubvioFydx != ''  ">#{dubvioFydx},</if>
+        <if test="dubvioFywt != null  and dubvioFywt != ''  ">#{dubvioFywt},</if>
+        <if test="dubvioCzjg != null  and dubvioCzjg != ''  ">#{dubvioCzjg},</if>
+        <if test="jbxxXfxh != null  and jbxxXfxh != ''  ">#{jbxxXfxh},</if>
+        <if test="jbxxXfly != null  and jbxxXfly != ''  ">#{jbxxXfly},</if>
+        <if test="jbxxXffysj != null  and jbxxXffysj != ''  ">#{jbxxXffysj},</if>
+        <if test="jbxxXfczqk != null  and jbxxXfczqk != ''  ">#{jbxxXfczqk},</if>
+        <if test="jbxxXfcbr != null  and jbxxXfcbr != ''  ">#{jbxxXfcbr},</if>
+        <if test="jbxxXfczjg != null  and jbxxXfczjg != ''  ">#{jbxxXfczjg},</if>
+        <if test="jbxxXfbz != null  and jbxxXfbz != ''  ">#{jbxxXfbz},</if>
+        <if test="xfDeptId != null  and xfDeptId != ''  ">#{xfDeptId},</if>
+        <if test="updateTime != null    ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDubvioEvent" parameterType="DubvioEvent">
+        update busi_dubvio_event
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dubvioStrategyId != null  and dubvioStrategyId != ''  ">dubvio_strategy_id = #{dubvioStrategyId},</if>
+            <if test="dubvioStrategyName != null    ">dubvio_strategy_name = #{dubvioStrategyName},</if>
+            <if test="jbfyId != null "> jbfy_id = #{jbfyId},</if>
+            <if test="jbxxAjbh != null  and jbxxAjbh != ''  ">jbxx_ajbh = #{jbxxAjbh},</if>
+            <if test="jbxxAh != null  and jbxxAh != ''  ">jbxx_ah = #{jbxxAh},</if>
+            <if test="jbxxCbrId != null   ">jbxx_cbr_id = #{jbxxCbrId},</if>
+            <if test="jbxxCbrName != null    ">jbxx_cbr_name = #{jbxxCbrName},</if>
+            <if test="jbxxBgr != null    ">jbxx_bgr = #{jbxxBgr},</if>
+            <if test="jbxxCbtId != null  and jbxxCbtId != ''  ">jbxx_cbt_id = #{jbxxCbtId},</if>
+            <if test="jbxxCbtName != null   ">jbxx_cbt_name = #{jbxxCbtName},</if>
+            <if test="jbxxAjlb != null    ">jbxx_ajlb = #{jbxxAjlb},</if>
+            <if test="jbxxSarq != null  and jbxxSarq != ''  ">jbxx_sarq = #{jbxxSarq},</if>
+            <if test="jbxxLarq != null  and jbxxLarq != ''  ">jbxx_larq = #{jbxxLarq},</if>
+            <if test="jbxxFarq != null  and jbxxFarq != ''  ">jbxx_farq = #{jbxxFarq},</if>
+            <if test="jbxxKtrq != null  and jbxxKtrq != ''  ">jbxx_ktrq = #{jbxxKtrq},</if>
+            <if test="jbxxJarq != null  and jbxxJarq != ''  ">jbxx_jarq = #{jbxxJarq},</if>
+            <if test="jbxxGdrq != null  and jbxxGdrq != ''  ">jbxx_gdrq = #{jbxxGdrq},</if>
+            <if test="risksLevel != null  and risksLevel != ''  ">risks_level = #{risksLevel},</if>
+            <if test="status != null  and status != ''  ">status = #{status},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="pid != null and pid != ''">processInstand = #{pid},</if>
+            <if test="deleteFlag != null and deleteFlag != ''">delete_flag = #{deleteFlag},</if>
+            <if test="deleteBy != null and deleteBy != ''">delete_by = #{deleteBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="dubvioFyr != null    ">dubvio_fyr = #{dubvioFyr},</if>
+            <if test="dubvioFyrdh != null    ">dubvio_fyrdh =#{dubvioFyrdh},</if>
+            <if test="dubvioFydx != null    ">dubvio_fydx =#{dubvioFydx},</if>
+            <if test="dubvioFywt != null  and dubvioFywt != ''  ">dubvio_fywt =#{dubvioFywt},</if>
+            <if test="dubvioCzjg != null  and dubvioCzjg != ''  ">dubvio_czjg =#{dubvioCzjg},</if>
+
+            <if test="jbxxXfxh != null    ">jbxx_xfxh=#{jbxxXfxh},</if>
+            <if test="jbxxXfly != null    ">jbxx_xfly=#{jbxxXfly},</if>
+            <if test="jbxxXffysj != null   ">jbxx_xffysj=#{jbxxXffysj},</if>
+            <if test="jbxxXfczqk != null    ">jbxx_xfczqk=#{jbxxXfczqk},</if>
+            <if test="jbxxXfcbr != null    ">jbxx_xfcbr=#{jbxxXfcbr},</if>
+            <if test="jbxxXfczjg != null  ">jbxx_xfczjg=#{jbxxXfczjg},</if>
+            <if test="jbxxXfbz != null    ">jbxx_xfbz=#{jbxxXfbz},</if>
+
+        </trim>
+        where dubvio_id = #{dubvioId}
+    </update>
+
+	<delete id="deleteDubvioEventById" parameterType="String">
+        delete from busi_dubvio_event where dubvio_id = #{dubvioId}
+    </delete>
+
+    <delete id="deleteDubvioEventByIds" parameterType="String">
+        delete from busi_dubvio_event where dubvio_id in
+        <foreach item="dubvioId" collection="array" open="(" separator="," close=")">
+            #{dubvioId}
+        </foreach>
+    </delete>
+
+<select id="queyAhAndAjbhByAjbh" parameterType="String" resultType="java.util.HashMap">
+
+SELECT t.jbxx_ajbh ,group_concat(distinct t.jbxx_ah) as jbxx_ah  FROM `busi_dubvio_event` t WHERE t.jbxx_cbr_name like concat('%',#{jbxxCbrName},'%') GROUP BY t.jbxx_ah
+
+</select>
+
+
+    <select id="queryAllAh" resultType="java.lang.String">
+      SELECT DISTINCT  jbxx_ah  from busi_dubvio_event
+    </select>
+
+
+    <select id="queryDeptNameByUserId" resultType="java.lang.String">
+        SELECT  d.dept_name as deptName  from sys_user u  LEFT JOIN  sys_dept d on u.dept_id=d.dept_id where user_id=#{userId}  and u.del_flag=0
+    </select>
+
+    <select id="selectSecondDubvioEventList" parameterType="DubvioEvent"  resultMap="DubvioEventResult">
+   SELECT * from (SELECT
+	dubvio_id,
+	jbxx_xfxh,
+	jbxx_xfly,
+	jbxx_xffysj,
+	jbxx_xfczqk,
+	jbxx_xfcbr,
+	jbxx_xfczjg,
+	jbxx_xfbz,
+	STATUS,
+	dubvio_strategy_id,
+	dubvio_strategy_name,
+	a.jbfy_id,
+	a.jbxx_ajbh,
+	a.jbxx_ah,
+	jbxx_cbr_id,
+	jbxx_cbr_name,
+	jbxx_bgr,
+	jbxx_cbt_id,
+	jbxx_cbt_name,
+	a.jbxx_ajlb,
+	jbxx_sarq,
+	jbxx_larq,
+	jbxx_farq,
+	jbxx_ktrq,
+	jbxx_jarq,
+	jbxx_gdrq,
+	risks_level,
+	processInstand,
+	create_time,
+  update_time,
+	dubvio_source,
+	dubvio_fyr,
+	dubvio_fyrdh,
+	dubvio_fydx,
+	dubvio_fywt,
+	dubvio_czjg,
+	delete_flag,
+	b.jbxx_ajmc AS ajmc,
+a.xf_deptId as xfDeptId
+FROM
+	busi_dubvio_event a
+LEFT JOIN busi_dubvio_event_detail b ON a.jbxx_ajbh = b.jbxx_ajbh
+WHERE
+ dubvio_source LIKE concat('%2%')
+AND STATUS =0
+OR STATUS LIKE concat('%3%')) u
+        <where>
+            <if test="xfDeptId != null  and xfDeptId != ''  ">and u.xfDeptId like concat('%',#{xfDeptId},'%')</if>
+            <if test="dubvioFydx != null and dubvioFydx != ''"> and u.dubvio_fydx like concat('%',#{dubvioFydx},'%')</if>
+            <if test="dubvioFyr != null and dubvioFyr != ''"> and u.dubvio_fyr like concat('%',#{dubvioFyr},'%')</if>
+            <if test="dubvioFyrdh != null and dubvioFyrdh != ''"> and u.dubvio_fyrdh like concat('%',#{dubvioFyrdh},'%')</if>
+            <if test="jbfyId != null and jbfyId != ''"> and u.jbfy_id like concat('%',#{jbfyId},'%')</if>
+            <if test="jbfyIdList != null and jbfyIdList.size >0">
+                and u.jbfy_id in
+                <foreach  item="item" collection="jbfyIdList" index="index"  open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        and u.delete_flag=0
+
+ORDER BY
+	CASE STATUS
+WHEN 1 THEN
+	1
+WHEN 2 THEN
+	2
+WHEN 0 THEN
+	3
+END,
+u.update_time DESC
+    </select>
+
+
+    <select id="selectNewDubvioEventList"   resultMap="DubvioEventResult" parameterType="DubvioEvent" >
+        <include refid="selectDubvioEventVo"/>
+        <where>
+            <if test="dubvioId != null and dubvioId != ''"> and dubvio_id like concat('%',#{dubvioId},'%')</if>
+            <if test="dubvioStrategyId != null and dubvioStrategyId != ''"> and dubvio_strategy_id like concat('%',#{dubvioStrategyId},'%')</if>
+            <if test="dubvioStrategyName != null and dubvioStrategyName != ''"> and dubvio_strategy_name like concat('%',#{dubvioStrategyName},'%')</if>
+            <if test="jbfyIdList != null and jbfyIdList.size >0">
+                and a.jbfy_id in
+                <foreach  item="item" collection="jbfyIdList" index="index"  open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+              </if>
+            <if test="jbfyId != null and jbfyId != ''"> and a.jbfy_id like concat('%',#{jbfyId},'%')</if>
+            <if test="jbxxAjbh != null and jbxxAjbh != ''"> and a.jbxx_ajbh like concat('%',#{jbxxAjbh},'%')</if>
+            <if test="jbxxAh != null and jbxxAh != ''"> and a.jbxx_ah like concat('%',#{jbxxAh},'%')</if>
+            <if test="jbxxCbrId != null and jbxxCbrId != ''"> and jbxx_cbr_id like concat('%',#{jbxxCbrId},'%')</if>
+            <if test="jbxxCbrName != null and jbxxCbrName != ''"> and jbxx_cbr_name like concat('%',#{jbxxCbrName},'%')</if>
+            <if test="jbxxBgr != null and jbxxBgr != ''"> and jbxx_bgr like concat('%',#{jbxxBgr},'%')</if>
+            <if test="jbxxCbtId != null and jbxxCbtId != ''"> and jbxx_cbt_id like concat('%',#{jbxxCbtId},'%')</if>
+            <if test="jbxxCbtName != null and jbxxCbtName != ''"> and jbxx_cbt_name like concat('%',#{jbxxCbtName},'%')</if>
+            <if test="jbxxAjlb != null and jbxxAjlb != ''"> and a.jbxx_ajlb like concat('%',#{jbxxAjlb},'%')</if>
+            <if test="jbxxSarq != null and jbxxSarq != ''"> and jbxx_sarq like concat('%',#{jbxxSarq},'%')</if>
+            <if test="jbxxLarq != null and jbxxLarq != ''"> and jbxx_larq like concat('%',#{jbxxLarq},'%')</if>
+            <if test="jbxxFarq != null and jbxxFarq != ''"> and jbxx_farq like concat('%',#{jbxxFarq},'%')</if>
+            <if test="jbxxKtrq != null and jbxxKtrq != ''"> and jbxx_ktrq like concat('%',#{jbxxKtrq},'%')</if>
+            <if test="jbxxJarq != null and jbxxJarq != ''"> and jbxx_jarq like concat('%',#{jbxxJarq},'%')</if>
+            <if test="jbxxGdrq != null and jbxxGdrq != ''"> and jbxx_gdrq like concat('%',#{jbxxGdrq},'%')</if>
+            <if test="risksLevel != null and risksLevel != ''"> and risks_level like concat('%',#{risksLevel},'%')</if>
+            <if test="status != null and status != ''"> and status =#{status}</if>
+            <if test="dubvioStatus != null and dubvioStatus != ''"> or  status =#{dubvioStatus}</if>
+            <if test="pid != null and pid != ''"> and processInstand like concat('%',#{pid},'%')</if>
+            <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+            <if test="dubvioSource != null and dubvioSource != ''"> and dubvio_source like concat('%',#{dubvioSource},'%')</if>
+            <if test="dubvioFyr != null and dubvioFyr != ''"> and dubvio_fyr like concat('%',#{dubvioFyr},'%')</if>
+            <if test="dubvioFyrdh != null and dubvioFyrdh != ''"> and dubvio_fyrdh like concat('%',#{dubvioFyrdh},'%')</if>
+            <if test="dubvioFydx != null and dubvioFydx != ''"> and dubvio_fydx like concat('%',#{dubvioFydx},'%')</if>
+            <if test="dubvioFywt != null and dubvioFywt != ''"> and dubvio_fywt like concat('%',#{dubvioFywt},'%')</if>
+            <if test="dubvioCzjg != null and dubvioCzjg != ''"> and dubvio_czjg like concat('%',#{dubvioCzjg},'%')</if>
+            <if test="xfDeptId != null and xfDeptId != ''"> and xf_deptId like concat('%',#{xfDeptId},'%')</if>
+            <if test="deleteFlag != null and deleteFlag != ''"> and delete_flag like concat('%',#{deleteFlag},'%')</if>
+        </where>
+        ORDER BY jbxx_sarq desc,jbxx_xffysj DESC
+    </select>
+
+    <select id="selectPassDubvioEventList"   resultMap="DubvioEventResult" parameterType="DubvioEvent" >
+        <include refid="selectDubvioEventVo"/>
+        <where>
+            <if test="dubvioId != null and dubvioId != ''"> and dubvio_id like concat('%',#{dubvioId},'%')</if>
+            <if test="dubvioStrategyId != null and dubvioStrategyId != ''"> and dubvio_strategy_id like concat('%',#{dubvioStrategyId},'%')</if>
+            <if test="dubvioStrategyName != null and dubvioStrategyName != ''"> and dubvio_strategy_name like concat('%',#{dubvioStrategyName},'%')</if>
+            <if test="jbfyIdList != null and jbfyIdList.size >0">
+                and a.jbfy_id in
+                <foreach  item="item" collection="jbfyIdList" index="index"  open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="jbfyId != null and jbfyId != ''"> and a.jbfy_id like concat('%',#{jbfyId},'%')</if>
+            <if test="jbxxAjbh != null and jbxxAjbh != ''"> and a.jbxx_ajbh like concat('%',#{jbxxAjbh},'%')</if>
+            <if test="jbxxAh != null and jbxxAh != ''"> and a.jbxx_ah like concat('%',#{jbxxAh},'%')</if>
+            <if test="jbxxCbrId != null and jbxxCbrId != ''"> and jbxx_cbr_id like concat('%',#{jbxxCbrId},'%')</if>
+            <if test="jbxxCbrName != null and jbxxCbrName != ''"> and jbxx_cbr_name like concat('%',#{jbxxCbrName},'%')</if>
+            <if test="jbxxBgr != null and jbxxBgr != ''"> and jbxx_bgr like concat('%',#{jbxxBgr},'%')</if>
+            <if test="jbxxCbtId != null and jbxxCbtId != ''"> and jbxx_cbt_id like concat('%',#{jbxxCbtId},'%')</if>
+            <if test="jbxxCbtName != null and jbxxCbtName != ''"> and jbxx_cbt_name like concat('%',#{jbxxCbtName},'%')</if>
+            <if test="jbxxAjlb != null and jbxxAjlb != ''"> and a.jbxx_ajlb like concat('%',#{jbxxAjlb},'%')</if>
+            <if test="jbxxSarq != null and jbxxSarq != ''"> and jbxx_sarq like concat('%',#{jbxxSarq},'%')</if>
+            <if test="jbxxLarq != null and jbxxLarq != ''"> and jbxx_larq like concat('%',#{jbxxLarq},'%')</if>
+            <if test="jbxxFarq != null and jbxxFarq != ''"> and jbxx_farq like concat('%',#{jbxxFarq},'%')</if>
+            <if test="jbxxKtrq != null and jbxxKtrq != ''"> and jbxx_ktrq like concat('%',#{jbxxKtrq},'%')</if>
+            <if test="jbxxJarq != null and jbxxJarq != ''"> and jbxx_jarq like concat('%',#{jbxxJarq},'%')</if>
+            <if test="jbxxGdrq != null and jbxxGdrq != ''"> and jbxx_gdrq like concat('%',#{jbxxGdrq},'%')</if>
+            <if test="risksLevel != null and risksLevel != ''"> and risks_level like concat('%',#{risksLevel},'%')</if>
+            <if test="status != null and status != ''"> and (status =#{status}</if>
+            <if test="dubvioStatus != null and dubvioStatus != ''"> or  status =#{dubvioStatus})</if>
+            <if test="pid != null and pid != ''"> and processInstand like concat('%',#{pid},'%')</if>
+            <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+            <if test="dubvioSource != null and dubvioSource != ''"> and dubvio_source like concat('%',#{dubvioSource},'%')</if>
+            <if test="dubvioFyr != null and dubvioFyr != ''"> and dubvio_fyr like concat('%',#{dubvioFyr},'%')</if>
+            <if test="dubvioFyrdh != null and dubvioFyrdh != ''"> and dubvio_fyrdh like concat('%',#{dubvioFyrdh},'%')</if>
+            <if test="dubvioFydx != null and dubvioFydx != ''"> and dubvio_fydx like concat('%',#{dubvioFydx},'%')</if>
+            <if test="dubvioFywt != null and dubvioFywt != ''"> and dubvio_fywt like concat('%',#{dubvioFywt},'%')</if>
+            <if test="dubvioCzjg != null and dubvioCzjg != ''"> and dubvio_czjg like concat('%',#{dubvioCzjg},'%')</if>
+            <if test="xfDeptId != null and xfDeptId != ''"> and xf_deptId like concat('%',#{xfDeptId},'%')</if>
+            <if test="deleteFlag != null and deleteFlag != ''"> and delete_flag like concat('%',#{deleteFlag},'%')</if>
+        </where>
+        ORDER BY jbxx_sarq desc,jbxx_xffysj desc
+    </select>
+
+    <select id="queryEventAjlbCountByStrategyName" resultType="java.util.HashMap">
+     SELECT s.dubvio_strategy_name  as name,s.dubvio_strategy_id as id,
+        COUNT(CASE WHEN s.jbxx_ajlb='民事' THEN s.jbxx_ajlb END) AS 'ms',
+        COUNT(CASE WHEN s.jbxx_ajlb='刑事' THEN s.jbxx_ajlb END) AS 'xs',
+        COUNT(CASE WHEN s.jbxx_ajlb='行政' THEN s.jbxx_ajlb END) AS 'xz',
+        COUNT(CASE WHEN s.jbxx_ajlb='执行' THEN s.jbxx_ajlb END) AS 'zx',
+        COUNT(1) AS 'total'
+     FROM (SELECT dubvio_strategy_name,dubvio_strategy_id, bde.jbxx_ajlb
+     FROM busi_dubvio_event bde where bde.dubvio_strategy_id is not null
+     <choose>
+         <when test="jbfyId ==null or jbfyId ==''">
+            and bde.jbfy_id in
+            <foreach  item="item" collection="jbfyIdList" index="index"  open="(" separator="," close=")">
+                #{item}
+            </foreach>
+         </when>
+         <otherwise>
+             and bde.jbfy_id=#{jbfyId}
+         </otherwise>
+     </choose>
+     )s
+     GROUP BY s.dubvio_strategy_id
+    </select>
+
+    <select id="selectEventListByAjlbAndStrategyId" resultType="java.util.HashMap" parameterType="map">
+        SELECT  * from busi_dubvio_event where jbxx_ajlb=#{ajlb} and  dubvio_strategy_id=#{id}
+    </select>
+
+    <select id="selectEventListByStrategyId" resultType="java.util.HashMap" parameterType="String">
+        SELECT  * from busi_dubvio_event where   dubvio_strategy_id=#{id}
+    </select>
+
+    <select id="queryEventFyrInfoByFyy" resultType="java.util.HashMap">
+        SELECT
+	b.*, COUNT(
+		CASE
+		WHEN b.jbxx_ajlb = '民事' THEN
+			b.jbxx_ajlb
+		END
+	) AS 'ms',
+	COUNT(
+		CASE
+		WHEN b.jbxx_ajlb = '刑事' THEN
+			b.jbxx_ajlb
+		END
+	) AS 'xs',
+	COUNT(
+		CASE
+		WHEN b.jbxx_ajlb = '行政' THEN
+			b.jbxx_ajlb
+		END
+	) AS 'xz',
+	COUNT(
+		CASE
+		WHEN b.jbxx_ajlb = '执行' THEN
+			b.jbxx_ajlb
+		END
+	) AS 'zx',
+	COUNT(1) AS 'total'
+FROM
+	busi_dubvio_event b
+JOIN sys_dept s ON b.jbfy_id = s.dept_id
+WHERE
+	b.delete_flag = 0
+AND b.jbxx_cbr_id IS NOT NULL
+        <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+GROUP BY
+	b.jbxx_cbr_id
+    </select>
+
+    <select id="queryEventFycs" resultType="java.lang.String">
+        SELECT  COUNT(1) from  busi_dubvio_event b where  b.delete_flag=0 and b.jbxx_cbr_id=#{ryId}
+    </select>
+
+    <!--根据可疑事件不同的维度条件查询案件列表-->
+    <select id="getDimList" resultMap="DubvioEventResult">
+        SELECT a.*,dp.dept_name AS jbfyName,b.jbxx_ajmc AS ajmc
+        FROM busi_dubvio_event a
+        LEFT JOIN busi_dubvio_event_detail b on a.jbxx_ajbh=b.jbxx_ajbh
+        LEFT JOIN sys_dept dp ON dp.dept_id=a.jbfy_id
+        WHERE a.dubvio_source=1
+        <if test="dubvioStrategyName !='' and dubvioStrategyName !=null">
+            AND a.dubvio_strategy_name=#{dubvioStrategyName}
+        </if>
+        <if test="jbxxAjlb !='' and jbxxAjlb !=null">
+            AND a.jbxx_ajlb=#{jbxxAjlb}
+        </if>
+        <if test="jbxxCbrId !='' and jbxxCbrId !=null">
+            AND a.jbxx_cbr_id=#{jbxxCbrId}
+        </if>
+        <choose>
+            <when test="jbfyId ==null or jbfyId ==''">
+                AND a.jbfy_id in
+                <foreach  item="item" collection="jbfyIdList" index="index"  open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                AND a.jbfy_id=#{jbfyId}
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="querySuspectsByManData" resultType="java.util.HashMap">
+        SELECT e.id, e.name, e.ms, e.xs, e.xz, e.zx, e.total,e.jbxx_cbt_name as dept, e.jbfyName as court
+        FROM(
+            SELECT s.jbxx_cbr_id as id,s.jbxx_cbr_name as name,s.jbxx_cbt_name,s.jbfyName,
+                COUNT(CASE WHEN s.jbxx_ajlb='民事' THEN s.jbxx_ajlb END) AS 'ms',
+                COUNT(CASE WHEN s.jbxx_ajlb='刑事' THEN s.jbxx_ajlb END) AS 'xs',
+                COUNT(CASE WHEN s.jbxx_ajlb='行政' THEN s.jbxx_ajlb END) AS 'xz',
+                COUNT(CASE WHEN s.jbxx_ajlb='执行' THEN s.jbxx_ajlb END) AS 'zx',
+                COUNT(1) AS 'total'
+                FROM (
+                    SELECT dubvio_strategy_name,dubvio_strategy_id,jbxx_cbt_name, bde.jbxx_ajlb,jbxx_cbr_id,jbxx_cbr_name,de.dept_name as jbfyName
+                    FROM busi_dubvio_event bde
+                    LEFT JOIN sys_dept de on de.dept_id=bde.jbfy_id
+
+                    where bde.dubvio_strategy_id is not null
+
+                <if test="jbxxCbrName !='' and jbxxCbrName !=null">
+                    AND bde.jbxx_cbr_name like concat('%',#{jbxxCbrName},'%')
+                </if>
+                <if test="jbxxCbtName !='' and jbxxCbtName !=null">
+                    AND bde.jbxx_cbt_name like concat('%',#{jbxxCbtName},'%')
+                </if>
+                <choose>
+                    <when test="jbfyId ==null or jbfyId ==''">
+                        and bde.jbfy_id in
+                        <foreach  item="item" collection="jbfyIdList" index="index"  open="(" separator="," close=")">
+                            #{item}
+                        </foreach>
+                    </when>
+                    <otherwise>
+                        and bde.jbfy_id=#{jbfyId}
+                    </otherwise>
+
+                </choose>
+                )s
+            GROUP BY s.jbxx_cbr_id ) e
+        GROUP BY e.id
+    </select>
+
+    <select id="getSuspiciousCluesCount" resultType="java.util.HashMap">
+     SELECT s.dubvio_strategy_name  as name,s.dubvio_strategy_id as id,
+        COUNT(CASE WHEN s.jbxx_ajlb='民事' THEN s.jbxx_ajlb END) AS 'ms',
+        COUNT(CASE WHEN s.jbxx_ajlb='刑事' THEN s.jbxx_ajlb END) AS 'xs',
+        COUNT(CASE WHEN s.jbxx_ajlb='行政' THEN s.jbxx_ajlb END) AS 'xz',
+        COUNT(CASE WHEN s.jbxx_ajlb='执行' THEN s.jbxx_ajlb END) AS 'zx',
+        COUNT(1) AS 'total'
+        FROM (
+            SELECT dubvio_strategy_name,dubvio_strategy_id, bde.jbxx_ajlb
+            FROM busi_clue bde where bde.dubvio_strategy_id is not null
+            <choose>
+                <when test="jbfyId ==null or jbfyId ==''">
+                    and bde.jbfy_id in
+                    <foreach  item="item" collection="jbfyIdList" index="index"  open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </when>
+                <otherwise>
+                    and bde.jbfy_id=#{jbfyId}
+                </otherwise>
+            </choose>
+            )s
+        GROUP BY s.dubvio_strategy_id
+    </select>
+
+
+    <select id="getClueDetailList" resultType="java.util.HashMap" parameterType="map">
+        SELECT  * from busi_clue where dubvio_strategy_id=#{id}
+        <if test="name != null and name != ''">and jbxx_ajlb=#{name}</if>
+        and jbfy_id in
+        <foreach item="item" index="index" collection="jbfyIdList" open="(" separator="," close=")">
+             #{item}
+        </foreach>
+    </select>
+
+    <select id="getClueCountByMonth" resultType="java.util.HashMap" parameterType="map">
+         SELECT DATE_FORMAT(s.create_time,'%Y-%m') as clueTime,
+         COUNT(CASE WHEN s.jbxx_ajlb='民事' THEN s.jbxx_ajlb END) AS 'ms',
+         COUNT(CASE WHEN s.jbxx_ajlb='刑事' THEN s.jbxx_ajlb END) AS 'xs',
+         COUNT(CASE WHEN s.jbxx_ajlb='行政' THEN s.jbxx_ajlb END) AS 'xz',
+         COUNT(CASE WHEN s.jbxx_ajlb='执行' THEN s.jbxx_ajlb END) AS 'zx',
+         COUNT(1) as total
+        FROM (
+            SELECT bde.create_time, bde.jbxx_ajlb
+            FROM busi_clue bde where bde.dubvio_strategy_id is not null
+            and bde.jbfy_id in
+            <foreach  item="item" collection="list" index="index"  open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        )s GROUP BY DATE_FORMAT(s.create_time,'%Y-%m') DESC
+    </select>
+
+    <select id="getClueDetailListByDate" resultType="java.util.HashMap" parameterType="map">
+        SELECT  * from busi_clue where DATE_FORMAT(create_time,'%Y-%m')=#{clueTime}
+        <if test="name != null and name != ''">and jbxx_ajlb=#{name}</if>
+        and jbfy_id in
+        <foreach item="item" index="index" collection="jbfyIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getAllClueSourceByMonth" resultType="java.util.HashMap">
+       SELECT DATE_FORMAT(s.create_time,'%Y-%m') as time,
+       COUNT(CASE WHEN s.clue_source='1' THEN s.clue_source END) AS sz,
+       COUNT(CASE WHEN s.clue_source='2' THEN s.clue_source END) AS xf,
+       COUNT(CASE WHEN s.clue_source='1' and process_status=0 THEN s.clue_source END) AS szDeal,
+       COUNT(CASE WHEN s.clue_source='2' and process_status=0 THEN s.clue_source END) AS xfDeal,
+       COUNT(1) as total
+       FROM (
+            SELECT create_time, bde.clue_source,process_status FROM busi_clue bde
+            where bde.jbfy_id in
+            <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        )s GROUP BY DATE_FORMAT(s.create_time,'%Y-%m') DESC
+    </select>
+    <select id="getReflectedPeopleCountList" resultType="java.util.HashMap">
+        select b.*,
+            count( CASE WHEN b.clue_czjg = '2' THEN '予以了结' END ) AS 'yylj',
+            count( CASE WHEN b.clue_czjg = '4' THEN '谈话函询' END ) AS 'thhx',
+            count( CASE WHEN b.clue_czjg = '1' THEN '暂存待查' END ) AS 'zcdc',
+            count( CASE WHEN b.clue_czjg = '3' THEN '初步核实' END ) AS 'cbhs',
+            count( CASE WHEN b.clue_czjg = '5' THEN '立案调查' END ) AS 'ladc',
+            count( CASE WHEN b.clue_czjg = '6' THEN '案件审理' END ) AS 'ajsl'
+            FROM busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+            WHERE b.clue_source = 1 AND b.delete_flag = 0 and b.jbxx_cbr_id is not null and b.clue_czjg is not null
+        <if test="deptId != null  and deptId != '' and deptId != '2203' ">and s.dept_id = #{deptId}</if>
+        GROUP BY b.jbxx_cbr_id
+    </select>
+
+    <select id="getSuspectsCountByTribunalList" resultType="java.util.HashMap">
+        SELECT COUNT(1) as count,jbxx_cbt_name,jbxx_cbt_id as id from busi_dubvio_event e
+        JOIN sys_dept d ON e.jbfy_id=d.dept_id
+        where e.dubvio_strategy_id is not null
+
+        <choose>
+            <when test="jbfyId ==null or jbfyId ==''">
+                and e.jbfy_id in
+                <foreach  item="item" collection="jbfyIdList" index="index"  open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                and e.jbfy_id=#{jbfyId}
+            </otherwise>
+        </choose>
+        GROUP BY jbxx_cbt_id
+    </select>
+
+    <select id="getSuspectsDetailByCourtId" resultType="java.util.HashMap">
+        SELECT * from busi_dubvio_event where jbxx_cbt_id = #{id} and jbfy_id in
+        <foreach item="item" index="index" collection="jbfyIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getAllSuspectsCountByMonth" resultType="java.util.HashMap">
+        SELECT DATE_FORMAT(s.create_time,'%Y-%m') as clueTime,
+        COUNT(CASE WHEN s.jbxx_ajlb='民事' THEN s.jbxx_ajlb END) AS 'ms',
+        COUNT(CASE WHEN s.jbxx_ajlb='刑事' THEN s.jbxx_ajlb END) AS 'xs',
+        COUNT(CASE WHEN s.jbxx_ajlb='行政' THEN s.jbxx_ajlb END) AS 'xz',
+        COUNT(CASE WHEN s.jbxx_ajlb='执行' THEN s.jbxx_ajlb END) AS 'zx',
+        COUNT(1) as total
+        FROM (
+            SELECT bde.create_time, bde.jbxx_ajlb
+            FROM busi_dubvio_event bde where bde.dubvio_strategy_id is not null
+            <if test="startDate != null and startDate != '' and endDate != '' and endDate != null">
+                and bde.create_time BETWEEN #{startDate} and #{endDate}
+            </if>
+            and bde.jbfy_id in
+            <foreach  item="item" collection="jbfyIdList" index="index"  open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        )s GROUP BY DATE_FORMAT(s.create_time,'%Y-%m') DESC
+    </select>
+
+    <select id="getSuspectsDetailByMonth" resultType="java.util.HashMap">
+        SELECT  * from busi_dubvio_event where DATE_FORMAT(create_time,'%Y-%m')=#{suspectsTime}
+        <if test="caseTypeName != null and caseTypeName != ''">and jbxx_ajlb=#{caseTypeName}</if>
+        and jbfy_id in
+        <foreach item="item" index="index" collection="jbfyIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getSuspectsCountByCourt" resultType="java.util.HashMap">
+        SELECT s.dept_name  as dept_name, s.jbfy_id as jbfy_id,
+        COUNT(CASE WHEN s.jbxx_ajlb='民事' THEN s.jbxx_ajlb END) AS 'ms',
+        COUNT(CASE WHEN s.jbxx_ajlb='刑事' THEN s.jbxx_ajlb END) AS 'xs',
+        COUNT(CASE WHEN s.jbxx_ajlb='行政' THEN s.jbxx_ajlb END) AS 'xz',
+        COUNT(CASE WHEN s.jbxx_ajlb='执行' THEN s.jbxx_ajlb END) AS 'zx',
+        COUNT(1) as total
+        FROM (
+            SELECT bde.jbxx_ajlb, d.dept_name, bde.jbfy_id
+            FROM busi_dubvio_event bde JOIN sys_dept d ON bde.jbfy_id=d.dept_id  where bde.dubvio_strategy_id is not null
+            <choose>
+                <when test="jbfyId ==null or jbfyId ==''">
+                    and bde.jbfy_id in
+                    <foreach  item="item" collection="jbfyIdList" index="index"  open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </when>
+                <otherwise>
+                    and bde.jbfy_id=#{jbfyId}
+                </otherwise>
+            </choose>
+        )s GROUP BY s.jbfy_id
+    </select>
+
+    <select id="getSuspectsDetailByCourtIdAndName" resultType="java.util.HashMap">
+        SELECT  * from busi_dubvio_event where jbfy_id=#{id}
+        <if test="name != null and name != ''">and jbxx_ajlb=#{name}</if>
+        and jbfy_id in
+        <foreach item="item" index="index" collection="jbfyIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getTribunalSuspectsCountByCourtId" resultType="java.util.HashMap" parameterType="String">
+        SELECT s.jbxx_cbt_name  as jbxx_cbt_name, s.jbfy_id as jbfy_id, s.jbxx_cbt_id as jbxx_cbt_id,
+            COUNT(CASE WHEN s.jbxx_ajlb='民事' THEN s.jbxx_ajlb END) AS 'ms',
+            COUNT(CASE WHEN s.jbxx_ajlb='刑事' THEN s.jbxx_ajlb END) AS 'xs',
+            COUNT(CASE WHEN s.jbxx_ajlb='行政' THEN s.jbxx_ajlb END) AS 'xz',
+            COUNT(CASE WHEN s.jbxx_ajlb='执行' THEN s.jbxx_ajlb END) AS 'zx',
+            COUNT(1) as total
+        FROM (
+	        SELECT bde.jbxx_ajlb, bde.jbxx_cbt_name, bde.jbfy_id, bde.jbxx_cbt_id
+            FROM busi_dubvio_event bde JOIN sys_dept d ON bde.jbfy_id=d.dept_id  where bde.dubvio_strategy_id is not null
+            <if test="_parameter!= null"> AND bde.jbfy_id =#{_parameter}</if>
+		) s GROUP BY s.jbxx_cbt_id
+    </select>
+
+    <select id="getSuspectsNameList" resultType="java.util.HashMap">
+        SELECT dubvio_strategy_id as strategyId, dubvio_strategy_name as strategyName from busi_dubvio_event
+        WHERE dubvio_strategy_id is not null GROUP BY dubvio_strategy_id
+    </select>
+</mapper>

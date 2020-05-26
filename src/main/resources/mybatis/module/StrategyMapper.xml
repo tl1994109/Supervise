@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.strategy.mapper.StrategyMapper">
+    <resultMap type="Strategy" id="StrategyResult">
+        <result property="strategyId"    column="strategy_id"    />
+        <result property="strategyJob"    column="strategy_job"    />
+        <result property="strategyType"    column="strategy_type"    />
+        <result property="strategyName"    column="strategy_name"    />
+        <result property="strategyDefine"    column="strategy_define"    />
+        <result property="strategyCode"    column="strategy_code"    />
+        <result property="strategyAjlb"    column="strategy_ajlb"    />
+        <result property="strategyParam"    column="strategy_param"    />
+        <result property="strategyStatus"    column="strategy_status"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleteBy"    column="delete_by"    />
+        <result property="deleteTime"    column="delete_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+	
+	<sql id="selectStrategyVo">
+        select strategy_id, strategy_job,strategy_type,strategy_ajlb,strategy_name,strategy_define, strategy_code, strategy_param, strategy_status, remarks, create_by, create_time, update_by, update_time, delete_by, delete_time, del_flag from busi_strategy
+    </sql>
+	
+    <select id="selectStrategyList" parameterType="Strategy" resultMap="StrategyResult">
+        <include refid="selectStrategyVo"/>
+        <where>  
+            <if test="strategyId != null and strategyId != ''"> and strategy_id like concat('%',#{strategyId},'%')</if>
+            <if test="strategyJob != null and strategyJob != ''"> and strategy_job like concat('%',#{strategyJob},'%')</if>
+             <if test="strategyType != null and strategyType != ''"> and strategy_type like concat('%',#{strategyType},'%')</if>
+             <if test="strategyName != null and strategyName != ''"> and strategy_name like concat('%',#{strategyName},'%')</if>
+            <if test="strategyDefine != null and strategyDefine != ''"> and strategy_define like concat('%',#{strategyDefine},'%')</if>
+             <if test="strategyCode != null and strategyCode != ''"> and strategy_code like concat('%',#{strategyCode},'%')</if>
+            <if test="strategyAjlb != null and strategyAjlb != ''"> and strategy_ajlb like concat('%',#{strategyAjlb},'%')</if>
+             <if test="strategyParam != null and strategyParam != ''"> and strategy_param like concat('%',#{strategyParam},'%')</if>
+             <if test="strategyStatus != null and strategyStatus != ''"> and strategy_status like concat('%',#{strategyStatus},'%')</if>
+             <if test="remarks != null and remarks != ''"> and remarks like concat('%',#{remarks},'%')</if>
+             <if test="createBy != null and createBy != ''"> and create_by like concat('%',#{createBy},'%')</if>
+             <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+             <if test="updateBy != null and updateBy != ''"> and update_by like concat('%',#{updateBy},'%')</if>
+             <if test="updateTime != null and updateTime != ''"> and update_time like concat('%',#{updateTime},'%')</if>
+             <if test="deleteBy != null and deleteBy != ''"> and delete_by like concat('%',#{deleteBy},'%')</if>
+             <if test="deleteTime != null and deleteTime != ''"> and delete_time like concat('%',#{deleteTime},'%')</if>
+             <if test="delFlag != null and delFlag != ''"> and del_flag like concat('%',#{delFlag},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectStrategyById" parameterType="Integer" resultMap="StrategyResult">
+        <include refid="selectStrategyVo"/>
+        where strategy_id = #{strategyId}
+    </select>
+        
+    <insert id="insertStrategy" parameterType="Strategy">
+        insert into busi_strategy
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="strategyId != null  ">strategy_id,</if>
+            <if test="strategyJob != null  ">strategy_job,</if>
+           <if test="strategyType != null  and strategyType != ''  ">strategy_type,</if>
+           <if test="strategyName != null  and strategyName != ''  ">strategy_name,</if>
+            <if test="strategyDefine != null  and strategyDefine != ''  ">strategy_define,</if>
+           <if test="strategyCode != null  and strategyCode != ''  ">strategy_code,</if>
+            <if test="strategyAjlb != null  and strategyAjlb != ''  ">strategy_ajlb,</if>
+           <if test="strategyParam != null  and strategyParam != ''  ">strategy_param,</if>
+           <if test="strategyStatus != null  and strategyStatus != ''  ">strategy_status,</if>
+           <if test="remarks != null  and remarks != ''  ">remarks,</if>
+           <if test="createBy != null  and createBy != ''  ">create_by,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+           <if test="updateTime != null  ">update_time,</if>
+           <if test="deleteBy != null  and deleteBy != ''  ">delete_by,</if>
+           <if test="deleteTime != null  ">delete_time,</if>
+           <if test="delFlag != null  and delFlag != ''  ">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="strategyId != null  ">#{strategyId},</if>
+        <if test="strategyJob != null  ">#{strategyJob},</if>
+        <if test="strategyType != null  and strategyType != ''  ">#{strategyType},</if>
+        <if test="strategyName != null  and strategyName != ''  ">#{strategyName},</if>
+        <if test="strategyDefine != null  and strategyDefine != ''  ">#{strategyDefine},</if>
+        <if test="strategyCode != null  and strategyCode != ''  ">#{strategyCode},</if>
+        <if test="strategyAjlb != null  and strategyAjlb != ''  ">#{strategyAjlb},</if>
+        <if test="strategyParam != null  and strategyParam != ''  ">#{strategyParam},</if>
+        <if test="strategyStatus != null  and strategyStatus != ''  ">#{strategyStatus},</if>
+        <if test="remarks != null  and remarks != ''  ">#{remarks},</if>
+        <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+        <if test="updateTime != null  ">#{updateTime},</if>
+        <if test="deleteBy != null  and deleteBy != ''  ">#{deleteBy},</if>
+        <if test="deleteTime != null  ">#{deleteTime},</if>
+        <if test="delFlag != null  and delFlag != ''  ">#{delFlag},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateStrategy" parameterType="Strategy">
+        update busi_strategy
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="strategyJob != null  and strategyJob != ''  ">strategy_job = #{strategyJob},</if>
+            <if test="strategyType != null  and strategyType != ''  ">strategy_type = #{strategyType},</if>
+            <if test="strategyName != null  and strategyName != ''  ">strategy_name = #{strategyName},</if>
+            <if test="strategyDefine != null  and strategyDefine != ''  ">strategy_define = #{strategyDefine},</if>
+            <if test="strategyCode != null  and strategyCode != ''  ">strategy_code = #{strategyCode},</if>
+            <if test="strategyAjlb != null  and strategyAjlb != ''  ">strategy_ajlb = #{strategyAjlb},</if>
+            <if test="strategyParam != null  and strategyParam != ''  ">strategy_param = #{strategyParam},</if>
+            <if test="strategyStatus != null  and strategyStatus != ''  ">strategy_status = #{strategyStatus},</if>
+            <if test="remarks != null  and remarks != ''  ">remarks = #{remarks},</if>
+            <if test="createBy != null  and createBy != ''  ">create_by = #{createBy},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="deleteBy != null  and deleteBy != ''  ">delete_by = #{deleteBy},</if>
+            <if test="deleteTime != null  ">delete_time = #{deleteTime},</if>
+            <if test="delFlag != null  and delFlag != ''  ">del_flag = #{delFlag},</if>
+        </trim>
+        where strategy_id = #{strategyId}
+    </update>
+
+	<delete id="deleteStrategyById" parameterType="Integer">
+        delete from busi_strategy where strategy_id = #{strategyId}
+    </delete>
+	
+    <delete id="deleteStrategyByIds" parameterType="String">
+        delete from busi_strategy where strategy_id in 
+        <foreach item="strategyId" collection="array" open="(" separator="," close=")">
+            #{strategyId}
+        </foreach>
+    </delete>
+
+
+    <select id="queryStrategy" resultType="java.util.HashMap" >
+      SELECT strategy_id as id ,strategy_name name from busi_strategy
+    </select>
+
+    <select id="queryStrategyById" resultType="java.lang.String" parameterType="Integer">
+          SELECT strategy_name   from busi_strategy a where  strategy_id=#{id}
+    </select>
+</mapper>

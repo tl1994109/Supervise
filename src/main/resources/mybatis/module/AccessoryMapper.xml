@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.accessory.mapper.AccessoryMapper">
+
+    <resultMap type="Accessory" id="AccessoryResult">
+        <result property="accessoryId" column="accessory_id"/>
+        <result property="accessoryUrl" column="accessory_url"/>
+        <result property="accessoryTaskid" column="accessory_taskId"/>
+        <result property="accessoryOldname" column="accessory_oldname"/>
+        <result property="accessoryType" column="accessory_type"/>
+    </resultMap>
+
+    <sql id="selectAccessoryVo">
+        select accessory_id, accessory_url, accessory_taskId, accessory_oldname,accessory_type from task_accessory
+    </sql>
+
+    <select id="selectAccessoryList" parameterType="Accessory" resultMap="AccessoryResult">
+        <include refid="selectAccessoryVo"/>
+        <where>
+            <if test="accessoryId != null and accessoryId != ''">and accessory_id like concat('%',#{accessoryId},'%')
+            </if>
+            <if test="accessoryUrl != null and accessoryUrl != ''">and accessory_url like
+                concat('%',#{accessoryUrl},'%')
+            </if>
+            <if test="accessoryTaskid != null and accessoryTaskid != ''">and accessory_taskId like
+                concat('%',#{accessoryTaskid},'%')
+            </if>
+            <if test="accessoryOldname != null and accessoryOldname != ''">and accessory_oldname like
+                concat('%',#{accessoryOldname},'%')
+            </if>
+            <if test="accessoryType!=null and accessoryType!=''">and accessory_type = #{accessoryType}</if>
+        </where>
+    </select>
+
+    <select id="selectAccessoryById" parameterType="String" resultMap="AccessoryResult">
+        <include refid="selectAccessoryVo"/>
+        where accessory_id = #{accessoryId}
+    </select>
+
+    <insert id="insertAccessory" parameterType="Accessory">
+        insert into task_accessory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="accessoryId != null  and accessoryId != ''  ">accessory_id,</if>
+            <if test="accessoryUrl != null  and accessoryUrl != ''  ">accessory_url,</if>
+            <if test="accessoryTaskid != null  and accessoryTaskid != ''  ">accessory_taskId,</if>
+            <if test="accessoryOldname != null  and accessoryOldname != ''  ">accessory_oldname,</if>
+            <if test="accessoryType !=null and accessoryType!=''">accessory_type,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="accessoryId != null  and accessoryId != ''  ">#{accessoryId},</if>
+            <if test="accessoryUrl != null  and accessoryUrl != ''  ">#{accessoryUrl},</if>
+            <if test="accessoryTaskid != null  and accessoryTaskid != ''  ">#{accessoryTaskid},</if>
+            <if test="accessoryOldname != null  and accessoryOldname != ''  ">#{accessoryOldname},</if>
+            <if test="accessoryType!=null and accessoryType!=''">#{accessoryType},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAccessory" parameterType="Accessory">
+        update task_accessory
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="accessoryUrl != null  and accessoryUrl != ''  ">accessory_url = #{accessoryUrl},</if>
+            <if test="accessoryTaskid != null  and accessoryTaskid != ''  ">accessory_taskId = #{accessoryTaskid},</if>
+            <if test="accessoryOldname != null  and accessoryOldname != ''  ">accessory_oldname = #{accessoryOldname},
+            </if>
+        </trim>
+        where accessory_id = #{accessoryId}
+    </update>
+
+    <delete id="deleteAccessoryById" parameterType="String">
+        delete from task_accessory where accessory_id = #{accessoryId}
+    </delete>
+
+    <delete id="deleteAccessoryByIds" parameterType="String">
+        delete from task_accessory where accessory_id in
+        <foreach item="accessoryId" collection="array" open="(" separator="," close=")">
+            #{accessoryId}
+        </foreach>
+    </delete>
+
+</mapper>

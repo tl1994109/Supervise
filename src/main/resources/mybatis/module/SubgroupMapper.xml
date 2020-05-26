@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.subgroup.mapper.SubgroupMapper">
+
+    <resultMap type="Subgroup" id="SubgroupResult">
+        <result property="subgroupId"    column="subgroup_id"    />
+        <result property="subgroupName"    column="subgroup_name"    />
+        <result property="eventJson"    column="event_json" typeHandler="org.apache.ibatis.type.BlobTypeHandler"/>
+        <result property="iniconditJson"    column="inicondit_json" typeHandler="org.apache.ibatis.type.BlobTypeHandler"/>
+        <result property="subgroupCode"    column="subgroup_code"    />
+        <result property="subgroupStyle"    column="subgroup_style"    />
+        <result property="tableName"    column="table_name"    />
+        <result property="isPaging"    column="is_paging"    />
+        <result property="pageSize"    column="page_size"    />
+        <result property="pageStyle"    column="page_style"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="primaryKey"    column="primary_key"    />
+        <result property="sortField"    column="sort_field"    />
+        <result property="isKey" column="is_key" />
+        <result property="isSortable" column="is_sortable" />
+        <result property="visibleCols" column="visible_cols" />
+    </resultMap>
+
+    <sql id="selectSubgroupVo">
+        select subgroup_id, subgroup_name, event_json,is_key,inicondit_json,subgroup_code, subgroup_style, table_name, is_paging, page_size, page_style, create_time, update_time, primary_key, sort_field,is_sortable,visible_cols from tool_subgroup
+    </sql>
+
+    <select id="selectSubgroupList" parameterType="Subgroup" resultMap="SubgroupResult">
+        <include refid="selectSubgroupVo"/>
+        <where>
+            <if test="subgroupId != null and subgroupId != ''"> and subgroup_id like concat('%',#{subgroupId},'%')</if>
+            <if test="subgroupName != null and subgroupName != ''"> and subgroup_name like concat('%',#{subgroupName},'%')</if>
+            <if test="eventJson != null and eventJson != ''"> and event_json like concat('%',#{eventJson},'%')</if>
+            <if test="iniconditJson != null and iniconditJson != ''"> and inicondit_json like concat('%',#{iniconditJson},'%')</if>
+            <if test="subgroupCode != null and subgroupCode != ''"> and subgroup_code like concat('%',#{subgroupCode},'%')</if>
+            <if test="subgroupStyle != null and subgroupStyle != ''"> and subgroup_style like concat('%',#{subgroupStyle},'%')</if>
+            <if test="tableName != null and tableName != ''"> and table_name like concat('%',#{tableName},'%')</if>
+            <if test="isPaging != null and isPaging != ''"> and is_paging like concat('%',#{isPaging},'%')</if>
+            <if test="pageSize != null and pageSize != ''"> and page_size like concat('%',#{pageSize},'%')</if>
+            <if test="pageStyle != null and pageStyle != ''"> and page_style like concat('%',#{pageStyle},'%')</if>
+            <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+            <if test="updateTime != null and updateTime != ''"> and update_time like concat('%',#{updateTime},'%')</if>
+            <if test="primaryKey != null and primaryKey != ''"> and primary_key like concat('%',#{primaryKey},'%')</if>
+            <if test="sortField != null and sortField != ''"> and sort_field like concat('%',#{sortField},'%')</if>
+            <if test="isKey != null and isKey != ''"> and is_key like concat('%',#{isKey},'%')</if>
+            <if test="isSortable != null and isSortable != ''"> and is_sortable like concat('%',#{isSortable},'%')</if>
+            <if test="visibleCols != null and visibleCols != ''"> and visible_cols like concat('%',#{visibleCols},'%')</if>
+        </where>
+    </select>
+
+    <select id="selectSubgroupById" parameterType="String" resultMap="SubgroupResult">
+        <include refid="selectSubgroupVo"/>
+        where subgroup_id = #{subgroupId}
+    </select>
+
+    <insert id="insertSubgroup" parameterType="Subgroup">
+        insert into tool_subgroup
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subgroupId != null  and subgroupId != ''  ">subgroup_id,</if>
+            <if test="subgroupName != null  and subgroupName != ''  ">subgroup_name,</if>
+            <if test="eventJson != null  and eventJson != ''  ">event_json,</if>
+            <if test="iniconditJson != null  and iniconditJson != ''  ">inicondit_json,</if>
+            <if test="subgroupCode != null  and subgroupCode != ''  ">subgroup_code,</if>
+            <if test="subgroupStyle != null  and subgroupStyle != ''  ">subgroup_style,</if>
+            <if test="tableName != null  and tableName != ''  ">table_name,</if>
+            <if test="isPaging != null  and isPaging != ''  ">is_paging,</if>
+            <if test="pageSize != null  ">page_size,</if>
+            <if test="pageStyle != null  and pageStyle != ''  ">page_style,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="primaryKey != null  and primaryKey != ''  ">primary_key,</if>
+            <if test="sortField != null  and sortField != ''  ">sort_field,</if>
+            <if test="isKey != null  and isKey != ''  ">is_key,</if>
+            <if test="isSortable != null and isSortable != ''">is_sortable,</if>
+            <if test="visibleCols != null and visibleCols != ''">visible_cols,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="subgroupId != null  and subgroupId != ''  ">#{subgroupId},</if>
+            <if test="subgroupName != null  and subgroupName != ''  ">#{subgroupName},</if>
+            <if test="eventJson != null  and eventJson != ''  ">#{eventJson},</if>
+            <if test="iniconditJson != null  and iniconditJson != ''  ">#{iniconditJson},</if>
+            <if test="subgroupCode != null  and subgroupCode != ''  ">#{subgroupCode},</if>
+            <if test="subgroupStyle != null  and subgroupStyle != ''  ">#{subgroupStyle},</if>
+            <if test="tableName != null  and tableName != ''  ">#{tableName},</if>
+            <if test="isPaging != null  and isPaging != ''  ">#{isPaging},</if>
+            <if test="pageSize != null  ">#{pageSize},</if>
+            <if test="pageStyle != null  and pageStyle != ''  ">#{pageStyle},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="primaryKey != null  and primaryKey != ''  ">#{primaryKey},</if>
+            <if test="sortField != null  and sortField != ''  ">#{sortField},</if>
+            <if test="isKey != null  and isKey != ''  ">#{isKey},</if>
+            <if test="isSortable != null  and isSortable != ''  ">#{isSortable},</if>
+            <if test="visibleCols != null  and visibleCols != ''  ">#{visibleCols},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSubgroup" parameterType="Subgroup">
+        update tool_subgroup
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="subgroupName != null  and subgroupName != ''  ">subgroup_name = #{subgroupName},</if>
+            <if test="eventJson != null  and eventJson != ''  ">event_json = #{eventJson},</if>
+            <if test="iniconditJson != null  and iniconditJson != ''  ">inicondit_json = #{iniconditJson},</if>
+            <if test="subgroupCode != null  and subgroupCode != ''  ">subgroup_code = #{subgroupCode},</if>
+            <if test="subgroupStyle != null  and subgroupStyle != ''  ">subgroup_style = #{subgroupStyle},</if>
+            <if test="tableName != null  and tableName != ''  ">table_name = #{tableName},</if>
+            <if test="isPaging != null  and isPaging != ''  ">is_paging = #{isPaging},</if>
+            <if test="pageSize != null  ">page_size = #{pageSize},</if>
+            <if test="pageStyle != null  and pageStyle != ''  ">page_style = #{pageStyle},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="primaryKey != null  and primaryKey != ''  ">primary_key = #{primaryKey},</if>
+            <if test="sortField != null  and sortField != ''  ">sort_field = #{sortField},</if>
+            <if test="isKey != null  and isKey != ''  ">is_key = #{isKey},</if>
+            <if test="isSortable != null  and isSortable != ''  ">is_sortable = #{isSortable},</if>
+            <if test="visibleCols != null  and visibleCols != ''  ">visible_cols = #{visibleCols},</if>
+        </trim>
+        where subgroup_id = #{subgroupId}
+    </update>
+
+    <delete id="deleteSubgroupById" parameterType="String">
+        delete from tool_subgroup where subgroup_id = #{subgroupId}
+    </delete>
+
+    <delete id="deleteSubgroupByIds" parameterType="String">
+        delete from tool_subgroup where subgroup_id in
+        <foreach item="subgroupId" collection="array" open="(" separator="," close=")">
+            #{subgroupId}
+        </foreach>
+    </delete>
+</mapper>

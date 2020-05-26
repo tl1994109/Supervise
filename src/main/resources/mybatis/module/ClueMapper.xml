@@ -1,0 +1,977 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.clue.mapper.ClueMapper">
+
+    <resultMap type="Clue" id="ClueResult">
+        <result property="clueId" column="clue_id"/>
+        <result property="clueSource" column="clue_source"/>
+        <result property="clueFyr" column="clue_fyr"/>
+        <result property="clueFyrdh" column="clue_fyrdh"/>
+        <result property="clueFydx" column="clue_fydx"/>
+        <result property="clueFywt" column="clue_fywt"/>
+        <result property="clueStatus" column="clue_status"/>
+        <result property="dubvioId" column="dubvio_id"/>
+        <result property="dubvioStrategyId" column="dubvio_strategy_id"/>
+        <result property="dubvioStrategyName" column="dubvio_strategy_name"/>
+        <result property="jbxxAjbh" column="jbxx_ajbh"/>
+        <result property="jbxxAh" column="jbxx_ah"/>
+        <result property="jbxxCbrId" column="jbxx_cbr_id"/>
+        <result property="jbxxCbrName" column="jbxx_cbr_name"/>
+        <result property="jbxxBgr" column="jbxx_bgr"/>
+        <result property="jbxxCbtId" column="jbxx_cbt_id"/>
+        <result property="jbxxCbtName" column="jbxx_cbt_name"/>
+        <result property="jbxxAjlb" column="jbxx_ajlb"/>
+        <result property="jbxxSarq" column="jbxx_sarq"/>
+        <result property="jbxxLarq" column="jbxx_larq"/>
+        <result property="jbxxFarq" column="jbxx_farq"/>
+        <result property="jbxxKtrq" column="jbxx_ktrq"/>
+        <result property="jbxxJarq" column="jbxx_jarq"/>
+        <result property="jbxxGdrq" column="jbxx_gdrq"/>
+        <result property="jbfyId" column="jbfy_id"/>
+        <result property="jbfyName" column="jbfyName"/>
+        <result property="risksLevel" column="risks_level"/>
+        <result property="createTime" column="create_time"/>
+        <result property="processId" column="process_id"/>
+        <result property="processStatus" column="process_status"/>
+        <result property="clueCzjd" column="clue_czjd"/>
+        <result property="clueCzjg" column="clue_czjg"/>
+        <result property="clueCbrName" column="clue_cbr_name"/>
+        <result property="clueRemarks" column="clue_remarks"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="cbrName" column="cbrName"/>
+    </resultMap>
+
+    <sql id="selectClueVo">
+        SELECT c.*,o.dept_name AS jbfyName,p.user_name AS cbrName
+        FROM busi_clue c
+        LEFT JOIN sys_user p ON p.user_id=c.clue_cbr_name
+        LEFT JOIN sys_court_organ o ON o.cid=c.jbfy_id
+    </sql>
+
+    <select id="selectClueList" parameterType="Clue" resultMap="ClueResult">
+        <include refid="selectClueVo"/>
+        <where>
+            <!--优先级： and 应放在or后面 否则or失效-->
+            <!-- 谈话和函询-->
+            <if test="clueCzjg != null and clueCzjg != '' and clueCzjg=='45' ">and (c.clue_czjg =4 or c.clue_czjg =5)</if>
+            <!-- 予以了结-->
+            <if test="clueCzjd != null and clueCzjd != '' and clueCzjd=='29' ">and (c.clue_czjd =29 or c.clue_czjg =2)</if>
+            <!-- 暂存待查-->
+            <if test="clueCzjd != null and clueCzjd != '' and clueCzjd=='34' ">and (c.clue_czjd =34 or c.clue_czjg =1)</if>
+            <!-- 移交审管办-->
+            <if test="clueCzjd != null and clueCzjd != '' and clueCzjd=='38' ">and (c.clue_czjd =38 or clue_czjg =11 or c.clue_czjd =39)</if>
+            <!-- 其他(谈话提醒、批评  移送有关单位处理  移交司法)-->
+            <if test="clueCzjd != null and clueCzjd != '' and clueCzjd=='31' ">and (c.clue_czjd =31 or c.clue_czjd =30 or c.clue_czjd =35)</if>
+            <!--正常参数请求-->
+            <if test="clueId != null and clueId != ''">and c.clue_id like concat('%',#{clueId},'%')</if>
+            <if test="clueSource != null and clueSource != ''">and c.clue_source =#{clueSource}</if>
+            <if test="clueFyr != null and clueFyr != ''">and c.clue_fyr like concat('%',#{clueFyr},'%')</if>
+            <if test="clueFyrdh != null and clueFyrdh != ''">and c.clue_fyrdh like concat('%',#{clueFyrdh},'%')</if>
+            <if test="clueFydx != null and clueFydx != ''">and c.clue_fydx like concat('%',#{clueFydx},'%')</if>
+            <if test="clueFywt != null and clueFywt != ''">and c.clue_fywt like concat('%',#{clueFywt},'%')</if>
+            <if test="clueStatus != null and clueStatus != ''">and c.clue_status like concat('%',#{clueStatus},'%')</if>
+            <if test="dubvioId != null and dubvioId != ''">and c.dubvio_id like concat('%',#{dubvioId},'%')</if>
+            <if test="dubvioStrategyId != null and dubvioStrategyId != ''">and c.dubvio_strategy_id like concat('%',#{dubvioStrategyId},'%')</if>
+            <if test="dubvioStrategyName != null and dubvioStrategyName != ''">and c.dubvio_strategy_name like concat('%',#{dubvioStrategyName},'%') </if>
+            <if test="jbxxAjbh != null and jbxxAjbh != ''">and c.jbxx_ajbh like concat('%',#{jbxxAjbh},'%')</if>
+            <if test="jbxxAh != null and jbxxAh != ''">and c.jbxx_ah like concat('%',#{jbxxAh},'%')</if>
+            <if test="jbxxCbrId != null and jbxxCbrId != ''">and c.jbxx_cbr_id like concat('%',#{jbxxCbrId},'%')</if>
+            <if test="jbxxCbrName != null and jbxxCbrName != ''">and c.jbxx_cbr_name like concat('%',#{jbxxCbrName},'%')</if>
+            <if test="jbxxBgr != null and jbxxBgr != ''">and c.jbxx_bgr like concat('%',#{jbxxBgr},'%')</if>
+            <if test="jbxxCbtId != null and jbxxCbtId != ''">and c.jbxx_cbt_id like concat('%',#{jbxxCbtId},'%')</if>
+            <if test="jbxxCbtName != null and jbxxCbtName != ''">and c.jbxx_cbt_name like concat('%',#{jbxxCbtName},'%')</if>
+            <if test="jbxxAjlb != null and jbxxAjlb != ''">and c.jbxx_ajlb like concat('%',#{jbxxAjlb},'%')</if>
+            <if test="jbxxSarq != null and jbxxSarq != ''">and c.jbxx_sarq like concat('%',#{jbxxSarq},'%')</if>
+            <if test="jbxxLarq != null and jbxxLarq != ''">and c.jbxx_larq like concat('%',#{jbxxLarq},'%')</if>
+            <if test="jbxxFarq != null and jbxxFarq != ''">and c.jbxx_farq like concat('%',#{jbxxFarq},'%')</if>
+            <if test="jbxxKtrq != null and jbxxKtrq != ''">and c.jbxx_ktrq like concat('%',#{jbxxKtrq},'%')</if>
+            <if test="jbxxJarq != null and jbxxJarq != ''">and c.jbxx_jarq like concat('%',#{jbxxJarq},'%')</if>
+            <if test="jbxxGdrq != null and jbxxGdrq != ''">and c.jbxx_gdrq like concat('%',#{jbxxGdrq},'%')</if>
+            <if test="jbfyName != null and jbfyName != ''">and o.dept_name like concat('%',#{jbfyName},'%')</if>
+            <if test="jbfyId != null and jbfyId != ''">and c.jbfy_id like concat('%',#{jbfyId},'%')</if>
+            <if test="risksLevel != null and risksLevel != ''">and c.risks_level like concat('%',#{risksLevel},'%')</if>
+            <if test="createTime != null ">and c.create_time like concat('%',#{createTime},'%')</if>
+            <if test="clueCbrName != null ">and c.clue_cbr_name = #{clueCbrName}</if>
+            <if test="clueRemarks != null and clueRemarks != ''">and c.clue_remarks like concat('%',#{clueRemarks},'%') </if>
+            <if test="processId != null and processId != ''">and c.process_id like concat('%',#{processId},'%')</if>
+            <if test="processStatus != null and processStatus != '' and  processStatus !=99 ">and c.process_status like concat('%',#{processStatus},'%') </if>
+            <!--过滤问题处置脏数据-->
+            <if test="processStatus != null and processStatus != '' and  processStatus ==99 ">and c.process_status != 2 and c.clue_czjg is not null </if>
+            <!--正常参数请求-->
+            <if test="clueCzjd != null and clueCzjd != '' and  clueCzjd != '29' and  clueCzjd != '34' and clueCzjd!='31' and clueCzjd!='38'">and c.clue_czjd = #{clueCzjd}</if>
+            <!--正常参数请求-->
+            <if test="clueCzjg != null and clueCzjg != '' and clueCzjg !='45' ">and c.clue_czjg = #{clueCzjg}</if>
+            <!--各区县数据权限共享控制-->
+            <if test="jbfyIdList != null and jbfyIdList.size >0">
+                and c.jbfy_id in
+                <foreach  item="item" collection="jbfyIdList" index="index"  open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <!--暂存待查超期查办-->
+            <if test="isCQ !=null and isCQ !='' and isCQ == 1">and c.process_status = '0' and c.clue_czjg = '1' and datediff(CURDATE(),c.update_time)>30</if>
+        </where>
+        ORDER BY CASE c.process_status WHEN 1 THEN 1 WHEN 2 THEN 2 WHEN 0 THEN 3 END,c.create_time DESC,c.update_time DESC
+    </select>
+
+    <select id="selectClueById" parameterType="String" resultMap="ClueResult">
+        <include refid="selectClueVo"/>
+        where clue_id = #{clueId}
+    </select>
+
+    <insert id="insertClue" parameterType="Clue">
+        insert into busi_clue
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clueId != null  and clueId != ''  ">clue_id,</if>
+            <if test="clueSource != null  and clueSource != ''  ">clue_source,</if>
+            <if test="clueFyr != null  and clueFyr != ''  ">clue_fyr,</if>
+            <if test="clueFyrdh != null  and clueFyrdh != ''  ">clue_fyrdh,</if>
+            <if test="clueFydx != null  and clueFydx != ''  ">clue_fydx,</if>
+            <if test="clueFywt != null  and clueFywt != ''  ">clue_fywt,</if>
+            <if test="clueStatus != null  and clueStatus != ''  ">clue_status,</if>
+            <if test="dubvioId != null  and dubvioId != ''  ">dubvio_id,</if>
+            <if test="dubvioStrategyId != null  and dubvioStrategyId != ''  ">dubvio_strategy_id,</if>
+            <if test="dubvioStrategyName != null  and dubvioStrategyName != ''  ">dubvio_strategy_name,</if>
+            <if test="jbxxAjbh != null  and jbxxAjbh != ''  ">jbxx_ajbh,</if>
+            <if test="jbxxAh != null  and jbxxAh != ''  ">jbxx_ah,</if>
+            <if test="jbxxCbrId != null  and jbxxCbrId != ''  ">jbxx_cbr_id,</if>
+            <if test="jbxxCbrName != null  and jbxxCbrName != ''  ">jbxx_cbr_name,</if>
+            <if test="jbxxBgr != null  and jbxxBgr != ''  ">jbxx_bgr,</if>
+            <if test="jbxxCbtId != null  and jbxxCbtId != ''  ">jbxx_cbt_id,</if>
+            <if test="jbxxCbtName != null  and jbxxCbtName != ''  ">jbxx_cbt_name,</if>
+            <if test="jbxxAjlb != null  and jbxxAjlb != ''  ">jbxx_ajlb,</if>
+            <if test="jbxxSarq != null  and jbxxSarq != ''  ">jbxx_sarq,</if>
+            <if test="jbxxLarq != null  and jbxxLarq != ''  ">jbxx_larq,</if>
+            <if test="jbxxFarq != null  and jbxxFarq != ''  ">jbxx_farq,</if>
+            <if test="jbxxKtrq != null  and jbxxKtrq != ''  ">jbxx_ktrq,</if>
+            <if test="jbxxJarq != null  and jbxxJarq != ''  ">jbxx_jarq,</if>
+            <if test="jbxxGdrq != null  and jbxxGdrq != ''  ">jbxx_gdrq,</if>
+            <if test="jbfyId != null  and jbfyId != ''  ">jbfy_id,</if>
+            <if test="risksLevel != null  and risksLevel != ''  ">risks_level,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="processId != null  and processId != ''  ">process_id,</if>
+            <if test="processStatus != null  and processStatus != ''  ">process_status,</if>
+            <if test="clueCzjg != null  and clueCzjg != ''  ">clue_czjg,</if>
+            <if test="clueCzjd != null  and clueCzjd != ''  ">clue_czjd,</if>
+            <if test="clueRemarks != null  and clueRemarks != ''  ">clue_remarks,</if>
+            <if test="clueCbrName != null  and clueCbrName != ''  ">clue_cbr_name,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="deleteFlag != null and deleteFlag!='' ">delete_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="clueId != null  and clueId != ''  ">#{clueId},</if>
+            <if test="clueSource != null  and clueSource != ''  ">#{clueSource},</if>
+            <if test="clueFyr != null  and clueFyr != ''  ">#{clueFyr},</if>
+            <if test="clueFyrdh != null  and clueFyrdh != ''  ">#{clueFyrdh},</if>
+            <if test="clueFydx != null  and clueFydx != ''  ">#{clueFydx},</if>
+            <if test="clueFywt != null  and clueFywt != ''  ">#{clueFywt},</if>
+            <if test="clueStatus != null  and clueStatus != ''  ">#{clueStatus},</if>
+            <if test="dubvioId != null  and dubvioId != ''  ">#{dubvioId},</if>
+            <if test="dubvioStrategyId != null  and dubvioStrategyId != ''  ">#{dubvioStrategyId},</if>
+            <if test="dubvioStrategyName != null  and dubvioStrategyName != ''  ">#{dubvioStrategyName},</if>
+            <if test="jbxxAjbh != null  and jbxxAjbh != ''  ">#{jbxxAjbh},</if>
+            <if test="jbxxAh != null  and jbxxAh != ''  ">#{jbxxAh},</if>
+            <if test="jbxxCbrId != null  and jbxxCbrId != ''  ">#{jbxxCbrId},</if>
+            <if test="jbxxCbrName != null  and jbxxCbrName != ''  ">#{jbxxCbrName},</if>
+            <if test="jbxxBgr != null  and jbxxBgr != ''  ">#{jbxxBgr},</if>
+            <if test="jbxxCbtId != null  and jbxxCbtId != ''  ">#{jbxxCbtId},</if>
+            <if test="jbxxCbtName != null  and jbxxCbtName != ''  ">#{jbxxCbtName},</if>
+            <if test="jbxxAjlb != null  and jbxxAjlb != ''  ">#{jbxxAjlb},</if>
+            <if test="jbxxSarq != null  and jbxxSarq != ''  ">#{jbxxSarq},</if>
+            <if test="jbxxLarq != null  and jbxxLarq != ''  ">#{jbxxLarq},</if>
+            <if test="jbxxFarq != null  and jbxxFarq != ''  ">#{jbxxFarq},</if>
+            <if test="jbxxKtrq != null  and jbxxKtrq != ''  ">#{jbxxKtrq},</if>
+            <if test="jbxxJarq != null  and jbxxJarq != ''  ">#{jbxxJarq},</if>
+            <if test="jbxxGdrq != null  and jbxxGdrq != ''  ">#{jbxxGdrq},</if>
+            <if test="jbfyId != null  and jbfyId != ''  ">#{jbfyId},</if>
+            <if test="risksLevel != null  and risksLevel != ''  ">#{risksLevel},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="processId != null  and processId != ''  ">#{processId},</if>
+            <if test="processStatus != null  and processStatus != ''  ">#{processStatus},</if>
+            <if test="clueCzjg != null  and clueCzjg != ''  ">#{clueCzjg},</if>
+            <if test="clueCzjd != null  and clueCzjd != ''  ">#{clueCzjd},</if>
+            <if test="clueRemarks != null  and clueRemarks != ''  ">#{clueRemarks},</if>
+            <if test="clueCbrName != null  and clueCbrName != ''  ">#{clueCbrName},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="deleteFlag != null and deleteFlag!='' ">#{deleteFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateClue" parameterType="Clue">
+        update busi_clue
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="clueSource != null  and clueSource != ''  ">clue_source = #{clueSource},</if>
+            <if test="clueFyr != null  and clueFyr != ''  ">clue_fyr = #{clueFyr},</if>
+            <if test="clueFyrdh != null  and clueFyrdh != ''  ">clue_fyrdh = #{clueFyrdh},</if>
+            <if test="clueFydx != null  and clueFydx != ''  ">clue_fydx = #{clueFydx},</if>
+            <if test="clueFywt != null  and clueFywt != ''  ">clue_fywt = #{clueFywt},</if>
+            <if test="clueStatus != null  and clueStatus != ''  ">clue_status = #{clueStatus},</if>
+            <if test="dubvioId != null  and dubvioId != ''  ">dubvio_id = #{dubvioId},</if>
+            <if test="dubvioStrategyId != null  and dubvioStrategyId != ''  ">dubvio_strategy_id =
+                #{dubvioStrategyId},
+            </if>
+            <if test="dubvioStrategyName != null  and dubvioStrategyName != ''  ">dubvio_strategy_name =
+                #{dubvioStrategyName},
+            </if>
+            <if test="jbxxAjbh != null  and jbxxAjbh != ''  ">jbxx_ajbh = #{jbxxAjbh},</if>
+            <if test="jbxxAh != null  and jbxxAh != ''  ">jbxx_ah = #{jbxxAh},</if>
+            <if test="jbxxCbrId != null  and jbxxCbrId != ''  ">jbxx_cbr_id = #{jbxxCbrId},</if>
+            <if test="jbxxCbrName != null  and jbxxCbrName != ''  ">jbxx_cbr_name = #{jbxxCbrName},</if>
+            <if test="jbxxBgr != null  and jbxxBgr != ''  ">jbxx_bgr = #{jbxxBgr},</if>
+            <if test="jbxxCbtId != null  and jbxxCbtId != ''  ">jbxx_cbt_id = #{jbxxCbtId},</if>
+            <if test="jbxxCbtName != null  and jbxxCbtName != ''  ">jbxx_cbt_name = #{jbxxCbtName},</if>
+            <if test="jbxxAjlb != null  and jbxxAjlb != ''  ">jbxx_ajlb = #{jbxxAjlb},</if>
+            <if test="jbxxSarq != null  and jbxxSarq != ''  ">jbxx_sarq = #{jbxxSarq},</if>
+            <if test="jbxxLarq != null  and jbxxLarq != ''  ">jbxx_larq = #{jbxxLarq},</if>
+            <if test="jbxxFarq != null  and jbxxFarq != ''  ">jbxx_farq = #{jbxxFarq},</if>
+            <if test="jbxxKtrq != null  and jbxxKtrq != ''  ">jbxx_ktrq = #{jbxxKtrq},</if>
+            <if test="jbxxJarq != null  and jbxxJarq != ''  ">jbxx_jarq = #{jbxxJarq},</if>
+            <if test="jbxxGdrq != null  and jbxxGdrq != ''  ">jbxx_gdrq = #{jbxxGdrq},</if>
+            <if test="jbfyId != null  and jbfyId != ''  ">jbfy_id = #{jbfyId},</if>
+            <if test="risksLevel != null  and risksLevel != ''  ">risks_level = #{risksLevel},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="processId != null  and processId != ''  ">process_id = #{processId},</if>
+            <if test="processStatus != null  and processStatus != ''  ">process_status = #{processStatus},</if>
+            <if test="clueCzjg != null  and clueCzjg != ''  ">clue_czjg = #{clueCzjg},</if>
+            <if test="clueCzjd != null  and clueCzjd != ''  ">clue_czjd = #{clueCzjd},</if>
+            <if test="clueCbrName != null  and clueCbrName != ''  ">clue_cbr_name = #{clueCbrName},</if>
+            <if test="clueRemarks != null  and clueRemarks != ''  ">clue_remarks = #{clueRemarks},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="deleteFlag != null and deleteFlag!='' ">delete_flag = #{deleteFlag},</if>
+        </trim>
+        where clue_id = #{clueId}
+    </update>
+
+    <delete id="deleteClueById" parameterType="String">
+        delete from busi_clue where clue_id = #{clueId}
+    </delete>
+
+    <delete id="deleteClueByIds" parameterType="String">
+        delete from busi_clue where clue_id in
+        <foreach item="clueId" collection="array" open="(" separator="," close=")">
+            #{clueId}
+        </foreach>
+    </delete>
+
+    <select id="queryAllCount" parameterType="String" resultType="java.lang.Integer">
+        select COUNT(1) as count from busi_clue b JOIN sys_dept s ON s.dept_id=b.jbfy_id
+        <where>
+            YEAR(b.create_time)=YEAR(NOW())
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="queryAllCountYear" parameterType="String" resultType="java.lang.Integer">
+        SELECT COUNT(1) as count from busi_clue b JOIN sys_dept s ON s.dept_id=b.jbfy_id
+        <where>
+            DATE_FORMAT( b.create_time, '%Y%m' ) = DATE_FORMAT(CURDATE( ) , '%Y%m' )
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="queryCountDeal" parameterType="String" resultType="java.lang.Integer">
+        SELECT COUNT(1) as count from busi_clue b JOIN sys_dept s ON s.dept_id=b.jbfy_id
+        <where>
+            b.process_status=0 and YEAR(b.create_time)=YEAR(NOW())
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+
+    <select id="queryCountXf" parameterType="String" resultType="java.lang.Integer">
+        SELECT COUNT(1) as count from busi_clue b JOIN sys_dept s ON s.dept_id=b.jbfy_id
+        <where>
+            b.clue_source=2 and YEAR(b.create_time)=YEAR(NOW())
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="queryCountByAjlb" parameterType="String" resultType="java.util.HashMap">
+        SELECT COUNT(1) as count,jbxx_ajlb from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            jbxx_ajlb is not null
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+        GROUP BY jbxx_ajlb
+    </select>
+
+    <select id="queryAllAjlb" parameterType="String" resultType="java.util.HashMap">
+        SELECT DISTINCT jbxx_ajlb from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id  and jbxx_ajlb is NOT  NULL
+        <where>
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+
+    </select>
+
+    <select id="queryCountByAjlbAndCbt" parameterType="String" resultType="java.util.HashMap">
+        SELECT COUNT(1) as count,jbxx_cbt_name,jbxx_cbt_id as id from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id  and    b.jbxx_cbt_id is NOT null
+        <where>
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+        GROUP BY jbxx_cbt_id
+    </select>
+
+    <select id="queryCbt" parameterType="String" resultType="java.util.HashMap">
+      SELECT  jbxx_cbt_name from  busi_clue  where jbxx_ajlb=#{ajlb}  GROUP BY jbxx_cbt_name
+    </select>
+
+    <select id="queryCountBySourceAndMonth" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) as count from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            DATE_FORMAT(b.create_time,'%Y-%m')=#{time} and clue_source=#{source}
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+    <select id="queryCountByAjlbAndMonth" resultType="java.lang.Integer" parameterType="map">
+
+        SELECT COUNT(1) as count from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            DATE_FORMAT(b.create_time,'%Y-%m')=#{time} and b.jbxx_ajlb=#{ajlb}
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+    <select id="queryCountByRiskLevel" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) as count from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            b.risks_level=#{riskLevel} and b.jbxx_ajlb=#{ajlb}
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="queryAllRiskLevel" parameterType="String" resultType="java.lang.String">
+        SELECT DISTINCT risks_level from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="queryAllCountByFy" resultType="java.util.HashMap">
+        SELECT COUNT(1) as count from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="queryDealCountByFy" resultType="java.lang.Integer">
+        SELECT  COUNT(1)  as count from busi_clue a   WHERE   a.process_status=0;
+    </select>
+
+    <select id="queryYearAddCountByFy" resultType="java.lang.Integer">
+       SELECT  COUNT(1)  as count  from busi_clue a    WHERE  YEAR(a.create_time)=YEAR(NOW());
+    </select>
+
+
+    <select id="queryAllByAjlbAndPage" resultType="java.util.HashMap" parameterType="map">
+
+        SELECT * from busi_clue where jbxx_ajlb=#{ajlb}   LIMIT #{pageNumber} , #{pageSize}
+
+    </select>
+
+    <select id="queyCbrCountByAjlb" parameterType="String" resultType="java.util.HashMap">
+        SELECT COUNT(jbxx_cbr_id) as count, jbxx_ajlb from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            b.jbxx_ajlb is not null
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+        GROUP BY b.jbxx_ajlb
+    </select>
+
+    <select id="queryCountByCardId" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) as count FROM (
+        SELECT a.idcard idcard, year(now())- year(substring(a.idcard,7,8)) age FROM (SELECT
+        b.idcard AS idcard
+        FROM
+        sys_court_organ b
+        LEFT JOIN busi_clue a ON a.jbxx_cbr_id = b.cid JOIN sys_dept s ON s.dept_id= a.jbfy_id
+        <where>
+            b.dept_type=3
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+        ) a
+        WHERE a.idcard != '' ) t1
+        where t1.age &gt;=#{startAge} and t1.age &lt;=#{endAge} ;
+    </select>
+
+    <select id="queryMaxCountByCardId" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) as count FROM (
+        SELECT a.idcard idcard, year(now())- year(substring(a.idcard,7,8)) age FROM (SELECT
+        b.idcard AS idcard
+        FROM
+        sys_court_organ b
+        LEFT JOIN busi_clue a ON a.jbxx_cbr_id = b.cid JOIN sys_dept s ON s.dept_id= a.jbfy_id
+        <where>
+            b.dept_type=3
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+        ) a
+        WHERE a.idcard != '' ) t1
+        where t1.age &gt;#{startAge} ;
+    </select>
+
+    <select id="queryDealCountBySourceAndMonth" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) as count from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            DATE_FORMAT(b.create_time,'%Y-%m')=#{time} AND b.clue_source=#{source} AND b.process_status =0
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="queryStrategyName" resultType="java.util.HashMap" parameterType="map">
+     SELECT  dubvio_strategy_name,dubvio_strategy_id  from  busi_clue  where  dubvio_strategy_name is not null  GROUP BY dubvio_strategy_name
+    </select>
+
+    <select id="queryAjlbCountByStrategyName" resultType="java.util.HashMap">
+     SELECT s.dubvio_strategy_name  as name,s.dubvio_strategy_id as id,
+COUNT(CASE WHEN s.jbxx_ajlb='民事' THEN s.jbxx_ajlb END) AS 'ms',
+COUNT(CASE WHEN s.jbxx_ajlb='刑事' THEN s.jbxx_ajlb END) AS 'xs',
+COUNT(CASE WHEN s.jbxx_ajlb='行政' THEN s.jbxx_ajlb END) AS 'xz',
+COUNT(CASE WHEN s.jbxx_ajlb='执行' THEN s.jbxx_ajlb END) AS 'zx',
+COUNT(1) AS 'total'
+FROM (SELECT dubvio_strategy_name,dubvio_strategy_id, bde.jbxx_ajlb FROM busi_clue bde where bde.dubvio_strategy_id is not null )s GROUP BY s.dubvio_strategy_id
+    </select>
+
+    <select id="queryAllCbt" resultType="java.util.HashMap">
+        SELECT  cid as cbtId,dept_name as cbtName from sys_court_organ  where dept_type=2 and  cid IS NOT NULL
+    </select>
+
+    <select id="queryCidByDeptName" resultType="java.lang.String" parameterType="String">
+        SELECT  cid as id from sys_court_organ  where dept_name=#{name}
+    </select>
+
+    <select id="queryCidByDeptNames" resultType="java.util.HashMap" parameterType="String">
+        SELECT  cid as id from sys_court_organ  where dept_name=#{name}
+    </select>
+
+    <select id="queryDeptNameByCid" resultType="java.lang.String" parameterType="String">
+        SELECT  dept_name as name from sys_court_organ  where cid=#{id}
+    </select>
+
+    <select id="selectClueListByAjlbAndStrategyId" resultType="java.util.HashMap" parameterType="map">
+        SELECT  * from busi_clue where jbxx_ajlb=#{ajlb} and  dubvio_strategy_id=#{id}
+    </select>
+
+    <select id="selectClueListByStrategyId" resultType="java.util.HashMap" parameterType="String">
+        SELECT  * from busi_clue where   dubvio_strategy_id=#{id}
+    </select>
+
+    <select id="selectClueListByCbtId" resultType="java.util.HashMap" >
+        SELECT  * from busi_clue b JOIN sys_dept s ON b.jbfy_id = s.dept_id
+        <where>
+            b.jbxx_cbt_id=#{id}
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="queryCountByMonth" resultType="map" parameterType="String">
+     SELECT DATE_FORMAT(s.create_time,'%Y-%m') as clueTime,
+     COUNT(CASE WHEN s.jbxx_ajlb='民事' THEN s.jbxx_ajlb END) AS 'ms',
+     COUNT(CASE WHEN s.jbxx_ajlb='刑事' THEN s.jbxx_ajlb END) AS 'xs',
+     COUNT(CASE WHEN s.jbxx_ajlb='行政' THEN s.jbxx_ajlb END) AS 'xz',
+     COUNT(CASE WHEN s.jbxx_ajlb='执行' THEN s.jbxx_ajlb END) AS 'zx',
+     COUNT(1) as total
+     FROM (SELECT create_time, bde.jbxx_ajlb FROM busi_clue bde)s GROUP BY DATE_FORMAT(s.create_time,'%Y-%m') DESC
+    </select>
+
+    <select id="queryClueByAjlbAndTime" resultType="java.util.HashMap" parameterType="map">
+        SELECT  * from busi_clue where jbxx_ajlb=#{ajlb} and DATE_FORMAT(create_time,'%Y-%m')=#{time}
+    </select>
+
+    <select id="queryClueByTime" resultType="java.util.HashMap" parameterType="String">
+        SELECT  * from busi_clue where   DATE_FORMAT(create_time,'%Y-%m')=#{time}
+    </select>
+
+    <select id="queryAllCourceByDate" resultType="java.util.HashMap">
+       SELECT DATE_FORMAT(s.create_time,'%Y-%m') as time,
+       COUNT(CASE WHEN s.clue_source='1' THEN s.clue_source END) AS sz,
+       COUNT(CASE WHEN s.clue_source='2' THEN s.clue_source END) AS xf,
+       COUNT(CASE WHEN s.clue_source='1' and process_status=0 THEN s.clue_source END) AS szDeal,
+       COUNT(CASE WHEN s.clue_source='2' and process_status=0 THEN s.clue_source END) AS xfDeal,
+       COUNT(1) as total FROM (SELECT create_time, bde.clue_source,process_status FROM busi_clue bde)s GROUP BY DATE_FORMAT(s.create_time,'%Y-%m') DESC
+    </select>
+
+
+    <select id="querySourceByDate" resultType="java.util.HashMap" parameterType="map">
+        SELECT  * from  busi_clue  where clue_source=#{source}  and  DATE_FORMAT(create_time,'%Y-%m')=#{time}
+    </select>
+
+    <select id="querySourceDealByDate" resultType="java.util.HashMap" parameterType="map">
+        SELECT  * from  busi_clue  where clue_source=#{source}  and  process_status='0' and DATE_FORMAT(create_time,'%Y-%m')=#{time}
+    </select>
+
+    <select id="queryEveCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) as count from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            <if test="status!=null">
+                b.process_status=#{status}
+            </if>
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="queryAllCounts" resultType="java.lang.Integer">
+        SELECT COUNT(1) as count from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            process_status !=2
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="queryFinishCzjg" resultType="java.util.HashMap">
+        SELECT
+        COUNT(1) AS count,
+        (
+        CASE clue_czjg
+        WHEN '2' THEN '予以了结'
+        WHEN '7' THEN '谈话提醒'
+        WHEN '8' THEN '移交司法'
+        WHEN '1' THEN '暂存待查'
+        ELSE '其他' END) as czjg
+        from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            b.process_status=0
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+        GROUP BY clue_czjg
+    </select>
+
+
+    <select id="queryCqCount" resultType="java.lang.Integer" parameterType="String">
+        SELECT COUNT(1) as count from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            b.clue_czjg in ('2','7','1') and b.process_status=0 and b.jbxx_cbt_name=#{cbtName}
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="queryQuestionCount" resultType="java.lang.Integer" parameterType="String">
+        SELECT COUNT(1) as count,jbxx_cbt_name as name from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            b.clue_czjg in ('8') and b.process_status=0 and b.jbxx_cbt_name=#{cbtName}
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+
+    <select id="queryCzzCountByMonth" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) as count from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            b.process_status=1 and DATE_FORMAT(b.create_time,'%Y-%m')=#{time} and b.clue_czjg=#{czjg}
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+
+    <select id="queryCzzCountByAge" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) as count FROM (
+        SELECT a.idcard idcard, year(now())- year(substring(a.idcard,7,8)) age FROM (SELECT
+        b.idcard AS idcard
+        FROM
+        sys_court_organ b
+        LEFT JOIN busi_clue a ON a.jbxx_cbr_id = b.cid
+        JOIN sys_dept s ON s.dept_id=a.jbfy_id
+        <where>
+            b.dept_type=3 and a.process_status=0 and a.jbxx_ajlb=#{ajlb}
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+        ) a
+        WHERE a.idcard != '' ) t1
+        where t1.age &gt;#{startAge} and t1.age &lt;=#{endAge} ;
+    </select>
+
+    <select id="queryMaxCountByAge" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) as count FROM (
+        SELECT a.idcard idcard, year(now())- year(substring(a.idcard,7,8)) age FROM (SELECT
+        b.idcard AS idcard
+        FROM
+        sys_court_organ b
+        LEFT JOIN busi_clue a ON a.jbxx_cbr_id = b.cid
+        JOIN sys_dept s ON s.dept_id=a.jbfy_id
+        <where>
+            b.dept_type=3 and a.process_status=0 and a.jbxx_ajlb=#{ajlb}
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+        ) a
+        WHERE a.idcard != '' ) t1
+        where t1.age &gt;#{startAge} ;
+    </select>
+
+    <select id="queryFinishRiskCount" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) as count from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            b.process_status=0 and DATE_FORMAT(b.create_time,'%Y-%m')=#{time} and b.risks_level=#{riskLevel}
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="queryFinishClueByDeptAndAjlb" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) as count from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            b.process_status=0 and b.jbxx_cbt_name=#{cbtName} and b.jbxx_ajlb=#{ajlb}
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="queryRiskCountByMonth" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) as count from busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        <where>
+            DATE_FORMAT(b.create_time,'%Y-%m')=#{time} and b.risks_level=#{riskLevel}
+            <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="queryFyrInfoByFyy" resultType="java.util.HashMap">
+        SELECT
+        b.*, count(
+        CASE
+        WHEN b.clue_czjg = '2' THEN
+        '予以了结'
+        END
+        ) AS 'yylj',
+        count(
+        CASE
+        WHEN b.clue_czjg = '4' THEN
+        '谈话函询'
+        END
+        ) AS 'thhx',
+        count(
+        CASE
+        WHEN b.clue_czjg = '1' THEN
+        '暂存待查'
+        END
+        ) AS 'zcdc',
+        count(
+        CASE
+        WHEN b.clue_czjg = '3' THEN
+        '初步核实'
+        END
+        ) AS 'cbhs',
+        count(
+        CASE
+        WHEN b.clue_czjg = '5' THEN
+        '立案调查'
+        END
+        ) AS 'ladc',
+        count(
+        CASE
+        WHEN b.clue_czjg = '6' THEN
+        '案件审理'
+        END
+        ) AS 'ajsl'
+        FROM
+        busi_clue b JOIN sys_dept s ON b.jbfy_id=s.dept_id
+        WHERE
+        b.clue_source = 1
+        AND b.delete_flag = 0
+        and b.jbxx_cbr_id is not null
+        and b.clue_czjg is not null
+        <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        GROUP BY
+        b.jbxx_cbr_id
+
+    </select>
+
+    <select id="queryFycs" resultType="java.lang.String">
+
+        SELECT  COUNT(1) from  busi_clue b where b.clue_source=2 and b.delete_flag=0 and b.jbxx_cbr_id=#{ryId}
+    </select>
+
+    <select id="queryDeptByRyId" resultType="java.lang.String">
+        SELECT dept_name from  sys_court_organ where dept_type=2 and del_flag=0 and dept_id =(SELECT  parent_id from sys_court_organ  where cid=#{id} and dept_type=3 and del_flag=0)
+    </select>
+
+    <select id="queryAgeById" resultType="java.lang.String">
+        SELECT   year(now())- year(substring(a.idcard,7,8)) age  from sys_court_organ a where  cid=#{ryId} and  dept_type=3
+    </select>
+
+
+    <select id="queryXsByFyId" resultType="java.lang.String">
+        SELECT  COUNT(1) as count from busi_clue  b  where b.jbfy_id=#{fyId}  and b.delete_flag = 0  and b.create_time &gt;  #{startTime} and b.create_time &lt;  #{endTime}
+        <if test="clueSource != null  and clueSource != ''  ">and b.clue_source = #{clueSource}</if>
+    </select>
+
+    <select id="queryJcByFyId" resultType="java.lang.String">
+        SELECT  COUNT(1) as count from busi_clue  b  where b.jbfy_id=#{fyId}  and b.delete_flag = 0  and b.create_time &lt;  #{time}
+        <if test="clueSource != null  and clueSource != ''  ">and b.clue_source = #{clueSource}</if>
+    </select>
+
+    <select id="queryYjByFyId" resultType="java.lang.String">
+
+
+        SELECT  COUNT(1) as count from busi_clue  b  where b.jbfy_id=#{fyId}  and b.delete_flag = 0 and b.process_status='0' and b.create_time &gt;  #{startTime} and b.create_time &lt;  #{endTime}
+        <if test="clueSource != null  and clueSource != ''  ">and b.clue_source = #{clueSource}</if>
+    </select>
+
+    <select id="queryWjByFyId" resultType="java.lang.String">
+
+        SELECT  COUNT(1) as count from busi_clue  b  where b.jbfy_id=#{fyId}  and b.delete_flag = 0 and b.process_status!='0' and b.create_time &gt; #{startTime} and b.create_time &lt;  #{endTime}
+        <if test="clueSource != null  and clueSource != ''  ">and b.clue_source = #{clueSource}</if>
+    </select>
+
+
+    <select id="queryCzjgByFyIds" resultType="java.util.HashMap">
+        SELECT b.*,s.dept_name, count(
+        CASE
+        WHEN b.clue_czjg = '2' THEN
+        '予以了结'
+        END
+        ) AS 'yylj',
+        count(
+        CASE
+        WHEN b.clue_czjg = '4' THEN
+        '谈话函询'
+        END
+        ) AS 'thhx',
+        count(
+        CASE
+        WHEN b.clue_czjg = '1' THEN
+        '暂存待查'
+        END
+        ) AS 'zcdc',
+        count(
+        CASE
+        WHEN b.clue_czjg = '3' THEN
+        '初步核实'
+        END
+        ) AS 'cbhs',
+        count(
+        CASE
+        WHEN b.clue_czjg = '5' THEN
+        '立案调查'
+        END
+        ) AS 'ladc',
+        count(
+        CASE
+        WHEN b.clue_czjg = '6' THEN
+        '案件审理'
+        END
+        ) AS 'ajsl'
+        FROM
+        busi_clue b JOIN  sys_dept s on b.jbfy_id=s.dept_id
+        WHERE
+
+        b.delete_flag = 0 and  b.create_time  &gt; #{startTime} and b.create_time &lt; #{endTime} and
+
+        b.jbfy_id is NOT NULL
+        <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        GROUP BY
+        b.jbfy_id
+    </select>
+
+
+    <select id="queryCbtCzjgByCbtIds" resultType="java.util.HashMap">
+SELECT b.*, count(
+		CASE
+		WHEN b.clue_czjg = '2' THEN
+			'予以了结'
+		END
+	) AS 'yylj',
+	count(
+		CASE
+		WHEN b.clue_czjg = '4' THEN
+			'谈话函询'
+		END
+	) AS 'thhx',
+	count(
+		CASE
+		WHEN b.clue_czjg = '1' THEN
+			'暂存待查'
+		END
+	) AS 'zcdc',
+count(
+		CASE
+		WHEN b.clue_czjg = '3' THEN
+			'初步核实'
+		END
+	) AS 'cbhs',
+count(
+		CASE
+		WHEN b.clue_czjg = '5' THEN
+			'立案调查'
+		END
+	) AS 'ladc',
+count(
+		CASE
+		WHEN b.clue_czjg = '6' THEN
+			'案件审理'
+		END
+	) AS 'ajsl'
+FROM
+	busi_clue b
+WHERE
+
+ b.jbfy_id=#{id} and
+b.delete_flag = 0
+and b.jbxx_cbt_id is not  null  and b.create_time  &gt; #{startTime} and b.create_time &lt; #{endTime}
+GROUP BY
+	b.jbxx_cbt_id
+    </select>
+
+
+    <select id="queryXsByCbtId" resultType="java.lang.String">
+        SELECT  COUNT(1) as count from busi_clue  b  where b.jbxx_cbt_id=#{cbtId} and b.jbfy_id=#{fyId}  and b.delete_flag = 0  and b.create_time &gt;  #{startTime} and b.create_time &lt;  #{endTime}
+    </select>
+
+    <select id="queryJcByCbtId" resultType="java.lang.String">
+        SELECT  COUNT(1) as count from busi_clue  b  where b.jbxx_cbt_id=#{cbtId}  and b.jbfy_id=#{fyId} and b.delete_flag = 0  and b.create_time &lt;  #{time}
+    </select>
+
+    <select id="queryYjByCbtId" resultType="java.lang.String">
+
+        SELECT  COUNT(1) as count from busi_clue  b  where b.jbxx_cbt_id=#{cbtId} and b.jbfy_id=#{fyId} and b.delete_flag = 0 and b.process_status='0' and b.create_time &gt;  #{startTime} and b.create_time &lt;  #{endTime}
+    </select>
+
+    <select id="queryWjByCbtId" resultType="java.lang.String">
+
+        SELECT  COUNT(1) as count from busi_clue  b  where b.jbxx_cbt_id=#{cbtId} and b.jbfy_id=#{fyId}  and b.delete_flag = 0 and b.process_status!='0' and b.create_time &gt; #{startTime} and b.create_time &lt;  #{endTime}
+    </select>
+
+    <select id="queryXfYjByFyId" resultType="java.util.HashMap">
+
+        SELECT
+        COUNT(1) AS yj,
+        b.jbfy_id,
+        s.dept_name
+        FROM
+        busi_clue b
+        JOIN  sys_dept s ON b.jbfy_id=s.dept_id
+        WHERE
+        b.clue_source = 2
+        AND b.process_status = 0
+        <if test="deptId != null  and deptId != ''  ">and s.dept_id = #{deptId}</if>
+        AND b.jbfy_id IS NOT NULL
+        AND b.create_time &gt; #{startTime}
+        AND b.create_time &lt; #{endTime}
+        GROUP BY
+        b.jbfy_id
+    </select>
+
+    <select id="queryXfWjByFyId" resultType="java.lang.String">
+
+
+        SELECT
+	COUNT(1) AS wj
+FROM
+	busi_clue b
+LEFT JOIN sys_court_organ s ON b.jbfy_id = s.cid
+WHERE
+	b.clue_source = 2
+AND	b.delete_flag = 0
+AND b.process_status != 0
+AND b.jbfy_id IS NOT NULL
+AND	b.jbfy_id=#{fyId}  AND b.create_time &gt; #{startTime}
+        AND b.create_time &lt; #{endTime}
+    </select>
+
+    <sql id="selectSecondClueVo">
+        SELECT *
+        FROM busi_clue c
+
+    </sql>
+    <select id="selectSecondClueList" parameterType="Clue" resultMap="ClueResult">
+        <include refid="selectSecondClueVo"/>
+        <where>
+            <if test="clueId != null and clueId != ''">and c.clue_id like concat('%',#{clueId},'%')</if>
+            <if test="clueSource != null and clueSource != ''">and c.clue_source like concat('%',#{clueSource},'%')</if>
+            <if test="clueFyr != null and clueFyr != ''">and c.clue_fyr like concat('%',#{clueFyr},'%')</if>
+            <if test="clueFyrdh != null and clueFyrdh != ''">and c.clue_fyrdh like concat('%',#{clueFyrdh},'%')</if>
+            <if test="clueFydx != null and clueFydx != ''">and c.clue_fydx like concat('%',#{clueFydx},'%')</if>
+            <if test="clueFywt != null and clueFywt != ''">and c.clue_fywt like concat('%',#{clueFywt},'%')</if>
+            <if test="clueStatus != null and clueStatus != ''">and c.clue_status like concat('%',#{clueStatus},'%')</if>
+            <if test="dubvioId != null and dubvioId != ''">and c.dubvio_id like concat('%',#{dubvioId},'%')</if>
+            <if test="dubvioStrategyId != null and dubvioStrategyId != ''">and c.dubvio_strategy_id like
+                concat('%',#{dubvioStrategyId},'%')
+            </if>
+            <if test="dubvioStrategyName != null and dubvioStrategyName != ''">and c.dubvio_strategy_name like
+                concat('%',#{dubvioStrategyName},'%')
+            </if>
+            <if test="jbxxAjbh != null and jbxxAjbh != ''">and c.jbxx_ajbh like concat('%',#{jbxxAjbh},'%')</if>
+            <if test="jbxxAh != null and jbxxAh != ''">and c.jbxx_ah like concat('%',#{jbxxAh},'%')</if>
+            <if test="jbxxCbrId != null and jbxxCbrId != ''">and c.jbxx_cbr_id =#{jbxxCbrId}</if>
+            <if test="jbxxCbrName != null and jbxxCbrName != ''">and c.jbxx_cbr_name like concat('%',#{jbxxCbrName},'%')
+            </if>
+            <if test="jbxxBgr != null and jbxxBgr != ''">and c.jbxx_bgr like concat('%',#{jbxxBgr},'%')</if>
+            <if test="jbxxCbtId != null and jbxxCbtId != ''">and c.jbxx_cbt_id like concat('%',#{jbxxCbtId},'%')</if>
+            <if test="jbxxCbtName != null and jbxxCbtName != ''">and c.jbxx_cbt_name like concat('%',#{jbxxCbtName},'%')
+            </if>
+            <if test="jbxxAjlb != null and jbxxAjlb != ''">and c.jbxx_ajlb like concat('%',#{jbxxAjlb},'%')</if>
+            <if test="jbxxSarq != null and jbxxSarq != ''">and c.jbxx_sarq like concat('%',#{jbxxSarq},'%')</if>
+            <if test="jbxxLarq != null and jbxxLarq != ''">and c.jbxx_larq like concat('%',#{jbxxLarq},'%')</if>
+            <if test="jbxxFarq != null and jbxxFarq != ''">and c.jbxx_farq like concat('%',#{jbxxFarq},'%')</if>
+            <if test="jbxxKtrq != null and jbxxKtrq != ''">and c.jbxx_ktrq like concat('%',#{jbxxKtrq},'%')</if>
+            <if test="jbxxJarq != null and jbxxJarq != ''">and c.jbxx_jarq like concat('%',#{jbxxJarq},'%')</if>
+            <if test="jbxxGdrq != null and jbxxGdrq != ''">and c.jbxx_gdrq like concat('%',#{jbxxGdrq},'%')</if>
+            <if test="jbfyName != null and jbfyName != ''">and o.dept_name like concat('%',#{jbfyName},'%')</if>
+            <if test="jbfyId != null and jbfyId != ''">and c.jbfy_id like concat('%',#{jbfyId},'%')</if>
+            <if test="risksLevel != null and risksLevel != ''">and c.risks_level like concat('%',#{risksLevel},'%')</if>
+            <if test="createTime != null ">and c.create_time like concat('%',#{createTime},'%')</if>
+            <if test="processId != null and processId != ''">and c.process_id like concat('%',#{processId},'%')</if>
+            <if test="processStatus != null and processStatus != '' and  processStatus !=99 ">and c.process_status like
+                concat('%',#{processStatus},'%')
+            </if>
+            <!--过滤问题处置脏数据-->
+            <if test="processStatus != null and processStatus != '' and  processStatus ==99 ">
+                and c.process_status != 2
+            </if>
+            <!--正常参数请求-->
+            <if test="clueCzjd != null and clueCzjd != '' and  clueCzjd != '29' and  clueCzjd != '34' and clueCzjd!='31'">
+                and c.clue_czjd = #{clueCzjd}
+            </if>
+            <!--正常参数请求-->
+            <if test="clueCzjg != null and clueCzjg != '' and clueCzjg !='45' ">and c.clue_czjg = #{clueCzjg}</if>
+            <!-- 谈话和函询-->
+            <if test="clueCzjg != null and clueCzjg != '' and clueCzjg=='45'">and c.clue_czjg =4 or c.clue_czjg =5</if>
+            <!-- 予以了结-->
+            <if test="clueCzjd != null and clueCzjd != '' and clueCzjd=='29' ">and c.clue_czjd =29 or c.clue_czjg =2
+            </if>
+            <!-- 暂存待查-->
+            <if test="clueCzjd != null and clueCzjd != '' and clueCzjd=='34' ">and c.clue_czjd =34 or c.clue_czjg =1
+            </if>
+            <!-- 其他(谈话提醒、批评  移送有关单位处理  移交司法)-->
+            <if test="clueCzjd != null and clueCzjd != '' and clueCzjd=='31' ">and c.clue_czjd =31 or c.clue_czjd =30 or
+                c.clue_czjd =35
+            </if>
+            <if test="clueRemarks != null and clueRemarks != ''">and c.clue_remarks like concat('%',#{clueRemarks},'%')
+            </if>
+        </where>
+        ORDER BY CASE c.process_status WHEN 1 THEN 1 WHEN 2 THEN 2 WHEN 0 THEN 3 END,c.update_time DESC
+    </select>
+
+
+
+
+
+
+    <select id="queryXsByFyIdAll" resultType="java.util.HashMap">
+        SELECT  * from busi_clue  b  where b.jbfy_id=#{fyId}  and b.delete_flag = 0  and b.create_time &gt;  #{startTime} and b.create_time &lt;  #{endTime}
+        <if test="clueSource != null  and clueSource != ''  ">and b.clue_source = #{clueSource}</if>
+        <if test="jbxxCbtId != null  and jbxxCbtId != ''  ">and b.jbxx_cbt_id = #{jbxxCbtId}</if>
+    </select>
+
+    <select id="queryJcByFyIdAll" resultType="java.util.HashMap">
+        SELECT  * from busi_clue  b  where b.jbfy_id=#{fyId}  and b.delete_flag = 0  and b.create_time &lt;  #{time}
+        <if test="clueSource != null  and clueSource != ''  ">and b.clue_source = #{clueSource}</if>
+        <if test="jbxxCbtId != null  and jbxxCbtId != ''  ">and b.jbxx_cbt_id = #{jbxxCbtId}</if>
+    </select>
+
+    <select id="queryYjByFyIdAll" resultType="java.util.HashMap">
+        SELECT  * from busi_clue  b  where b.jbfy_id=#{fyId}  and b.delete_flag = 0 and b.process_status='0' and b.create_time &gt;  #{startTime} and b.create_time &lt;  #{endTime}
+        <if test="clueSource != null  and clueSource != ''  ">and b.clue_source = #{clueSource}</if>
+        <if test="jbxxCbtId != null  and jbxxCbtId != ''  ">and b.jbxx_cbt_id = #{jbxxCbtId}</if>
+    </select>
+
+    <select id="queryWjByFyIdAll" resultType="java.util.HashMap">
+
+        SELECT  * from busi_clue  b  where b.jbfy_id=#{fyId}  and b.delete_flag = 0 and b.process_status!='0' and b.create_time &gt; #{startTime} and b.create_time &lt;  #{endTime}
+        <if test="clueSource != null  and clueSource != ''  ">and b.clue_source = #{clueSource}</if>
+        <if test="jbxxCbtId != null  and jbxxCbtId != ''  ">and b.jbxx_cbt_id = #{jbxxCbtId}</if>
+    </select>
+
+
+    <select id="queryAllCzjgByFyId" resultType="java.util.HashMap">
+        SELECT  * from busi_clue b where  b.clue_czjg=#{czjg} and  b.delete_flag = 0  and b.create_time &gt; #{startTime} and b.create_time &lt; #{endTime} and   b.jbfy_id =#{fyId}
+        <if test="jbxxCbtId != null  and jbxxCbtId != ''  ">and b.jbxx_cbt_id = #{jbxxCbtId}</if>
+    </select>
+</mapper>

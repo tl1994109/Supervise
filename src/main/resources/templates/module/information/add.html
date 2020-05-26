@@ -1,0 +1,401 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+<style type="text/css">
+    /* 新增样式20190508 */
+    .select2-container .select2-selection--single {
+        height: 34px;
+    }
+
+    .select2-container--default .select2-selection--single {
+        border: 1px solid #ddd;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 34px
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        padding: 0px 5px;
+    }
+
+    .select-info-container input, .select-info-container select {
+        width: 100%
+    }
+
+    /*.select2-container{height: 34px;line-height: 34px}*/
+    .select2-container--default .select2-selection--multiple {
+        height: 100%;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+
+    /* .select2-container .select2-selection--multiple{min-height: 34px}*/
+    /*.select2-container--default .select2-selection--multiple .select2-selection__rendered{height: 34px; }*/
+    .select2-container--default.select2-container--focus .select2-selection--multiple {
+        border: 1px solid #ddd;
+    }
+
+    .form-control.error {
+        border: 1px dotted #cc5965;
+    }
+
+    label.error {
+        right: 30px;
+        z-index: 999;
+    }
+
+    /*.Validform_error, input.error, select.error, .select2-selection__rendered{*/
+    /*background-color: #fbe2e2;*/
+    /*border-color: #c66161;*/
+    /*border: 1px dotted #cc5965;*/
+    /*border-radius: 4px;*/
+    /*color: #c00;*/
+    /*}*/
+    /* 20190506 */
+    .form-control-nowidth {
+        background: #FFFFFF none;
+        border: 1px solid #e5e6e7;
+        border-radius: 5px;
+        color: inherit;
+        display: block;
+        padding: 6px 12px;
+        -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        font-size: 14px;
+    }
+
+    .form-control-noborder {
+        background: #FFFFFF none;
+        border-radius: 5px;
+        color: inherit;
+        display: block;
+        padding: 6px 12px;
+        -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .error_div {
+        background-color: #fbe2e2;
+        border-color: #c66161;
+        color: #c00;
+    }
+</style>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="col-sm-12 select-info search-collapse">
+        <form class="form-horizontal m" enctype="multipart/form-data" id="form-information-add">
+            <input type="hidden" id="acId" value="" name="acId">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">任务名称：</label>
+                        <div class="col-xs-10">
+                            <input type="text" name="taskName" id="taskName" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">任务类型：</label>
+                        <div class="col-sm-8">
+                            <select id="taskType" name="taskType" th:with="type=${@dict.getType('task_type')}"
+                                    class="form-control">
+                                <option value="">请选择</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">日程规划：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="col-xs-5 form-control-nowidth" id="taskPlanStartdate"
+                                   placeholder="开始时间"
+                                   name="taskPlanStartdate"/>
+                            <span class="col-xs-2 form-control-noborder">~</span>
+                            <input type="text" class="col-xs-5 form-control-nowidth" id="taskPlanEnddate"
+                                   placeholder="结束时间"
+                                   name="taskPlanEnddate"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">指派给：</label>
+                        <div class="col-sm-8">
+                            <select id="taskProcessor" name="taskProcessor"
+                                    class="form-control select2-hidden-accessible" multiple="">
+                                <option th:each="userList : ${userList}" th:text="${userList.user_name}"
+                                        th:value="${userList.user_id}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">提交给：</label>
+                        <div class="col-sm-8">
+                            <select id="submitter" name="submitter" class="form-control select2-hidden-accessible">
+                                <option value="">请选择</option>
+<!--                                <option th:each="userList : ${userRoleList}" th:text="${userList.user_name}"-->
+<!--                                        th:value="${userList.user_id}"></option>-->
+<!--                            </select>-->
+                                <option th:each="userList : ${userList}" th:text="${userList.user_name}"
+                                        th:value="${userList.user_id}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">重要度：</label>
+                        <div class="col-sm-8">
+                            <select id="taskImportance" name="taskImportance"
+                                    th:with="type=${@dict.getType('task_importance')}" class="form-control">
+                                <option value="">请选择</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">紧迫度：</label>
+                        <div class="col-sm-8">
+                            <select id="taskUrgency" name="taskUrgency" th:with="type=${@dict.getType('task_urgency')}"
+                                    class="form-control">
+                                <option value="">请选择</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">任务描述：</label>
+                        <div class="col-xs-10">
+                            <textarea rows="8" name="taskContent" id="taskContent" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" style="clear: both">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">附件：</label>
+                        <div class="col-xs-10">
+                            <input type="file" name="file" style="border: none;width: 240px;float: left" id="file"
+                                   multiple="multiple" class="form-control">
+                            <span style="color: red;float: left;padding-top: 10px">最大限制为50M</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-sm-12">
+                <div class="form-control-static col-sm-offset-5">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+<script type="text/javascript">
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({elem: '#taskPlanStartdate', theme: 'molv',value:new Date(),isInitValue: true });
+        laydate.render({elem: '#taskPlanEnddate', theme: 'molv',value:new Date(),isInitValue: true });
+    });
+
+    var prefix = ctx + "module/information";
+
+    //自定义验证内容是否为空
+    jQuery.validator.addMethod("checkTime", function (value, element, param) {
+        var end_time = element.value;
+        var start_time = $("#taskPlanStartdate").val();
+        if(start_time == ''){
+            return false;
+        }else if(start_time!='' && end_time!=''){
+            var b_time = new Date(end_time.replace("-","/"));
+            var a_time = new Date(start_time.replace("-","/"));
+            if(b_time<a_time){
+                return false;
+            }else{
+                return true;
+            }
+        }
+    }, "<i class='fa fa-times-circle'>计划时间有误</i>");
+
+    $("#form-information-add").validate({
+        // rules: {
+        //     taskName: {
+        //         required: true,
+        //     },
+        //     taskType: {
+        //         required: true,
+        //     },
+        //     taskPlanStartdate: {
+        //         required: true,
+        //     },
+        //     taskPlanEnddate: {
+        //         required: true,
+        //         checkTime: ""
+        //     },
+        //     taskImportance: {
+        //         required: true,
+        //     },
+        //     taskUrgency: {
+        //         required: true,
+        //     },
+        //     taskContent: {
+        //         required: true,
+        //     },
+        // },
+        submitHandler: function (form) {
+            tj();
+        }
+    });
+
+    function tj() {
+        var isok = check();
+        if(isok == false){
+            return false;
+        }
+
+        $.modal.loading("正在处理中，请稍后...");
+        $('#form-information-add').ajaxSubmit({
+            forceSync: false,
+            url: prefix + '/add',
+            type: 'post',
+            success: function (result) {
+                if (result.code == statusCode.web_status.SUCCESS) {
+                    $.modal.close();
+                    window.parent.$.modal.msgSuccess("保存成功,正在刷新数据请稍后……");
+                    window.parent.$.table.refresh();
+                } else {
+                    modalComponent.alertError(result.msg);
+                }
+                modalComponent.closeLoading();
+            },
+            error: function (response) {
+                modalComponent.alertError('系统错误');
+                modalComponent.closeLoading();
+            }
+        });
+        return false;
+    }
+
+    function check() {
+        var taskType = $("#taskType").val();
+        var taskName = $("#taskName").val();
+        var taskImportance = $("#taskImportance").val();
+        var taskUrgency = $("#taskUrgency").val();
+        var taskPlanStartdate = $("#taskPlanStartdate").val();
+        var taskPlanEnddate = $("#taskPlanEnddate").val();
+        var taskContent = $("#taskContent").val();
+        var taskProcessor = $.form.selectSelects("taskProcessor");
+        var submitter = $.form.selectSelects("submitter");
+        if (taskName == null || taskName == "") {
+            $.modal.msgError("任务名称不能为空");
+            return false;
+        }
+        if (taskType == null || taskType == "") {
+            $.modal.msgError("任务类型不能为空");
+            return false;
+        }
+        if (taskPlanStartdate == null || taskPlanStartdate == "") {
+            $.modal.msgError("日程规划开始时间不能为空");
+            return false;
+        }
+        if (taskPlanEnddate == null || taskPlanEnddate == "") {
+            $.modal.msgError("日程规划结束时间不能为空");
+            return false;
+        }
+        if(taskPlanStartdate!="" && taskPlanEnddate!=""){
+            var ps = new Date(taskPlanStartdate.replace("-","/"));
+            var pe = new Date(taskPlanEnddate.replace("-","/"));
+            if(pe<ps){
+                $.modal.msgError('日程规划结束时间不能小于开始时间')
+                return false;
+            }
+        }
+        // if(taskProcessor == '' && submitter == ""){
+        //     $.modal.msgError("指派给，提交给必须选中其中一个");
+        //     return false;
+        // }
+        if (taskImportance == null || taskImportance == "") {
+            $.modal.msgError("重要度不能为空");
+            return false;
+        }
+        if (taskUrgency == null || taskUrgency == "") {
+            $.modal.msgError("紧迫度不能为空");
+            return false;
+        }
+
+        if (taskContent == null || taskContent == '') {
+            $.modal.msgError("任务内容不能为空");
+            return false;
+        }
+        var file = document.getElementById("file")
+        if (file) {
+            return imgTypeSize("file", 50);
+        }
+        return true;
+    }
+
+    function imgTypeSize(FileId, maxsize) {
+        var imgFile = document.getElementById(FileId).files;
+        var sumSize = 0;
+        for (var i = 0; i < imgFile.length; i++) {
+            if (imgFile[i] != undefined) {
+                sumSize = imgFile[i].size + sumSize;
+            }
+        }
+        if (sumSize > (1024 * 1024 * maxsize)) {
+            $.modal.msgError("大小不能超过" + maxsize + "M");
+            return false;
+        }
+    };
+</script>
+<!--&lt;!&ndash;为"指派给"input框添加必填样式&ndash;&gt;-->
+<!--<script type="text/javascript">-->
+<!--$(".select-info-container").find(".select2-selection&#45;&#45;multiple").removeClass("error");-->
+<!--function onlyTaskProcessor() {-->
+<!--// $(".select-info-container").find(".select2-selection&#45;&#45;multiple").css({"background":"#fbe2e2","border": "1px solid #c66161", "color": "#c00"});-->
+
+<!--$(".select-info-container").find(".select2-selection&#45;&#45;multiple").addClass("error")-->
+
+<!--// var selectObj = document.getElementById("#taskProcessor");-->
+<!--// var activeIndex = selectObj.options[selectObj.selectedIndex].value;-->
+<!--// if (activeIndex == ""){-->
+<!--// } else {-->
+<!--//     $(".select-info-container").find(".select2-selection&#45;&#45;multiple").css({"display": "none"});-->
+<!--// }-->
+<!--}-->
+<!--</script>-->
+
+</body>
+</html>

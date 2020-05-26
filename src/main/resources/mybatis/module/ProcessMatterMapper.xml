@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.process.mapper.ProcessMatterMapper">
+    
+    <resultMap type="ProcessMatter" id="ProcessMatterResult">
+        <result property="matterId"    column="matter_id"    />
+        <result property="matterName"    column="matter_name"    />
+        <result property="matterContent"    column="matter_content"    />
+        <result property="processId"    column="process_id"    />
+        <result property="nodeId"    column="node_id"    />
+        <result property="launchBy"    column="launch_by"    />
+        <result property="launchTime"    column="launch_time"    />
+        <result property="allowBy"    column="allow_by"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="status"    column="status"    />
+        <result property="matterType"    column="matter_type"    />
+        <result property="launchByName"    column="launchByName"    />
+    </resultMap>
+	
+	<sql id="selectProcessMatterVo">
+        SELECT m.*,p.person_name AS launchByName
+		FROM oa_process_matter m
+		LEFT JOIN sys_user u ON u.user_id=m.launch_by
+		LEFT JOIN sys_person p ON p.person_id=u.person_id
+    </sql>
+	
+    <select id="selectProcessMatterList" parameterType="ProcessMatter" resultMap="ProcessMatterResult">
+        <include refid="selectProcessMatterVo"/>
+        <where>  
+            <if test="matterId != null and matterId != ''"> and m.matter_id = #{matterId}</if>
+             <if test="matterName != null and matterName != ''"> and m.matter_name = #{matterName}</if>
+             <if test="matterContent != null and matterContent != ''"> and m.matter_content = #{matterContent}</if>
+             <if test="processId != null and processId != ''"> and m.process_id = #{processId}</if>
+             <if test="nodeId != null and nodeId != ''"> and m.node_id = #{nodeId}</if>
+             <if test="launchBy != null and launchBy != ''"> and m.launch_by = #{launchBy}</if>
+             <if test="launchTime != null"> and m.launch_time = #{launchTime}</if>
+             <if test="allowBy != null and allowBy != ''"> and m.allow_by = #{allowBy}</if>
+             <if test="remarks != null and remarks != ''"> and m.remarks = #{remarks}</if>
+             <if test="status != null and status != ''"> and m.status = #{status}</if>
+             and  <![CDATA[ m.status <> "1" ]]>
+             
+             
+         </where>
+    </select>
+    
+    <select id="selectProcessMatterById" parameterType="String" resultMap="ProcessMatterResult">
+        <include refid="selectProcessMatterVo"/>
+        where m.matter_id = #{matterId}
+    </select>
+        
+    <insert id="insertProcessMatter" parameterType="ProcessMatter">
+        insert into oa_process_matter
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="matterId != null and matterId != '' ">matter_id,</if>
+			<if test="matterName != null and matterName != '' ">matter_name,</if>
+			<if test="matterContent != null and matterContent != '' ">matter_content,</if>
+			<if test="processId != null and processId != '' ">process_id,</if>
+			<if test="nodeId != null and nodeId != '' ">node_id,</if>
+			<if test="launchBy != null and launchBy != '' ">launch_by,</if>
+			<if test="launchTime != null ">launch_time,</if>
+			<if test="allowBy != null and allowBy != '' ">allow_by,</if>
+			<if test="remarks != null and remarks != '' ">remarks,</if>
+			<if test="status != null and status != '' ">status,</if>
+			<if test="matterType != null and matterType != '' ">matter_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="matterId != null and matterId != ''">#{matterId},</if>
+			<if test="matterName != null and matterName != ''">#{matterName},</if>
+			<if test="matterContent != null and matterContent != ''">#{matterContent},</if>
+			<if test="processId != null and processId != ''">#{processId},</if>
+			<if test="nodeId != null and nodeId != ''">#{nodeId},</if>
+			<if test="launchBy != null and launchBy != ''">#{launchBy},</if>
+			<if test="launchTime != null">#{launchTime},</if>
+			<if test="allowBy != null and allowBy != ''">#{allowBy},</if>
+			<if test="remarks != null and remarks != ''">#{remarks},</if>
+			<if test="status != null and status != ''">#{remarks},</if>
+			<if test="matterType != null and matterType != ''">#{matterType},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateProcessMatter" parameterType="ProcessMatter">
+        update oa_process_matter
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="matterName != null  and matterName != ''  ">matter_name = #{matterName},</if>
+            <if test="matterContent != null  and matterContent != ''  ">matter_content = #{matterContent},</if>
+            <if test="processId != null  and processId != ''  ">process_id = #{processId},</if>
+            <if test="nodeId != null  and nodeId != ''  ">node_id = #{nodeId},</if>
+            <if test="launchBy != null  and launchBy != ''  ">launch_by = #{launchBy},</if>
+            <if test="launchTime != null  ">launch_time = #{launchTime},</if>
+            <if test="allowBy != null  and allowBy != ''  ">allow_by = #{allowBy},</if>
+            <if test="remarks != null  and remarks != ''  ">remarks = #{remarks},</if>
+            <if test="status != null  and status != ''  ">status = #{status},</if>
+            <if test="matterType != null  and matterType != ''  ">matter_type = #{matterType},</if>
+        </trim>
+        where matter_id = #{matterId}
+    </update>
+
+	<delete id="deleteProcessMatterById" parameterType="String">
+        delete from oa_process_matter where matter_id = #{matterId}
+    </delete>
+	
+    <delete id="deleteProcessMatterByIds" parameterType="String">
+        delete from oa_process_matter where matter_id in 
+        <foreach item="matterId" collection="array" open="(" separator="," close=")">
+            #{matterId}
+        </foreach>
+    </delete>
+    
+</mapper>

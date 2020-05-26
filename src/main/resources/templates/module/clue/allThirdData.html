@@ -1,0 +1,476 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<style type="text/css">
+
+    /*.reportTable {*/
+    /*    margin-left: 15%;*/
+    /*}*/
+
+    .table-striped .table, .fixed-table-container, table, .table-striped .table, .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        border-bottom: 0px !important;
+    }
+    .table-striped table{
+        width: 100%;
+        overflow: hidden;
+    }
+
+    body, div, td, span {
+        font: normal 12px tahoma, arial, helvetica, sans-serif;
+    }
+
+    td, th {
+        display: table-cell;
+        vertical-align: inherit;
+    }
+
+    table.reportTable {
+        display: table;
+        border-collapse: separate;
+        border-spacing: 1px;
+        border-color: grey;
+        border-bottom: 0 !important;
+    }
+
+    table.reportTable {
+        white-space: normal;
+        line-height: normal;
+        font-weight: normal;
+        font-size: medium;
+        font-style: normal;
+        color: -internal-quirk-inherit;
+        text-align: start;
+        font-variant: normal;
+        border-bottom: 0 !important;
+    }
+
+    tbody {
+        display: table-row-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+
+    tr {
+        display: table-row;
+        vertical-align: inherit;
+        border-color: inherit;
+    }
+
+    .crs-1790493001 {
+        background-color: #337ab7;
+        /* border-top: 2px solid #ffffff;*/
+        /*
+        border-bottom: 1px solid #ffffff;
+        */
+        border-right: 1px solid #ffffff;
+    }
+
+    .crs-799493009 {
+        width: 100%;
+        height: 100%;
+        line-height: 1.3;
+        text-align: center;
+        font-size: 12pt;
+        font-family: "宋体";
+        font-weight: 700;
+    }
+
+    .crs-1562510852 {
+        background-color: #337ab7;
+        /*border-top: 2px solid #ffffff;*/
+        /*border-bottom: 1px solid #eff3f8;*/
+        border-right: 1px solid #ffffff;
+    }
+
+    .crs971421975 {
+        height: 35px;
+        line-height: 35px;
+        background-color: #eff3f8;
+        border-bottom: 1px solid #ffffff;
+        /* border-left: 2px solid #ffffff;*/
+        border-right: 1px solid #ffffff;
+    }
+
+    .crs76534873 {
+        overflow: hidden;
+    }
+
+    .crs-2136543980 {
+        word-break: break-all;
+        word-wrap: break-word;
+        padding-left: 4px;
+        padding-right: 4px;
+        padding-top: 3px;
+        padding-bottom: 2px;
+        text-align: center;
+    }
+
+    .crs-2136543980 a {
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .crs-2136543980 a:hover {
+        text-decoration: underline;
+    }
+
+    .crs-1883216748 {
+        width: 100%;
+        height: 100%;
+        line-height: 1.3;
+        font-size: 10pt;
+        font-family: "宋体";
+    }
+
+    .crs-1505284724 {
+        width: 100%;
+        height: 100%;
+        line-height: 2;
+        font-size: 9pt;
+        font-family: "宋体";
+        text-align: center;
+    }
+
+    .crs1722664596 {
+        width: 100%;
+        height: 100%;
+        /* line-height: 2.8;*/
+        text-align: center;
+        font-size: 10pt;
+        font-family: "宋体";
+        color: #fff;
+    }
+
+    .crs715059164 {
+        width: 100%;
+        height: 100%;
+        line-height: 1.3;
+        text-align: right;
+        font-size: 10pt;
+        font-family: "宋体";
+    }
+
+    .crs-1459024531 {
+        width: 100%;
+        height: 100%;
+        line-height: 1.3;
+        text-align: center;
+        font-size: 10pt;
+        font-family: "宋体";
+        font-weight: 700;
+    }
+
+    .crs-458630052 {
+        height: 35px;
+        line-height: 35px;
+        background-color: #eff3f8;
+        border-bottom: 1px solid #ffffff;
+        border-right: 1px solid #ffffff;
+    }
+
+    .crs-1138720466 {
+        background-color: #ffffff;
+    }
+
+    .crst {
+        width: 100%;
+        height: 100%;
+    }
+
+
+</style>
+<style type="text/css">
+    .table-analysis{
+        width: 100%;
+        margin: 20px 0;
+        padding: 20px 0;
+        overflow: hidden;
+        /*background-color: #fff;*/
+    }
+    .card-shadow{
+        border: none;
+        box-shadow: 0 1px 3px 0px rgba(115, 108, 203, 0.23);
+    }
+    .card{
+        position: relative;
+        margin-top: 0px;
+        background-color: #ffffff;
+        border-radius: 3px;
+    }
+    .card .card-header{
+        height: 50px;
+        line-height: 50px;
+        padding: 1rem;
+        border-bottom: 1px solid #e5e9ec;
+        background: #fff;
+    }
+    .card .card-header .card-title{
+        float: left;
+        width: 50%;
+        margin-bottom: 0;
+        color: #53505f;
+        font-size: 18px;
+        font-weight: 500;
+        border-left: 5px solid #36a2f5;
+    }
+    .card .card-header .card-month{
+        float: right;
+        width: 30%;
+    }
+    .card-body{
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        padding: 1.25rem;
+        height: 300px;
+    }
+
+</style>
+<body class="gray-bg">
+<input type="hidden" id="startDate" th:value="*{startDate}">
+<input type="hidden" id="endDate" th:value="*{endDate}">
+<input type="hidden" id="jbfyId" th:value="*{jbfyId}">
+<input type="hidden" id="courtId" th:value="*{courtId}">
+<input type="hidden" id="fyNames" th:value="*{fyNames}">
+<div class="container-div">
+	<div class="col-sm-12 select-table table-striped"  th:utext="${table}" id="div" style="text-align: center;margin: 0 auto"></div>
+    <div class="col-sm-12 table-analysis">
+        <div class="card card-shadow mb-4">
+            <div class="card-header">
+                <div class="card-title" style="float: left">
+                    统计月份：<span id="last_mouth"></span>
+                </div>
+                <div class="card-month" style="float: right;">
+                    <div class="form-group">
+                        <div class="col-sm-4" style="text-align: right;padding-right: 0px;height: 30px;line-height: 30px;">
+                            <label>选择月份：</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="time-input" id="startTime_100"  name="params[startTime]" readonly="readonly" style="height: 30px;width: 160px">
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-sm btn-success" id="anjians">查询</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="echars-person" style="height:100%;box-sizing: border-box;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:clue:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:clue:remove')}]];
+    var releaseFlag = [[${@permission.hasPermi('module:processMatter:addDubvioEvent')}]];
+    var listFlag = [[${@permission.hasPermi('module:clue:list')}]];
+    var datas_18 = [[${@dict.getType('risks_grades')}]];
+    var prefix = ctx + "module/clue";
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime_100', type: 'month',theme: 'molv'});
+    });
+
+    $('#div table td').find('a').on('click', function () {
+
+        var startDate=$("#startDate").val();
+        var endDate=$("#endDate").val();
+        if (isNaN(Number($(this).text()))) {
+            var fyName = $(this).text();
+
+            var str1 = $(this).attr('href')
+            var str2 = str1.substr(str1.indexOf('con6'));
+            var str3 = str2.split(',');
+            var str4 = str3[0].substr(9);
+            var jbfyId = str4.split('\\')[0]
+            var str5 = str1.substr(str1.indexOf('con7'));
+            var str6 = str5.split(',');
+            var str7 = str6[0].substr(9);
+            var courtId = str7.split('\\')[0];
+
+        } else {
+            var number = $(this).text();
+            var str1 = $(this).attr('href')
+            var str2 = str1.substr(str1.indexOf('con2'));
+            var str3 = str2.split(',');
+            var str4 = str3[0].substr(9);
+            var jbfyIds = str4.split('\\')[0]
+
+            var str5 = str1.substr(str1.indexOf('con7'));
+            var str6 = str5.split(',');
+            var str7 = str6[0].substr(9);
+            var statuss = str7.split('\\')[0];
+
+            var str11 = str1.substr(str1.indexOf('con3'));
+            var str12 = str11.split(',');
+            var str13 = str12[0].substr(9);
+            var courtId = str13.split('\\')[0];
+
+
+            var str8 = str1.substr(str1.indexOf('con4'));
+            var str9 = str8.split(',');
+            var str10 = str9[0].substr(9);
+            var ryId = str10.split('\\')[0];
+
+
+            var str11 = str1.substr(str1.indexOf('con9'));
+            var str12 = str11.split(',');
+            var str13 = str12[0].substr(9);
+            var isAll = str13.split('\\')[0];
+
+            var url = prefix + '/allThirdNumberData?status=' + statuss + '&jbfyId=' + jbfyIds+"&courtId="+courtId+"&ryId="+ryId+"&isAll="+isAll+"&totalCount="+number+"&startDate="+startDate+"&endDate="+endDate;
+            createMenuItem(url, "案件详情");
+
+        }
+    })
+</script>
+<!--统计js-->
+<script th:src="@{/js/echarts.js}"></script>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:clue:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:clue:remove')}]];
+    var releaseFlag = [[${@permission.hasPermi('module:processMatter:addDubvioEvent')}]];
+    var listFlag = [[${@permission.hasPermi('module:clue:list')}]];
+    var datas_18 = [[${@dict.getType('risks_grades')}]];
+    var prefix = ctx + "module/clue";
+    var endDate=$("#endDate").val();
+    var jbfyId=$("#jbfyId").val();
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime_100', type: 'month',theme: 'molv'});
+    });
+
+    $(function () {
+        var myDate=new Date();
+        myDate.setMonth(myDate.getMonth()-1);
+        var last_mouth = myDate.getFullYear() + "-" + (myDate.getMonth()+1);
+        $('#last_mouth').html(last_mouth)
+    })
+
+
+    $('#div table td').find('a').on('click', function () {
+
+        var startDate=$("#startDate").val();
+        var endDate=$("#endDate").val();
+        if (isNaN(Number($(this).text()))) {
+            var fyName = $(this).text();
+            var str1 = $(this).attr('href')
+            var str2 = str1.substr(str1.indexOf('con6'));
+            var str3 = str2.split(',');
+            var str4 = str3[0].substr(9);
+            var jbfyId = str4.split('\\')[0]
+            var str5 = str1.substr(str1.indexOf('con7'));
+            var str6 = str5.split(',');
+            var str7 = str6[0].substr(9);
+            var courtId = str7.split('\\')[0];
+            var url = prefix + '/allThirdData?fyName=' + fyName + '&jbfyId=' + jbfyId+'&courtId='+courtId+"&startDate="+startDate+"&endDate="+endDate;
+
+            createMenuItem(url, fyName);
+        } else {
+            var number = $(this).text();
+            var str1 = $(this).attr('href')
+            var str2 = str1.substr(str1.indexOf('con2'));
+            var str3 = str2.split(',');
+            var str4 = str3[0].substr(9);
+            var jbfyId = str4.split('\\')[0];
+            var str5 = str1.substr(str1.indexOf('con7'));
+            var str6 = str5.split(',');
+            var str7 = str6[0].substr(9);
+            var status = str7.split('\\')[0];
+            var str8 = str1.substr(str1.indexOf('con3'));
+            var str9 = str8.split(',');
+            var str10 = str9[0].substr(9);
+            var courtId = str10.split('\\')[0];
+
+
+            var str11=str1.substr(str1.indexOf('con9'));
+            var str12 = str11.split(',');
+            var str13 = str12[0].substr(9);
+            var isAll = str13.split('\\')[0];
+            var url = prefix + '/allSecondNumberData?status=' + status + '&jbfyId=' + jbfyId+'&courtId='+courtId+"&isAll="+isAll+"&totalCount="+number+"&startDate="+startDate+"&endDate="+endDate;
+            createMenuItem(url, "案件详情");
+        }
+    })
+
+    anjiann("")
+    $('#anjians').on("click",function () {
+        var time = $('#startTime_100').val();
+        anjiann(time);
+        $('#last_mouth').html(time)
+    })
+    function anjiann(time) {
+        var jbfyId =$("#jbfyId").val();
+        var courtId =$("#courtId").val();
+        var fyNames=$("#fyNames").val();
+        $.ajax({
+            type: "get",
+            url: ctx+"module/rytj/queryAjByRyId",
+            data: {date:time,fyId:jbfyId,cbtId:courtId},
+            dataType: "json",
+            success: function (data) {
+
+                var arr = [];
+                var arr1 = [];
+                for (var i = 0; i < data[1].length; i++) {
+                    arr.push(data[1][i].name)
+                    var obj = {};
+                    obj.data = data[1][i].data;
+                    obj.name = data[1][i].name;
+                    obj.type = 'bar';
+                    arr1.push(obj)
+                }
+                var myChart_3 = echarts.init(document.getElementById('echars-person'));
+                option3 = {
+                    title : {
+                        text: fyNames
+                    },
+                    tooltip : {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:['旧存','新收',"未结","已结"]
+                    },
+                    toolbox: {
+                        show : false,
+                        feature : {
+                            mark : {show: true},
+                            dataView : {show: true, readOnly: false},
+                            magicType : {show: true, type: ['line', 'bar']},
+                            restore : {show: true},
+                            saveAsImage : {show: true}
+                        }
+                    },
+                    calculable : true,
+                    xAxis : [
+                        {
+                            type : 'category',
+                            triggerEvent:true,
+                            axisLabel: {
+                                show: true,
+                                interval:0,
+                                rotate:-30
+                            },
+                            data : data[0]
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value'
+                        }
+                    ],
+                    series: arr1
+                };
+                myChart_3.setOption(option3);
+            }
+        })
+    }
+
+
+
+</script>
+</body>
+</html>

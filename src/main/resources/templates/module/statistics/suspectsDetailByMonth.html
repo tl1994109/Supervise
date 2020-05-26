@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+<style type="text/css">
+    .colStyle {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+</style>
+
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-info search-collapse">
+        <input type="hidden"  name="suspectsTime" id="suspectsTime" th:value="${suspectsTime}">
+        <input type="hidden"  name="caseTypeName" id="caseTypeName" th:value="${caseTypeName}">
+    </div>
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:clue:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:clue:remove')}]];
+    var releaseFlag = [[${@permission.hasPermi('module:processMatter:addDubvioEvent')}]];
+    var listFlag = [[${@permission.hasPermi('module:clue:list')}]];
+    var datas_18 = [[${@dict.getType('risks_grades')}]];
+    var prefix = ctx + "module/statistics";
+    var suspectsTime=$("#suspectsTime").val();
+    var caseTypeName=$("#caseTypeName").val();
+    $(function() {
+        var options = {
+            url: prefix + "/getSuspectsDetailByMonth",
+            search: false,
+            queryParams: queryParams,
+            columns: [
+                {
+                    field : 'dubvio_strategy_name',
+                    title : '可疑点',
+                },
+                {
+                    field : 'jbxx_ah',
+                    title : '案号',
+                    formatter:function(value,row,index){
+                        var id= '"' +  row.jbxx_ajbh + '"';
+                        return "<a style='text-decoration:none' onclick='getCaseDetail("+id+")' ><font color='blue'>" + row.jbxx_ah +"</font></a>";
+                    }
+                },
+                {
+                    field : 'clue_fyr',
+                    title : '反映人',
+                },
+                {
+                    field : 'clue_fydx',
+                    title : '被反映人',
+                },
+                {
+                    field : 'clue_fywt',
+                    title : '反映问题',
+                    class:'colStyle',
+                    width:120,
+                    formatter:paramsMatter
+                },
+
+                {
+                    field : 'jbxx_cbt_name',
+                    title : '承办庭名称',
+                },
+                {
+                    field : 'jbxx_ajlb',
+                    title : '案件类别',
+                },
+                {
+                    field : 'create_time',
+                    title : '创建时间',
+                },
+            ]
+        };
+        initSimpleTabl.init(options);
+    });
+
+    function queryParams(params) {
+        var suspectsTime=$("#suspectsTime").val();
+        var caseTypeName=$("#caseTypeName").val();
+        return {
+            pageSize:       params.limit,
+            pageNum:        params.offset / params.limit + 1,
+            searchValue:    params.search,
+            orderByColumn:  params.sort,
+            isAsc:          params.order,
+            suspectsTime:   suspectsTime,
+            caseTypeName:caseTypeName
+        };
+    }
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime', theme: 'molv'});
+        laydate.render({elem: '#endTime_12', theme: 'molv'});
+        laydate.render({elem: '#startTime_13', theme: 'molv'});
+        laydate.render({elem: '#endTime_13', theme: 'molv'});
+        laydate.render({elem: '#startTime_14', theme: 'molv'});
+        laydate.render({elem: '#endTime_14', theme: 'molv'});
+        laydate.render({elem: '#startTime_15', theme: 'molv'});
+        laydate.render({elem: '#endTime_15', theme: 'molv'});
+        laydate.render({elem: '#startTime_16', theme: 'molv'});
+        laydate.render({elem: '#endTime_16', theme: 'molv'});
+        laydate.render({elem: '#startTime_17', theme: 'molv'});
+        laydate.render({elem: '#endTime_17', theme: 'molv'});
+    });
+
+    function getCaseDetail(caseId){
+        var url = prefix + '/getCaseDetailByCaseId?caseId='+caseId ;
+        createMenuItem(url, "案件详情");
+    }
+    function paramsMatter(value, row, index) {
+
+        var values = row.clue_fywt;//获取当前字段的值
+        //替换空格，因为字符串拼接的时候如果遇到空格，会自动将后面的部分截掉，所有这里用html的转义符
+        // 代替
+        if(values !=null && values!=""){
+            values = values.replace(/\s+/g,'');
+            return "<p style='text-overflow:ellipsis;overflow: hidden;white-space:nowrap;width: 120px;margin: 0px' title="+values+">"+row.clue_fywt+"</p>";
+        }
+        return "";
+    }
+</script>
+</body>
+</html>

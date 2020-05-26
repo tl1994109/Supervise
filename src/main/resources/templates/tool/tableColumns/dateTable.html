@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="include :: header"></head>
+<style type="text/css">
+    .modal-border{
+        border: #CCCCCC 1px solid;
+    }
+    .model-container{
+        padding: 10px 0px;
+    }
+    .model-content {
+        width: 100%;
+        height: 58px;
+        line-height: 58px;
+        border: 1px solid #ddd;
+        padding: 0px 5px;
+        cursor: pointer;
+        overflow: hidden;
+    }
+    .model-title{
+        width: 67%;
+        float: left;
+        color: inherit;
+        text-align: left;
+    }
+    .model-default{
+        text-align: center;
+    }
+    .model-btn{
+        width: 30%;
+        float: left;
+        display: flex;
+    }
+    .model-btn a{
+        color: #676a6c;
+    }
+    .model-btn button{
+        border: none;
+        background-color: #fff;
+    }
+    .modal-div-margin{
+        margin:5px 0px ;
+    }
+    .ele{
+        /*设置元素绝对定位*/
+        position:absolute;
+        /*top 50%*/
+        top: 50%;
+        /*left 50%*/
+        left: 7%;
+        /*css3   transform 实现*/
+        transform: translate(-50%, -50%);
+    }
+    .ele-re{
+        position: relative;
+        padding-left: 150px;
+    }
+    .modal-col-sm-12{
+        width: 97%;
+    }
+
+</style>
+<body class="gray-bg">
+    <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 select-info search-collapse">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group select-info-container">
+                            <div class="col-sm-4">
+                                <label>组件名称：</label>
+                                <input id="dataTableComponentName" name="dataTableComponentName" class="form-control" type="text">
+                            </div>
+                            <div class="col-sm-4">
+                                <label>布局名称：</label>
+                                <input id="componentCode" name="componentCode" class="form-control" type="text">
+                            </div>
+                            <div class="col-sm-4">
+                                <label>显示方式：</label>
+                                <select id="" name="">
+                                    <option value="">请选择</option>
+                                    <option value="0">数据表格</option>
+                                    <option value="1">Form表单</option>
+                                    <option value="2">查询条件</option>
+                                    <option value="3">柱状图</option>
+                                    <option value="4">饼状图</option>
+                                    <option value="5">报表</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-border model-container">
+                            <div class="row model-row model-container ele-re ">
+                                <div class="col-sm-1  ele">
+                                    <label style="text-align: center;">操作事件：</label>
+                                </div>
+                                <div class="col-sm-12 modal-border modal-col-sm-12">
+                                    <div class="col-sm-2 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-default">
+                                                <a href="#" title="新增" onclick="$.operate.add()" shiro:hasPermission="system:layout:add">
+                                                    <img th:src="@{/img/add.png}">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-title">
+                                                <span>新增</span>
+                                            </div>
+                                            <div class="model-btn">
+                                                <a href="#" onclick="$.operate.edit()" shiro:hasPermission="system:layout:edit">
+                                                    <button class="glyphicon glyphicon-pencil" title="编辑"></button>
+                                                </a>
+                                                <a href="#" onclick="$.operate.removeAll()" shiro:hasPermission="system:layout:remove">
+                                                    <button class="glyphicon glyphicon-remove" title="删除"></button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-title">
+                                                <span>修改</span>
+                                            </div>
+                                            <div class="model-btn">
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-pencil" title="编辑"></button>
+                                                </a>
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-remove" title="删除"></button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-title">
+                                                <span>删除</span>
+                                            </div>
+                                            <div class="model-btn">
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-pencil" title="编辑"></button>
+                                                </a>
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-remove" title="删除"></button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-title">
+                                                <span>启用</span>
+                                            </div>
+                                            <div class="model-btn">
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-pencil" title="编辑"></button>
+                                                </a>
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-remove" title="删除"></button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-title">
+                                                <span>禁用</span>
+                                            </div>
+                                            <div class="model-btn">
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-pencil" title="编辑"></button>
+                                                </a>
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-remove" title="删除"></button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row model-row model-container ele-re ">
+                                <div class="col-sm-1  ele">
+                                    <label style="text-align: center;">初始条件：</label>
+                                </div>
+                                <div class="col-sm-12 modal-border modal-col-sm-12">
+                                    <div class="col-sm-2 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-default">
+                                                <a href="#" title="新增" onclick="$.operate.add()" shiro:hasPermission="system:layout:add">
+                                                    <img th:src="@{/img/add.png}">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-title">
+                                                <span>新增</span>
+                                            </div>
+                                            <div class="model-btn">
+                                                <a href="#" onclick="$.operate.edit()" shiro:hasPermission="system:layout:edit">
+                                                    <button class="glyphicon glyphicon-pencil" title="编辑"></button>
+                                                </a>
+                                                <a href="#" onclick="$.operate.removeAll()" shiro:hasPermission="system:layout:remove">
+                                                    <button class="glyphicon glyphicon-remove" title="删除"></button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-title">
+                                                <span>修改</span>
+                                            </div>
+                                            <div class="model-btn">
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-pencil" title="编辑"></button>
+                                                </a>
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-remove" title="删除"></button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-title">
+                                                <span>删除</span>
+                                            </div>
+                                            <div class="model-btn">
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-pencil" title="编辑"></button>
+                                                </a>
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-remove" title="删除"></button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-title">
+                                                <span>启用</span>
+                                            </div>
+                                            <div class="model-btn">
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-pencil" title="编辑"></button>
+                                                </a>
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-remove" title="删除"></button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-title">
+                                                <span>禁用</span>
+                                            </div>
+                                            <div class="model-btn">
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-pencil" title="编辑"></button>
+                                                </a>
+                                                <a href="#">
+                                                    <button class="glyphicon glyphicon-remove" title="删除"></button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group select-info-container modal-div-margin">
+                                <div class="col-sm-4">
+                                    <label>是否分页：</label>
+                                    <select id="" name="">
+                                        <option value="0">是</option>
+                                        <option value="1">否</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>分页条数：</label>
+                                    <select id="" name="">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>分页风格：</label>
+                                    <select id="" name="">
+                                        <option value="1">普通分页</option>
+                                        <option value="2">高级分页</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-border modal-contaniner">
+                            <div class="row model-row model-container">
+                                <div class="col-sm-12 form-group select-info-container">
+                                    <div class="col-sm-4">
+                                        <label>数据模型：</label>
+                                        <select id="" name="">
+                                            <option value="0">1</option>
+                                            <option value="1">2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 form-group select-info-container">
+                                  <div class="col-sm-12">
+                                      <label style="width: 10%;padding-left: 5px">字段配置：</label>
+                                      <div class="col-sm-10 modal-border">
+                                          <table class="table table-striped">
+                                              <thead>
+                                              <th class="col-md-1">字段ID</th>
+                                              <th class="col-md-1">字段名称</th>
+                                              <th class="col-md-1">字段类型</th>
+                                              <th class="col-md-1">显示状态</th>
+                                              <th class="col-md-1">数据字典</th>
+                                              </thead>
+                                              <tbody>
+                                              <tr>
+                                                  <td>xxxxxx</td>
+                                                  <td><input class="form-control" type="text"></td>
+                                                  <td>
+                                                      <select class="form-control" id="" name="">
+                                                          <option value="0">1</option>
+                                                          <option value="1">2</option>
+                                                      </select>
+                                                  </td>
+                                                  <td>
+                                                      <select class="form-control" id="" name="">
+                                                          <option value="0">1</option>
+                                                          <option value="1">2</option>
+                                                      </select>
+                                                  </td>
+                                                  <td>
+                                                      <select class="form-control" id="" name="">
+                                                          <option value="0">1</option>
+                                                          <option value="1">2</option>
+                                                      </select>
+                                                  </td>
+                                              </tr>
+                                              </tbody>
+                                          </table>
+                                      </div>
+                                  </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<div th:include="include :: footer"></div>
+<script th:type="javascript">
+
+
+</script>
+</body>
+</html>

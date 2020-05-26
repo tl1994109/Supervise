@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include :: header">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="stylesheet" href="../css/main_a.css">-->
+</head>
+    <link rel="stylesheet" th:href="@{/css/main_a.css}">
+<body class="gray-bg">
+    <div class="wrapper wrapper-content">
+        <div class="main_right">
+            <div class="box">
+                <!--提醒-->
+                <div class="remind">
+                    <div class="title">
+                        <h5><img th:src="@{/img/mhtu.png}" alt="">提醒</h5>
+                    </div>
+                    <div class="remind_box" id="news">
+                        <ul>
+                            <li><a href="#">领导谈话</a></li>
+                            <li><a href="#">最新通知</a></li>
+                            <li><a href="#">有3件需要你处理</a></li>
+                            <li><a href="#">新经验分享</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 我的日志 时间 -->
+            <div class="box">
+                <div class="right_top">
+                    <div class="title">
+                        <h5><img th:src="@{/img/mhtu.png}" alt="">我的日志</h5>
+                    </div>
+                    <div class="time">
+                        <!--<div class="today">-->
+                        <!--<p>15</p>-->
+                        <!--<p>星期二</p>-->
+                        <!--</div>-->
+                        <div class="time_date">
+                            <div class="account-box">
+                                <h2 class="account-title">
+                                    <span class="left c3"></span>
+                                    <a href="###" class="f-btn-fhby right">返回本月</a>
+                                    <div class="clearfix right">
+                                        <div class="f-btn-jian left"><</div>
+                                        <div class="left f-riqi"><span class="f-year">2017</span>年<span class="f-month">1</span>月</div>
+                                        <div class="f-btn-jia left">></div><!-- 一定不能换行-->
+                                    </div>
+                                </h2>
+                                <div class="f-rili-table">
+                                    <div class="f-rili-head celarfix">
+                                        <div class="f-rili-th">周日</div>
+                                        <div class="f-rili-th">周一</div>
+                                        <div class="f-rili-th">周二</div>
+                                        <div class="f-rili-th">周三</div>
+                                        <div class="f-rili-th">周四</div>
+                                        <div class="f-rili-th">周五</div>
+                                        <div class="f-rili-th">周六</div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="f-tbody clearfix">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task">
+                        <ul>
+                            <li><a href="#"><span>09:30</span><p>开会</p></a></li>
+                            <li><a href="#"><span>14:30</span><p>外出</p></a></li>
+                            <li><a href="#"><span>16:30</span><p>开会</p></a></li>
+                        </ul>
+                        <a href="#" class="task_add">+</a>
+                    </div>
+                </div>
+            </div>
+            <!-- 通讯录 -->
+            <div class="box">
+                <div class="mail_list">
+                    <div class="title">
+                        <h5><img th:src="@{/img/mhtu.png}" alt="">通讯录</h5>
+                    </div>
+                    <form action="" class="form form-inline">
+                        <div class="mail_search">
+                            <input type="text" name="" id="" class="form-control" placeholder="Search.."><button type="button" class="btn" style="border: 1px solid #ccc;border-radius: 5px; margin-left: 2px;"><i class="fa fa-search"></i></button>
+                        </div>
+                        <table class="table">
+                            <tr><td>xxx</td><td>刑一庭</td><td>12313254832</td></tr>
+                            <tr><td>xxx</td><td>民一庭</td><td>25465815423</td></tr>
+                            <tr><td>xxx</td><td>刑二庭</td><td>25215458547</td></tr>
+                            <tr><td>xxx</td><td>民二庭</td><td>18545453542</td></tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="main_left">
+            <!-- 轮播图 列表 -->
+            <div class="box">
+                <div class="meeting_notice">
+                    <!--轮播-->
+                    <div class="title">
+                        <h5><img th:src="@{/img/mhtu.png}" alt="">公告</h5>
+                    </div>
+                    <div class="carousels">
+                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators" style="bottom: 10px;margin-bottom: 0">
+                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                            </ol>
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner" role="listbox">
+                                <div class="item active">
+                                    <img th:src="@{/img/lb.jpg}" alt="..." style="width: 100%">
+                                    <div class="carousel-caption">
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <img th:src="@{/img/lbb.jpg}" alt="..." style="width: 100%">
+                                    <div class="carousel-caption">
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <img th:src="@{/img/lbb.jpg}" alt="..." style="width: 100%">
+                                    <div class="carousel-caption">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Controls -->
+                            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev" style="display: flex;align-items: center;justify-content: center">
+                                <span class="fa fa-angle-left" aria-hidden="true" ></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next" style="display: flex;align-items: center;justify-content: center">
+                                <span class="fa fa-angle-right" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!--列表-->
+                    <div class="meeting_list">
+
+                        <div class="tab-pane">
+                            <ul>
+                                <li><a href="#">
+                                    <p>新文件通知</p><span>2019/02/15</span><span>XXX</span>
+                                </a></li>
+                                <li><a href="#">
+                                    <p>新法律发布</p><span>2019/02/15</span><span>XXX</span>
+                                </a></li>
+                                <li><a href="#">
+                                    <p>市领导检查</p><span>2019/02/15</span><span>XXX</span>
+                                </a></li>
+                                <li><a href="#">
+                                    <p>会议通知</p><span>2019/02/15</span><span>XXX</span>
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 流程中心 -->
+            <div class="box">
+                <div class="flow">
+                    <div class="title">
+                        <h5><img th:src="@{/img/mhtu.png}" alt="">任务中心</h5>
+                    </div>
+                    <ul role="tablist" class="nav nav-tabs">
+                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">待办</a></li>
+                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">已办</a></li>
+                        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">已完成</a></li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                                <a class="btn btn-danger btn-del disabled" style="cursor: pointer;">
+                                    <i class="fa fa-plus"></i> 审批
+                                </a>
+                            <div class="col-sm-12 select-table table-striped">
+                                <table id="bootstrap-table" data-mobile-responsive="true"></table>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="profile"><ul>
+                            <li><a href="#"><p>SSSSSSSS</p><span>2019/02/15</span><span>XXX</span></a></li>
+                            <li><a href="#"><p>DDDDDDDD</p><span>2019/02/15</span><span>XXX</span></a></li>
+                            <li><a href="#"><p>DDDDDDDD</p><span>2019/02/15</span><span>XXX</span></a></li>
+                        </ul></div>
+                        <div role="tabpanel" class="tab-pane" id="messages"><ul>
+                            <li><a href="#"><p>DDDDDDDD</p><span>2019/02/15</span><span>XXX</span></a></li>
+                            <li><a href="#"><p>DDDDDDDD</p><span>2019/02/15</span><span>XXX</span></a></li>
+                        </ul></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 文档 公文中心 -->
+            <div class="box">
+                <div class="title">
+                    <h5><img th:src="@{/img/mhtu.png}" alt="">知识管理</h5>
+                </div>
+                <div class="box_file">
+                    <div class="title">
+                        <h5>经验分享</h5>
+                    </div>
+                    <div class="tab-pane">
+                        <ul>
+                            <li><a href="#">
+                                <p>新文件通知</p><span>2019/02/15</span><span>XXX</span>
+                            </a></li>
+                            <li><a href="#">
+                                <p>新法律发布</p><span>2019/02/15</span><span>XXX</span>
+                            </a></li>
+                            <li><a href="#">
+                                <p>市领导检查</p><span>2019/02/15</span><span>XXX</span>
+                            </a></li>
+                            <li><a href="#">
+                                <p>会议通知</p><span>2019/02/15</span><span>XXX</span>
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bumf">
+                    <div class="title">
+                        <h5>政策法规</h5>
+                    </div>
+                    <div class="tab-pane">
+                        <ul>
+                            <li><a href="#">
+                                <p>关于国庆节放假的通知</p><span>2019/02/15</span><span>XXX</span>
+                            </a></li>
+                            <li><a href="#">
+                                <p>关于国庆节放假的通知</p><span>2019/02/15</span><span>XXX</span>
+                            </a></li>
+                            <li><a href="#">
+                                <p>关于国庆节放假的通知</p><span>2019/02/15</span><span>XXX</span>
+                            </a></li>
+                            <li><a href="#">
+                                <p>关于国庆节放假的通知</p><span>2019/02/15</span><span>XXX</span>
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="manages">
+                    <div class="title">
+                        <h5>模板文档</h5>
+                    </div>
+                    <ul>
+                        <li><a href="#">表单模板</a></li>
+                        <li><a href="#">实例文档</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:include="include :: footer"></div>
+</body>
+<script>
+    $(function () {
+        //页面加载初始化年月
+        var mydate = new Date();
+        $(".f-year").html(mydate.getFullYear());
+        $(".f-month").html(mydate.getMonth() + 1);
+        showDate(mydate.getFullYear(), mydate.getMonth() + 1);
+        //日历上一月
+        $(".f-btn-jian ").click(function () {
+            var mm = parseInt($(".f-month").html());
+            var yy = parseInt($(".f-year").html());
+            if (mm == 1) { //返回12月
+                $(".f-year").html(yy - 1);
+                $(".f-month").html(12);
+                showDate(yy - 1, 12);
+            } else { //上一月
+                $(".f-month").html(mm - 1);
+                showDate(yy, mm - 1);
+            }
+        })
+        //日历下一月
+        $(".f-btn-jia").click(function () {
+            var mm = parseInt($(".f-month").html());
+            var yy = parseInt($(".f-year").html());
+            if (mm == 12) { //返回12月
+                $(".f-year").html(yy + 1);
+                $(".f-month").html(1);
+                showDate(yy + 1, 1);
+            } else { //上一月
+                $(".f-month").html(mm + 1);
+                showDate(yy, mm + 1);
+            }
+        })
+        //返回本月
+        $(".f-btn-fhby").click(function () {
+            $(".f-year").html(mydate.getFullYear());
+            $(".f-month").html(mydate.getMonth() + 1);
+            showDate(mydate.getFullYear(), mydate.getMonth() + 1);
+        })
+
+        //读取年月写入日历  重点算法!!!!!!!!!!!
+        function showDate(yyyy, mm) {
+            var dd = new Date(parseInt(yyyy), parseInt(mm), 0); //Wed Mar 31 00:00:00 UTC+0800 2010
+            var daysCount = dd.getDate(); //本月天数
+            var mystr = ""; //写入代码
+            var icon = ""; //图标代码
+            var today = new Date().getDate(); //今天几号  21
+            var monthstart = new Date(parseInt(yyyy) + "/" + parseInt(mm) + "/1").getDay() //本月1日周几
+            var lastMonth; //上一月天数
+            var nextMounth //下一月天数
+            if (parseInt(mm) == 1) {
+                lastMonth = new Date(parseInt(yyyy) - 1, parseInt(12), 0).getDate();
+            } else {
+                lastMonth = new Date(parseInt(yyyy), parseInt(mm) - 1, 0).getDate();
+            }
+            if (parseInt(mm) == 12) {
+                nextMounth = new Date(parseInt(yyyy) + 1, parseInt(1), 0).getDate();
+            } else {
+                nextMounth = new Date(parseInt(yyyy), parseInt(mm) + 1, 0).getDate();
+            }
+            //计算上月空格数
+            for (j = monthstart; j > 0; j--) {
+                mystr += "<div class='f-td f-null f-lastMonth' style='color:#ccc;'>" + (lastMonth - j + 1) +
+                    "</div>";
+            }
+
+            //本月单元格
+            for (i = 0; i < daysCount; i++) {
+                // 这里为一个单元格，添加内容在此
+                mystr += "<div class='f-td f-number'><span class='f-day'>" + (i + 1) + "</span>" +
+                    "<div class='f-yuan'></div>" +
+                    "" //这里加判断
+                    +
+                    "</div>";
+            }
+
+            //计算下月空格数
+            for (k = 0; k < 42 - (daysCount + monthstart); k++) { //表格保持等高6行42个单元格
+                mystr += "<div class='f-td f-null f-nextMounth' style='color:#ccc;'>" + (k + 1) + "</div>";
+            }
+
+
+
+            //写入日历
+            $(".f-rili-table .f-tbody").html(mystr);
+            //给今日加class
+            if (mydate.getFullYear() == yyyy) {
+                if ((mydate.getMonth() + 1) == mm) {
+                    var today = mydate.getDate();
+                    var lastNum = $(".f-lastMonth").length;
+                    $(".f-rili-table .f-td").eq(today + lastNum - 1).addClass("f-today");
+                }
+            }
+            //绑定选择方法
+            $(".f-rili-table .f-number").off("click");
+            $(".f-rili-table .f-number").on("click", function () {
+                $(".f-rili-table .f-number").removeClass("f-on");
+                $(this).addClass("f-on");
+            });
+
+            //绑定查看方法
+            $(".f-yuan").off("mouseover");
+            $(".f-yuan").on("mouseover", function () {
+                $(this).parent().find(".f-table-msg").show();
+            });
+            $(".f-table-msg").off("mouseover");
+            $(".f-table-msg").on("mouseover", function () {
+                $(this).show();
+            });
+            $(".f-yuan").off("mouseleave");
+            $(".f-yuan").on("mouseleave", function () {
+                $(this).parent().find(".f-table-msg").hide();
+            });
+            $(".f-table-msg").off("mouseleave");
+            $(".f-table-msg").on("mouseleave", function () {
+                $(this).hide();
+            });
+        }
+
+        function getweek(date) {
+            var week;
+            if (date.getDay() == 0) week = "周日"
+            if (date.getDay() == 1) week = "周一"
+            if (date.getDay() == 2) week = "周二"
+            if (date.getDay() == 3) week = "周三"
+            if (date.getDay() == 4) week = "周四"
+            if (date.getDay() == 5) week = "周五"
+            if (date.getDay() == 6) week = "周六"
+            return week;
+        }
+        function getmyday () {
+            var sss =  new Date().getFullYear() + '-' + new Date().getMonth() + 1 + '-' + new Date().getDate()
+            var w1 = getweek(new Date(sss));
+            // console.log(str)
+            $('.c3').text(w1)
+        }
+        getmyday();
+        //    提醒自动滚动
+        var $this = $("#news");
+        var scrollTimer;
+        $this.hover(function() {
+                clearInterval(scrollTimer);
+            },
+            function() {
+                scrollTimer = setInterval(function() {
+                    scrollNews($this);
+                }, 2000);
+            }).trigger("mouseleave");
+        function scrollNews(obj) {
+            var $self = obj.find("ul");
+            var lineHeight = $self.find("li:first").height();
+            $self.animate({
+                "marginTop": -lineHeight + "px"
+            }, 600, function() {
+                $self.css({
+                    marginTop: 0
+                }).find("li:first").appendTo($self);
+            })
+        }
+
+        //  审批表格
+        var options = {
+            // url: prefix + "/queryCountStrategyName",
+            search: false,
+            // queryParams: queryParams,
+            columns: [
+                    {
+                    checkbox: true,
+                },
+                {
+                    field : 'something',
+                    title : '事务',
+                    width : "60%" ,
+                },
+                {
+                    field : 'people',
+                    title : '人员',
+                    width : "20%" ,
+                },
+                {
+                    field : 'time',
+                    title : '发布时间',
+                    width : "20%" ,
+                },
+                // {
+                //     title: '操作',
+                //     align: 'center',
+                //     formatter: function(value, row, index) {
+                //         var actions = [];
+                //         //actions.push('<a class="btn btn-warning btn-xs ' + releaseFlag + '" href="#" onclick="release(\'' + row.clueId  + '\');"><i class="fa fa-plus"></i>问题处置</a> ');
+                //
+                //         if(row.processStatus=="2"){
+                //             actions.push('<a class="btn btn-warning btn-xs ' + releaseFlag + '" href="#" onclick="release(\'' + row.clueId  + '\');"><i class="fa fa-plus"></i>问题处置</a> ');
+                //         }else if(row.processStatus=="0"){
+                //             actions.push('<a href="#" onclick="selectProcess(\'' + row.clueId + '\');" class="btn btn-primary btn-rounded btn-xs"  title="点击可查看流程执行过程">已通过</a> ');
+                //
+                //         }else if(row.processStatus=="1"){
+                //             actions.push('<a href="#" onclick="selectProcess(\'' + row.clueId + '\');" class="btn btn-primary btn-rounded btn-xs" title="点击可查看流程执行过程">待审核</a> ');
+                //         }
+                //         actions.push('<a class="btn btn-info btn-xs ' + listFlag + '" href="#" onclick="detail(\'' + row.clueId + '\')"><i class="fa fa-list-ul"></i>可疑点详情</a> ');
+                //         //actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="operateComponent.edit(\'' + row.clueId + '\'\,\'module/clue/edit/{id}\'\,\'线索 \')"><i class="fa fa-edit"></i>编辑</a> ');
+                //         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="operateComponent.remove(\'' + row.clueId + '\'\,\'module/clue/remove\'\,\'线索 \')"><i class="fa fa-remove"></i>删除</a>');
+                //         return actions.join('');
+                //     }
+                // }
+            ]
+        };
+        initSimpleTabl.init(options);
+        $('.tab-pane').find(".fixed-table-toolbar").remove()
+    })
+</script>
+</html>

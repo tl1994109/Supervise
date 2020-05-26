@@ -1,0 +1,371 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<style type="text/css">
+    .input {
+        background: #FFFFFF none;
+        border: 1px solid #e5e6e7;
+        border-radius: 5px;
+        color: inherit;
+        display: block;
+        padding: 6px 12px;
+        -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        width: 100%;
+        font-size: 14px;
+    }
+    /* 新增样式20190419 */
+    .select2-container .select2-selection--single{height: 34px;}
+    .select2-container--default .select2-selection--single{border: 1px solid #ddd;}
+    .select2-container--default .select2-selection--single .select2-selection__rendered{line-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {padding: 0px 5px;}
+    .select-info-container input, .select-info-container select{width: 100%}
+    .select2-container{height: 34px;line-height: 34px}
+    .select2-container--default .select2-selection--multiple{height: 34px;width: 100%;border: 1px solid #ddd;}
+    .select2-container .select2-selection--multiple{min-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__rendered{height: 34px; }
+    .select2-container--default.select2-container--focus .select2-selection--multiple{border: 1px solid #ddd;}
+    .error_div{
+        background-color: #fbe2e2;
+        border-color: #c66161;
+        color: #c00;
+    }
+</style>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="col-sm-12 select-info search-collapse">
+        <form class="form-horizontal m" id="form-notice-edit" th:object="${notice}" enctype="multipart/form-data">
+            <input id="noticeId" name="noticeId" th:field="*{noticeId}" type="hidden">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">标题：</label>
+                <div class="col-sm-8">
+                    <input id="noticeTitle" name="noticeTitle" th:field="*{noticeTitle}" class="form-control"
+                           type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">类型：</label>
+                <div class="col-sm-8">
+                    <select name="noticeType" class="input form-control" th:with="type=${@dict.getType('sys_notice_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"
+                                th:field="*{noticeType}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">填写类型：</label>
+                <div class="col-sm-8 radio" style="padding-top: 0;"
+                     th:with="willWay=${@dict.getType('notice_willWay')}">
+                    <label th:each="role:${willWay}"
+                           style="display: inline-block;box-sizing: border-box;position: relative;padding-right: 15px;padding-top: 8px">
+                        <input name="fillWay" type="radio" th:value="${role.dictValue}" th:text="${role.dictLabel}"
+                               style="margin-top: 2px;"
+                               th:checked="${role.dictValue} eq ${notice.fillWay}">
+                    </label>
+                </div>
+            </div>
+            <div id="one">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">内容：</label>
+                    <div class="col-sm-8">
+                        <input id="noticeContent" name="noticeContent" th:field="*{noticeContent}" type="hidden">
+                        <div id="editor" class="summernote"></div>
+                    </div>
+                </div>
+                <div class="form-group"
+                     th:if="${notice.noticePhoto ne null && notice.noticePhoto ne '' && notice.fillWay eq '0'}">
+                    <label class="col-sm-3 control-label">原首页轮播图：</label>
+                    <div class="col-sm-8">
+                        <img th:src="${notice.noticePhoto}" style="width: 200px;height: 200px;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">首页轮播图：</label>
+                    <div class="col-sm-8">
+                        <input type="file" name="multipartFile" id="file">
+                        <span style="color: red;">目前仅支持.jpg|.jpeg|.png|.bmp|.BMP|.JPG|.PNG|.JPEG，最大限制为50M</span>
+                    </div>
+                </div>
+            </div>
+            <div id="two">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">描述：</label>
+                    <div class="col-sm-8">
+                        <div class="ms"></div>
+                    </div>
+                </div>
+                <div class="form-group"
+                     th:if="${notice.noticePhoto ne null && notice.noticePhoto ne '' && notice.fillWay eq '1'}">
+                    <label class="col-sm-3 control-label">原扫描件：</label>
+                    <div class="col-sm-8">
+                        <img th:src="@{/img/pdf.jpg}" id="pdf_old" style="width: 70px;height: 80px;">
+                        <a style="margin-left: 20px" th:attr="data-url=${notice.noticePhoto}"
+                           onclick="showPdf(this)" href="javascript:void(0)">预览</a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">扫描件：</label>
+                    <div class="col-sm-8">
+                        <input type="file" name="file_pdf" id="file_pdf">
+                        <span style="color: red;">目前仅支持.pdf，最大限制为50M</span>
+                    </div>
+                </div>
+            </div>
+           <!-- <div class="form-group">
+                <label class="col-sm-3 control-label">公告状态：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box" th:each="dict : ${@dict.getType('sys_notice_status')}">
+                        <input type="radio" th:id="${dict.dictCode}" name="status"
+                               th:value="${dict.dictValue}" th:field="*{status}">
+                        <label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                    </div>
+                </div>
+            </div>-->
+            <div class="form-group">
+                <div class="form-control-static col-sm-offset-5">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+    var prefix = ctx + "system/notice";
+    $(function () {
+        $('.summernote').summernote({
+            height: '500px',
+            lang: 'zh-CN'
+        });
+        $('.ms').summernote({
+            height: '500px',
+            lang: 'zh-CN'
+        });
+        var content = $("#noticeContent").val();
+        var fillWay = $("input[name='fillWay']:checked").val();
+        if (fillWay == '0') {
+            $('#editor').code(content);
+        } else {
+            $('.ms').code(content);
+        }
+
+        if (fillWay == '0') {
+            $("#one").css("display", "block");
+            $("#two").css("display", "none");
+        } else {
+            $("#one").css("display", "none");
+            $("#two").css("display", "block");
+        }
+
+        $('.summernote').parent().find('.note-editable').on('blur',function () {
+            var content = $(".summernote").code();
+            $("#noticeContent").val(content);
+            if($("#noticeContent").val()!="" && $("#noticeContent").val()!="<p><br></p>"){
+                $("#noticeContent-error").remove();
+                $("#noticeContent").removeClass("error");
+                $('.summernote').parent().find('.note-editable').removeClass("error_div");
+            }
+        });
+    });
+
+    $('.radio').on('click', 'input', function () {
+        var fillWay = $("input[name='fillWay']:checked").val();
+        if (fillWay == '0') {
+            $("#one").css("display", "block");
+            $("#two").css("display", "none");
+        } else {
+            $("#one").css("display", "none");
+            $("#two").css("display", "block");
+        }
+    });
+
+    //自定义验证内容是否为空
+    jQuery.validator.addMethod("checkContent", function (value, element, param) {
+        var content = element.value;
+        var fillWay  = $("input[name='fillWay']:checked").val();
+        if(fillWay == '0'){
+            if(content == "" || content == '<p><br></p>'){
+                $('.summernote').parent().find('.note-editable').addClass("error_div");
+                return false;
+            }else{
+                return true;
+            }
+        }else{
+            return true;
+        }
+    }, "<i class='fa fa-times-circle'>内容不能为空</i>");
+
+    //自定义检测文件类型方法
+    jQuery.validator.addMethod("checkFileType_img", function (value, element, param) {
+        var fillWay  = $("input[name='fillWay']:checked").val();
+        if(fillWay == '0'){
+            if(element.files[0] !=undefined){
+                var fileName = element.files[0].name;
+                var imgStr = /\.(jpg|jpeg|png|bmp|BMP|JPG|PNG|JPEG)$/;
+                if (!imgStr.test(fileName)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }else{
+                return true;
+            }
+        }else{
+            return true;
+        }
+    }, "<i class='fa fa-times-circle'>请上传类型为.jpg|.jpeg|.png|.bmp|.BMP|.JPG|.PNG|.JPEG文件</i>");
+
+    //自定义检测文件大小方法
+    jQuery.validator.addMethod("checkFileSize", function (value, element, param) {
+        var fileSize = element.files[0];
+        var fillWay  = $("input[name='fillWay']:checked").val();
+        if(element.id == "file"){
+            if(fillWay == '0'){
+                if(fileSize == undefined){
+                    return true;
+                }else{
+                    var size = fileSize.size;
+                    if (size > param) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            }else{
+                return true;
+            }
+        }else{
+            if(fillWay == '0'){
+                return true;
+            }else{
+                if(document.getElementById("pdf_old") && element.files[0] == undefined){
+                    return true;
+                }else{
+                    var size = fileSize.size;
+                    if (size > param) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            }
+        }
+    }, "<i class='fa fa-times-circle'>请上传文件大小在50M以下的文件</i>");
+
+    //自定义检测文件方法
+    jQuery.validator.addMethod("checkFile", function (value, element, param) {
+        var fileSize = element.files[0];
+        var fillWay  = $("input[name='fillWay']:checked").val();
+        if(fillWay == '0'){
+            return true;
+        }else{
+            if(document.getElementById("pdf_old")){
+                return true;
+            }else{
+                if(fileSize == undefined){
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+        }
+    }, "<i class='fa fa-times-circle'>扫描件不能为空</i>");
+
+    //自定义检测文件类型方法
+    jQuery.validator.addMethod("checkFileType", function (value, element, param) {
+        var fillWay  = $("input[name='fillWay']:checked").val();
+        if(fillWay == '0'){
+            return true;
+        }else{
+          if(document.getElementById("pdf_old") && element.files[0] == undefined){
+              return true;
+          }else{
+              var fileName = element.files[0].name;
+              var imgStr = /\.(pdf)$/;
+              if (!imgStr.test(fileName)) {
+                  return false;
+              } else {
+                  return true;
+              }
+          }
+        }
+    }, "<i class='fa fa-times-circle'>请上传类型为.pdf的扫描件</i>");
+
+    $("#form-notice-edit").validate({
+        ignore: [],
+        rules: {
+            noticeTitle:{
+                required: true,
+            },
+            noticeContent:{
+                checkContent:""
+            },
+            multipartFile:{
+                checkFileType_img:"",
+                checkFileSize:50*1024*1024
+            },
+            file_pdf:{
+                checkFile:"",
+                checkFileType:"",
+                checkFileSize:50*1024*1024
+            }
+        },
+        submitHandler: function (form) {
+            // var content = $(".summernote").code();
+            // $("#knowledgeContent").val(content);
+            // $.operate.save(prefix + "/add", $('#form-knowledge-add').serialize());
+            frm_submit();
+        }
+    });
+
+    function frm_submit(){
+        $.modal.loading("正在处理中，请稍后...");
+        var fillWay  = $("input[name='fillWay']:checked").val();
+        var noticeContent = "";
+        if(fillWay == '0'){
+            noticeContent = $(".summernote").code();
+        }else{
+            noticeContent = $(".ms").code();
+        }
+
+        $("#noticeContent").val(noticeContent);
+        $('#form-notice-edit').ajaxSubmit({
+            forceSync: false,
+            url: prefix + '/edit',
+            type: 'post',
+            success: function (result) {
+                if (result.code == statusCode.web_status.SUCCESS) {
+                    $.modal.close();
+                    window.parent.$.modal.msgSuccess("保存成功,正在刷新数据请稍后……");
+                    window.parent.$.table.refresh();
+                } else {
+                    modalComponent.alertError(result.msg);
+                }
+            },
+            error: function (response) {
+                modalComponent.alertError('系统错误');
+            }
+        });
+        modalComponent.closeLoading();
+    }
+
+    function reload() {
+        $("#bootstrap-table_task_three").bootstrapTable('refresh', {
+            url: ctx + 'module/information/main',
+            silent: true
+        });
+    }
+
+    function showPdf(e) {
+        var url = e.getAttribute("data-url");
+        $.modal.open("预览", ctx + 'ajax/libs/pdfjs-2.0.943/web/viewer.html?file=' + url);
+    }
+</script>
+</body>
+</html>

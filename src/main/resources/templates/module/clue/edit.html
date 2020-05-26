@@ -1,0 +1,562 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+<div class="col-sm-12 select-info search-collapse">
+
+<form class="form-horizontal m" id="form-clue-edit" th:object="${clue}">
+    <input type="hidden" id="clueId"  name="clueId"  th:field="*{clueId}" >
+    <div class="form-group select-info-container" >
+
+        <div class="col-sm-4">
+            <label>反映人：</label>
+            <input type="text" name="clueFyr"  id="clueFyr" class="form-control"  th:value="*{clueFyr}">
+        </div>
+
+        <div class="col-sm-4">
+            <label>反映电话：</label>
+            <input type="text" name="clueFyrdh" th:value="*{clueFyrdh}">
+        </div>
+
+
+
+        <div class="col-sm-4">
+            <label>被反映人：</label>
+            <!--<input type="text" name="clueFydx" onclick="selectPersonTree()" id="treeName" readonly="true" th:value="*{clueFydx}" >-->
+            <input type="text" name="clueFydx"  id="treeName" onchange="doSubmits()"  style="width: 43%;" th:value="*{clueFydx}" >
+            <span onclick="selectPersonTree()" style="float: left;display: block;padding: 4px;width: 17%;border-radius: 5px;text-align: center;line-height: 20px;border: 1px solid #ddd;">选择</span>
+        </div>
+    </div>
+
+    <div class="form-group select-info-container" id="tHead">
+        <div class="col-sm-4">
+            <label>违纪事件案号：</label>
+            <select id="ah"  name="ah" class="ah" >
+                <option value="">请选择</option>
+                <option  th:each="dubvioList:${dubvioList}"
+                        th:text="${dubvioList.jbxxAh}"
+                        th:value="${dubvioList.jbxxAjbh}"></option>
+            </select>
+        </div>
+
+        <div class="col-sm-4">
+            <label>线索状态：</label>
+            <select id="clueStatus" name="clueStatus" th:with="type=${@dict.getType('clue_status')}" th:field="*{clueStatus}">
+                <option value="">请选择</option>
+                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+            </select>
+        </div>
+
+        <div class="col-sm-4">
+            <label>线索来源：</label>
+            <select id="clueSource"  name="clueSource" class="clueSource" th:field="*{clueSource}">
+                <option value="">请选择</option>
+                <option value="2">信访录入</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group select-info-container">
+    </div>
+    <div id="main" class="main">
+
+    </div>
+
+    <div id="secondMain" class="secondMain">
+        <div class="form-group select-info-container">
+
+
+            <div class="col-sm-4">
+                <label>案件编号：</label>
+                <input type="text" name="jbxxAjbh"  th:field="*{jbxxAjbh}" >
+            </div>
+            <div class="col-sm-4">
+                <label>案号：</label>
+                <input type="text" name="jbxxAh"  th:field="*{jbxxAh}">
+            </div>
+            <div class="col-sm-4">
+                <label>可疑点：</label>
+
+                <select  name="dubvioStrategyIds" id="dubvioStrategyIds"  th:field="*{dubvioStrategyId}">
+                    <option  th:each="list:${strategyList}" th:value="${list.id}" th:text="${list.name}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group select-info-container">
+            <input type="hidden" name="jbxxCbrId"   th:field="*{jbxxCbrId}">
+            <input type="hidden" name="jbxxCbrName"   th:field="*{jbxxCbrName}">
+            <div class="col-sm-4">
+                <label>违纪事件编号：</label>
+                <input type="text" name="dubvioId"   th:field="*{dubvioId}">
+            </div>
+            <div class="col-sm-4">
+                <label>被告人：</label>
+                <input type="text" name="jbxxBgr"  th:field="*{jbxxBgr}" >
+            </div>
+
+            <div class="col-sm-4">
+                <label>承办庭名称：</label>
+                <!--<input type="text" name="jbxxCbtName"  >-->
+
+                <select  name="jbxxCbtName" id="jbxxCbtName"  th:field="*{jbxxCbtName}">
+
+                    <option  th:each="cbtList:${cbtList}" th:value="${cbtList.cbtName}" th:text="${cbtList.cbtName}"></option>
+                </select>
+            </div>
+            <!--<div class=\"col-sm-4\">-->
+            <!--<label>承办庭ID：</label>-->
+            <input type="hidden"  name="jbxxCbtId" th:field="*{jbxxCbtId}" >
+            <!--</div>-->
+        </div>
+        <div class="form-group select-info-container">
+            <div class="col-sm-4">
+                <label>案件类别：</label>
+                <select id="jbxxAjlb" name="jbxxAjlb"  th:field="*{jbxxAjlb}" th:value="*{jbxxAjlb}" >
+                    <option value ="">请选择</option>
+                    <option   value ="刑事">刑事</option>
+                    <option  value ="民事">民事</option>
+                    <option  value="执行">执行</option>
+                    <option  value="行政">行政</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label>风险等级：</label>
+                <select id="risksLevel" name="risksLevel" th:with="type=${@dict.getType('risks_grades')}"  th:field="*{risksLevel}" th:value="*{risksLevel}">
+                    <option value="">请选择</option>
+                    <option th:selected="${risksLevel}" th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label>收案日期：</label>
+                <input type="text" class="time-input" id="startTime_13" name="jbxxSarq"   th:field="*{jbxxSarq}">
+            </div>
+        </div>
+
+        <div class="form-group select-info-container">
+            <div class="col-sm-4">
+                <label>立案日期：</label>
+                <input type="text" class="time-input" id="startTime_14" name="jbxxLarq"  th:field="*{jbxxLarq}" >
+            </div>
+            <div class="col-sm-4">
+                <label>分案日期：</label>
+                <input type="text" class="time-input" id="startTime_15" name="jbxxFarq"   th:field="*{jbxxFarq}">
+            </div>
+            <div class="col-sm-4">
+                <label>开庭日期：</label>
+                <input type="text" class="time-input" id="startTime_16" name="jbxxKtrq"   th:field="*{jbxxKtrq}">
+            </div>
+        </div>
+        <div class="form-group select-info-container">
+            <div class="col-sm-4">
+                <label>结案日期：</label>
+                <input type="text" class="time-input" id="startTime_17" name="jbxxJarq"   th:field="*{jbxxJarq}">
+            </div>
+            <div class="col-sm-4">
+                <label>归档日期：</label>
+                <input type="text"  class="time-input" id="startTime_18" name="jbxxGdrq"  th:field="*{jbxxGdrq}" >
+            </div>
+            <!--<div class="col-sm-4">-->
+                <!--<label>创建时间：</label>-->
+                <!--<input type="text"  class="time-input" id="startTime" name="createTime"  th:field="*{createTime}"  >-->
+            <!--</div>-->
+        </div>
+
+    </div>
+    <div class="form-group ">
+
+        <label class="col-sm-1 control-label " style="margin-left: 10px">反映问题：</label>
+
+        <div class="col-sm-10" style="margin-left: 22px;">
+            <input id="clueFywt" name="clueFywt" type="hidden" th:field="*{clueFywt}">
+            <div id="editor" class="summernote"  readonly="readonly"></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="form-control-static col-sm-offset-5">
+            <button type="submit" class="btn btn-primary">提交</button>
+            <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+        </div>
+    </div>
+</form>
+</div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+    $(function() {
+
+
+
+        $('.summernote').summernote({
+        height : '220px',
+        lang : 'zh-CN'
+    });
+
+        var content = $("#clueFywt").val();
+        $('#editor').code(content);
+
+    });
+
+
+
+    $(function(){
+        var jbxxAjbh = $("#ah").val();
+        // console.log(jbxxAjbh)
+        $("#ah").find("option:first").click()
+        $("#ah").find("option[value=jbxxAjbh]").click()
+        console.log($("#ah").find("option[value=jbxxAjbh]"))
+        // var event = $("#main");
+        // var str = '';
+        // $.ajax({
+        //     url: ctx + "module/dubvioEvent/queryAllByAjbh",
+        //     type: "post",
+        //     dataType: "json",
+        //     data:{"jbxxAjbh":jbxxAjbh},
+        //     success: function (result) {
+        //
+        //         str+="\n" +
+        //             "                <div class=\"form-group select-info-container\">\n" +
+        //             "                    <div class=\"col-sm-4\">\n" +
+        //             "                        <label>案件编号：</label>\n" +
+        //             "                        <input type=\"text\" name=\"jbxxAjbh\" value="+result.dubvioEventList[0].jbxxAjbh+" readonly='readonly' >\n" +
+        //             "                    </div>\n" +
+        //             "                    <div class=\"col-sm-4\">\n" +
+        //             "                        <label>案号：</label>\n" +
+        //             "                        <input type=\"text\" name=\"jbxxAh\" value="+result.dubvioEventList[0].jbxxAh+" readonly='readonly'>\n" +
+        //             "                    </div>\n" +
+        //             "                    <div class=\"col-sm-4\">\n" +
+        //             "                        <label>可疑点：</label>\n" +
+        //             "                        <input type=\"text\" name=\"dubvioStrategyName\" value="+result.dubvioEventList[0].dubvioStrategyName+" readonly='readonly'>\n" +
+        //             "                    </div>\n" +
+        //             "                    <!--<div class=\"col-sm-4\">-->\n" +
+        //             "                    <!--<label>法官ID：</label>-->\n" +
+        //             "                    <input type=\"hidden\"  name=\"jbxxCbrId\" value="+result.dubvioEventList[0].jbxxCbrId+">\n" +
+        //             "                    <input type=\"hidden\"  name=\"dubvioId\" value="+result.dubvioEventList[0].dubvioId+">\n" +
+        //             "                    <input type=\"hidden\"  name=\"dubvioStrategyId\" value="+result.dubvioEventList[0].dubvioStrategyId+">\n" +
+        //             "                    <!--</div>-->\n" +
+        //             "                </div>\n" +
+        //             "                <div class=\"form-group select-info-container\">\n" +
+        //             "\n" +
+        //             "\n" +
+        //             "                    <div class=\"col-sm-4\">\n" +
+        //             "                        <label>法官姓名：</label>\n" +
+        //             "                        <input type=\"text\" name=\"jbxxCbrName\" value="+result.dubvioEventList[0].jbxxCbrName+" readonly='readonly'>\n" +
+        //             "                    </div>\n" +
+        //             "                    <div class=\"col-sm-4\">\n" +
+        //             "                        <label>被告人：</label>\n" +
+        //             "                        <input type=\"text\" name=\"jbxxBgr\" value="+result.dubvioEventList[0].jbxxBgr+" readonly='readonly'>\n" +
+        //             "                    </div>\n" +
+        //             "\n" +
+        //             "                    <div class=\"col-sm-4\">\n" +
+        //             "                        <label>承办庭名称：</label>\n" +
+        //             "                        <input type=\"text\" name=\"jbxxCbtName\" value="+result.dubvioEventList[0].jbxxCbtName+" readonly='readonly'>\n" +
+        //             "                    </div>\n" +
+        //             "                    <!--<div class=\"col-sm-4\">-->\n" +
+        //             "                    <!--<label>承办庭ID：</label>-->\n" +
+        //             "                    <input type=\"hidden\"  name=\"jbxxCbtId\" value="+result.dubvioEventList[0].jbxxCbtId+" readonly='readonly'>\n" +
+        //             "                    <!--</div>-->\n" +
+        //             "                </div>\n" +
+        //             "                <div class=\"form-group select-info-container\">\n" +
+        //             "                    <div class=\"col-sm-4\">\n" +
+        //             "                        <label>案件类别：</label>\n" +
+        //             "                        <input type=\"text\" name=\"jbxxAjlb\" value="+result.dubvioEventList[0].jbxxAjlb+" readonly='readonly'>\n" +
+        //             "                    </div>\n" +
+        //             "                    <div class=\"col-sm-4\">\n" +
+        //             "                        <label>风险等级：</label>\n" +
+        //             "                        <input type=\"text\" name=\"risksLevel\" value="+result.dubvioEventList[0].risksLevel+" readonly='readonly'>\n" +
+        //             "                    </div>\n" +
+        //             "                    <div class=\"col-sm-4\">\n" +
+        //             "                        <label>收案日期：</label>\n" +
+        //             "                        <input type=\"text\" name=\"jbxxSarq\" value="+result.dubvioEventList[0].jbxxSarq+" >\n" +
+        //             "                    </div>\n" +
+        //             "                </div>\n" +
+        //             "                <div class=\"form-group select-info-container\">\n" +
+        //             "                    <div class=\"col-sm-4\">\n" +
+        //             "                        <label>立案日期：</label>\n" +
+        //             "                        <input type=\"text\" name=\"jbxxLarq\" value="+result.dubvioEventList[0].jbxxLarq+" >\n" +
+        //             "                    </div>\n" +
+        //             "                    <div class=\"col-sm-4\">\n" +
+        //             "                        <label>分案日期：</label>\n" +
+        //             "                        <input type=\"text\" name=\"jbxxFarq\" value="+result.dubvioEventList[0].jbxxFarq+" >\n" +
+        //             "                    </div>\n" +
+        //             "                    <div class=\"col-sm-4\">\n" +
+        //             "                        <label>开庭日期：</label>\n" +
+        //             "                        <input type=\"text\" name=\"jbxxKtrq\" value="+result.dubvioEventList[0].jbxxKtrq+" >\n" +
+        //             "                    </div>\n" +
+        //             "                </div>\n" +
+        //             "                <div class=\"form-group select-info-container\">\n" +
+        //             "                    <div class=\"col-sm-4\">\n" +
+        //             "                        <label>结案日期：</label>\n" +
+        //             "                        <input type=\"text\" name=\"jbxxJarq\" value="+result.dubvioEventList[0].jbxxJarq+" >\n" +
+        //             "                    </div>\n" +
+        //             "                    <div class=\"col-sm-4\">\n" +
+        //             "                        <label>归档日期：</label>\n" +
+        //             "                        <input type=\"text\" name=\"jbxxGdrq\" value="+result.dubvioEventList[0].jbxxGdrq+" >\n" +
+        //             "                    </div>\n" +
+        //             "                    <div class=\"col-sm-4\">\n" +
+        //             "                        <label>创建时间：</label>\n" +
+        //             "                        <input type=\"text\" name=\"createTimes\"  value="+result.dubvioEventList[0].createTime+" readonly='readonly'>\n" +
+        //             "                    </div>\n" +
+        //             "                </div>\n" +
+        //             "            "
+        //
+        //
+        //
+        //     }
+        //
+        // })
+        // change();
+
+    })
+
+
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime', theme: 'molv'});
+        laydate.render({elem: '#startTime_13', theme: 'molv'});
+        laydate.render({elem: '#endTime_13', theme: 'molv'});
+        laydate.render({elem: '#startTime_14', theme: 'molv'});
+        laydate.render({elem: '#endTime_14', theme: 'molv'});
+        laydate.render({elem: '#startTime_15', theme: 'molv'});
+        laydate.render({elem: '#endTime_15', theme: 'molv'});
+        laydate.render({elem: '#startTime_16', theme: 'molv'});
+        laydate.render({elem: '#endTime_16', theme: 'molv'});
+        laydate.render({elem: '#startTime_17', theme: 'molv'});
+        laydate.render({elem: '#endTime_17', theme: 'molv'});
+        laydate.render({elem: '#startTime_18', theme: 'molv'});
+    });
+
+    var prefix = ctx + "module/clue"
+    $("#form-clue-edit").validate({
+        rules:{
+                clueId:{
+                required:true,
+            },
+                dubvioId:{
+                required:true,
+            },
+                dubvioStrategyId:{
+                required:true,
+            },
+            //     jbxxAjbh:{
+            //     required:true,
+            // },
+            //     jbxxAh:{
+            //     required:true,
+            // },
+        },
+        submitHandler: function(form) {
+
+            var row=0;
+            var sHTML = $('.summernote').code();
+            $("#clueFywt").val(sHTML);
+
+            $.operate.save(prefix + "/edit", $('#form-clue-edit').serialize());
+        }
+    });
+    //隐藏div
+    $(function () {
+        $("#secondMain").show();
+        $("#main").hide();
+        //给div添加change事件
+        $("#ah").on("change", function () {
+            $("#main").hide();
+            if ($(this).val() == "" || $(this).val() == null) {
+                $("#main").hide();
+                $("#secondMain").show();
+            } else {
+                $("#main").show();
+                $("#secondMain").hide();
+            }
+        })
+
+    })
+
+
+    /*-选择人员树*/
+    function selectPersonTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = ctx + "system/courtOrgan/selectDeptTree/" + deptId;
+        var options = {
+            title: '选择人员',
+            width: "380",
+            height: "380",
+            url: ctx + "system/courtOrgan/selectDeptTree/" + deptId,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+    function doSubmit(index, layero){
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        if ($.tree.notAllowParents(tree)) {
+            var body = layer.getChildFrame('body', index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            var name=body.find('#treeName').val();
+            $("#ah").empty()
+            $("#main").hide();
+            $.ajax({
+                url: ctx + "module/dubvioEvent/findCounByAgeAndAjlb",
+                type: "get",
+                dataType: "json",
+                data:{"name":name},
+                success: function (result) {
+                    var string=' <option value="">请选择</option>';
+                    $("#tHead").find('.ah').append(string);
+                    for (var i = 0; i < result.length; i++) {
+                        var newOption = document.createElement("option");
+                        newOption.text = result[i].jbxx_ah;
+                        newOption.value = result[i].jbxx_ajbh;
+                        $("#tHead").find('.ah').append(newOption);
+                    }
+                }
+
+            })
+            layer.close(index);
+
+
+        }
+    }
+
+
+    function doSubmits(index){
+        var name = $("#treeName").val();
+        $("#ah").empty();
+        $("#main").hide();
+        $("#secondMain").show();
+        $.ajax({
+            url: ctx + "module/dubvioEvent/findCounByAgeAndAjlb",
+            type: "get",
+            dataType: "json",
+            data:{"name":name},
+            success: function (result) {
+                var string=' <option value="">请选择</option>';
+                $("#tHead").find('.ah').append(string);
+                for (var i = 0; i < result.length; i++) {
+                    var newOption = document.createElement("option");
+                    newOption.text = result[i].jbxx_ah;
+                    newOption.value = result[i].jbxx_ajbh;
+                    $("#tHead").find('.ah').append(newOption);
+                }
+            }
+
+        })
+        layer.close(index);
+
+    }
+
+    $("#ah").change(function(){
+        var jbxxAjbh=$("#ah").val();
+        var event = $("#main");
+        var str = '';
+        $.ajax({
+            url: ctx + "module/dubvioEvent/queryAllByAjbh",
+            type: "post",
+            dataType: "json",
+            data:{"jbxxAjbh":jbxxAjbh},
+            success: function (result) {
+                str+="\n" +
+                    "                <div class=\"form-group select-info-container\">\n" +
+                    "                    <div class=\"col-sm-4\">\n" +
+                    "                        <label>案件编号：</label>\n" +
+                    "                        <input type=\"text\" name=\"jbxxAjbhs\"  readonly=\"readonly\" value="+result.dubvioEventList[0].jbxxAjbh+"  >\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"col-sm-4\">\n" +
+                    "                        <label>案号：</label>\n" +
+                    "                        <input type=\"text\" name=\"jbxxAhs\" readonly=\"readonly\" value="+result.dubvioEventList[0].jbxxAh+" >\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"col-sm-4\">\n" +
+                    "                        <label>可疑点：</label>\n" +
+                    "                        <input type=\"text\" name=\"dubvioStrategyNames\" readonly=\"readonly\" value="+result.dubvioEventList[0].dubvioStrategyName+" >\n" +
+                    "                    </div>\n" +
+                    // "                    <div class=\"col-sm-4\">\n" +
+                    // "                        <label>创建时间：</label>\n" +
+                    // "                        <input type=\"text\" name=\"createTimes\"  value="+result.dubvioEventList[0].createTime+" readonly='readonly'>\n" +
+                    // "                    </div>\n" +
+                    "                    <!--<div class=\"col-sm-4\">-->\n" +
+                    "                    <!--<label>法官ID：</label>-->\n" +
+                    "                    <input type=\"hidden\"  name=\"jbxxCbrIds\" value="+result.dubvioEventList[0].jbxxCbrId+">\n" +
+                    "                    <input type=\"hidden\"  name=\"dubvioIds\" value="+result.dubvioEventList[0].dubvioId+">\n" +
+                    "                    <input type=\"hidden\"  name=\"dubvioStrategyIds\" value="+result.dubvioEventList[0].dubvioStrategyId+">\n" +
+                    "                    <!--</div>-->\n" +
+                    "                </div>\n" +
+                    "                <div class=\"form-group select-info-container\">\n" +
+                    "\n" +
+                    "\n" +
+                    "                    <div class=\"col-sm-4\">\n" +
+                    "                        <label>法官姓名：</label>\n" +
+                    "                        <input type=\"text\" name=\"jbxxCbrNames\" readonly=\"readonly\" value="+result.dubvioEventList[0].jbxxCbrName+" >\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"col-sm-4\">\n" +
+                    "                        <label>被告人：</label>\n" +
+                    "                        <input type=\"text\" name=\"jbxxBgrs\"  readonly=\"readonly\" value="+result.dubvioEventList[0].jbxxBgr+" >\n" +
+                    "                    </div>\n" +
+                    "\n" +
+                    "                    <div class=\"col-sm-4\">\n" +
+                    "                        <label>承办庭名称：</label>\n" +
+                    "                        <input type=\"text\" name=\"jbxxCbtNames\" readonly=\"readonly\" value="+result.dubvioEventList[0].jbxxCbtName+" >\n" +
+                    "                    </div>\n" +
+                    "                    <!--<div class=\"col-sm-4\">-->\n" +
+                    "                    <!--<label>承办庭ID：</label>-->\n" +
+                    "                    <input type=\"hidden\"  name=\"jbxxCbtIds\" readonly=\"readonly\" value="+result.dubvioEventList[0].jbxxCbtId+" >\n" +
+                    "                    <!--</div>-->\n" +
+                    "                </div>\n" +
+                    "                <div class=\"form-group select-info-container\">\n" +
+                    "                    <div class=\"col-sm-4\">\n" +
+                    "                        <label>案件类别：</label>\n" +
+                    "                        <input type=\"text\" name=\"jbxxAjlbs\" readonly=\"readonly\" value="+result.dubvioEventList[0].jbxxAjlb+" >\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"col-sm-4\">\n" +
+                    "                        <label>风险等级：</label>\n" +
+                    "                        <input type=\"text\" name=\"risksLevels\" readonly=\"readonly\" value="+result.dubvioEventList[0].risksLevel+" >\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"col-sm-4\">\n" +
+                    "                        <label>收案日期：</label>\n" +
+                    "                        <input type=\"text\" name=\"jbxxSarqs\" readonly=\"readonly\" value="+result.dubvioEventList[0].jbxxSarq+" >\n" +
+                    "                    </div>\n" +
+                    "                </div>\n" +
+                    "                <div class=\"form-group select-info-container\">\n" +
+                    "                    <div class=\"col-sm-4\">\n" +
+                    "                        <label>立案日期：</label>\n" +
+                    "                        <input type=\"text\" name=\"jbxxLarqs\" readonly=\"readonly\" value="+result.dubvioEventList[0].jbxxLarq+" >\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"col-sm-4\">\n" +
+                    "                        <label>分案日期：</label>\n" +
+                    "                        <input type=\"text\" name=\"jbxxFarqs\" readonly=\"readonly\" value="+result.dubvioEventList[0].jbxxFarq+" >\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"col-sm-4\">\n" +
+                    "                        <label>开庭日期：</label>\n" +
+                    "                        <input type=\"text\" name=\"jbxxKtrqs\" readonly=\"readonly\" value="+result.dubvioEventList[0].jbxxKtrq+" >\n" +
+                    "                    </div>\n" +
+                    "                </div>\n" +
+                    "                <div class=\"form-group select-info-container\">\n" +
+                    "                    <div class=\"col-sm-4\">\n" +
+                    "                        <label>结案日期：</label>\n" +
+                    "                        <input type=\"text\" name=\"jbxxJarqs\" readonly=\"readonly\"  value="+result.dubvioEventList[0].jbxxJarq+" >\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"col-sm-4\">\n" +
+                    "                        <label>归档日期：</label>\n" +
+                    "                        <input type=\"text\" name=\"jbxxGdrqs\" readonly=\"readonly\" value="+result.dubvioEventList[0].jbxxGdrq+" >\n" +
+                    "                    </div>\n" +
+
+                    "                </div>\n" +
+                    "            "
+                event.empty();
+                event.append(str);
+            }
+
+        })
+
+    });
+
+</script>
+</body>
+</html>

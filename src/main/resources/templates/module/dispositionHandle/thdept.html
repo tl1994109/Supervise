@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+<link th:href="@{/css/node.css}" rel="stylesheet"/>
+
+<style type="text/css">
+    .node-container {
+        /*width: 300px;*/
+        height: 100%;
+        /*background-color: #fff;*/
+        margin-top: 10px;
+
+    }
+</style>
+
+<body class="gray-bg">
+<div class="container-div">
+    <input type="hidden" id="clueId" th:value="${clueId}"/>
+    <div class="col-sm-4 node-container">
+        <div id="img_bag" class="ztb_nav ">
+            <!--<a href="javascript:void(0)" onmousedown="moveTop()" style="display:block; width:30px; margin:0 auto">-->
+            <!--<img th:src="@{/img/node/ztb_up.png}" border="0"/></a>-->
+            <div id="img" class="ztb_content">
+                <div class="ztb_main_01">
+                    <ul class="ztb_content_01">
+                        <li class="ztb_over">
+                            <a href=" " class="ztb_con_text" onclick="clickli(this);">
+                                谈话
+                            </a>
+                            <ul class="ztb_content_02">
+                                <li class="ztb_end" name="step9"><a href="#">问题处置分类：</a></li>
+                                <li class="ztb_end" name="step10"><a href="#">谈话函询审核</a></li>
+                            </ul>
+                        </li>
+                        <li class="ztb_on">
+                            <a href="#" class="ztb_con_text" onclick="clickli(this);">
+                                提交呈批表
+                            </a>
+                            <ul class="ztb_content_02" style="display:block">
+                                <li class="ztb_end" name="step11"><a href="#">创建谈话呈批</a></li>
+                                <li class="ztb_end" name="step12"><a href="#">谈话呈批审核</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="ztb_con_text" onclick="clickli(this);">
+
+                            </a>
+                            <ul class="ztb_content_02">
+                                <li><a href="#">谈话笔录</a></li>
+                                <li><a href="#">谈话笔录审核</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="ztb_con_text" onclick="clickli(this);" >
+                                核实情况报告
+                            </a>
+                            <ul class="ztb_content_02">
+                                <li><a href="#">提交情况报告和处置意见</a></li>
+                                <li><a href="#">情况报告和处置意见审核</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="ztb_con_text" onclick="clickli(this);" >
+                                最后处置结果
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--<a href="javascript:void(0)" onmousedown="moveBottom()" style="position:absolute; bottom:0px;left: 50%;transform: translateX(-50%)">-->
+            <!--<img th:src="@{/img/node/ztb_down.png}"  border="0"/>-->
+            <!--</a>-->
+        </div>
+    </div>
+    <div class="col-sm-8 select-table table-striped" style="width: 66.66666667%;">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+
+</div>
+</div>
+<div th:include="include :: footer"></div>
+
+<script th:inline="javascript">
+    var addFlag = [[${@permission.hasPermi('module:dispositionHandle:add')}]];
+    var editFlag = [[${@permission.hasPermi('module:dispositionHandle:edit')}]];
+    var firsthandle_type = [[${@dict.getType('clue_firsthandle_type')}]];
+    var prefix = ctx + "module/dispositionHandle"
+
+    $(function () {
+        var options = {
+            id: "deptId",
+            parentId: "parentId",
+            url: prefix + "/list?clueId=" + $("#clueId").val(),
+            createUrl: prefix + "/add/{id}",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove/{id}",
+            modalName: "处置过程",
+            columns: [{
+                field: 'deptName',
+                title: '流程标题',
+            },
+                {
+                    field: 'way',
+                    title: '办理方式',
+                    align: "center"
+                },
+                {
+                    field: 'result',
+                    title: '办理内容',
+                    align: "center",
+
+                },
+                {
+                    field: 'suggestion',
+                    title: '意见',
+                    align: "center",
+                },
+                {
+                    field: 'createby',
+                    title: '创建人',
+                    align: "center"
+                }, {
+                    field: 'createTimes',
+                    title: '创建时间',
+                    align: "center"
+                }]
+        };
+        $.treeTable.init(options);
+
+
+    });
+</script>
+
+
+<!--流程节点-->
+<!--<script type="text/javascript" th:src="@{/js/node.js}"></script>-->
+
+<script type="text/javascript">
+    $(function () {
+        $('ul.ztb_content_02 li').click(function () {
+
+            $(this).addClass('ztb_online').siblings('li.ztb_online').removeClass('ztb_online');
+            $(this).parents('li').siblings('li').children('ul').find('li.ztb_online').removeClass('ztb_online');
+        })
+    })
+</script>
+<script>
+    function clickli(dom) {
+        var ul = $(dom).next('ul');
+        if (ul.is(":hidden")) {
+            ul.css('display', 'block')
+        } else {
+            ul.css('display', 'none')
+        }
+
+    }
+
+</script>
+
+<!--<script type="text/javascript">-->
+<!--function js(obj) {-->
+<!--return document.getElementById(obj)-->
+<!--}-->
+
+<!--var maxHeight = js("img").getElementsByTagName("ul")[0].getElementsByTagName("li").length * 105;-->
+<!--//滚动图片的最大高度-->
+<!--var targety = 211;-->
+<!--//一次滚动距离-->
+<!--var dx;-->
+<!--var a = null;-->
+
+<!--function moveTop() {-->
+<!--var le = parseInt(js("img").scrollTop);-->
+<!--if (le > 211) {-->
+<!--targety = parseInt(js("img").scrollTop) - 211;-->
+<!--} else {-->
+<!--targety = parseInt(js("img").scrollTop) - le - 1;-->
+<!--}-->
+<!--scTop();-->
+<!--}-->
+
+<!--function scTop() {-->
+<!--dx = parseInt(js("img").scrollTop) - targety;-->
+<!--js("img").scrollTop -= dx * .3;-->
+<!--clearScroll = setTimeout(scTop, 50);-->
+<!--if (dx * .3 < 1) {-->
+<!--clearTimeout(clearScroll);-->
+<!--}-->
+<!--}-->
+
+<!--function moveBottom() {-->
+<!--var le = parseInt(js("img").scrollTop) + 211;-->
+<!--var maxL = maxHeight - 600;-->
+<!--if (le < maxL) {-->
+<!--targety = parseInt(js("img").scrollTop) + 211;-->
+<!--} else {-->
+<!--targety = maxL-->
+<!--}-->
+<!--scBottom();-->
+<!--}-->
+
+<!--function scBottom() {-->
+<!--dx = targety - parseInt(js("img").scrollTop);-->
+<!--js("img").scrollTop += dx * .3;-->
+<!--a = setTimeout(scBottom, 50);-->
+<!--if (dx * .3 < 1) {-->
+<!--clearTimeout(a)-->
+<!--}-->
+<!--}-->
+<!--</script>-->
+
+</body>
+</html>

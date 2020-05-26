@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.dubvioEventDetail.mapper.DubvioEventDetailMapper">
+    
+    <resultMap type="DubvioEventDetail" id="DubvioEventDetailResult">
+        <result property="jbxxAjbh"    column="jbxx_ajbh"    />
+        <result property="jbxxDsr"    column="jbxx_dsr"    />
+        <result property="jbxxXajlb"    column="jbxx_xajlb"    />
+        <result property="jbxxAjlb"    column="jbxx_ajlb"    />
+        <result property="jbxxJbfy"    column="jbxx_jbfy"    />
+        <result property="jbxxSpcx"    column="jbxx_spcx"    />
+        <result property="jbxxSycx"    column="jbxx_sycx"    />
+        <result property="jbxxSayj"    column="jbxx_sayj"    />
+        <result property="jbxxAh"    column="jbxx_ah"    />
+        <result property="jbxxSsxz"    column="jbxx_ssxz"    />
+        <result property="jbxxYsssxz"    column="jbxx_ysssxz"    />
+        <result property="jbxxZhxgsj"    column="jbxx_zhxgsj"    />
+        <result property="jbxxAjmc"    column="jbxx_ajmc"    />
+        <result property="jbxxAjjzjd"    column="jbxx_ajjzjd"    />
+        <result property="jbxxSfydzjz"    column="jbxx_sfydzjz"    />
+        <result property="jbxxSfzwfz"    column="jbxx_sfzwfz"    />
+        <result property="jbxxSplcgk"    column="jbxx_splcgk"    />
+        <result property="sadjSadjr"    column="sadj_sadjr"    />
+        <result property="sadjSasj"    column="sadj_sasj"    />
+        <result property="sadjMgaj"    column="sadj_mgaj"    />
+        <result property="sadjDysj"    column="sadj_dysj"    />
+        <result property="sadjSdszsj"    column="sadj_sdszsj"    />
+        <result property="sadjLaay"    column="sadj_laay"    />
+        <result property="sadjGxyj"    column="sadj_gxyj"    />
+        <result property="sadjLabm"    column="sadj_labm"    />
+        <result property="sadjSats"    column="sadj_sats"    />
+        <result property="lascLascr"    column="lasc_lascr"    />
+        <result property="lascLascrq"    column="lasc_lascrq"    />
+        <result property="lascLascyj"    column="lasc_lascyj"    />
+        <result property="laspLaspr"    column="lasp_laspr"    />
+        <result property="laspLasprq"    column="lasp_lasprq"    />
+        <result property="laspLaspyj"    column="lasp_laspyj"    />
+        <result property="laspLarq"    column="lasp_larq"    />
+        <result property="laspLats"    column="lasp_lats"    />
+        <result property="laspLar"    column="lasp_lar"    />
+        <result property="faFarq"    column="fa_farq"    />
+        <result property="faCbspt"    column="fa_cbspt"    />
+        <result property="faCbr"    column="fa_cbr"    />
+        <result property="faFaqrr"    column="fa_faqrr"    />
+        <result property="faFaqrrq"    column="fa_faqrrq"    />
+        <result property="faYjzt"    column="fa_yjzt"    />
+        <result property="blPqzt"    column="bl_pqzt"    />
+        <result property="blBgrtyrzcx"    column="bl_bgrtyrzcx"    />
+        <result property="blSftqzjjh"    column="bl_sftqzjjh"    />
+        <result property="blSffysjdqzj"    column="bl_sffysjdqzj"    />
+        <result property="blGksl"    column="bl_gksl"    />
+        <result property="blKysl"    column="bl_kysl"    />
+        <result property="blSsdlrs"    column="bl_ssdlrs"    />
+        <result property="blLsrs"    column="bl_lsrs"    />
+        <result property="blFlyzlsrs"    column="bl_flyzlsrs"    />
+        <result property="blCxpq"    column="bl_cxpq"    />
+        <result property="blSfdrsp"    column="bl_sfdrsp"    />
+        <result property="blSfyrmpsy"    column="bl_sfyrmpsy"    />
+        <result property="fdmsssSftqfdmsss"    column="fdmsss_sftqfdmsss"    />
+        <result property="jaYszt"    column="ja_yszt"    />
+        <result property="jaLdgw"    column="ja_ldgw"    />
+        <result property="jaPjwhss"    column="ja_pjwhss"    />
+        <result property="jaSftqyztjswh"    column="ja_sftqyztjswh"    />
+        <result property="jaSpzhdrspysqrq"    column="ja_spzhdrspysqrq"    />
+        <result property="jaJarq"    column="ja_jarq"    />
+        <result property="jaJaay"    column="ja_jaay"    />
+        <result property="jaXjafs"    column="ja_xjafs"    />
+        <result property="jaJafs"    column="ja_jafs"    />
+        <result property="jaDtxp"    column="ja_dtxp"    />
+        <result property="jaSfss"    column="ja_sfss"    />
+        <result property="jaDspjarq"    column="ja_dspjarq"    />
+        <result property="jaYwjaws"    column="ja_ywjaws"    />
+        <result property="jaCpwssfjykzxnr"    column="ja_cpwssfjykzxnr"    />
+        <result property="sxxxSxzts"    column="sxxx_sxzts"    />
+        <result property="sxxxYcts"    column="sxxx_ycts"    />
+        <result property="sxxxKcts"    column="sxxx_kcts"    />
+        <result property="sxxxSxqsrq"    column="sxxx_sxqsrq"    />
+        <result property="sxxxSxjmrq"    column="sxxx_sxjmrq"    />
+        <result property="sxxxFdsxts"    column="sxxx_fdsxts"    />
+        <result property="sxxxCsxts"    column="sxxx_csxts"    />
+        <result property="sxxxCsx"    column="sxxx_csx"    />
+        <result property="sxxxSlts"    column="sxxx_slts"    />
+    </resultMap>
+	
+	<sql id="selectDubvioEventDetailVo">
+        select jbxx_ajbh, jbxx_dsr, jbxx_xajlb, jbxx_ajlb, jbxx_jbfy, jbxx_spcx, jbxx_sycx, jbxx_sayj, jbxx_ah, jbxx_ssxz, jbxx_ysssxz, jbxx_zhxgsj, jbxx_ajmc, jbxx_ajjzjd, jbxx_sfydzjz, jbxx_sfzwfz, jbxx_splcgk, sadj_sadjr, sadj_sasj, sadj_mgaj, sadj_dysj, sadj_sdszsj, sadj_laay, sadj_gxyj, sadj_labm, sadj_sats, lasc_lascr, lasc_lascrq, lasc_lascyj, lasp_laspr, lasp_lasprq, lasp_laspyj, lasp_larq, lasp_lats, lasp_lar, fa_farq, fa_cbspt, fa_cbr, fa_faqrr, fa_faqrrq, fa_yjzt, bl_pqzt, bl_bgrtyrzcx, bl_sftqzjjh, bl_sffysjdqzj, bl_gksl, bl_kysl, bl_ssdlrs, bl_lsrs, bl_flyzlsrs, bl_cxpq, bl_sfdrsp, bl_sfyrmpsy, fdmsss_sftqfdmsss, ja_yszt, ja_ldgw, ja_pjwhss, ja_sftqyztjswh, ja_spzhdrspysqrq, ja_jarq, ja_jaay, ja_xjafs, ja_jafs, ja_dtxp, ja_sfss, ja_dspjarq, ja_ywjaws, ja_cpwssfjykzxnr, sxxx_sxzts, sxxx_ycts, sxxx_kcts, sxxx_sxqsrq, sxxx_sxjmrq, sxxx_fdsxts, sxxx_csxts, sxxx_csx, sxxx_slts from busi_dubvio_event_detail
+    </sql>
+	
+    <select id="selectDubvioEventDetailList" parameterType="DubvioEventDetail" resultMap="DubvioEventDetailResult">
+        <include refid="selectDubvioEventDetailVo"/>
+        <where>  
+            <if test="jbxxAjbh != null and jbxxAjbh != ''"> and jbxx_ajbh like concat('%',#{jbxxAjbh},'%')</if>
+             <if test="jbxxDsr != null and jbxxDsr != ''"> and jbxx_dsr like concat('%',#{jbxxDsr},'%')</if>
+             <if test="jbxxXajlb != null and jbxxXajlb != ''"> and jbxx_xajlb like concat('%',#{jbxxXajlb},'%')</if>
+             <if test="jbxxAjlb != null and jbxxAjlb != ''"> and jbxx_ajlb like concat('%',#{jbxxAjlb},'%')</if>
+             <if test="jbxxJbfy != null and jbxxJbfy != ''"> and jbxx_jbfy like concat('%',#{jbxxJbfy},'%')</if>
+             <if test="jbxxSpcx != null and jbxxSpcx != ''"> and jbxx_spcx like concat('%',#{jbxxSpcx},'%')</if>
+             <if test="jbxxSycx != null and jbxxSycx != ''"> and jbxx_sycx like concat('%',#{jbxxSycx},'%')</if>
+             <if test="jbxxSayj != null and jbxxSayj != ''"> and jbxx_sayj like concat('%',#{jbxxSayj},'%')</if>
+             <if test="jbxxAh != null and jbxxAh != ''"> and jbxx_ah like concat('%',#{jbxxAh},'%')</if>
+             <if test="jbxxSsxz != null and jbxxSsxz != ''"> and jbxx_ssxz like concat('%',#{jbxxSsxz},'%')</if>
+             <if test="jbxxYsssxz != null and jbxxYsssxz != ''"> and jbxx_ysssxz like concat('%',#{jbxxYsssxz},'%')</if>
+             <if test="jbxxZhxgsj != null and jbxxZhxgsj != ''"> and jbxx_zhxgsj like concat('%',#{jbxxZhxgsj},'%')</if>
+             <if test="jbxxAjmc != null and jbxxAjmc != ''"> and jbxx_ajmc like concat('%',#{jbxxAjmc},'%')</if>
+             <if test="jbxxAjjzjd != null and jbxxAjjzjd != ''"> and jbxx_ajjzjd like concat('%',#{jbxxAjjzjd},'%')</if>
+             <if test="jbxxSfydzjz != null and jbxxSfydzjz != ''"> and jbxx_sfydzjz like concat('%',#{jbxxSfydzjz},'%')</if>
+             <if test="jbxxSfzwfz != null and jbxxSfzwfz != ''"> and jbxx_sfzwfz like concat('%',#{jbxxSfzwfz},'%')</if>
+             <if test="jbxxSplcgk != null and jbxxSplcgk != ''"> and jbxx_splcgk like concat('%',#{jbxxSplcgk},'%')</if>
+             <if test="sadjSadjr != null and sadjSadjr != ''"> and sadj_sadjr like concat('%',#{sadjSadjr},'%')</if>
+             <if test="sadjSasj != null and sadjSasj != ''"> and sadj_sasj like concat('%',#{sadjSasj},'%')</if>
+             <if test="sadjMgaj != null and sadjMgaj != ''"> and sadj_mgaj like concat('%',#{sadjMgaj},'%')</if>
+             <if test="sadjDysj != null and sadjDysj != ''"> and sadj_dysj like concat('%',#{sadjDysj},'%')</if>
+             <if test="sadjSdszsj != null and sadjSdszsj != ''"> and sadj_sdszsj like concat('%',#{sadjSdszsj},'%')</if>
+             <if test="sadjLaay != null and sadjLaay != ''"> and sadj_laay like concat('%',#{sadjLaay},'%')</if>
+             <if test="sadjGxyj != null and sadjGxyj != ''"> and sadj_gxyj like concat('%',#{sadjGxyj},'%')</if>
+             <if test="sadjLabm != null and sadjLabm != ''"> and sadj_labm like concat('%',#{sadjLabm},'%')</if>
+             <if test="sadjSats != null and sadjSats != ''"> and sadj_sats like concat('%',#{sadjSats},'%')</if>
+             <if test="lascLascr != null and lascLascr != ''"> and lasc_lascr like concat('%',#{lascLascr},'%')</if>
+             <if test="lascLascrq != null and lascLascrq != ''"> and lasc_lascrq like concat('%',#{lascLascrq},'%')</if>
+             <if test="lascLascyj != null and lascLascyj != ''"> and lasc_lascyj like concat('%',#{lascLascyj},'%')</if>
+             <if test="laspLaspr != null and laspLaspr != ''"> and lasp_laspr like concat('%',#{laspLaspr},'%')</if>
+             <if test="laspLasprq != null and laspLasprq != ''"> and lasp_lasprq like concat('%',#{laspLasprq},'%')</if>
+             <if test="laspLaspyj != null and laspLaspyj != ''"> and lasp_laspyj like concat('%',#{laspLaspyj},'%')</if>
+             <if test="laspLarq != null and laspLarq != ''"> and lasp_larq like concat('%',#{laspLarq},'%')</if>
+             <if test="laspLats != null and laspLats != ''"> and lasp_lats like concat('%',#{laspLats},'%')</if>
+             <if test="laspLar != null and laspLar != ''"> and lasp_lar like concat('%',#{laspLar},'%')</if>
+             <if test="faFarq != null and faFarq != ''"> and fa_farq like concat('%',#{faFarq},'%')</if>
+             <if test="faCbspt != null and faCbspt != ''"> and fa_cbspt like concat('%',#{faCbspt},'%')</if>
+             <if test="faCbr != null and faCbr != ''"> and fa_cbr like concat('%',#{faCbr},'%')</if>
+             <if test="faFaqrr != null and faFaqrr != ''"> and fa_faqrr like concat('%',#{faFaqrr},'%')</if>
+             <if test="faFaqrrq != null and faFaqrrq != ''"> and fa_faqrrq like concat('%',#{faFaqrrq},'%')</if>
+             <if test="faYjzt != null and faYjzt != ''"> and fa_yjzt like concat('%',#{faYjzt},'%')</if>
+             <if test="blPqzt != null and blPqzt != ''"> and bl_pqzt like concat('%',#{blPqzt},'%')</if>
+             <if test="blBgrtyrzcx != null and blBgrtyrzcx != ''"> and bl_bgrtyrzcx like concat('%',#{blBgrtyrzcx},'%')</if>
+             <if test="blSftqzjjh != null and blSftqzjjh != ''"> and bl_sftqzjjh like concat('%',#{blSftqzjjh},'%')</if>
+             <if test="blSffysjdqzj != null and blSffysjdqzj != ''"> and bl_sffysjdqzj like concat('%',#{blSffysjdqzj},'%')</if>
+             <if test="blGksl != null and blGksl != ''"> and bl_gksl like concat('%',#{blGksl},'%')</if>
+             <if test="blKysl != null and blKysl != ''"> and bl_kysl like concat('%',#{blKysl},'%')</if>
+             <if test="blSsdlrs != null and blSsdlrs != ''"> and bl_ssdlrs like concat('%',#{blSsdlrs},'%')</if>
+             <if test="blLsrs != null and blLsrs != ''"> and bl_lsrs like concat('%',#{blLsrs},'%')</if>
+             <if test="blFlyzlsrs != null and blFlyzlsrs != ''"> and bl_flyzlsrs like concat('%',#{blFlyzlsrs},'%')</if>
+             <if test="blCxpq != null and blCxpq != ''"> and bl_cxpq like concat('%',#{blCxpq},'%')</if>
+             <if test="blSfdrsp != null and blSfdrsp != ''"> and bl_sfdrsp like concat('%',#{blSfdrsp},'%')</if>
+             <if test="blSfyrmpsy != null and blSfyrmpsy != ''"> and bl_sfyrmpsy like concat('%',#{blSfyrmpsy},'%')</if>
+             <if test="fdmsssSftqfdmsss != null and fdmsssSftqfdmsss != ''"> and fdmsss_sftqfdmsss like concat('%',#{fdmsssSftqfdmsss},'%')</if>
+             <if test="jaYszt != null and jaYszt != ''"> and ja_yszt like concat('%',#{jaYszt},'%')</if>
+             <if test="jaLdgw != null and jaLdgw != ''"> and ja_ldgw like concat('%',#{jaLdgw},'%')</if>
+             <if test="jaPjwhss != null and jaPjwhss != ''"> and ja_pjwhss like concat('%',#{jaPjwhss},'%')</if>
+             <if test="jaSftqyztjswh != null and jaSftqyztjswh != ''"> and ja_sftqyztjswh like concat('%',#{jaSftqyztjswh},'%')</if>
+             <if test="jaSpzhdrspysqrq != null and jaSpzhdrspysqrq != ''"> and ja_spzhdrspysqrq like concat('%',#{jaSpzhdrspysqrq},'%')</if>
+             <if test="jaJarq != null and jaJarq != ''"> and ja_jarq like concat('%',#{jaJarq},'%')</if>
+             <if test="jaJaay != null and jaJaay != ''"> and ja_jaay like concat('%',#{jaJaay},'%')</if>
+             <if test="jaXjafs != null and jaXjafs != ''"> and ja_xjafs like concat('%',#{jaXjafs},'%')</if>
+             <if test="jaJafs != null and jaJafs != ''"> and ja_jafs like concat('%',#{jaJafs},'%')</if>
+             <if test="jaDtxp != null and jaDtxp != ''"> and ja_dtxp like concat('%',#{jaDtxp},'%')</if>
+             <if test="jaSfss != null and jaSfss != ''"> and ja_sfss like concat('%',#{jaSfss},'%')</if>
+             <if test="jaDspjarq != null and jaDspjarq != ''"> and ja_dspjarq like concat('%',#{jaDspjarq},'%')</if>
+             <if test="jaYwjaws != null and jaYwjaws != ''"> and ja_ywjaws like concat('%',#{jaYwjaws},'%')</if>
+             <if test="jaCpwssfjykzxnr != null and jaCpwssfjykzxnr != ''"> and ja_cpwssfjykzxnr like concat('%',#{jaCpwssfjykzxnr},'%')</if>
+             <if test="sxxxSxzts != null and sxxxSxzts != ''"> and sxxx_sxzts like concat('%',#{sxxxSxzts},'%')</if>
+             <if test="sxxxYcts != null and sxxxYcts != ''"> and sxxx_ycts like concat('%',#{sxxxYcts},'%')</if>
+             <if test="sxxxKcts != null and sxxxKcts != ''"> and sxxx_kcts like concat('%',#{sxxxKcts},'%')</if>
+             <if test="sxxxSxqsrq != null and sxxxSxqsrq != ''"> and sxxx_sxqsrq like concat('%',#{sxxxSxqsrq},'%')</if>
+             <if test="sxxxSxjmrq != null and sxxxSxjmrq != ''"> and sxxx_sxjmrq like concat('%',#{sxxxSxjmrq},'%')</if>
+             <if test="sxxxFdsxts != null and sxxxFdsxts != ''"> and sxxx_fdsxts like concat('%',#{sxxxFdsxts},'%')</if>
+             <if test="sxxxCsxts != null and sxxxCsxts != ''"> and sxxx_csxts like concat('%',#{sxxxCsxts},'%')</if>
+             <if test="sxxxCsx != null and sxxxCsx != ''"> and sxxx_csx like concat('%',#{sxxxCsx},'%')</if>
+             <if test="sxxxSlts != null and sxxxSlts != ''"> and sxxx_slts like concat('%',#{sxxxSlts},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectDubvioEventDetailById" parameterType="String" resultMap="DubvioEventDetailResult">
+        <include refid="selectDubvioEventDetailVo"/>
+        where jbxx_ajbh = #{jbxxAjbh}
+    </select>
+        
+    <insert id="insertDubvioEventDetail" parameterType="DubvioEventDetail">
+        insert into busi_dubvio_event_detail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="jbxxAjbh != null  and jbxxAjbh != ''  ">jbxx_ajbh,</if>
+           <if test="jbxxDsr != null  and jbxxDsr != ''  ">jbxx_dsr,</if>
+           <if test="jbxxXajlb != null  and jbxxXajlb != ''  ">jbxx_xajlb,</if>
+           <if test="jbxxAjlb != null  and jbxxAjlb != ''  ">jbxx_ajlb,</if>
+           <if test="jbxxJbfy != null  and jbxxJbfy != ''  ">jbxx_jbfy,</if>
+           <if test="jbxxSpcx != null  and jbxxSpcx != ''  ">jbxx_spcx,</if>
+           <if test="jbxxSycx != null  and jbxxSycx != ''  ">jbxx_sycx,</if>
+           <if test="jbxxSayj != null  and jbxxSayj != ''  ">jbxx_sayj,</if>
+           <if test="jbxxAh != null  and jbxxAh != ''  ">jbxx_ah,</if>
+           <if test="jbxxSsxz != null  and jbxxSsxz != ''  ">jbxx_ssxz,</if>
+           <if test="jbxxYsssxz != null  and jbxxYsssxz != ''  ">jbxx_ysssxz,</if>
+           <if test="jbxxZhxgsj != null  and jbxxZhxgsj != ''  ">jbxx_zhxgsj,</if>
+           <if test="jbxxAjmc != null  and jbxxAjmc != ''  ">jbxx_ajmc,</if>
+           <if test="jbxxAjjzjd != null  and jbxxAjjzjd != ''  ">jbxx_ajjzjd,</if>
+           <if test="jbxxSfydzjz != null  and jbxxSfydzjz != ''  ">jbxx_sfydzjz,</if>
+           <if test="jbxxSfzwfz != null  and jbxxSfzwfz != ''  ">jbxx_sfzwfz,</if>
+           <if test="jbxxSplcgk != null  and jbxxSplcgk != ''  ">jbxx_splcgk,</if>
+           <if test="sadjSadjr != null  and sadjSadjr != ''  ">sadj_sadjr,</if>
+           <if test="sadjSasj != null  and sadjSasj != ''  ">sadj_sasj,</if>
+           <if test="sadjMgaj != null  and sadjMgaj != ''  ">sadj_mgaj,</if>
+           <if test="sadjDysj != null  and sadjDysj != ''  ">sadj_dysj,</if>
+           <if test="sadjSdszsj != null  and sadjSdszsj != ''  ">sadj_sdszsj,</if>
+           <if test="sadjLaay != null  and sadjLaay != ''  ">sadj_laay,</if>
+           <if test="sadjGxyj != null  and sadjGxyj != ''  ">sadj_gxyj,</if>
+           <if test="sadjLabm != null  and sadjLabm != ''  ">sadj_labm,</if>
+           <if test="sadjSats != null  and sadjSats != ''  ">sadj_sats,</if>
+           <if test="lascLascr != null  and lascLascr != ''  ">lasc_lascr,</if>
+           <if test="lascLascrq != null  and lascLascrq != ''  ">lasc_lascrq,</if>
+           <if test="lascLascyj != null  and lascLascyj != ''  ">lasc_lascyj,</if>
+           <if test="laspLaspr != null  and laspLaspr != ''  ">lasp_laspr,</if>
+           <if test="laspLasprq != null  and laspLasprq != ''  ">lasp_lasprq,</if>
+           <if test="laspLaspyj != null  and laspLaspyj != ''  ">lasp_laspyj,</if>
+           <if test="laspLarq != null  and laspLarq != ''  ">lasp_larq,</if>
+           <if test="laspLats != null  and laspLats != ''  ">lasp_lats,</if>
+           <if test="laspLar != null  and laspLar != ''  ">lasp_lar,</if>
+           <if test="faFarq != null  and faFarq != ''  ">fa_farq,</if>
+           <if test="faCbspt != null  and faCbspt != ''  ">fa_cbspt,</if>
+           <if test="faCbr != null  and faCbr != ''  ">fa_cbr,</if>
+           <if test="faFaqrr != null  and faFaqrr != ''  ">fa_faqrr,</if>
+           <if test="faFaqrrq != null  and faFaqrrq != ''  ">fa_faqrrq,</if>
+           <if test="faYjzt != null  and faYjzt != ''  ">fa_yjzt,</if>
+           <if test="blPqzt != null  and blPqzt != ''  ">bl_pqzt,</if>
+           <if test="blBgrtyrzcx != null  and blBgrtyrzcx != ''  ">bl_bgrtyrzcx,</if>
+           <if test="blSftqzjjh != null  and blSftqzjjh != ''  ">bl_sftqzjjh,</if>
+           <if test="blSffysjdqzj != null  and blSffysjdqzj != ''  ">bl_sffysjdqzj,</if>
+           <if test="blGksl != null  and blGksl != ''  ">bl_gksl,</if>
+           <if test="blKysl != null  and blKysl != ''  ">bl_kysl,</if>
+           <if test="blSsdlrs != null  and blSsdlrs != ''  ">bl_ssdlrs,</if>
+           <if test="blLsrs != null  and blLsrs != ''  ">bl_lsrs,</if>
+           <if test="blFlyzlsrs != null  and blFlyzlsrs != ''  ">bl_flyzlsrs,</if>
+           <if test="blCxpq != null  and blCxpq != ''  ">bl_cxpq,</if>
+           <if test="blSfdrsp != null  and blSfdrsp != ''  ">bl_sfdrsp,</if>
+           <if test="blSfyrmpsy != null  and blSfyrmpsy != ''  ">bl_sfyrmpsy,</if>
+           <if test="fdmsssSftqfdmsss != null  and fdmsssSftqfdmsss != ''  ">fdmsss_sftqfdmsss,</if>
+           <if test="jaYszt != null  and jaYszt != ''  ">ja_yszt,</if>
+           <if test="jaLdgw != null  and jaLdgw != ''  ">ja_ldgw,</if>
+           <if test="jaPjwhss != null  and jaPjwhss != ''  ">ja_pjwhss,</if>
+           <if test="jaSftqyztjswh != null  and jaSftqyztjswh != ''  ">ja_sftqyztjswh,</if>
+           <if test="jaSpzhdrspysqrq != null  and jaSpzhdrspysqrq != ''  ">ja_spzhdrspysqrq,</if>
+           <if test="jaJarq != null  and jaJarq != ''  ">ja_jarq,</if>
+           <if test="jaJaay != null  and jaJaay != ''  ">ja_jaay,</if>
+           <if test="jaXjafs != null  and jaXjafs != ''  ">ja_xjafs,</if>
+           <if test="jaJafs != null  and jaJafs != ''  ">ja_jafs,</if>
+           <if test="jaDtxp != null  and jaDtxp != ''  ">ja_dtxp,</if>
+           <if test="jaSfss != null  and jaSfss != ''  ">ja_sfss,</if>
+           <if test="jaDspjarq != null  and jaDspjarq != ''  ">ja_dspjarq,</if>
+           <if test="jaYwjaws != null  and jaYwjaws != ''  ">ja_ywjaws,</if>
+           <if test="jaCpwssfjykzxnr != null  and jaCpwssfjykzxnr != ''  ">ja_cpwssfjykzxnr,</if>
+           <if test="sxxxSxzts != null  and sxxxSxzts != ''  ">sxxx_sxzts,</if>
+           <if test="sxxxYcts != null  and sxxxYcts != ''  ">sxxx_ycts,</if>
+           <if test="sxxxKcts != null  and sxxxKcts != ''  ">sxxx_kcts,</if>
+           <if test="sxxxSxqsrq != null  and sxxxSxqsrq != ''  ">sxxx_sxqsrq,</if>
+           <if test="sxxxSxjmrq != null  and sxxxSxjmrq != ''  ">sxxx_sxjmrq,</if>
+           <if test="sxxxFdsxts != null  and sxxxFdsxts != ''  ">sxxx_fdsxts,</if>
+           <if test="sxxxCsxts != null  and sxxxCsxts != ''  ">sxxx_csxts,</if>
+           <if test="sxxxCsx != null  and sxxxCsx != ''  ">sxxx_csx,</if>
+           <if test="sxxxSlts != null  and sxxxSlts != ''  ">sxxx_slts,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="jbxxAjbh != null  and jbxxAjbh != ''  ">#{jbxxAjbh},</if>
+        <if test="jbxxDsr != null  and jbxxDsr != ''  ">#{jbxxDsr},</if>
+        <if test="jbxxXajlb != null  and jbxxXajlb != ''  ">#{jbxxXajlb},</if>
+        <if test="jbxxAjlb != null  and jbxxAjlb != ''  ">#{jbxxAjlb},</if>
+        <if test="jbxxJbfy != null  and jbxxJbfy != ''  ">#{jbxxJbfy},</if>
+        <if test="jbxxSpcx != null  and jbxxSpcx != ''  ">#{jbxxSpcx},</if>
+        <if test="jbxxSycx != null  and jbxxSycx != ''  ">#{jbxxSycx},</if>
+        <if test="jbxxSayj != null  and jbxxSayj != ''  ">#{jbxxSayj},</if>
+        <if test="jbxxAh != null  and jbxxAh != ''  ">#{jbxxAh},</if>
+        <if test="jbxxSsxz != null  and jbxxSsxz != ''  ">#{jbxxSsxz},</if>
+        <if test="jbxxYsssxz != null  and jbxxYsssxz != ''  ">#{jbxxYsssxz},</if>
+        <if test="jbxxZhxgsj != null  and jbxxZhxgsj != ''  ">#{jbxxZhxgsj},</if>
+        <if test="jbxxAjmc != null  and jbxxAjmc != ''  ">#{jbxxAjmc},</if>
+        <if test="jbxxAjjzjd != null  and jbxxAjjzjd != ''  ">#{jbxxAjjzjd},</if>
+        <if test="jbxxSfydzjz != null  and jbxxSfydzjz != ''  ">#{jbxxSfydzjz},</if>
+        <if test="jbxxSfzwfz != null  and jbxxSfzwfz != ''  ">#{jbxxSfzwfz},</if>
+        <if test="jbxxSplcgk != null  and jbxxSplcgk != ''  ">#{jbxxSplcgk},</if>
+        <if test="sadjSadjr != null  and sadjSadjr != ''  ">#{sadjSadjr},</if>
+        <if test="sadjSasj != null  and sadjSasj != ''  ">#{sadjSasj},</if>
+        <if test="sadjMgaj != null  and sadjMgaj != ''  ">#{sadjMgaj},</if>
+        <if test="sadjDysj != null  and sadjDysj != ''  ">#{sadjDysj},</if>
+        <if test="sadjSdszsj != null  and sadjSdszsj != ''  ">#{sadjSdszsj},</if>
+        <if test="sadjLaay != null  and sadjLaay != ''  ">#{sadjLaay},</if>
+        <if test="sadjGxyj != null  and sadjGxyj != ''  ">#{sadjGxyj},</if>
+        <if test="sadjLabm != null  and sadjLabm != ''  ">#{sadjLabm},</if>
+        <if test="sadjSats != null  and sadjSats != ''  ">#{sadjSats},</if>
+        <if test="lascLascr != null  and lascLascr != ''  ">#{lascLascr},</if>
+        <if test="lascLascrq != null  and lascLascrq != ''  ">#{lascLascrq},</if>
+        <if test="lascLascyj != null  and lascLascyj != ''  ">#{lascLascyj},</if>
+        <if test="laspLaspr != null  and laspLaspr != ''  ">#{laspLaspr},</if>
+        <if test="laspLasprq != null  and laspLasprq != ''  ">#{laspLasprq},</if>
+        <if test="laspLaspyj != null  and laspLaspyj != ''  ">#{laspLaspyj},</if>
+        <if test="laspLarq != null  and laspLarq != ''  ">#{laspLarq},</if>
+        <if test="laspLats != null  and laspLats != ''  ">#{laspLats},</if>
+        <if test="laspLar != null  and laspLar != ''  ">#{laspLar},</if>
+        <if test="faFarq != null  and faFarq != ''  ">#{faFarq},</if>
+        <if test="faCbspt != null  and faCbspt != ''  ">#{faCbspt},</if>
+        <if test="faCbr != null  and faCbr != ''  ">#{faCbr},</if>
+        <if test="faFaqrr != null  and faFaqrr != ''  ">#{faFaqrr},</if>
+        <if test="faFaqrrq != null  and faFaqrrq != ''  ">#{faFaqrrq},</if>
+        <if test="faYjzt != null  and faYjzt != ''  ">#{faYjzt},</if>
+        <if test="blPqzt != null  and blPqzt != ''  ">#{blPqzt},</if>
+        <if test="blBgrtyrzcx != null  and blBgrtyrzcx != ''  ">#{blBgrtyrzcx},</if>
+        <if test="blSftqzjjh != null  and blSftqzjjh != ''  ">#{blSftqzjjh},</if>
+        <if test="blSffysjdqzj != null  and blSffysjdqzj != ''  ">#{blSffysjdqzj},</if>
+        <if test="blGksl != null  and blGksl != ''  ">#{blGksl},</if>
+        <if test="blKysl != null  and blKysl != ''  ">#{blKysl},</if>
+        <if test="blSsdlrs != null  and blSsdlrs != ''  ">#{blSsdlrs},</if>
+        <if test="blLsrs != null  and blLsrs != ''  ">#{blLsrs},</if>
+        <if test="blFlyzlsrs != null  and blFlyzlsrs != ''  ">#{blFlyzlsrs},</if>
+        <if test="blCxpq != null  and blCxpq != ''  ">#{blCxpq},</if>
+        <if test="blSfdrsp != null  and blSfdrsp != ''  ">#{blSfdrsp},</if>
+        <if test="blSfyrmpsy != null  and blSfyrmpsy != ''  ">#{blSfyrmpsy},</if>
+        <if test="fdmsssSftqfdmsss != null  and fdmsssSftqfdmsss != ''  ">#{fdmsssSftqfdmsss},</if>
+        <if test="jaYszt != null  and jaYszt != ''  ">#{jaYszt},</if>
+        <if test="jaLdgw != null  and jaLdgw != ''  ">#{jaLdgw},</if>
+        <if test="jaPjwhss != null  and jaPjwhss != ''  ">#{jaPjwhss},</if>
+        <if test="jaSftqyztjswh != null  and jaSftqyztjswh != ''  ">#{jaSftqyztjswh},</if>
+        <if test="jaSpzhdrspysqrq != null  and jaSpzhdrspysqrq != ''  ">#{jaSpzhdrspysqrq},</if>
+        <if test="jaJarq != null  and jaJarq != ''  ">#{jaJarq},</if>
+        <if test="jaJaay != null  and jaJaay != ''  ">#{jaJaay},</if>
+        <if test="jaXjafs != null  and jaXjafs != ''  ">#{jaXjafs},</if>
+        <if test="jaJafs != null  and jaJafs != ''  ">#{jaJafs},</if>
+        <if test="jaDtxp != null  and jaDtxp != ''  ">#{jaDtxp},</if>
+        <if test="jaSfss != null  and jaSfss != ''  ">#{jaSfss},</if>
+        <if test="jaDspjarq != null  and jaDspjarq != ''  ">#{jaDspjarq},</if>
+        <if test="jaYwjaws != null  and jaYwjaws != ''  ">#{jaYwjaws},</if>
+        <if test="jaCpwssfjykzxnr != null  and jaCpwssfjykzxnr != ''  ">#{jaCpwssfjykzxnr},</if>
+        <if test="sxxxSxzts != null  and sxxxSxzts != ''  ">#{sxxxSxzts},</if>
+        <if test="sxxxYcts != null  and sxxxYcts != ''  ">#{sxxxYcts},</if>
+        <if test="sxxxKcts != null  and sxxxKcts != ''  ">#{sxxxKcts},</if>
+        <if test="sxxxSxqsrq != null  and sxxxSxqsrq != ''  ">#{sxxxSxqsrq},</if>
+        <if test="sxxxSxjmrq != null  and sxxxSxjmrq != ''  ">#{sxxxSxjmrq},</if>
+        <if test="sxxxFdsxts != null  and sxxxFdsxts != ''  ">#{sxxxFdsxts},</if>
+        <if test="sxxxCsxts != null  and sxxxCsxts != ''  ">#{sxxxCsxts},</if>
+        <if test="sxxxCsx != null  and sxxxCsx != ''  ">#{sxxxCsx},</if>
+        <if test="sxxxSlts != null  and sxxxSlts != ''  ">#{sxxxSlts},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateDubvioEventDetail" parameterType="DubvioEventDetail">
+        update busi_dubvio_event_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="jbxxDsr != null  and jbxxDsr != ''  ">jbxx_dsr = #{jbxxDsr},</if>
+            <if test="jbxxXajlb != null  and jbxxXajlb != ''  ">jbxx_xajlb = #{jbxxXajlb},</if>
+            <if test="jbxxAjlb != null  and jbxxAjlb != ''  ">jbxx_ajlb = #{jbxxAjlb},</if>
+            <if test="jbxxJbfy != null  and jbxxJbfy != ''  ">jbxx_jbfy = #{jbxxJbfy},</if>
+            <if test="jbxxSpcx != null  and jbxxSpcx != ''  ">jbxx_spcx = #{jbxxSpcx},</if>
+            <if test="jbxxSycx != null  and jbxxSycx != ''  ">jbxx_sycx = #{jbxxSycx},</if>
+            <if test="jbxxSayj != null  and jbxxSayj != ''  ">jbxx_sayj = #{jbxxSayj},</if>
+            <if test="jbxxAh != null  and jbxxAh != ''  ">jbxx_ah = #{jbxxAh},</if>
+            <if test="jbxxSsxz != null  and jbxxSsxz != ''  ">jbxx_ssxz = #{jbxxSsxz},</if>
+            <if test="jbxxYsssxz != null  and jbxxYsssxz != ''  ">jbxx_ysssxz = #{jbxxYsssxz},</if>
+            <if test="jbxxZhxgsj != null  and jbxxZhxgsj != ''  ">jbxx_zhxgsj = #{jbxxZhxgsj},</if>
+            <if test="jbxxAjmc != null  and jbxxAjmc != ''  ">jbxx_ajmc = #{jbxxAjmc},</if>
+            <if test="jbxxAjjzjd != null  and jbxxAjjzjd != ''  ">jbxx_ajjzjd = #{jbxxAjjzjd},</if>
+            <if test="jbxxSfydzjz != null  and jbxxSfydzjz != ''  ">jbxx_sfydzjz = #{jbxxSfydzjz},</if>
+            <if test="jbxxSfzwfz != null  and jbxxSfzwfz != ''  ">jbxx_sfzwfz = #{jbxxSfzwfz},</if>
+            <if test="jbxxSplcgk != null  and jbxxSplcgk != ''  ">jbxx_splcgk = #{jbxxSplcgk},</if>
+            <if test="sadjSadjr != null  and sadjSadjr != ''  ">sadj_sadjr = #{sadjSadjr},</if>
+            <if test="sadjSasj != null  and sadjSasj != ''  ">sadj_sasj = #{sadjSasj},</if>
+            <if test="sadjMgaj != null  and sadjMgaj != ''  ">sadj_mgaj = #{sadjMgaj},</if>
+            <if test="sadjDysj != null  and sadjDysj != ''  ">sadj_dysj = #{sadjDysj},</if>
+            <if test="sadjSdszsj != null  and sadjSdszsj != ''  ">sadj_sdszsj = #{sadjSdszsj},</if>
+            <if test="sadjLaay != null  and sadjLaay != ''  ">sadj_laay = #{sadjLaay},</if>
+            <if test="sadjGxyj != null  and sadjGxyj != ''  ">sadj_gxyj = #{sadjGxyj},</if>
+            <if test="sadjLabm != null  and sadjLabm != ''  ">sadj_labm = #{sadjLabm},</if>
+            <if test="sadjSats != null  and sadjSats != ''  ">sadj_sats = #{sadjSats},</if>
+            <if test="lascLascr != null  and lascLascr != ''  ">lasc_lascr = #{lascLascr},</if>
+            <if test="lascLascrq != null  and lascLascrq != ''  ">lasc_lascrq = #{lascLascrq},</if>
+            <if test="lascLascyj != null  and lascLascyj != ''  ">lasc_lascyj = #{lascLascyj},</if>
+            <if test="laspLaspr != null  and laspLaspr != ''  ">lasp_laspr = #{laspLaspr},</if>
+            <if test="laspLasprq != null  and laspLasprq != ''  ">lasp_lasprq = #{laspLasprq},</if>
+            <if test="laspLaspyj != null  and laspLaspyj != ''  ">lasp_laspyj = #{laspLaspyj},</if>
+            <if test="laspLarq != null  and laspLarq != ''  ">lasp_larq = #{laspLarq},</if>
+            <if test="laspLats != null  and laspLats != ''  ">lasp_lats = #{laspLats},</if>
+            <if test="laspLar != null  and laspLar != ''  ">lasp_lar = #{laspLar},</if>
+            <if test="faFarq != null  and faFarq != ''  ">fa_farq = #{faFarq},</if>
+            <if test="faCbspt != null  and faCbspt != ''  ">fa_cbspt = #{faCbspt},</if>
+            <if test="faCbr != null  and faCbr != ''  ">fa_cbr = #{faCbr},</if>
+            <if test="faFaqrr != null  and faFaqrr != ''  ">fa_faqrr = #{faFaqrr},</if>
+            <if test="faFaqrrq != null  and faFaqrrq != ''  ">fa_faqrrq = #{faFaqrrq},</if>
+            <if test="faYjzt != null  and faYjzt != ''  ">fa_yjzt = #{faYjzt},</if>
+            <if test="blPqzt != null  and blPqzt != ''  ">bl_pqzt = #{blPqzt},</if>
+            <if test="blBgrtyrzcx != null  and blBgrtyrzcx != ''  ">bl_bgrtyrzcx = #{blBgrtyrzcx},</if>
+            <if test="blSftqzjjh != null  and blSftqzjjh != ''  ">bl_sftqzjjh = #{blSftqzjjh},</if>
+            <if test="blSffysjdqzj != null  and blSffysjdqzj != ''  ">bl_sffysjdqzj = #{blSffysjdqzj},</if>
+            <if test="blGksl != null  and blGksl != ''  ">bl_gksl = #{blGksl},</if>
+            <if test="blKysl != null  and blKysl != ''  ">bl_kysl = #{blKysl},</if>
+            <if test="blSsdlrs != null  and blSsdlrs != ''  ">bl_ssdlrs = #{blSsdlrs},</if>
+            <if test="blLsrs != null  and blLsrs != ''  ">bl_lsrs = #{blLsrs},</if>
+            <if test="blFlyzlsrs != null  and blFlyzlsrs != ''  ">bl_flyzlsrs = #{blFlyzlsrs},</if>
+            <if test="blCxpq != null  and blCxpq != ''  ">bl_cxpq = #{blCxpq},</if>
+            <if test="blSfdrsp != null  and blSfdrsp != ''  ">bl_sfdrsp = #{blSfdrsp},</if>
+            <if test="blSfyrmpsy != null  and blSfyrmpsy != ''  ">bl_sfyrmpsy = #{blSfyrmpsy},</if>
+            <if test="fdmsssSftqfdmsss != null  and fdmsssSftqfdmsss != ''  ">fdmsss_sftqfdmsss = #{fdmsssSftqfdmsss},</if>
+            <if test="jaYszt != null  and jaYszt != ''  ">ja_yszt = #{jaYszt},</if>
+            <if test="jaLdgw != null  and jaLdgw != ''  ">ja_ldgw = #{jaLdgw},</if>
+            <if test="jaPjwhss != null  and jaPjwhss != ''  ">ja_pjwhss = #{jaPjwhss},</if>
+            <if test="jaSftqyztjswh != null  and jaSftqyztjswh != ''  ">ja_sftqyztjswh = #{jaSftqyztjswh},</if>
+            <if test="jaSpzhdrspysqrq != null  and jaSpzhdrspysqrq != ''  ">ja_spzhdrspysqrq = #{jaSpzhdrspysqrq},</if>
+            <if test="jaJarq != null  and jaJarq != ''  ">ja_jarq = #{jaJarq},</if>
+            <if test="jaJaay != null  and jaJaay != ''  ">ja_jaay = #{jaJaay},</if>
+            <if test="jaXjafs != null  and jaXjafs != ''  ">ja_xjafs = #{jaXjafs},</if>
+            <if test="jaJafs != null  and jaJafs != ''  ">ja_jafs = #{jaJafs},</if>
+            <if test="jaDtxp != null  and jaDtxp != ''  ">ja_dtxp = #{jaDtxp},</if>
+            <if test="jaSfss != null  and jaSfss != ''  ">ja_sfss = #{jaSfss},</if>
+            <if test="jaDspjarq != null  and jaDspjarq != ''  ">ja_dspjarq = #{jaDspjarq},</if>
+            <if test="jaYwjaws != null  and jaYwjaws != ''  ">ja_ywjaws = #{jaYwjaws},</if>
+            <if test="jaCpwssfjykzxnr != null  and jaCpwssfjykzxnr != ''  ">ja_cpwssfjykzxnr = #{jaCpwssfjykzxnr},</if>
+            <if test="sxxxSxzts != null  and sxxxSxzts != ''  ">sxxx_sxzts = #{sxxxSxzts},</if>
+            <if test="sxxxYcts != null  and sxxxYcts != ''  ">sxxx_ycts = #{sxxxYcts},</if>
+            <if test="sxxxKcts != null  and sxxxKcts != ''  ">sxxx_kcts = #{sxxxKcts},</if>
+            <if test="sxxxSxqsrq != null  and sxxxSxqsrq != ''  ">sxxx_sxqsrq = #{sxxxSxqsrq},</if>
+            <if test="sxxxSxjmrq != null  and sxxxSxjmrq != ''  ">sxxx_sxjmrq = #{sxxxSxjmrq},</if>
+            <if test="sxxxFdsxts != null  and sxxxFdsxts != ''  ">sxxx_fdsxts = #{sxxxFdsxts},</if>
+            <if test="sxxxCsxts != null  and sxxxCsxts != ''  ">sxxx_csxts = #{sxxxCsxts},</if>
+            <if test="sxxxCsx != null  and sxxxCsx != ''  ">sxxx_csx = #{sxxxCsx},</if>
+            <if test="sxxxSlts != null  and sxxxSlts != ''  ">sxxx_slts = #{sxxxSlts},</if>
+        </trim>
+        where jbxx_ajbh = #{jbxxAjbh}
+    </update>
+
+	<delete id="deleteDubvioEventDetailById" parameterType="String">
+        delete from busi_dubvio_event_detail where jbxx_ajbh = #{jbxxAjbh}
+    </delete>
+	
+    <delete id="deleteDubvioEventDetailByIds" parameterType="String">
+        delete from busi_dubvio_event_detail where jbxx_ajbh in 
+        <foreach item="jbxxAjbh" collection="array" open="(" separator="," close=")">
+            #{jbxxAjbh}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,96 @@
+16:33:11.784 [restartedMain] INFO  c.d.Application - [logStarting,50] - Starting Application on WQ-20180902UAPD with PID 6080 (G:\nanyang\Supervise\target\classes started by Administrator in G:\nanyang\Supervise)
+16:33:11.812 [restartedMain] INFO  c.d.Application - [logStartupProfileInfo,666] - The following profiles are active: test
+16:33:23.582 [restartedMain] INFO  o.a.s.c.e.EhCacheManager - [getCache,158] - Cache with name 'com.datcent.framework.shiro.realm.UserRealm.authorizationCache' does not yet exist.  Creating now.
+16:33:23.584 [restartedMain] INFO  o.a.s.c.e.EhCacheManager - [getCache,165] - Added EhCache named [com.datcent.framework.shiro.realm.UserRealm.authorizationCache]
+16:33:26.512 [restartedMain] INFO  o.a.s.c.e.EhCacheManager - [getCache,169] - Using existing EHCache named [loginRecordCache]
+16:33:28.875 [restartedMain] INFO  o.a.c.h.Http11NioProtocol - [log,180] - Initializing ProtocolHandler ["http-nio-8081"]
+16:33:28.948 [restartedMain] INFO  o.a.c.c.StandardService - [log,180] - Starting service [Tomcat]
+16:33:28.949 [restartedMain] INFO  o.a.c.c.StandardEngine - [log,180] - Starting Servlet Engine: Apache Tomcat/8.5.32
+16:33:28.959 [localhost-startStop-1] INFO  o.a.c.c.AprLifecycleListener - [log,180] - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\Program Files\Java\jdk1.8.0_101\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;G:\apache-maven-3.5.4\bin;D:\Program Files\Java\jdk1.8.0_101/bin;D:\Program Files\Java\jdk1.8.0_101/jre/bin;G:\svn\bin;G:\TortoiseSVN\bin;G:\apache-tomcat-8.5.35\bin;G:\apache-tomcat-8.5.35\lib;C:\Program Files (x86)\OpenVPN\bin;.]
+16:33:29.323 [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,180] - Initializing Spring embedded WebApplicationContext
+16:33:30.590 [restartedMain] INFO  c.a.d.p.DruidDataSource - [init,1002] - {dataSource-1} inited
+16:33:32.173 [restartedMain] INFO  o.a.e.i.d.DbSqlSession - [executeSchemaResource,1240] - performing create on engine with resource org/activiti/db/create/activiti.mysql.create.engine.sql
+16:33:32.173 [restartedMain] INFO  o.a.e.i.d.DbSqlSession - [executeSchemaResource,1256] - Found MySQL: majorVersion=5 minorVersion=1
+16:33:33.686 [restartedMain] INFO  c.a.d.p.DruidDataSource - [close,1885] - {dataSource-1} closing ...
+16:33:33.704 [restartedMain] INFO  c.a.d.p.DruidDataSource - [close,1955] - {dataSource-1} closed
+16:33:33.711 [restartedMain] INFO  o.a.c.c.StandardService - [log,180] - Stopping service [Tomcat]
+16:39:30.433 [restartedMain] INFO  c.d.Application - [logStarting,50] - Starting Application on WQ-20180902UAPD with PID 3960 (G:\nanyang\Supervise\target\classes started by Administrator in G:\nanyang\Supervise)
+16:39:30.442 [restartedMain] INFO  c.d.Application - [logStartupProfileInfo,666] - The following profiles are active: pro
+16:39:37.177 [restartedMain] INFO  o.a.s.c.e.EhCacheManager - [getCache,158] - Cache with name 'com.datcent.framework.shiro.realm.UserRealm.authorizationCache' does not yet exist.  Creating now.
+16:39:37.179 [restartedMain] INFO  o.a.s.c.e.EhCacheManager - [getCache,165] - Added EhCache named [com.datcent.framework.shiro.realm.UserRealm.authorizationCache]
+16:39:39.034 [restartedMain] INFO  o.a.s.c.e.EhCacheManager - [getCache,169] - Using existing EHCache named [loginRecordCache]
+16:39:40.641 [restartedMain] INFO  o.a.c.h.Http11NioProtocol - [log,180] - Initializing ProtocolHandler ["http-nio-80"]
+16:39:40.665 [restartedMain] INFO  o.a.c.c.StandardService - [log,180] - Starting service [Tomcat]
+16:39:40.666 [restartedMain] INFO  o.a.c.c.StandardEngine - [log,180] - Starting Servlet Engine: Apache Tomcat/8.5.32
+16:39:40.674 [localhost-startStop-1] INFO  o.a.c.c.AprLifecycleListener - [log,180] - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\Program Files\Java\jdk1.8.0_101\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;G:\apache-maven-3.5.4\bin;D:\Program Files\Java\jdk1.8.0_101/bin;D:\Program Files\Java\jdk1.8.0_101/jre/bin;G:\svn\bin;G:\TortoiseSVN\bin;G:\apache-tomcat-8.5.35\bin;G:\apache-tomcat-8.5.35\lib;C:\Program Files (x86)\OpenVPN\bin;.]
+16:39:40.898 [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,180] - Initializing Spring embedded WebApplicationContext
+16:39:41.808 [restartedMain] INFO  c.a.d.p.DruidDataSource - [init,1002] - {dataSource-1} inited
+16:39:42.839 [restartedMain] INFO  o.a.e.i.ProcessEngineImpl - [<init>,85] - ProcessEngine default created
+16:39:42.840 [restartedMain] INFO  o.a.e.i.a.AbstractAsyncJobExecutor - [start,119] - Starting up the default async job executor [org.activiti.spring.SpringAsyncExecutor].
+16:39:42.842 [Thread-34] INFO  o.a.e.i.a.AcquireTimerJobsRunnable - [run,45] - starting to acquire async jobs due
+16:39:42.842 [Thread-35] INFO  o.a.e.i.a.AcquireAsyncJobsDueRunnable - [run,45] - starting to acquire async jobs due
+16:39:45.940 [restartedMain] INFO  o.q.i.StdSchedulerFactory - [instantiate,1208] - Using default implementation for ThreadExecutor
+16:39:45.967 [restartedMain] INFO  o.q.c.SchedulerSignalerImpl - [<init>,61] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+16:39:45.968 [restartedMain] INFO  o.q.c.QuartzScheduler - [<init>,229] - Quartz Scheduler v.2.3.0 created.
+16:39:45.981 [restartedMain] INFO  o.q.c.QuartzScheduler - [initialize,294] - Scheduler meta-data: Quartz Scheduler (v2.3.0) 'DatcentScheduler' with instanceId 'WQ-20180902UAPD1563352785944'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 20 threads.
+  Using job-store 'org.springframework.scheduling.quartz.LocalDataSourceJobStore' - which supports persistence. and is clustered.
+
+16:39:45.982 [restartedMain] INFO  o.q.i.StdSchedulerFactory - [instantiate,1362] - Quartz scheduler 'DatcentScheduler' initialized from an externally provided properties instance.
+16:39:45.982 [restartedMain] INFO  o.q.i.StdSchedulerFactory - [instantiate,1366] - Quartz scheduler version: 2.3.0
+16:39:45.985 [restartedMain] INFO  o.q.c.QuartzScheduler - [setJobFactory,2287] - JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@45b3dae
+16:39:52.148 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - [initHandlerMethods,69] - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+16:39:56.887 [restartedMain] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - [start,147] - Context refreshed
+16:39:56.943 [restartedMain] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - [start,150] - Found 1 custom documentation plugin(s)
+16:39:57.773 [restartedMain] INFO  s.d.s.w.s.ApiListingReferenceScanner - [scan,41] - Scanning for api listing references
+16:39:58.296 [restartedMain] INFO  o.a.c.h.Http11NioProtocol - [log,180] - Starting ProtocolHandler ["http-nio-80"]
+16:39:58.316 [restartedMain] INFO  o.a.t.u.n.NioSelectorPool - [log,180] - Using a shared selector for servlet write/read
+16:39:58.391 [restartedMain] INFO  c.d.Application - [logStarted,59] - Started Application in 29.179 seconds (JVM running for 32.063)
+16:39:59.298 [Quartz Scheduler [DatcentScheduler]] INFO  o.q.c.QuartzScheduler - [start,547] - Scheduler DatcentScheduler_$_WQ-20180902UAPD1563352785944 started.
+16:50:07.928 [http-nio-80-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,180] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+16:50:08.056 [http-nio-80-exec-1] INFO  o.a.s.s.m.AbstractValidatingSessionManager - [enableSessionValidation,233] - Enabling session validation scheduler...
+16:50:08.097 [http-nio-80-exec-1] INFO  o.a.s.c.e.EhCacheManager - [getCache,158] - Cache with name 'shiro-activeSessionCache' does not yet exist.  Creating now.
+16:50:08.098 [http-nio-80-exec-1] INFO  o.a.s.c.e.EhCacheManager - [getCache,165] - Added EhCache named [shiro-activeSessionCache]
+16:50:09.059 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+16:50:09.101 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. [1] sessions were stopped.
+16:50:21.532 [pool-2-thread-1] INFO  c.d.c.u.h.HttpUtils - [sendPost,141] - sendPost - http://ip.taobao.com/service/getIpInfo.php?ip=127.0.0.1
+16:50:21.617 [pool-2-thread-1] INFO  c.d.c.u.h.HttpUtils - [sendPost,160] - recv - {"code":0,"data":{"ip":"127.0.0.1","country":"XX","area":"","region":"XX","city":"内网IP","county":"内网IP","isp":"内网IP","country_id":"xx","area_id":"","region_id":"xx","city_id":"local","county_id":"local","isp_id":"local"}}
+16:50:21.804 [pool-2-thread-2] INFO  c.d.c.u.h.HttpUtils - [sendPost,141] - sendPost - http://ip.taobao.com/service/getIpInfo.php?ip=127.0.0.1
+16:50:21.856 [pool-2-thread-2] INFO  c.d.c.u.h.HttpUtils - [sendPost,160] - recv - {"code":0,"data":{"ip":"127.0.0.1","country":"XX","area":"","region":"XX","city":"内网IP","county":"内网IP","isp":"内网IP","country_id":"xx","area_id":"","region_id":"xx","city_id":"local","county_id":"local","isp_id":"local"}}
+16:50:21.852 [pool-2-thread-1] INFO  sys-user - [run,111] - [127.0.0.1]XX 内网IP[admin][Success][登录成功]
+16:50:21.859 [pool-2-thread-1] INFO  c.d.c.u.h.HttpUtils - [sendPost,141] - sendPost - http://ip.taobao.com/service/getIpInfo.php?ip=127.0.0.1
+16:50:21.891 [pool-2-thread-1] INFO  c.d.c.u.h.HttpUtils - [sendPost,160] - recv - {"code":0,"data":{"ip":"127.0.0.1","country":"XX","area":"","region":"XX","city":"内网IP","county":"内网IP","isp":"内网IP","country_id":"xx","area_id":"","region_id":"xx","city_id":"local","county_id":"local","isp_id":"local"}}
+16:53:20.278 [pool-2-thread-2] INFO  c.d.c.u.h.HttpUtils - [sendPost,141] - sendPost - http://ip.taobao.com/service/getIpInfo.php?ip=127.0.0.1
+17:00:09.072 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+17:00:09.077 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. No sessions were stopped.
+17:04:47.875 [pool-2-thread-1] INFO  c.d.c.u.h.HttpUtils - [sendPost,141] - sendPost - http://ip.taobao.com/service/getIpInfo.php?ip=127.0.0.1
+17:10:09.085 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+17:10:09.088 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. No sessions were stopped.
+17:20:09.097 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+17:20:09.100 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. No sessions were stopped.
+17:30:09.110 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+17:30:09.113 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. No sessions were stopped.
+17:40:09.123 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+17:40:09.134 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. [1] sessions were stopped.
+17:50:09.135 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+17:50:09.139 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. No sessions were stopped.
+18:00:09.147 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+18:00:09.158 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. No sessions were stopped.
+18:10:09.161 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+18:10:09.164 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. No sessions were stopped.
+18:20:09.173 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+18:20:09.176 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. No sessions were stopped.
+18:30:09.185 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+18:30:09.188 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. No sessions were stopped.
+18:40:09.199 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+18:40:09.202 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. No sessions were stopped.
+18:50:09.211 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+18:50:09.214 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. No sessions were stopped.
+19:00:09.223 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+19:00:09.226 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. No sessions were stopped.
+19:10:09.237 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+19:10:09.240 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. No sessions were stopped.

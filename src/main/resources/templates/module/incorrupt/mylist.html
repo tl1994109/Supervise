@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/jquery-layout/jquery.layout-latest.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/jquery-ztree/3.5/css/metro/zTreeStyle.css}" rel="stylesheet"/>
+<body class="gray-bg">
+<div class="container-div ui-layout-center">
+    <div class="row">
+        <div class="col-sm-12 select-info search-collapse">
+            <form id="user-form" class="form-horizontal">
+                <div class="form-group select-info-container">
+                    <div class="col-sm-4">
+                        <label>姓名：</label>
+                        <input type="text"  name="jbqkXm">
+                    </div>
+                    <div class="col-sm-4 select-info-btn">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="find()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <input type="hidden" th:value="${sfz}" id="sfz">
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:src="@{/ajax/libs/jquery-layout/jquery.layout-latest.js}"></script>
+<script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
+<script th:inline="javascript">
+    var detailFlag = [[${@permission.hasPermi('module:basicinformation:detail')}]];
+    var prefix = ctx + "module/basicinformation";
+    var sfz = $("#sfz").val();
+    $(function() {
+        queryUserList();
+    });
+
+    function find(formId){
+        var currentId = toolUtil.isEmpty(formId) ? $('form').attr('id') : formId;
+        var params = $("#bootstrap-table").bootstrapTable('getOptions');
+        params.queryParams = function (params) {
+            var search = {};
+            $.each($("#" + currentId).serializeArray(), function (i, field) {
+                search[field.name] = field.value;
+            });
+            search.pageSize = params.limit;
+            search.pageNum = params.offset / params.limit + 1;
+            search.searchValue = params.search;
+            search.orderByColumn = params.sort;
+            search.isAsc = params.order;
+            search.jbqkSfzh=sfz
+            return search;
+        }
+        $("#bootstrap-table").bootstrapTable('refresh', params);
+    }
+
+    function queryUserList() {
+        var options = {
+            url: prefix + "/mylist",
+            search: false,
+            queryParams: function (params) {
+                return {
+                    // 传递参数查询参数
+                    pageSize: params.limit,
+                    pageNum: params.offset / params.limit + 1,
+                    searchValue: params.search,
+                    orderByColumn: params.sort,
+                    isAsc: params.order,
+                    jbqkSfzh:sfz
+                };
+            },
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field : 'jbqkXm',
+                    title : '姓名',
+                },
+                {
+                    field : 'jbqkXb',
+                    title : '性别',
+                    formatter: function(value, row, index) {
+                        if(value==0){
+                            return "男";
+                        }else if(value==1){
+                            return "女";
+                        }else{
+                            return "未知";
+                        }
+                    }
+                },
+                {
+                    field : 'jbqkCsny',
+                    title : '出生年月',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkCym',
+                    title : '曾用名',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkMz',
+                    title : '民族',
+                },
+                {
+                    field : 'jbqkSfzh',
+                    title : '身份证号',
+                },
+                {
+                    field : 'jbqkJg',
+                    title : '籍贯',
+                },
+                {
+                    field : 'jbqkHyzk',
+                    title : '婚姻状况',
+                },
+                {
+                    field : 'jbqkWhcd',
+                    title : '文化程度',
+                },
+                {
+                    field : 'jbqkZzmm',
+                    title : '政治面貌',
+                },
+                {
+                    field : 'jbqkRdsj',
+                    title : '入党时间',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkCjgzsj',
+                    title : '参加工作时间',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkDw',
+                    title : '单位',
+
+                },
+                {
+                    field : 'jbqkBm',
+                    title : '部门',
+                },
+                {
+                    field : 'jbqkDwxz',
+                    title : '单位性质',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkZw',
+                    title : '职位',
+                },
+                {
+                    field : 'jbqkJb',
+                    title : '级别',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkZc',
+                    title : '职称',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkFggz',
+                    title : '分管工作',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkRxzsj',
+                    title : '任现职时间',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkZz',
+                    title : '住址',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkYb',
+                    title : '邮编',
+                    visible: false,
+                },
+                {
+                    field : 'isEdit',
+                    title : '状态',
+                    formatter: function(value, row, index) {
+                        if(row.isEdit == '0'){
+                            return "<span class='badge badge-primary'>通过</span>";
+                        }else if(row.isEdit == '1'){
+                            return "<span class='badge badge-danger'>不通过</span>";
+                        }else if(row.isEdit == '9' && row.approvePerson == null){
+                            return "<span class='badge badge-info'>未提交审核</span>";
+                        }else if(row.isEdit == '9' && row.approvePerson != null){
+                            return "<span class='badge badge-warning'>待审核</span>";
+                        }
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        var cid = [[${id}]];
+                        if(row.jbqkCid == cid){
+                            actions.push('<a class="btn btn-primary btn-xs" href="#" onclick="edit(\'' + row.jbqkCid + '\')"><i class="fa fa-edit"></i>修改</a> ');
+                        }
+                        if(row.approvePerson == sfz && row.isEdit == '9'){
+                            actions.push('<a class="btn btn-primary btn-xs" href="#" onclick="approve(\''+row.jbqkXm+'\',\'' + row.jbqkSfzh + '\')"><i class="fa fa-plug"></i>审核</a> ');
+                        }
+                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="getDetail(\'' + row.jbqkCid + '\')"><i class="fa fa-address-book"></i>查看</a> ');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    }
+
+
+    function queryDeptTree()
+    {
+
+        var url = ctx + "system/courtOrgan/treeData?deptType=99";
+
+        var options = {
+            url: url,
+            expandLevel: 1,
+
+            onClick : zOnClick
+        };
+        $.tree.init(options);
+
+        function zOnClick(event, treeId, treeNode) {
+
+            $("#deptId").val(treeNode.id) ;
+            $("#parentId").val(treeNode.pId);
+            $.table.search();
+        }
+    }
+
+
+
+
+
+    $('#btnExpand').click(function() {
+        $._tree.expandAll(true);
+        $(this).hide();
+        $('#btnCollapse').show();
+    });
+
+    $('#btnCollapse').click(function() {
+        $._tree.expandAll(false);
+        $(this).hide();
+        $('#btnExpand').show();
+    });
+
+    $('#btnRefresh').click(function() {
+        queryDeptTree();
+    });
+
+    /*用户管理-部门*/
+    function dept() {
+        var url = ctx + "system/dept";
+        createMenuItem(url, "部门管理");
+    }
+
+    function getDetail(jbqkCid) {
+        var url = ctx + 'module/basicinformation/detail/' + jbqkCid;
+        createMenuItem(url,"查看");
+    }
+
+    function edit(cid){
+        var url = ctx+'module/basicinformation/editincorrupt/'+cid;
+        createMenuItem(url,"廉政档案填写");
+    }
+
+    function approve(name,jbqkSfzh){
+        $.modal.confirm('是否同意<b style="color:red">'+name+'</b>廉政档案提交?<br><input type="radio" value="0" name="isEdit" checked>同意&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" value="1" name="isEdit">不同意'
+            ,function(){
+                var isEdit= $("input[name='isEdit']:checked").val();
+                var config = {
+                    url:ctx+'module/basicinformation/approve',
+                    type:'post',
+                    data:{"isEdit":isEdit,"jbqkSfzh":jbqkSfzh},
+                    success:function (result) {
+                        if(result.code == web_status.SUCCESS){
+                            $.modal.msgSuccess(result.msg);
+                            $("#bootstrap-table").bootstrapTable('refresh', {
+                                silent: true
+                            });
+                        }else{
+                            $.modal.msgError(result.msg)
+                        }
+                    },
+                    error:function(data){
+                        $.modal.msgError(data)
+                    }
+                };
+                $.ajax(config)
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+<div class="col-sm-12 select-info search-collapse">
+<form class="form-horizontal m" id="form-dubvioEvent-edit" th:object="${dubvioEvent}">
+    <input type="hidden" id="dubvioId"  name="dubvioId"  th:field="*{dubvioId}" >
+                <div class="form-group select-info-container">
+
+                    <div class="col-sm-4" style="float: none;overflow: hidden;margin: 0 auto;width: 60%;">
+                        <label>可疑点：</label>
+                        <input type="text"  name="dubvioStrategyName" th:field="*{dubvioStrategyName}" readonly="readonly">
+                    </div>
+
+                    <div class="col-sm-4" style="float: none;overflow: hidden;margin: 20px auto;width: 60%;">
+                        <label>案号：</label>
+                        <input type="text"  name="jbxxAh" th:field="*{jbxxAh}" readonly="readonly">
+                    </div>
+
+                    <div class="col-sm-4" style="float: none;overflow: hidden;margin: 0 auto;width: 60%;">
+                        <label>审批人</label>
+                        <select id="approver" name="approver"  readonly="readonly">
+                            <option th:each="userList : ${userList}" th:text="${userList.userName}" th:value="${userList.userId}"></option>
+                        </select>
+                    </div>
+
+                    <!--<div class="col-sm-4">-->
+                        <!--&lt;!&ndash;<label>案件编号：</label>&ndash;&gt;-->
+                        <!--<input type="hidden"  name="jbxxAjbh" th:field="*{jbxxAjbh}">-->
+                    <!--</div>-->
+                </div>
+
+                <div class="form-group select-info-container">
+
+                    <div class="col-sm-4">
+                        <!--<label>策略ID：</label>-->
+                        <input type="hidden"  name="dubvioStrategyId" th:field="*{dubvioStrategyId}">
+                    </div>
+
+
+                    <div class="col-sm-4">
+                        <!--<label>被告人：</label>-->
+                        <input type="hidden"  name="jbxxBgr" th:field="*{jbxxBgr}" readonly="readonly">
+                    </div>
+                    <div class="col-sm-4">
+                        <!--<label>案件类别：</label>-->
+                        <input type="hidden"  name="jbxxAjlb" th:field="*{jbxxAjlb}" readonly="readonly">
+                    </div>
+
+
+
+                    <div class="col-sm-4">
+                        <!--<label>法官ID：</label>-->
+                        <input type="hidden"  name="jbxxCbrId" th:field="*{jbxxCbrId}">
+                    </div>
+
+
+                    <div class="col-sm-4">
+                        <!--<label>法官姓名：</label>-->
+                        <input type="hidden"  name="jbxxCbrName" th:field="*{jbxxCbrName}">
+                    </div>
+                </div>
+
+                <div class="form-group select-info-container">
+                    <div class="col-sm-4">
+                        <!--<label>收案日期：</label>-->
+                        <input type="hidden"  name="jbxxSarq" th:field="*{jbxxSarq}" readonly="readonly">
+                    </div>
+
+                    <div class="col-sm-4">
+                        <!--<label>立案日期：</label>-->
+                        <input type="hidden"  name="jbxxLarq" th:field="*{jbxxLarq}" readonly="readonly">
+                    </div>
+
+                    <div class="col-sm-4">
+                        <!--<label>分案日期：</label>-->
+                        <input type="hidden"  name="jbxxFarq" th:field="*{jbxxFarq}" readonly="readonly">
+                    </div>
+
+                    <div class="col-sm-4">
+                        <!--<label>承办庭ID：</label>-->
+                        <input type="hidden"  name="jbxxCbtId" th:field="*{jbxxCbtId}" >
+                    </div>
+                    <div class="col-sm-4">
+                        <!--<label>承办庭名称：</label>-->
+                        <input type="hidden"  name="jbxxCbtName" th:field="*{jbxxCbtName}">
+                    </div>
+
+    
+
+                </div>
+
+                <div class="form-group select-info-container">
+
+
+                    <div class="col-sm-4">
+                        <!--<label>开庭日期：</label>-->
+                        <input type="hidden"  name="jbxxKtrq" th:field="*{jbxxKtrq}" readonly="readonly">
+                    </div>
+                    <div class="col-sm-4">
+                        <!--<label>结案日期：</label>-->
+                        <input type="hidden"  name="jbxxJarq" th:field="*{jbxxJarq}" readonly="readonly">
+                    </div>
+                    <div class="col-sm-4">
+                        <!--<label>归档日期：</label>-->
+                        <input type="hidden"  name="jbxxGdrq" th:field="*{jbxxGdrq}" readonly="readonly">
+                    </div>
+                </div>
+
+                <!--<div class="form-group select-info-container">-->
+
+
+                    <!--<div class="col-sm-4">-->
+                       <!--&lt;!&ndash;<label>风险等级</label>&ndash;&gt;-->
+                        <!--<select id="risksLevel" name="risksLevel" th:with="type=${@dict.getType('risks_grades')}"  disabled="true">-->
+                            <!--<option value="" >请选择</option>-->
+                            <!--<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{risksLevel}"  ></option>-->
+                        <!--</select>-->
+                    <!--</div>-->
+
+                    <!--<div class="col-sm-4">-->
+                        <!--&lt;!&ndash;<label>创建时间：</label>&ndash;&gt;-->
+                        <!--<input type="hidden"  name="createTime" th:field="*{createTime}">-->
+                    <!--</div>-->
+
+
+
+
+
+
+                    <!--&lt;!&ndash;<label class="col-sm-3 control-label">审批人：</label>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="col-sm-8">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<select id="approver" name="approver" class="form-control m-b">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<option th:each="userList : ${userList}" th:text="${userList.userName}" th:value="${userList.userId}"></option>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--</div>-->
+
+    <div class="form-group">
+        <div class="form-control-static col-sm-offset-5">
+            <button type="submit" class="btn btn-primary">确认删除</button>
+            <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+        </div>
+    </div>
+    </form>
+</div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+    $(function() {
+    $('.summernote').summernote({
+        height : '220px',
+        lang : 'zh-CN'
+    });
+
+
+
+    });
+
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+    });
+
+    var prefix = ctx + "module/dubvioEvent"
+    $("#form-dubvioEvent-edit").validate({
+        rules:{
+                dubvioId:{
+                required:true,
+            },
+                dubvioStrategyId:{
+                required:true,
+            },
+                jbxxAjbh:{
+                required:true,
+            },
+                jbxxAh:{
+                required:true,
+            },
+
+
+        },
+        submitHandler: function(form) {
+
+            // var row=0;
+            //
+            // $.operate.save(prefix + "/edit", $('#form-dubvioEvent-edit').serialize());
+            add();
+        }
+    });
+
+
+
+    function add(){
+
+        var dubvioId = $("#dubvioId").val();
+
+        var approver = $("#approver").val();
+        var approverName = $("#approver option:selected").text();
+        $.ajax({
+            cache : true,
+            type : "POST",
+            url : prefix + "/releaseRemoveDubvioEvent",
+            data : {
+                "dubvioId": dubvioId,
+                "approver": approver,
+                "approverName": approverName,
+            },
+            async : true,
+            error : function(request) {
+                $.modal.alertError("系统错误");
+            },
+            success : function(data) {
+                if(data.code === 0){
+                    modalComponent.msgWarning(data.msg);
+                    window.parent.location.reload();
+                    modalComponent.close();
+                }else{
+                    modalComponent.msgWarning(data.msg)
+                }
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

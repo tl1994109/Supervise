@@ -1,0 +1,173 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+    <input type="hidden"  name="id" id="id" th:value="${id}">
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:clue:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:clue:remove')}]];
+    var releaseFlag = [[${@permission.hasPermi('module:processMatter:addDubvioEvent')}]];
+    var listFlag = [[${@permission.hasPermi('module:clue:list')}]];
+    var datas_18 = [[${@dict.getType('risks_grades')}]];
+    var prefix = ctx + "module/statistics";
+    $(function() {
+        var options = {
+            url: prefix + "/getTribunalSuspectCountByCourtId",
+            search: false,
+            showFooter: true,
+            queryParams: queryParams,
+            columns: [
+                {
+                    field : 'jbxx_cbt_id',
+                    title : '承办庭编号',
+                },
+                {
+                    field : 'jbxx_cbt_name',
+                    title : '承办庭名称',
+
+                },
+                {
+                    field: 'ms',
+                    title: '民事',
+                    formatter: function (value, row, index) {
+                        var ms = "1";
+                        if (row.ms == 0) {
+                            return "<font >" + row.ms + "</font>";
+                        } else {
+                            return "<a style='text-decoration:none'  onclick='cbtDetail(" + row.jbxx_cbt_id + "," + ms + ")' ><font color='blue'>" + row.ms + "</font></a>";
+                        }
+                    },
+                    footerFormatter:function (value) {
+                        var sumBalance = 0;
+                        for (var i in value) {
+                            sumBalance += parseFloat(value[i].ms);
+                        }
+                        return "民事：" + sumBalance;
+                    }
+                },
+                {
+                    field: 'xs',
+                    title: '刑事',
+                    formatter: function (value, row, index) {
+                        var xs = "2";
+                        if (row.xs == 0) {
+                            return "<font >" + row.xs + "</font>";
+                        } else {
+
+                            return "<a style='text-decoration:none' onclick='cbtDetail(" + row.jbxx_cbt_id + "," + xs + ")' ><font color='blue'>" + row.xs + "</font></a>";
+                        }
+                    },
+                    footerFormatter:function (value) {
+                        var sumBalance = 0;
+                        for (var i in value) {
+                            sumBalance += parseFloat(value[i].xs);
+                        }
+                        return "刑事：" + sumBalance;
+                    }
+                },
+                {
+                    field: 'xz',
+                    title: '行政',
+                    formatter: function (value, row, index) {
+                        var xs = "3";
+                        if (row.xz == 0) {
+                            return "<font >" + row.xz + "</font>";
+                        } else {
+
+                            return "<a style='text-decoration:none' onclick='cbtDetail(" + row.jbxx_cbt_id + "," + xz + ")' ><font color='blue'>" + row.xs + "</font></a>";
+                        }
+                    },
+                    footerFormatter:function (value) {
+                        var sumBalance = 0;
+                        for (var i in value) {
+                            sumBalance += parseFloat(value[i].xz);
+                        }
+                        return "行政：" + sumBalance;
+                    }
+                },
+                {
+                    field: 'zx',
+                    title: '执行',
+                    formatter: function (value, row, index) {
+                        var xs = "4";
+                        if (row.zx == 0) {
+                            return "<font >" + row.zx + "</font>";
+                        } else {
+
+                            return "<a style='text-decoration:none' onclick='cbtDetail(" + row.jbxx_cbt_id + "," + zx + ")' ><font color='blue'>" + row.xs + "</font></a>";
+                        }
+                    },
+                    footerFormatter:function (value) {
+                        var sumBalance = 0;
+                        for (var i in value) {
+                            sumBalance += parseFloat(value[i].zx);
+                        }
+                        return "执行：" + sumBalance;
+                    }
+                },
+                {
+                    field : 'total',
+                    title : '数量',
+                    formatter:function(value,row,index){
+                        if (row.total==0){
+                            return "<font >"+row.total+"</font>";
+                        }else {
+                            return "<a style='text-decoration:none' onclick='cbtDetail("+row.jbxx_cbt_id+")' ><font color='blue'>" + row.total +"</font></a>";
+                        }
+                    },
+                    footerFormatter:function (value) {
+                        var sumBalance = 0;
+                        for (var i in value) {
+                            sumBalance += parseFloat(value[i].total);
+                        }
+                        return "总数：" + sumBalance;
+                    }
+                },
+            ]
+        };
+        initSimpleTabl.init(options);
+    });
+
+    function queryParams(params) {
+        var id=$("#id").val();
+        return {
+            pageSize:       params.limit,
+            pageNum:        params.offset / params.limit + 1,
+            searchValue:    params.search,
+            orderByColumn:  params.sort,
+            isAsc:          params.order,
+            id : id
+        };
+    }
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime', theme: 'molv'});
+        laydate.render({elem: '#endTime_12', theme: 'molv'});
+        laydate.render({elem: '#startTime_13', theme: 'molv'});
+        laydate.render({elem: '#endTime_13', theme: 'molv'});
+        laydate.render({elem: '#startTime_14', theme: 'molv'});
+        laydate.render({elem: '#endTime_14', theme: 'molv'});
+        laydate.render({elem: '#startTime_15', theme: 'molv'});
+        laydate.render({elem: '#endTime_15', theme: 'molv'});
+        laydate.render({elem: '#startTime_16', theme: 'molv'});
+        laydate.render({elem: '#endTime_16', theme: 'molv'});
+        laydate.render({elem: '#startTime_17', theme: 'molv'});
+        laydate.render({elem: '#endTime_17', theme: 'molv'});
+    });
+
+    function cbtDetail(id){
+        var url = prefix + '/suspectsDetailByTribunal?id='+id;
+        createMenuItem(url, "承办庭可疑点详情");
+    }
+
+</script>
+</body>
+</html>

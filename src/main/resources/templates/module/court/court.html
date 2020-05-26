@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <div class="container-div">
+		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+			<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="module:court:add">
+				<i class="fa fa-plus"></i> 新增
+			</a>
+			<a class="btn btn-info btn-detail disabled" onclick="$.operate.detailFull()"
+			   shiro:hasPermission="module:court:list">
+				<i class="fa fa-info"></i> 详细
+			</a>
+			<a class="btn btn-warning btn-edit disabled" onclick="$.operate.editFull()"
+			   shiro:hasPermission="module:court:edit">
+				<i class="fa fa-edit"></i> 编辑
+			</a>
+			<a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="module:court:remove">
+				<i class="fa fa-trash-o"></i> 删除
+			</a>
+		</div>
+			
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('module:court:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('module:court:remove')}]];
+        var prefix = ctx + "module/court";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                modalName: "法院 ",
+                search:false,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'courtId', 
+					title : '法院ID' 
+				},
+				{
+					field : 'courtName', 
+					title : '法院名称' 
+				},
+				{
+					field : 'courtAddress', 
+					title : '法院地址' 
+				},
+				{
+					field : 'courtPersonName', 
+					title : '法院负责人' 
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.courtId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.courtId + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

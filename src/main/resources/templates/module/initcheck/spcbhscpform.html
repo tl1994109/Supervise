@@ -1,0 +1,261 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<style type="text/css">
+    @page {
+        size: auto;
+        margin: 0mm;
+    }
+    .form-container {
+        background-color: #fff;
+        padding-top: 20px;
+    }
+
+    .div-middle {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .div-title {
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        border-bottom: 1px solid #eaeef3;
+    }
+
+    .div-title h2 {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* select下拉框 */
+    .select2-container--default .select2-selection--single {
+        background-color: #fff;
+        border: 1px solid #e5e6e7;
+        border-radius: 5px;
+    }
+
+    textarea {
+        border-color: #e5e6e7;
+    }
+</style>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-md-12 div-middle">
+        <form class="form-horizontal m form-container" id="form-notice-edit">
+            <input id="clueId" name="clueId" type="hidden" th:value="${clue.clueId}">
+            <input type="hidden" name="taskId" th:value="${taskId}" id="taskId">
+            <input type="hidden" name="pid" th:value="${pid}" id="pid">
+            <input type="hidden" th:value="${attchmentId}" id="attchmentId">
+            <input type="hidden" name="nodeFlag" th:value="${nodeFlag}" id="nodeFlag">
+            <input type="hidden" name="count" th:value="${count}" id="count">
+            <input type="hidden" name="clueClassify" th:value="${clueClassify}" id="clueClassify">
+            <div class="form-group">
+                <div class="col-sm-12 div-title">
+                    <h2>审核初步核实呈批</h2>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">表单标题：</label>
+                <div class="col-sm-8">
+                    <input id="attachmentName" name="attachmentName" readonly="readonly" class="form-control" th:value="${attachmentName}"
+                           type="text">
+                </div>
+            </div>
+            <div class="form-group" style="display: none;">
+                <label class="col-sm-3 control-label">表单类型：</label>
+                <div class="col-sm-8">
+                    <input name="formType" id="formType" readonly="readonly" class="form-control" th:value="${formType}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">表单内容：</label>
+                <div class="col-sm-8">
+                    <input id="formContent" name="formContent" type="hidden"  th:value="${formContent}">
+                    <div id="editor" class="summernote" readonly="readonly"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">提出意见：</label>
+                <div class="col-sm-8">
+                    <textarea rows="8" style="width: 100%;resize: none;" id="thcontent" th:text="${content}"
+                              readonly="readonly" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="col-sm-3 control-label">提交人：</label>
+                <div class="col-sm-6 select-info-container">
+                    <input type="text" th:value="${proposerName}" readonly="readonly" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group" id="isok">
+                <label class="col-sm-3 control-label">审批操作：</label>
+                <div class="col-sm-8">
+                    <label class="radio-inline">
+                        <input type="radio" name="isok" value="true" checked> 同意
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="isok" value="false"> 不同意
+                    </label>
+                </div>
+            </div>
+            <!--<div class="form-group ">-->
+                <!--<label class="col-sm-3 control-label">任务办理人：</label>-->
+                <!--<div class="col-sm-6 select-info-container">-->
+                    <!--<select id="approver" name="approver">-->
+                        <!--<option th:each="userList : ${userList}" th:text="${userList.userName}"-->
+                                <!--th:value="${userList.userId}"></option>-->
+                    <!--</select>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="form-group">
+                <label class="col-sm-3 control-label">审批批注：</label>
+                <div class="col-sm-8">
+                    <textarea rows="8" style="width: 100%;" id="opinion" name="opinion"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">历史轨迹：</label>
+                <div class="col-md-8">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                        <th class="col-md-2">活动名称</th>
+                        <th class="col-md-2">审批人</th>
+                        <th class="col-md-2">代理人</th>
+                        <th class="col-md-2">开始时间</th>
+                        <th class="col-md-2">结束时间</th>
+                        <th class="col-md-2">耗时</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody" th:each="task:${hisAct}">
+                        <tr>
+                        <td th:text="${task.actName}"></td>
+                        <td th:text="${task.assignee}"></td>
+                        <td th:text="${task.owner}"></td>
+                        <td th:text="${task.startTime}"></td>
+                        <td th:text="${task.endTime}"></td>
+                        <td th:text="${task.durationInMillis}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-control-static col-sm-offset-5">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                    <button type="button" onclick="doPrint();" class="btn btn-success">打印</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.summernote').summernote({
+            height: '220px',
+            lang: 'zh-CN'
+        });
+        var content = $("#noticeContent").val();
+        $('#editor').code(content);
+        var attchmentId = $("#attchmentId").val();
+        $.get(ctx + "module/dispositionAttachment/select/" + attchmentId, function (data) {
+            $("#formContent").val(data.formContent);
+            var content = $("#formContent").val();
+            $("#attachmentName").val(data.attachmentName);
+            $('#editor').code(content);
+        });
+    });
+    function doPrint() {
+        var  formType=$("#formType").val();
+        if(formType!="" && $("#attachmentName").val()!=""){
+            $.modal.confirm("该操作将被记录，确认打印吗？", function () {
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: ctx + "module/printLog/add",
+                    data: {
+                        "formName":$("#attachmentName").val(),
+                        "clueId":$("#clueId").val(),
+                    },
+                    async: true,
+                    error: function (request) {},
+                    success: function (data) {
+                        var ylbdhtml=window.document.body.innerHTML;
+                        var bdhtml=$('.summernote').code();
+                        window.document.body.innerHTML=bdhtml;
+                        window.print();
+                        window.document.body.innerHTML=ylbdhtml;
+                    }
+                });
+            });
+        }else{
+            $.modal.alertWarning("无打印内容或表单标题为空！");
+        }
+    }
+    var prefix = ctx + "module/initcheck";
+    $("#form-notice-edit").validate({
+        rules: {
+            attachmentName: {
+                required: true,
+            },
+            formContent: {
+                required: true,
+            },
+            formType: {
+                required: true,
+            },
+        },
+        submitHandler: function (form) {
+            var sHTML = $('.summernote').code();
+            $("#formContent").val(sHTML);
+            startClassify();
+        }
+    });
+
+    function startClassify() {
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: prefix + "/spcbhscpCompleTask",
+            data: {
+                "approver": $("#approver").val(),
+                "approverName": $("#approver option:selected").text(),
+                "isok": $("input[name=isok]:checked").val(),
+                "taskId": $("#taskId").val(),
+                "opinion": $("#opinion").val(),
+                "pid": $("#pid").val(),
+                "clueClassify": $('input[name="clueClassify"]:checked').val(),
+                "clueId": $("#clueId").val(),
+                "attachmentId":$("#attchmentId").val(),
+                "attachmentName":$("#attachmentName").val(),
+                "formContent":$("#formContent").val(),
+                "count":$("#count").val(),
+                "formType":$("#formType").val(),
+            },
+            async: true,
+            error: function (request) {
+                $.modal.alertError("系统错误");
+            },
+            success: function (data) {
+                if (data.code === 0) {
+                    modalComponent.msgWarning(data.msg);
+                    window.parent.location.reload();
+                    modalComponent.close();
+                } else {
+                    modalComponent.msgWarning(data.msg)
+                }
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

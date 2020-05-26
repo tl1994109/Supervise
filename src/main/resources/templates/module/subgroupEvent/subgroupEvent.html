@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-info search-collapse">
+        <form id="case" class="form-horizontal">
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>事件ID：</label>
+                    <input type="text" name="eventId">
+                </div>
+                <div class="col-sm-4">
+                    <label>事件名称：</label>
+                    <input type="text" name="eventName">
+                </div>
+                <div class="col-sm-4">
+                    <label>事件类型(0页面跳转 1触发事件)：</label>
+                    <select id="eventType" name="eventType" th:with="type=${@dict.getType('event_type')}">
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>事件方法名称：</label>
+                    <input type="text" name="eventMethod">
+                </div>
+                <div class="col-sm-4">
+                    <label>引用组图：</label>
+                    <select id="diagramId" name="diagramId" th:with="type=${@dict.getType('$list.dictType')}">
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <label>按钮颜色(0蓝色 1绿色 2 黄色 3红色)：</label>
+                    <select id="btnColor" name="btnColor" th:with="type=${@dict.getType('btn_color')}">
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-4 select-time">
+                    <label>创建时间：</label>
+                    <input type="text" class="time-input" id="startTime_7" placeholder="开始时间"
+                           name="params[beginTime_7]"/>
+                    <span class="time-span">-</span>
+                    <input type="text" class="time-input" id="endTime_7" placeholder="结束时间" name="params[endTime_7]"/>
+                </div>
+                <div class="col-sm-4 select-time">
+                    <label>更新时间：</label>
+                    <input type="text" class="time-input" id="startTime_8" placeholder="开始时间"
+                           name="params[beginTime_8]"/>
+                    <span class="time-span">-</span>
+                    <input type="text" class="time-input" id="endTime_8" placeholder="结束时间" name="params[endTime_8]"/>
+                </div>
+            </div>
+            <div cl
+                 ass="form-group select-info-container">
+                <div class="col-sm-12 select-info-btn">
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i
+                            class="fa fa-search"></i>&nbsp;搜索</a>
+                    <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i
+                            class="fa fa-refresh"></i>&nbsp;重置</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+        <a class="btn btn-success" onclick="operateComponent.add('module/subgroupEvent/add','添加事件')"
+           shiro:hasPermission="module:subgroupEvent:add">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+        <a class="btn btn-primary btn-detail disabled" onclick="$.operate.detail()"
+           shiro:hasPermission="module:subgroupEvent:detail">
+            <i class="fa fa-plus"></i> 详细
+        </a>
+        <a class="btn btn-warning btn-edit disabled"
+           onclick="operateComponent.edit('','module/subgroupEvent/edit/{id}','添加事件')"
+           shiro:hasPermission="module:subgroupEvent:edit">
+            <i class="fa fa-plus"></i> 编辑
+        </a>
+        <a class="btn btn-danger btn-del disabled" onclick="operateComponent.removeAll('module/subgroupEvent/remove')"
+           shiro:hasPermission="module:subgroupEvent:remove">
+            <i class="fa fa-trash-o"></i> 删除
+        </a>
+    </div>
+
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:subgroupEvent:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:subgroupEvent:remove')}]];
+    var prefix = ctx + "module/subgroupEvent";
+    var datas_3 = [[${@dict.getType('event_type')}]];
+    var datas_6 = [[${@dict.getType('btn_color')}]];
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            search: false,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'eventId',
+                    title: '事件ID'
+                },
+                {
+                    field: 'eventName',
+                    title: '事件名称'
+                },
+                {
+                    field: 'eventType',
+                    title: '事件类型(0页面跳转 1触发事件)',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return initSimpleTabl.selectDictLabel(datas_3, value);
+                    }
+                },
+                {
+                    field: 'eventMethod',
+                    title: '事件方法名称'
+                },
+                {
+                    field: 'diagramId',
+                    title: '引用组图'
+                },
+                {
+                    field: 'btnColor',
+                    title: '按钮颜色(0蓝色 1绿色 2 黄色 3红色)',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return initSimpleTabl.selectDictLabel(datas_6, value);
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+                {
+                    field: 'updateTime',
+                    title: '更新时间'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="operateComponent.edit(\'' + row.eventId + '\'\,\'module/subgroupEvent/edit/{id}\'\,\'添加事件\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="operateComponent.remove(\'' + row.eventId + '\'\,\'module/subgroupEvent/remove\'\,\'添加事件\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        initSimpleTabl.init(options);
+    });
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime_7', theme: 'molv'});
+        laydate.render({elem: '#endTime_7', theme: 'molv'});
+        laydate.render({elem: '#startTime_8', theme: 'molv'});
+        laydate.render({elem: '#endTime_8', theme: 'molv'});
+    });
+</script>
+</body>
+</html>

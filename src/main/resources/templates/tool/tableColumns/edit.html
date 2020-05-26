@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-tableColumns-edit" th:object="${tableColumns}">
+            <input id="columnId" name="columnId" th:field="*{columnId}"  type="hidden">
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">主键生成规则(0无 1自增长 2 UUID)：</label>
+                <div class="col-sm-8">
+                    <input id="isKey" name="isKey" th:field="*{isKey}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">字段名称：</label>
+                <div class="col-sm-8">
+                    <input id="columnName" name="columnName" th:field="*{columnName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">字段类型：</label>
+                <div class="col-sm-8">
+                    <input id="dataType" name="dataType" th:field="*{dataType}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">非空验证（0:必填 1:可填）：</label>
+                <div class="col-sm-8">
+                    <input id="isNullable" name="isNullable" th:field="*{isNullable}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">字段备注：</label>
+                <div class="col-sm-8">
+                    <input id="columnComment" name="columnComment" th:field="*{columnComment}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">查询条件(0是 1否)：</label>
+                <div class="col-sm-8">
+                    <input id="isSearch" name="isSearch" th:field="*{isSearch}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">显示状态(0显示1隐藏)：</label>
+                <div class="col-sm-8">
+                    <input id="isVisible" name="isVisible" th:field="*{isVisible}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">显示方式(0输入框 1下拉框 2文本框)：</label>
+                <div class="col-sm-8">
+                    <input id="isVisibleType" name="isVisibleType" th:field="*{isVisibleType}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">字典类型：</label>
+                <div class="col-sm-8">
+                    <input id="dictType" name="dictType" th:field="*{dictType}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">显示行数：</label>
+                <div class="col-sm-8">
+                    <input id="visibleRows" name="visibleRows" th:field="*{visibleRows}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">显示列数：</label>
+                <div class="col-sm-8">
+                    <input id="visibleCols" name="visibleCols" th:field="*{visibleCols}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">排序方式(0无 1 desc 2 asc)：</label>
+                <div class="col-sm-8">
+                    <input id="isSortable" name="isSortable" th:field="*{isSortable}" class="form-control" type="text">
+                </div>
+            </div>
+			<div class="form-group">
+				<div class="form-control-static col-sm-offset-5">
+					<button type="submit" class="btn btn-primary">提交</button>
+					<button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "tool/tableColumns"
+		$("#form-tableColumns-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			submitHandler: function(form) {
+				$.operate.save(prefix + "/edit", $('#form-tableColumns-edit').serialize());
+			}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+<link th:href="@{/css/node.css}" rel="stylesheet"/>
+
+<style type="text/css">
+    .node-container {
+        /*width: 300px;*/
+        min-height: 550px;
+        /*background-color: #fff;*/
+        margin-top: 10px;
+
+    }
+</style>
+
+<style type="text/css">
+    .form-container {
+        background-color: #fff;
+        /*padding-top: 20px;*/
+        overflow: hidden;
+    }
+
+    .div-middle {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .div-title {
+        height: 40px;
+        line-height: 40px;
+        text-align: left;
+        border-bottom: 1px solid #eaeef3;
+        margin-left: 20px;
+        font-size: 20px;
+        font-weight: 300;
+    }
+
+    .form-ul {
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 20px 0px;
+    }
+
+    .form-ul li {
+        position: relative;
+        display: block;
+        cursor: pointer;
+        float: left;
+        width: 30%;
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+        border: 1px solid #eaeef3;
+        box-shadow: 0px 10px 30px 0px rgba(153, 153, 153, 0.2);
+    }
+
+    @-moz-document url-prefix() {
+        fieldset {
+            display: table-cell;
+        }
+    }
+
+    .case-wrap {
+        width: 100%;
+        height: auto;
+        background-color: #fff;
+        /*overflow: hidden;*/
+    }
+
+    .case-list {
+        /*width: 100%; *!*/
+        margin: 0 auto;
+        height: auto;
+        /*float: left;*/
+        overflow: hidden;
+        padding: 0px;
+        /* background-color: #f3f3f3; */
+        /*position: absolute;*/
+        /*top: 0;*/
+        /*left: -75px;*/
+        /*z-index: 10;*/
+    }
+
+    .case-list ul {
+        overflow: hidden;
+        /*background-color: #f3f3f3;*/
+        /*width: 120px;*/
+        /*margin-left: 100px;*/
+        /*margin: 0 auto;*/
+        /*border-top: 2px solid #fff;*/
+    }
+
+    .case-list .active a {
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    .case-list li:hover a {
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+    .case-list li {
+        /*float: left;*/
+        width: 120px;
+        height: 45px;
+        margin: 0 auto;
+        line-height: 45px;
+        text-align: center;
+        background: rgba(107, 166, 217, 0.91);
+        /*border-bottom: 1px solid #fff;*/
+    }
+
+    .case-list li a {
+        text-decoration: none;
+        /*background-color: #ecf0f1;*/
+        cursor: pointer;
+        font-size: 16px;
+        color: #fff;
+        display: block;
+        border-bottom: 1px solid #fff;
+        line-height: 44px;
+    }
+
+    .case-container {
+        /*overflow: hidden;*/
+        margin: 0 auto;
+    }
+
+    .case-container .wrap-color {
+        background-color: #f3f3f3;
+    }
+
+    .group-title {
+        background: #fff;
+        margin: 0 auto;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        font-weight: 300;
+        border-bottom: 2px solid #eaeef5;
+    }
+
+    .group-title h1 {
+        margin: 0px;
+        padding: 0px 15px;
+        border-left: 6px solid #2196f3;
+        line-height: 50px;
+
+    }
+
+    .row-container th {
+        background-color: #f3f3f3;
+    }
+
+    .row-container table {
+        margin: 10px 0px;
+        /*width: 95%;*/
+        overflow: hidden;
+    }
+
+    .row-container table th {
+        /*background: #f1f1f1 !important;*/
+        text-align: center;
+    }
+
+    .row-container table thead th {
+        height: 40px;
+        color: #fff;
+        background-color: rgba(107, 166, 217, 0.91);
+    }
+
+    .row-container table thead th a {
+        display: inline-block;
+        line-height: 40px;
+        color: inherit;
+    }
+
+    .row-container table tbody tr {
+        height: 40px;
+    }
+
+    .form-ul li:hover {
+        border: 1px solid #357AB8;
+    }
+
+    .form-li-line {
+        width: 5%;
+        float: left;
+        height: 80px;
+    }
+
+    .form-ul li a {
+        color: #53505f;
+        font-size: 18px;
+        font-weight: 300;
+        cursor: pointer;
+    }
+
+    .form-ul li a .fa-text {
+        padding-right: 10px;
+        font-size: 20px;
+    }
+
+    .fa-ok {
+        position: absolute;
+        overflow: hidden;
+        color: #00B83F;
+        background-color: #fff;
+        right: -7px;
+        top: -9px;
+        font-size: 20px;
+    }
+
+    .fa-not {
+        position: absolute;
+        overflow: hidden;
+        color: #ccc;
+        background-color: #fff;
+        right: -7px;
+        top: -9px;
+        font-size: 20px;
+    }
+    /* 重写bootstrap tab样式  */
+
+    .tab-title {
+        width: 99px;
+        margin-bottom: 20px;
+        /*height: 48.15px;*/
+        cursor: default;
+        background-color: #fff;
+        border-bottom: 2px solid #2196f3;
+        border-bottom-color: none;
+    }
+    .tab-title a{
+        color: #555;
+        display: block;
+        padding: 14px 20px 14px 25px;
+        font-weight: 600;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+    }
+</style>
+
+<body class="gray-bg">
+<div class="wrapper animated fadeInRight" style="height: 100%">
+    <div class="col-sm-12 select-info search-collapse">
+        <form class="form-horizontal form-container" id="">
+            <div class="tab-title">
+                <a>基本信息</a>
+            </div>
+            <input type="hidden" id="count" th:value="${count}">
+            <div class="row-container">
+                <!--<table border="1" cellpadding="0" cellspacing="0" style="margin-top: 0px;margin-left: 20px;">-->
+                    <!--<tbody>-->
+                    <!--<tr align="center">-->
+                        <!--<th class="col-xs-1">案号</th>-->
+                        <!--<td class="col-xs-2"><a href="#" style="text-decoration: underline;color: #23527c;"-->
+                                                <!--onclick='clueDetail()' th:text="${clue.jbxxAh}"></a></td>-->
+                        <!--<th class="col-xs-1">案件类别</th>-->
+                        <!--<td class="col-xs-2" th:text="${clue.jbxxAjlb}"></td>-->
+                        <!--<th class="col-xs-1">线索来源</th>-->
+                        <!--<td class="col-xs-2" th:if="${clue.clueSource eq '1'} ">系统筛查</td>-->
+                        <!--<td class="col-xs-2" th:if="${clue.clueSource eq '2'} ">信访录入</td>-->
+                    <!--</tr>-->
+                    <!--<tr align="center">-->
+                        <!--<th class="col-xs-1">承办庭</th>-->
+                        <!--<td class="col-xs-2" th:text="${clue.jbxxCbtName}"></td>-->
+                        <!--<th class="col-xs-1">反映对象</th>-->
+                        <!--<td class="col-xs-2" th:text="${clue.jbxxCbrName}"></td>-->
+                    <!--</tr>-->
+                    <!--<tr align="center" rowspan="2">-->
+                        <!--<th class="col-xs-1">反映问题</th>-->
+                        <!--<td colspan="5" class="col-xs-2" style="text-align: left;"-->
+                            <!--th:text="${clue.dubvioStrategyName}"></td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+                <div th:if="${clue.clueSource == '1' }">
+                    <div class="row-container">
+                        <table border="1" cellpadding="0" cellspacing="0" style="margin-top: 0px;">
+                            <tbody>
+                            <tr align="center">
+                                <th class="col-xs-1">案号</th>
+                                <td class="col-xs-2" ><a href="#" style="text-decoration: underline;color: #23527c;" onclick='clueDetail()' th:text="${clue.jbxxAh}"></a></td>
+                                <th class="col-xs-1">案件类别</th>
+                                <td class="col-xs-2" th:text="${clue.jbxxAjlb}"></td>
+                                <th class="col-xs-1">线索来源</th>
+                                <td class="col-xs-2" th:if="${clue.clueSource eq '1'} " >系统筛查</td>
+                                <td class="col-xs-2" th:if="${clue.clueSource eq '2'} " >信访录入</td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">承办庭</th>
+                                <td class="col-xs-2" th:text="${clue.jbxxCbtName}"></td>
+                                <th class="col-xs-1">反映对象</th>
+                                <td class="col-xs-2" th:text="${clue.jbxxCbrName}"></td>
+                            </tr>
+                            <tr align="center" rowspan="2">
+                                <th class="col-xs-1">反映问题</th>
+                                <td colspan="5"  class="col-xs-2" style="text-align: left;" th:text="${clue.dubvioStrategyName}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div th:if="${clue.clueSource == '2' }" class="form-group col-sm-12">
+                    <div class="row-container">
+                        <table border="1" cellpadding="0" cellspacing="0" style="margin-top: 0px;" >
+                            <tbody>
+                            <tr align="center">
+                                <th class="col-xs-1">信访序号：</th>
+                                <td class="col-xs-2"><a style="text-decoration: underline;color: #23527c;" th:text="${dubvioEvent.jbxxXfxh}"></a></td>
+                                <th class="col-xs-1">信访反映时间：</th>
+                                <td class="col-xs-2" th:text="${dubvioEvent.jbxxXffysj}"></td>
+                                <th class="col-xs-1">反映人：</th>
+                                <td class="col-xs-2" th:text="${dubvioEvent.dubvioFyr}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">联系方式：</th>
+                                <td class="col-xs-2" th:text="${dubvioEvent.dubvioFyrdh}"></td>
+                                <th class="col-xs-1">反映对象：</th>
+                                <td class="col-xs-2" th:text="${dubvioEvent.dubvioFydx}"></td>
+                                <th class="col-xs-1">信访来源：</th>
+                                <td class="col-xs-2" th:text="${dubvioEvent.jbxxXfly}" ></td>
+                            </tr>
+                            <tr rowspan="2">
+                                <th class="col-xs-1">经办法院：</th>
+                                <td colspan="5" class="col-xs-2" th:text="${dubvioEvent.jbfyName}" style="text-align: left"></td>
+                            </tr>
+                            <tr rowspan="2">
+                                <th class="col-xs-1">反映问题：</th>
+                                <td colspan="5" class="col-xs-2" th:text="${dubvioEvent.dubvioStrategyName}" style="text-align: left"></td>
+                            </tr>
+                            <tr rowspan="2">
+                                <th class="col-xs-1">信访处置情况：</th>
+                                <td colspan="5" class="col-xs-2" th:text="${dubvioEvent.jbxxXfczqk}" style="text-align: left"></td>
+                            </tr>
+                            <tr rowspan="2">
+                                <th class="col-xs-1">信访承办人：</th>
+                                <td colspan="5" class="col-xs-2" th:text="${dubvioEvent.jbxxXfcbr}" style="text-align: left"></td>
+                            </tr>
+                            <tr rowspan="2">
+                                <th class="col-xs-1">信访处置结果：</th>
+                                <td colspan="5" class="col-xs-2" th:text="${dubvioEvent.jbxxXfczjg}" style="text-align: left"></td>
+                            </tr>
+                            <tr rowspan="2">
+                                <th class="col-xs-1">信访备注：</th>
+                                <td colspan="5" class="col-xs-2" th:text="${dubvioEvent.jbxxXfbz}" style="text-align: left"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            <div class="tab-title">
+                <a>处置阶段</a>
+            </div>
+            <div class="form-group">
+                <input type="hidden" name="clueId" id="clueId" th:value="${clueId}">
+                <ul class="col-sm-10 form-ul">
+                    <li onclick="thcpform()">
+                        <i class="fa fa-check-circle-o fa-ok" th:if="${form1}"></i>
+                        <i class="fa fa-check-circle-o fa-not" th:if="!${form1}"></i>
+                        <a href="#"><i class="fa fa-file-text-o fa-text"></i>谈话呈批呈批表</a>
+                    </li>
+                    <div class="form-li-line"></div>
+                    <li onclick="cbhsfa()">
+                        <i class="fa fa-check-circle-o fa-ok" th:if="${form2}"></i>
+                        <i class="fa fa-check-circle-o fa-not" th:if="!${form2}"></i>
+                        <a href="#"><i class="fa fa-paper-plane-o fa-text"></i>谈话笔录</a>
+                    </li>
+                    <div class="form-li-line"></div>
+                    <li onclick="cbhsqkbg()">
+                        <i class="fa fa-check-circle-o fa-ok" th:if="${form3}"></i>
+                        <i class="fa fa-check-circle-o fa-not" th:if="!${form3}"></i>
+                        <a href="#"><i class="fa fa-pencil-square-o fa-text"></i>谈话情况报告及处置意见</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12 div-title" style="margin-top: 20px;font-weight: bolder;font-family: 楷体;">
+                    查看处置流程
+                    <span  th:each="dayCyc:${#numbers.sequence(1,allCount)}">
+                        <a th:if="${count} eq ${dayCyc}" style="" class="btn btn-danger btn-xs count" >
+                            <p style="display: none;"></p>
+                            <i class="fa fa-address-card"></i>
+                            第<span th:text="${dayCyc}"></span>次
+                        </a>
+                        <a th:if="${count} ne ${dayCyc}" style="" class="btn btn-success btn-xs count" >
+                            <p style="display: none;"></p>
+                            <i class="fa fa-address-card"></i>
+                            第<span th:text="${dayCyc}"></span>次
+                        </a>
+                    </span>
+
+                    <span style="float: right;margin-right: 5%;" shiro:hasPermission="module:dispositionAttachment:view" class="btn btn-success btn-xs " onclick="findFile()"><i
+                            class="fa fa-file-archive-o"></i>查看附件<span
+                            class="icon-label label-success"
+                            id="allNewsCount"
+                            th:text="${fileSize}"></span></span>
+                </div>
+            </div>
+            <!--<div class="form-group">-->
+                <!--<div class="col-sm-12 div-title" style="margin-top: 20px;font-weight: bolder;font-family: 楷体;">-->
+                    <!--处置流程-->
+                    <!--<span  th:each="dayCyc:${#numbers.sequence(1,allCount)}">-->
+                        <!--<a th:if="${count} eq ${dayCyc}" style="" class="btn btn-danger btn-xs count" >-->
+                            <!--<p style="display: none;"></p>-->
+                            <!--<i class="fa fa-address-card"></i>-->
+                            <!--第<span th:text="${dayCyc}"></span>次-->
+                        <!--</a>-->
+                        <!--<a th:if="${count} ne ${dayCyc}" style="" class="btn btn-success btn-xs count" >-->
+                            <!--<p style="display: none;"></p>-->
+                            <!--<i class="fa fa-address-card"></i>-->
+                            <!--第<span th:text="${dayCyc}"></span>次-->
+                        <!--</a>-->
+                    <!--</span>-->
+
+                    <!--<span style="float: right;margin-right: 5%;" class="btn btn-success btn-xs " onclick="findFile()"><i-->
+                            <!--class="fa fa-file-archive-o"></i>查看附件<span-->
+                            <!--class="icon-label label-success"-->
+                            <!--id="allNewsCount"-->
+                            <!--th:text="${fileSize}"></span></span>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="form-group">
+                <div class="col-sm-3 node-container">
+                    <div id="img_bag" class="ztb_nav ">
+                        <div id="img" class="ztb_content">
+                            <div style="position:relative;">
+                                <div class="online"></div>
+                                <div class="ztb_main_01">
+                                    <ul class="ztb_content_01" id="ztb_content">
+                                        <li class="ztb_over">
+                                            <p class="ztb_con_text" onclick="clickli(this);">
+                                                谈话处置
+                                            </p>
+                                            <ul class="ztb_content_02">
+                                                <li id="step13"><p>线索处置分类</p></li>
+                                                <li id="step14"><p>处置审批确认</p></li>
+                                            </ul>
+                                        </li>
+                                        <li class="ztb_on">
+                                            <p class="ztb_con_text" onclick="clickli(this);">
+                                                谈话呈批
+                                            </p>
+                                            <ul class="ztb_content_02" id="zb" style="display:block">
+                                                <li id="step15"><a href="#" onclick="thcp();">创建呈批表</a></li>
+                                                <li class="ztb_end" onclick="uploadFile('提交呈批附件','谈话呈批','批示前附件');"><a
+                                                        href="#"><i
+                                                        class="fa fa-upload"></i>提交呈批附件</a></li>
+                                                <li id="step16">呈批表审批确认</li>
+                                                <li class="ztb_end" onclick="uploadFile('提交批示后附件','谈话呈批','批示后附件');"><a
+                                                        href="#"><i
+                                                        class="fa fa-upload"></i>提交批示后附件</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <p class="ztb_con_text" onclick="clickli(this);">
+                                                谈话记录
+                                            </p>
+                                            <ul class="ztb_content_02">
+                                                <li id="step17"><a href="#" onclick="cbhsfa()">新建谈话记录</a></li>
+                                                <li class="ztb_end" onclick="uploadFile('提交批示后附件','谈话记录','谈话相关附件');"><a
+                                                        href="#"><i
+                                                        class="fa fa-upload"></i>提交谈话记录附件</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <p class="ztb_con_text" onclick="clickli(this);">
+                                                核实谈话情况报告
+                                            </p>
+                                            <ul class="ztb_content_02">
+                                                <li id="step19"><a href="#" onclick="cbhsqkbg()">创建情况报告和处置情况</a></li>
+                                                <li class="ztb_end"
+                                                    onclick="uploadFile('提交情况报告和处置情况附件','核实谈话情况报告','批示前附件');"><a
+                                                        href="#"><i
+                                                        class="fa fa-upload"></i>提交情况报告和处置情况附件</a></li>
+                                                <li id="step20"><p>处置建议审批</p></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-9 select-table table-striped" style="width: 73.666667%;">
+                    <table id="bootstrap-tree-table" data-mobile-responsive="true"></table>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+</body>
+<form id="importForm" enctype="multipart/form-data" class="mt20 mb10" style="display: none;">
+    <div class="col-xs-offset-2" style="margin-top: 5%;">
+        <input type="file" id="file" name="file[]" multiple/>
+    </div>
+</form>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var clueId = $("#clueId").val();
+
+    $(function(){
+        $(".count").click(function () {
+            var count=$(this).children("span").text();
+            window.location.href=ctx + "module/problemdisposal/proHandle/" + clueId+"/"+count;
+        });
+    })
+
+
+    function thcpform() {
+        var url = ctx + 'module/problemdisposal/thcpform?clueId=' + clueId+"&count="+$("#count").val();
+        $.modal.openFull("谈话呈批", url);
+    }
+
+    function cbhsfa() {
+        var url = ctx + 'module/problemdisposal/thblform?clueId=' + clueId+"&count="+$("#count").val();
+        $.modal.openFull("谈话笔录", url);
+    }
+
+    function clueDetail() {
+        var url = ctx + 'module/clue/edits?clueId=' + clueId;
+        createMenuItem(url, "案件详情");
+    }
+
+    function findFile() {
+        $.modal.open("相关附件", ctx + "module/dispositionAttachment?clueId=" + clueId);
+    }
+
+    function uploadFile(modalName, fileOfNode, fileOfStatus) {
+        var url=ctx + "module/dispositionAttachment/uploadFileView?clueId=" + clueId + "&fileOfNode=" + fileOfNode + "&fileOfStatus=" + fileOfStatus;
+        url=encodeURI(url);
+        $.modal.open(modalName, url, 400, 200);
+        javascript:void(0);
+    }
+
+    function cbhsqkbg() {
+        var url = ctx + 'module/problemdisposal/thqkbgform?clueId=' + clueId+"&count="+$("#count").val();
+        $.modal.openFull("谈话情况报告及处置意见", url);
+    }
+
+</script>
+
+<script th:inline="javascript">
+    var prefix = ctx + "module/dispositionHandle"
+    $(function () {
+        var options = {
+            id: "deptId",
+            parentId: "parentId",
+            url: prefix + "/list?nodeType=4&clueId=" + $("#clueId").val() + "&count=" + $("#count").val(),
+            createUrl: prefix + "/add/{id}",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove/{id}",
+            modalName: "处置过程",
+            columns: [{
+                field: 'deptName',
+                title: '流程标题',
+                align: "center",
+                width: "25%"
+            },
+                {
+                    field: 'result',
+                    title: '办理方式',
+                    align: "center",
+                    width: "80px"
+                },
+                {
+                    field: 'suggestion',
+                    title: '意见',
+                    align: "center",
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    align: 'center',
+                    width: '60px',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        if (value == "1" || row.way=="归类") {
+                            actions.push("<span class=\"glyphicon glyphicon-ok\" style='color: green' aria-hidden=\"true\"></span>");
+                            var nodeFlag = row.nodeFlag;
+                            for (var i = 13; i <= 20; i++) {
+                                if (nodeFlag == i) {
+                                    $("#step" + i).addClass("ztb_end");
+                                }
+                            }
+                        }
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'createBy',
+                    title: '创建人',
+                    align: "center",
+                    width: '80px',
+                },
+                {
+                    field: 'createTimes',
+                    title: '创建时间',
+                    align: "center",
+                    width: '100px',
+                },]
+        };
+        $.treeTable.init(options);
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        $('ul.ztb_content_02 li').click(function () {
+            $(this).addClass('ztb_online').siblings('li.ztb_online').removeClass('ztb_online');
+            $(this).parents('li').siblings('li').children('ul').find('li.ztb_online').removeClass('ztb_online');
+        })
+    })
+</script>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+<div class="col-sm-12 select-info search-collapse">
+<form class="form-horizontal m" id="form-lists-add">
+            <div class="form-group select-info-container">
+
+
+                <div class="col-sm-4">
+                    <label>立案人ID：</label>
+                    <input type="text"  name="zhcxlistOrganlarid">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>归档人：</label>
+                    <input type="text"  name="zhcxlistStringgdr">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>承办人ID：</label>
+                    <input type="text"  name="zhcxlistOrganncbrid">
+                </div>
+
+
+
+</div>
+            <div class="form-group select-info-container">
+
+
+                <div class="col-sm-4">
+                    <label>案号：</label>
+                    <input type="text"  name="zhcxlistStringcah">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>结案日期：</label>
+                    <input type="text"  name="zhcxlistDatedjarq">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>开庭地点：</label>
+                    <input type="text"  name="zhcxlistStringktdd">
+                </div>
+
+
+
+</div>
+            <div class="form-group select-info-container">
+
+
+                <div class="col-sm-4">
+                    <label>案件类别ID：</label>
+                    <input type="text"  name="zhcxlistCodenajlbid">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>立案人：</label>
+                    <input type="text"  name="zhcxlistOrganlar">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>当事人：</label>
+                    <input type="text"  name="zhcxlistStringcdsr">
+                </div>
+
+
+
+</div>
+            <div class="form-group select-info-container">
+
+
+                <div class="col-sm-4">
+                    <label>审判程序ID：</label>
+                    <input type="text"  name="zhcxlistCodenspcxid">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>是否涉自贸区：</label>
+                    <input type="text"  name="zhcxlistCodesfszmq">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>审限情况：</label>
+                    <input type="text"  name="zhcxlistStringsxqk">
+                </div>
+
+
+
+</div>
+            <div class="form-group select-info-container">
+
+
+                <div class="col-sm-4">
+                    <label>承办审判庭ID：</label>
+                    <input type="text"  name="zhcxlistOrgancbsptid">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>归档日期：</label>
+                    <input type="text"  name="zhcxlistDategdrq">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>已交费(元)：</label>
+                    <input type="text"  name="zhcxlistNumericnjfzje">
+                </div>
+
+
+
+</div>
+            <div class="form-group select-info-container">
+
+
+                <div class="col-sm-4">
+                    <label>审判程序：</label>
+                    <input type="text"  name="zhcxlistCodenspcx">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>经办法院ID：</label>
+                    <input type="text"  name="zhcxlistOrgan6aaceid">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>案件类别：</label>
+                    <input type="text"  name="zhcxlistCodenajlb">
+                </div>
+
+
+
+</div>
+            <div class="form-group select-info-container">
+
+
+                <div class="col-sm-4">
+                    <label>结案案由：</label>
+                    <input type="text"  name="zhcxlistStringcay">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>承办审判庭：</label>
+                    <input type="text"  name="zhcxlistOrgancbspt">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>立案日期：</label>
+                    <input type="text"  name="zhcxlistDatedlarq">
+                </div>
+
+
+
+</div>
+            <div class="form-group select-info-container">
+
+
+                <div class="col-sm-4">
+                    <label>评查状态：</label>
+                    <input type="text"  name="zhcxlistCodenpczt">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>立案案由：</label>
+                    <input type="text"  name="zhcxlistStringlaay">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>提请报结日期：</label>
+                    <input type="text"  name="zhcxlistDatedtqbjrq">
+                </div>
+
+
+
+</div>
+            <div class="form-group select-info-container">
+
+
+                <div class="col-sm-4">
+                    <label>经办法院：</label>
+                    <input type="text"  name="zhcxlistOrgan6aace">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>收案日期：</label>
+                    <input type="text"  name="zhcxlistDatedsarq">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>超审限天数：</label>
+                    <input type="text"  name="zhcxlistNumericcsxts">
+                </div>
+
+
+
+</div>
+            <div class="form-group select-info-container">
+
+
+                <div class="col-sm-4">
+                    <label>承办人：</label>
+                    <input type="text"  name="zhcxlistOrganncbr">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>结案方式：</label>
+                    <input type="text"  name="zhcxlistStringjafs">
+                </div>
+
+
+
+
+
+                <div class="col-sm-4">
+                    <label>立案案由ID：</label>
+                    <input type="text"  name="zhcxlistStringlaayid">
+                </div>
+
+
+
+</div>
+            <div class="form-group select-info-container">
+
+
+                <div class="col-sm-4">
+                    <label>是否超审限：</label>
+                    <input type="text"  name="zhcxlistCodesfcsx">
+                </div>
+
+
+
+    </div>
+    <div class="form-group">
+        <div class="form-control-static col-sm-offset-5">
+            <button type="submit" class="btn btn-primary">提交</button>
+            <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+        </div>
+    </div>
+    </form>
+</div>
+</div>
+
+
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+
+    $('.summernote').summernote({
+        height : '220px',
+        lang : 'zh-CN'
+    });
+
+
+
+    layui.use('laydate', function(){
+     var laydate = layui.laydate;
+    });
+
+    var prefix = ctx + "module/lists"
+
+
+    $("#form-lists-add").validate({
+        rules:{
+
+    zhcxlistStringajbh:{
+                required:true,
+            },
+        },
+        submitHandler: function(form) {
+            var row=0;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        $.operate.save(prefix + "/add", $('#form-lists-add').serialize());
+        }
+    });
+</script>
+</body>
+</html>

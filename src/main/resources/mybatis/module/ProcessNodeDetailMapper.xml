@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.process.mapper.ProcessNodeDetailMapper">
+    
+    <resultMap type="ProcessNodeDetail" id="ProcessNodeDetailResult">
+        <result property="processId"    column="process_id"    />
+        <result property="nodeId"    column="node_id"    />
+        <result property="nodeName"    column="node_name"    />
+        <result property="nodeType"    column="node_type"    />
+        <result property="isUpdate"    column="is_update"    />
+        <result property="allowBy"    column="allow_by"    />
+    </resultMap>
+	
+	<sql id="selectProcessNodeDetailVo">
+        select process_id, node_id, node_name, node_type, is_update, allow_by from oa_process_node_detail
+    </sql>
+	
+    <select id="selectProcessNodeDetailList" parameterType="ProcessNodeDetail" resultMap="ProcessNodeDetailResult">
+        <include refid="selectProcessNodeDetailVo"/>
+        <where>  
+            <if test="processId != null and processId != ''"> and process_id = #{processId}</if>
+             <if test="nodeId != null and nodeId != ''"> and node_id = #{nodeId}</if>
+             <if test="nodeName != null and nodeName != ''"> and node_name = #{nodeName}</if>
+             <if test="nodeType != null and nodeType != ''"> and node_type = #{nodeType}</if>
+             <if test="isUpdate != null and isUpdate != ''"> and is_update = #{isUpdate}</if>
+             <if test="allowBy != null and allowBy != ''"> and allow_by = #{allowBy}</if>
+         </where>
+    </select>
+    
+    <select id="selectProcessNodeDetailById" parameterType="String" resultMap="ProcessNodeDetailResult">
+        <include refid="selectProcessNodeDetailVo"/>
+        where process_id = #{processId}
+    </select>
+        
+    <insert id="insertProcessNodeDetail" parameterType="ProcessNodeDetail">
+        insert into oa_process_node_detail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="processId != null and processId != '' ">process_id,</if>
+			<if test="nodeId != null and nodeId != '' ">node_id,</if>
+			<if test="nodeName != null and nodeName != '' ">node_name,</if>
+			<if test="nodeType != null and nodeType != '' ">node_type,</if>
+			<if test="isUpdate != null and isUpdate != '' ">is_update,</if>
+			<if test="allowBy != null and allowBy != '' ">allow_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="processId != null and processId != ''">#{processId},</if>
+			<if test="nodeId != null and nodeId != ''">#{nodeId},</if>
+			<if test="nodeName != null and nodeName != ''">#{nodeName},</if>
+			<if test="nodeType != null and nodeType != ''">#{nodeType},</if>
+			<if test="isUpdate != null and isUpdate != ''">#{isUpdate},</if>
+			<if test="allowBy != null and allowBy != ''">#{allowBy},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateProcessNodeDetail" parameterType="ProcessNodeDetail">
+        update oa_process_node_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="nodeId != null  and nodeId != ''  ">node_id = #{nodeId},</if>
+            <if test="nodeName != null  and nodeName != ''  ">node_name = #{nodeName},</if>
+            <if test="nodeType != null  and nodeType != ''  ">node_type = #{nodeType},</if>
+            <if test="isUpdate != null  and isUpdate != ''  ">is_update = #{isUpdate},</if>
+            <if test="allowBy != null  and allowBy != ''  ">allow_by = #{allowBy},</if>
+        </trim>
+        where process_id = #{processId}
+    </update>
+
+	<delete id="deleteProcessNodeDetailById" parameterType="String">
+        delete from oa_process_node_detail where process_id = #{processId}
+    </delete>
+	
+    <delete id="deleteProcessNodeDetailByIds" parameterType="String">
+        delete from oa_process_node_detail where process_id in 
+        <foreach item="processId" collection="array" open="(" separator="," close=")">
+            #{processId}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-table table-striped" id="tables">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:clue:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:clue:remove')}]];
+    var releaseFlag = [[${@permission.hasPermi('module:processMatter:addDubvioEvent')}]];
+    var listFlag = [[${@permission.hasPermi('module:clue:list')}]];
+    var datas_18 = [[${@dict.getType('risks_grades')}]];
+    var prefix = ctx + "module/clue";
+    $(function () {
+
+
+        var options = {
+            url: prefix + "/getClueCountByMonth",
+            search: false,
+            queryParams: queryParams,
+            columns: [
+                //     {
+                //     checkbox: true
+                // },
+                {
+                    field: 'clueTime',
+                    title: '月份',
+                },
+
+                {
+                    field: 'ms',
+                    title: '民事',
+                    formatter: function (value, row, index) {
+                        var ms = "1";
+                        var clueTime = '"' + row.clueTime + '"';
+                        if (row.ms == 0) {
+                            return "<font >" + row.ms + "</font>";
+                        } else {
+                            return "<a style='text-decoration:none'  onclick='clueMonthDetail(" + clueTime + "," + ms + ")' ><font color='blue'>" + row.ms + "</font></a>";
+                        }
+                    }
+                },
+                {
+                    field: 'xs',
+                    title: '刑事',
+                    formatter: function (value, row, index) {
+                        var xs = "2";
+                        var clueTime = '"' + row.clueTime + '"';
+                        if (row.xs == 0) {
+                            return "<font >" + row.xs + "</font>";
+                        } else {
+
+                            return "<a style='text-decoration:none' onclick='clueMonthDetail(" + clueTime + "," + xs + ")' ><font color='blue'>" + row.xs + "</font></a>";
+                        }
+                    }
+                },
+                {
+                    field: 'xz',
+                    title: '行政',
+                    formatter: function (value, row, index) {
+                        var xz = "3";
+                        var clueTime = '"' + row.clueTime + '"';
+                        if (row.xz == 0) {
+                            return "<font >" + row.xz + "</font>";
+                        } else {
+
+
+                            return "<a style='text-decoration:none' onclick='clueMonthDetail(" + clueTime + "," + xz + " )' ><font color='blue'>" + row.xz + "</font></a>";
+                        }
+                    }
+
+                },
+                {
+                    field: 'zx',
+                    title: '执行',
+                    formatter: function (value, row, index) {
+                        var zx = "4";
+                        var clueTime = '"' + row.clueTime + '"';
+
+                        if (row.zx == 0) {
+                            return "<font >" + row.zx + "</font>";
+                        } else {
+                            return "<a style='text-decoration:none' onclick='clueMonthDetail(" + clueTime + "," + zx + " )' ><font color='blue'>" + row.zx + "</font></a>";
+                        }
+                    }
+                },
+
+                {
+                    field: 'total',
+                    title: '总数',
+                    formatter: function (value, row, index) {
+                        var total = "5";
+                        var clueTime = '"' + row.clueTime + '"';
+
+                        if (row.total == 0) {
+                            return "<font >" + row.total + "</font>";
+                        } else {
+
+                            return "<a style='text-decoration:none' onclick='clueMonthDetail(" + clueTime + "," + total + " )' ><font color='blue'>" + row.total + "</font></a>";
+                        }
+                    }
+                },
+
+            ]
+        };
+        initSimpleTabl.init(options);
+    });
+
+    function queryParams(params) {
+        return {
+            pageSize: params.limit,
+            pageNum: params.offset / params.limit + 1,
+            searchValue: params.search,
+            orderByColumn: params.sort,
+            isAsc: params.order
+        };
+    }
+
+
+    /*策略列表-详细*/
+    function detail(clueId) {
+
+
+        var url = prefix + '/detail/' + clueId;
+        createMenuItem(url, "策略详情");
+    }
+
+    function clueMonthDetail(clueTime, name) {
+        var url = prefix + '/clueAllMonthTj?clueTime=' + clueTime + "&name=" + name;
+        createMenuItem(url, "线索详情");
+    }
+
+</script>
+</body>
+</html>

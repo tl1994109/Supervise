@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <title>智慧监督管理平台（法院）</title>
+
+
+    <script>
+        getRem(750, 100);
+        window.onresize = function () {
+            getRem(750, 100);
+        };
+        //用来设置html的font-size
+        function getRem(pwidth, prem) {
+            //获取html元素
+            var html = document.getElementsByTagName("html")[0];
+            //获取视窗宽度
+            //下面的代码是为了考虑兼容性
+            //在IE7、IE8、Firefox中，document.body.clientWidth以及 document.body.clientHeightzhi值为0，此时，可以使用 document.documentElement.clientHeight等代替。
+            var oWidth =
+                document.documentElement.clientWidth || document.body.clientWidth;
+            html.style.fontSize = (oWidth / pwidth) * prem + "px";
+        }
+    </script>
+
+    <link href="../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="../static/css/font-awesome.min.css" th:href="@{css/font-awesome.min.css}" rel="stylesheet"/>
+    <link href="../static/css/style.css" th:href="@{css/style.css}" rel="stylesheet"/>
+    <link href="../static/css/login.min.css" th:href="@{css/login.min.css}" rel="stylesheet"/>
+    <link href="../static/ajax/libs/iCheck/custom.css" th:href="@{/ajax/libs/iCheck/custom.css}" rel="stylesheet"/>
+    <link href="../static/datcent/css/ry-ui.css" th:href="@{/datcent/css/ry-ui.css}" rel="stylesheet"/>
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+    <link rel="shortcut icon" href="../static/img/logo.png" th:href="@{img/logo.png}"/>
+    <style type="text/css">
+        label.error {
+            position: inherit;
+            width: 20%;
+            right: 0px;
+            text-align: center;
+            top: 0px;
+            line-height: 2rem;
+        }
+    </style>
+    <script>
+        if (window.top !== window.self) {
+            window.top.location = window.location
+        }
+    </script>
+
+</head>
+
+<body onLoad="document.getElementById('username').focus();">
+<img class="bg-img" th:src="@{/img/login.jpg}" alt="">
+<div class="bg1"></div>
+<div class="gyl">
+    智慧监督管理平台（法院）
+    <div class="gy2" >@ 2019 Datcent 版权所有 </div>
+</div>
+<form id="signupForm" class="bg" method="post">
+    <div class="wel">管理员登录</div>
+    <div class="form-group login-user">
+        <label class="control-label" style="width: 20%">用户名</label>
+        <input  type="text" name="username" id="username" class="uname" value="" />
+    </div>
+    <div class="form-group login-pwd" >
+        <label class="control-label" style="width: 20%">密&nbsp;&nbsp;码</label>
+        <input type="password" name="password" id="password" class=" pword m-b" style="margin-bottom: 0" value=""/>
+    </div>
+    <div class="login-code" th:if="${captchaEnabled==true}">
+            <input type="text" name="validateCode" class="form-control code" placeholder="验证码" maxlength="5" autocomplete="off">
+            <a href="javascript:void(0);" title="点击更换验证码">
+                <img th:src="@{/captcha/captchaImage(type=${captchaType})}" class="imgcode" width="85%" alt="">
+            </a>
+
+    </div>
+    <div class="login-rem" th:classappend="${captchaEnabled==false} ? 'm-t'">
+        <input type="checkbox" class="i-checks" id="rememberme" name="rememberme" /><label for="rememberme" style="font-size: 14px;margin-left: 5px;height: 2rem;margin-bottom: 0px;">记住密码</label>
+    </div>
+    <button id="btnSubmit"  class="login-btn btn-block" type="submit"  data-loading="正在验证登录，请稍后...">登录</button>
+</form>
+
+
+<div th:include="include::footer"></div>
+
+
+<script th:src="@{/datcent/login.js}"></script>
+
+
+<script th:inline="javascript">
+    var ctx = [[@{/}]];
+    var captchaType = [[${captchaType}]];
+</script>
+<!-- 全局js -->
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+
+<!-- 验证插件 -->
+<script src="../static/ajax/libs/validate/jquery.validate.min.js"
+        th:src="@{/ajax/libs/validate/jquery.validate.min.js}"></script>
+<script src="../static/ajax/libs/validate/messages_zh.min.js"
+        th:src="@{/ajax/libs/validate/messages_zh.min.js}"></script>
+<script src="../static/ajax/libs/layer/layer.min.js" th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+<script src="../static/approverjax/libs/iCheck/icheck.min.js" th:src="@{/ajax/libs/iCheck/icheck.min.js}"></script>
+<script src="../static/ajax/libs/blockUI/jquery.blockUI.js" th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
+<script src="../static/datcent/js/ry-ui.js" th:src="@{/datcent/js/ry-ui.js?v=2.4.0}"></script>
+
+</body>
+</html>

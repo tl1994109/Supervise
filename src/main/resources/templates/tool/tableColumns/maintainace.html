@@ -1,0 +1,263 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+
+<div class="wrapper wrapper-content animated fadeInRight ibox-content"
+	 style="height: 100% !important;overflow-y: hidden">
+	<table class="table table-striped">
+		<thead>
+		<tr align="center">
+			<th class="col-md-1" style="width: 100px;">字段ID</th>
+            <th class="col-md-1" style="width: 100px;">字段名称</th>
+            <th class="col-md-1" style="width: 80px;">字段类型</th>
+            <th class="col-md-1" style="width: 80px;">查询条件</th>
+            <th class="col-md-1" style="width: 80px;">非空验证</th>
+            <th class="col-md-1" style="width: 80px;">显示状态</th>
+            <th class="col-md-1" style="width: 80px;">显示方式</th>
+            <th class="col-md-1" style="width: 80px;">数据字典</th>
+            <th class="col-md-1" style="width: 80px;">显示列数</th>
+            <th class="col-md-1" style="width: 80px;">显示顺序</th>
+            <th class="col-md-1" style="width: 80px;">主键生成规则</th>
+		</tr>
+		</thead>
+	</table>
+	<div class="pre-scrollable">
+		<table id="maintainace" class="table table-striped table-hover" th:if="${tableColumns}">
+
+			<tbody>
+			<tr th:each="tableColumns:${tableColumns}">
+				<td>
+					<input style="width: 100px;" class="form-control" type="text" name="columnName"
+						   th:value="${tableColumns.columnName}" onchange="changeContent()" disabled="true"
+						   　readOnly="true"/>
+					<input type="hidden" th:value="${tableColumns.tableName}"/>
+				</td>
+				<td>
+					<input style="width: 100px;" class="form-control" type="text" name="columnComment"
+						   th:value="${tableColumns.columnComment}" onchange="changeContent()"/>
+					<input type="hidden" th:value="${tableColumns.columnId}"/>
+				</td>
+				<td>
+					<select class="select2" onchange="changeContent()" name="dataType"
+							th:value="${tableColumns.dataType}"
+							placeholder="请选择" style="width: 80px;">
+						<option value="">请选择</option>
+						<option value="varchar" th:selected="${tableColumns.dataType == 'varchar'}">varchar</option>
+						<option value="char" th:selected="${tableColumns.dataType == 'char'}">char</option>
+						<option value="datetime" th:selected="${tableColumns.dataType == 'datetime'}">datetime</option>
+						<option value="int" th:selected="${tableColumns.dataType == 'int'}">int</option>
+					</select>
+				</td>
+				<td>
+					<select class="select2" onchange="changeContent()" name="isSearch"
+							th:value="${tableColumns.isSearch}"
+							placeholder="请选择" style="width: 60px;">
+						<option value="">请选择</option>
+						<option value="0" th:selected="${tableColumns.isSearch == '0'}">是</option>
+						<option value="1" th:selected="${tableColumns.isSearch == '1'}">否</option>
+					</select>
+				</td>
+				<td>
+					<select class="select2" onchange="changeContent()" name="isNullable"
+							th:value="${tableColumns.isNullable}"
+							placeholder="请选择" style="width: 80px;">
+						<option value="">请选择</option>
+						<option value="0" th:selected="${tableColumns.isNullable == '0'}">必填</option>
+						<option value="1" th:selected="${tableColumns.isNullable == '1'}">可填</option>
+					</select>
+				</td>
+				<td>
+					<select class="select2" onchange="changeContent()" name="isVisible"
+							th:value="${tableColumns.isVisible}"
+							placeholder="请选择" style="width: 80px;">
+						<option value="">请选择</option>
+						<option value="0" th:selected="${tableColumns.isVisible == '0'}">显示</option>
+						<option value="1" th:selected="${tableColumns.isVisible == '1'}">隐藏</option>
+					</select>
+				</td>
+				<td>
+					<select class="select2" onchange="changeContent()" name="isVisibleType"
+							th:value="${tableColumns.isVisibleType}"
+							placeholder="请选择" style="width: 80px;">
+						<option value="">请选择</option>
+						<option value="0" th:selected="${tableColumns.isVisibleType == '0'}">输入框</option>
+						<option value="1" th:selected="${tableColumns.isVisibleType == '1'}">下拉框</option>
+						<option value="2" th:selected="${tableColumns.isVisibleType == '2'}">文本域</option>
+						<option value="3" th:selected="${tableColumns.isVisibleType == '3'}">日期</option>
+						<option value="4" th:selected="${tableColumns.isVisibleType == '4'}">密码框</option>
+						<option value="5" th:selected="${tableColumns.isVisibleType == '5'}">隐藏框</option>
+						<option value="6" th:selected="${tableColumns.isVisibleType == '6'}">富文本框</option>
+						<option value="7" th:selected="${tableColumns.isVisibleType == '7'}">单选框</option>
+						<option value="8" th:selected="${tableColumns.isVisibleType == '8'}">复选框</option>
+					</select>
+				</td>
+				<td>
+					<select class="select2" onchange="changeContent()" name="dictType" placeholder="请选择"
+							style="width: 80px;">
+						<option value="">请选择</option>
+						<option th:each="dict:${dictList}" th:value="${dict.dictType}"
+								th:text="${dict.dictName}"></option>
+					</select>
+				</td>
+				<td>
+					<select class="select2" onchange="changeContent()" name="visibleCols"
+							th:value="${tableColumns.visibleCols}"
+							placeholder="请选择" style="width: 50px;">
+						<option value="">请选择</option>
+						<option value="3" th:selected="${tableColumns.visibleCols == '3'}">3</option>
+						<option value="2" th:selected="${tableColumns.visibleCols == '2'}">2</option>
+						<option value="1" th:selected="${tableColumns.visibleCols == '1'}">1</option>
+					</select>
+				</td>
+				<td>
+					<select class="select2" onchange="changeContent()" name="isSortable"
+							th:value="${tableColumns.isSortable}"
+							placeholder="请选择" style="width: 50px;">
+						<option value="">请选择</option>
+						<option value="0" th:selected="${tableColumns.isSortable == '0'}">无</option>
+						<option value="desc" th:selected="${tableColumns.isSortable == 'desc'}">desc</option>
+						<option value="asc" th:selected="${tableColumns.isSortable == 'asc'}">asc</option>
+					</select>
+				</td>
+				<td>
+					<select class="select2" onchange="changeContent()" name="isKey" th:value="${tableColumns.isKey}"
+							placeholder="请选择" style="width: 60px;">
+						<option value="">请选择</option>
+						<option value="0" th:selected="${tableColumns.isKey == '0'}">无</option>
+						<option value="1" th:selected="${tableColumns.isKey == '1'}">自增长</option>
+						<option value="2" th:selected="${tableColumns.isKey == '2'}">UUID</option>
+					</select>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+		<div class="form-group">
+			<div class="form-control-static col-sm-offset-5">
+				<button type="button" class="btn btn-primary" onclick="update()">提交</button>
+				&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+			</div>
+		</div>
+	</div>
+
+</div>
+    <div th:include="include::footer"></div>
+    <script th:src="@{/ajax/libs/select/select2.js}"></script>
+    <script type="text/javascript">
+	    $('.select2').select2({
+	        placeholder: "请选择",
+	        tags:true,
+	        createTag:function (decorated, params) {
+	            return null;
+	        },
+	        width:'80px'
+	    });
+		var strdata;
+		//内容有改动随时更新数据
+		function changeContent(){
+
+		    //存放各个属性数组的数组
+		      var arrays = new Array();
+		      //存放name的数组
+		      var columnIdArray = new Array();
+		      var columnNameArray = new Array();
+		      var columnCommentArray = new Array();
+		      var dataTypeArray = new Array();
+		      var isSearchArray = new Array();
+		      var isNullableArray = new Array();
+		      var isVisibleArray = new Array();
+		      var isVisibleTypeArray = new Array();
+		      var dictTypeArray = new Array();
+		      var visibleColsArray = new Array();
+		      var isSortableArray = new Array();
+		      var isKeyArray = new Array();
+		      var tableIdArray = new Array();
+
+		      //表格的列数
+		      var cellNums = document.getElementById("maintainace").rows[0].cells.length;
+
+		      //表格的行数
+		      var rowNums = document.getElementById("maintainace").rows.length;
+
+
+		      for(var m=1;m<rowNums;m++){
+		    	  tableIdArray[m-1] = document.getElementById("maintainace").rows[m].cells[0].getElementsByTagName("input")[1].value;
+		      }
+		      for(var m=1;m<rowNums;m++){
+		    	  columnIdArray[m-1] = document.getElementById("maintainace").rows[m].cells[1].getElementsByTagName("input")[1].value;
+		      }
+		      //把所有的columnsName值放到columnsNameArray数组中
+		      for(var m=1;m<rowNums;m++){
+		    	  columnNameArray[m-1] = document.getElementById("maintainace").rows[m].cells[0].getElementsByTagName("input")[0].value;
+		      }
+		      //把所有的columnCommentArray值放到columnCommentArray数组中
+		      for(var m=1;m<rowNums;m++){
+		    	  columnCommentArray[m-1] = document.getElementById("maintainace").rows[m].cells[1].getElementsByTagName("input")[0].value;
+		      }
+		      for(var m=1;m<rowNums;m++){
+		    	  dataTypeArray[m-1] = document.getElementById("maintainace").rows[m].cells[2].getElementsByTagName("select")[0].value;
+		      }
+		      for(var m=1;m<rowNums;m++){
+		    	  isSearchArray[m-1] = document.getElementById("maintainace").rows[m].cells[3].getElementsByTagName("select")[0].value;
+		      }
+		      for(var m=1;m<rowNums;m++){
+		    	  isNullableArray[m-1] = document.getElementById("maintainace").rows[m].cells[4].getElementsByTagName("select")[0].value;
+		      }
+		      for(var m=1;m<rowNums;m++){
+		    	  isVisibleArray[m-1] = document.getElementById("maintainace").rows[m].cells[5].getElementsByTagName("select")[0].value;
+		      }
+		      for(var m=1;m<rowNums;m++){
+		    	  isVisibleTypeArray[m-1] = document.getElementById("maintainace").rows[m].cells[6].getElementsByTagName("select")[0].value;
+		      }
+		      for(var m=1;m<rowNums;m++){
+		    	  dictTypeArray[m-1] = document.getElementById("maintainace").rows[m].cells[7].getElementsByTagName("select")[0].value;
+		      }
+		      for(var m=1;m<rowNums;m++){
+		    	  visibleColsArray[m-1] = document.getElementById("maintainace").rows[m].cells[8].getElementsByTagName("select")[0].value;
+		      }
+		      for(var m=1;m<rowNums;m++){
+		    	  isSortableArray[m-1] = document.getElementById("maintainace").rows[m].cells[9].getElementsByTagName("select")[0].value;
+		      }
+		      for(var m=1;m<rowNums;m++){
+		    	  isKeyArray[m-1] = document.getElementById("maintainace").rows[m].cells[10].getElementsByTagName("select")[0].value;
+		      }
+		      //将数组中的数据放到json对象中
+		      var data = [];
+		      for(var i=0;i<columnNameArray.length;i++){
+		          data.push({"columnId": columnIdArray[i],
+		        	  		"columnName":columnNameArray[i],
+		        		    "columnComment": columnCommentArray[i],
+		        		    "dataType": dataTypeArray[i],
+		        		    "isSearch": isSearchArray[i],
+		        		    "isNullable": isNullableArray[i],
+		        		    "isVisible": isVisibleArray[i],
+		        		    "isVisibleType": isVisibleTypeArray[i],
+		        		    "dictType": dictTypeArray[i],
+		        		    "visibleCols": visibleColsArray[i],
+		        		    "isSortable": isSortableArray[i],
+		        		    "isKey": isKeyArray[i],
+		        		    "tableId": tableIdArray[i]});
+		      }
+		      //将json对象转为json字符串，前后台传递是以字符串的形式
+		      strdata = JSON.stringify(data);
+		}
+		function update(){
+        	$.ajax({
+        		type : "POST",
+        		url : ctx + "tool/tableColumns/editColumns",
+        		data : {
+        			"colums": strdata
+        		},
+        		error : function(request) {
+        			$.modal.alertError("系统错误");
+        		},
+        		success : function(data) {
+        			$.operate.saveSuccess(data);
+        		}
+        	});
+		}
+	</script>
+</body>
+</html>

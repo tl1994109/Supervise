@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.appraise.mapper.AppraiseMapper">
+    
+    <resultMap type="Appraise" id="AppraiseResult">
+        <result property="appraiseId"    column="appraise_id"    />
+        <result property="appraiseContent"    column="appraise_content"    />
+        <result property="appraiseLevel"    column="appraise_level"    />
+        <result property="appraiseTaskid"    column="appraise_taskId"    />
+        <result property="appraiseCreateby"    column="appraise_createBy"    />
+        <result property="appraiseCreatedate"    column="appraise_createDate"    />
+    </resultMap>
+	
+	<sql id="selectAppraiseVo">
+        select appraise_id, appraise_content, appraise_level, appraise_taskId, appraise_createBy, appraise_createDate from task_appraise
+    </sql>
+	
+    <select id="selectAppraiseList" parameterType="Appraise" resultMap="AppraiseResult">
+        <include refid="selectAppraiseVo"/>
+        <where>  
+            <if test="appraiseId != null and appraiseId != ''"> and appraise_id like concat('%',#{appraiseId},'%')</if>
+             <if test="appraiseContent != null and appraiseContent != ''"> and appraise_content like concat('%',#{appraiseContent},'%')</if>
+             <if test="appraiseLevel != null and appraiseLevel != ''"> and appraise_level like concat('%',#{appraiseLevel},'%')</if>
+             <if test="appraiseTaskid != null and appraiseTaskid != ''"> and appraise_taskId like concat('%',#{appraiseTaskid},'%')</if>
+             <if test="appraiseCreateby != null and appraiseCreateby != ''"> and appraise_createBy like concat('%',#{appraiseCreateby},'%')</if>
+             <if test="appraiseCreatedate != null and appraiseCreatedate != ''"> and appraise_createDate like concat('%',#{appraiseCreatedate},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectAppraiseById" parameterType="String" resultMap="AppraiseResult">
+        <include refid="selectAppraiseVo"/>
+        where appraise_id = #{appraiseId}
+    </select>
+        
+    <insert id="insertAppraise" parameterType="Appraise">
+        insert into task_appraise
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="appraiseId != null  and appraiseId != ''  ">appraise_id,</if>
+           <if test="appraiseContent != null  and appraiseContent != ''  ">appraise_content,</if>
+           <if test="appraiseLevel != null  and appraiseLevel != ''  ">appraise_level,</if>
+           <if test="appraiseTaskid != null  and appraiseTaskid != ''  ">appraise_taskId,</if>
+           <if test="appraiseCreateby != null  and appraiseCreateby != ''  ">appraise_createBy,</if>
+           <if test="appraiseCreatedate != null  ">appraise_createDate,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="appraiseId != null  and appraiseId != ''  ">#{appraiseId},</if>
+        <if test="appraiseContent != null  and appraiseContent != ''  ">#{appraiseContent},</if>
+        <if test="appraiseLevel != null  and appraiseLevel != ''  ">#{appraiseLevel},</if>
+        <if test="appraiseTaskid != null  and appraiseTaskid != ''  ">#{appraiseTaskid},</if>
+        <if test="appraiseCreateby != null  and appraiseCreateby != ''  ">#{appraiseCreateby},</if>
+        <if test="appraiseCreatedate != null  ">#{appraiseCreatedate},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateAppraise" parameterType="Appraise">
+        update task_appraise
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="appraiseContent != null  and appraiseContent != ''  ">appraise_content = #{appraiseContent},</if>
+            <if test="appraiseLevel != null  and appraiseLevel != ''  ">appraise_level = #{appraiseLevel},</if>
+            <if test="appraiseTaskid != null  and appraiseTaskid != ''  ">appraise_taskId = #{appraiseTaskid},</if>
+            <if test="appraiseCreateby != null  and appraiseCreateby != ''  ">appraise_createBy = #{appraiseCreateby},</if>
+            <if test="appraiseCreatedate != null  ">appraise_createDate = #{appraiseCreatedate},</if>
+        </trim>
+        where appraise_id = #{appraiseId}
+    </update>
+
+	<delete id="deleteAppraiseById" parameterType="String">
+        delete from task_appraise where appraise_id = #{appraiseId}
+    </delete>
+	
+    <delete id="deleteAppraiseByIds" parameterType="String">
+        delete from task_appraise where appraise_id in 
+        <foreach item="appraiseId" collection="array" open="(" separator="," close=")">
+            #{appraiseId}
+        </foreach>
+    </delete>
+
+    <select id="selectAppraiseByTaskId" parameterType="String" resultMap="AppraiseResult">
+        <include refid="selectAppraiseVo" />
+        where appraise_taskId = #{taskId}
+    </select>
+    
+</mapper>

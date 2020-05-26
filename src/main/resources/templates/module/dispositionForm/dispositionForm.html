@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 select-info search-collapse">
+            <form id="notice-form" class="form-horizontal">
+                <div class="form-group select-info-container">
+                    <div class="col-sm-4">
+                        <label>表单标题：</label>
+                        <input type="text" name="formTitle"/>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>表单类型：</label>
+                        <select name="formType" th:with="type=${@dict.getType('clue_disposal_stage')}">
+                            <option value="">请选择</option>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                    th:value="${dict.dictValue}"></option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>状态：</label>
+                        <select name="status" th:with="type=${@dict.getType('sys_notice_status')}">
+                            <option value="">请选择</option>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                    th:value="${dict.dictValue}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group select-info-container">
+                    <div class="col-sm-12 select-info-btn">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.addFull()" shiro:hasPermission="module:dispositionForm:add">
+                <i class="fa fa-plus"></i> 新增
+            </a>
+            <a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()"
+               shiro:hasPermission="module:dispositionForm:remove">
+                <i class="fa fa-trash-o"></i> 批量删除
+            </a>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:dispositionForm:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:dispositionForm:remove')}]];
+    var types = [[${@dict.getType('clue_disposal_stage')}]];
+    var datas = [[${@dict.getType('sys_notice_status')}]];
+    var prefix = ctx + "module/dispositionForm"
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            detailUrl: prefix + "/detail/{id}",
+            modalName: "线索表单",
+            search: false,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'formId',
+                    title: '序号',
+                    visible: false,
+                },
+                {
+                    field: 'formTitle',
+                    title: '表单标题'
+                },
+                {
+                    field: 'formType',
+                    title: '表单类型',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(types, value);
+                    }
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(datas, value);
+                    }
+                },
+                {
+                    field: 'createBy',
+                    title: '创建者'
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                    sortable: true
+                },
+                {
+                    field: 'updateBy',
+                    title: '更新者'
+                },
+                {
+                    field: 'updateTime',
+                    title: '更新时间',
+                    sortable: true
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.editFull(\'' + row.formId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+</script>
+</body>
+</html>

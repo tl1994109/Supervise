@@ -1,0 +1,333 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+
+<style type="text/css">
+    .nav-tabs{
+        border-bottom: none;
+        padding-left: 15px;
+    }
+
+    .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+        color: #555;
+        cursor: default;
+        background-color: #fff;
+        border-bottom: 2px solid #2196f3;
+        border-bottom-color: none;
+    }
+    .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+        border-top: none;
+        border-right: none;
+        border-left: none;
+    }
+    .nav-tabs>li>a{
+        padding: 14px 20px 14px 25px;
+    }
+
+    .row-container th {
+        background-color: #f3f3f3;
+    }
+    .row-container table{
+        margin: 10px 0px;
+        /*width: 95%;*/
+        overflow: hidden;
+    }
+    .row-container table th{
+        /*background: #f1f1f1 !important;*/
+        text-align: center;
+    }
+    .row-container table thead th{
+        height: 40px;
+        color: #fff;
+        background-color: rgba(107,166,217,0.91);
+    }
+    .row-container table thead th a {
+        display: inline-block;
+        line-height: 40px;
+        color: inherit;
+    }
+    .row-container table tbody tr{
+        height: 40px;
+    }
+
+    /* 重写bootstrap tab样式  */
+
+    #tab-title {
+        width: 99px;
+        margin-bottom: 20px;
+        /*height: 48.15px;*/
+        cursor: default;
+        background-color: #fff;
+        border-bottom: 2px solid #2196f3;
+        border-bottom-color: none;
+    }
+    #tab-title a{
+        color: #555;
+        display: block;
+        padding: 14px 20px 14px 25px;
+        font-weight: 600;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+    }
+
+    /* 新增样式20190508 */
+    .select2-container .select2-selection--single{height: 34px;}
+    .select2-container--default .select2-selection--single{border: 1px solid #ddd;}
+    .select2-container--default .select2-selection--single .select2-selection__rendered{line-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {padding: 0px 5px;}
+    .select-info-container input, .select-info-container select{width: 100%}
+    /*.select2-container{height: 34px;line-height: 34px}*/
+    .select2-container--default .select2-selection--multiple{height: 100%;width: 100%;border: 1px solid #ddd;}
+    /* .select2-container .select2-selection--multiple{min-height: 34px}*/
+    /*.select2-container--default .select2-selection--multiple .select2-selection__rendered{height: 34px; }*/
+    .select2-container--default.select2-container--focus .select2-selection--multiple{border: 1px solid #ddd;}
+</style>
+
+<body class="gray-bg">
+<div class="wrapper animated fadeInRight" style="height: 100%">
+    <form class="form-horizontal m" id="form-clue-edit" th:object="${clue}">
+        <div class="col-sm-12 white-bg">
+            <ul id="Tab" class="nav nav-tabs">
+                <li class="active">
+                    <a href="#myHandle" data-toggle="tab">基本信息</a>
+                </li>
+                <!--<li>
+                    <a href="#caseDetail" data-toggle="tab">案件详细</a>
+                </li>-->
+            </ul>
+            <input type="hidden" th:value="${pid}" name="pid" />
+            <input type="hidden" th:value="${taskId}" name="taskId" />
+            <div id="TabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="myHandle">
+                    <div class="col-sm-12 select-info search-collapse">
+                        <input type="hidden" id="clueId" name="clueId" th:field="*{clueId}">
+                        <div th:if="${clue.clueSource == '1' }">
+                            <div class="row-container">
+                                <table border="1" cellpadding="0" cellspacing="0" style="margin-top: 0px;">
+                                    <tbody>
+                                    <tr align="center">
+                                        <th class="col-xs-1">案号</th>
+                                        <td class="col-xs-2" ><a href="#" style="text-decoration: underline;color: #23527c;" onclick='clueDetail()' th:text="${clue.jbxxAh}"></a></td>
+                                        <th class="col-xs-1">案件类别</th>
+                                        <td class="col-xs-2" th:text="${clue.jbxxAjlb}"></td>
+                                        <th class="col-xs-1">线索来源</th>
+                                        <td class="col-xs-2" th:if="${clue.clueSource eq '1'} " >系统筛查</td>
+                                        <td class="col-xs-2" th:if="${clue.clueSource eq '2'} " >信访录入</td>
+                                    </tr>
+                                    <tr align="center">
+                                        <th class="col-xs-1">承办庭</th>
+                                        <td class="col-xs-2" th:text="${clue.jbxxCbtName}"></td>
+                                        <th class="col-xs-1">反映对象</th>
+                                        <td class="col-xs-2" th:text="${clue.jbxxCbrName}"></td>
+                                    </tr>
+                                    <tr align="center" rowspan="2">
+                                        <th class="col-xs-1">反映问题</th>
+                                        <td colspan="5"  class="col-xs-2" style="text-align: left;" th:text="${clue.dubvioStrategyName}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div th:if="${clue.clueSource == '2' }" class="form-group col-sm-12">
+                            <div class="row-container">
+                                <table border="1" cellpadding="0" cellspacing="0" style="margin-top: 0px;" >
+                                    <tbody>
+                                    <tr align="center">
+                                        <th class="col-xs-1">信访序号：</th>
+                                        <td class="col-xs-2"><a style="text-decoration: underline;color: #23527c;" th:text="${dubvioEvent.jbxxXfxh}"></a></td>
+                                        <th class="col-xs-1">信访反映时间：</th>
+                                        <td class="col-xs-2" th:text="${dubvioEvent.jbxxXffysj}"></td>
+                                        <th class="col-xs-1">反映人：</th>
+                                        <td class="col-xs-2" th:text="${dubvioEvent.dubvioFyr}"></td>
+                                    </tr>
+                                    <tr align="center">
+                                        <th class="col-xs-1">联系方式：</th>
+                                        <td class="col-xs-2" th:text="${dubvioEvent.dubvioFyrdh}"></td>
+                                        <th class="col-xs-1">反映对象：</th>
+                                        <td class="col-xs-2" th:text="${dubvioEvent.dubvioFydx}"></td>
+                                        <th class="col-xs-1">信访来源：</th>
+                                        <td class="col-xs-2" th:text="${dubvioEvent.jbxxXfly}" ></td>
+                                    </tr>
+                                    <tr rowspan="2">
+                                        <th class="col-xs-1">经办法院：</th>
+                                        <td colspan="5" class="col-xs-2" th:text="${dubvioEvent.jbfyName}" style="text-align: left"></td>
+                                    </tr>
+                                    <tr rowspan="2">
+                                        <th class="col-xs-1">反映问题：</th>
+                                        <td colspan="5" class="col-xs-2" th:text="${dubvioEvent.dubvioStrategyName}" style="text-align: left"></td>
+                                    </tr>
+                                    <tr rowspan="2">
+                                        <th class="col-xs-1">信访处置情况：</th>
+                                        <td colspan="5" class="col-xs-2" th:text="${dubvioEvent.jbxxXfczqk}" style="text-align: left"></td>
+                                    </tr>
+                                    <tr rowspan="2">
+                                        <th class="col-xs-1">信访承办人：</th>
+                                        <td colspan="5" class="col-xs-2" th:text="${dubvioEvent.jbxxXfcbr}" style="text-align: left"></td>
+                                    </tr>
+                                    <tr rowspan="2">
+                                        <th class="col-xs-1">信访处置结果：</th>
+                                        <td colspan="5" class="col-xs-2" th:text="${dubvioEvent.jbxxXfczjg}" style="text-align: left"></td>
+                                    </tr>
+                                    <tr rowspan="2">
+                                        <th class="col-xs-1">信访备注：</th>
+                                        <td colspan="5" class="col-xs-2" th:text="${dubvioEvent.jbxxXfbz}" style="text-align: left"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <div id="tab-title">
+                                <a>处置操作</a>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-xs-2 control-label">处理方式：</label>
+                                        <div class="col-xs-10">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="clueClassify" value="1" checked> 暂存待查
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="clueClassify" value="2"> 予以了结
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="clueClassify" value="3"> 初步核实
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="clueClassify" value="4"> 谈话
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="clueClassify" value="5"> 函询
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="clueClassify" value="11"> 移交审管办
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           <div class="row">
+                               <div class="col-sm-12">
+                                   <div class="form-group">
+                                       <label class="col-xs-2 control-label">处理意见：</label>
+                                       <div class="col-xs-10">
+                                           <textarea class="form-control" rows="8" style="width: 100%;resize: none;" id="content"></textarea>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">审批人：</label>
+                                        <div class="col-sm-8">
+                                            <select id="approver" name="approver" class="form-control">
+                                                <option th:each="userList : ${userList}" th:text="${userList.userName}"
+                                                        th:value="${userList.userId}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">建议承办人：</label>
+                                        <div class="col-sm-8">
+                                            <select id="clueCbrName" name="clueCbrName" class="form-control">
+                                                <option th:each="localCourtPerson : ${localCourtPerson}" th:text="${localCourtPerson.user_name}"
+                                                        th:value="${localCourtPerson.user_id}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group select-info-container">
+                                    <div class="form-control-static col-sm-offset-5">
+                                        <button type="submit" class="btn btn-primary">提交</button>
+                                        <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+    var prefix = ctx + "module/clue"
+    $("#form-clue-edit").validate({
+        rules: {
+            clueId: {
+                required: true,
+            },
+            dubvioId: {
+                required: true,
+            },
+            dubvioStrategyId: {
+                required: true,
+            },
+            jbxxAjbh: {
+                required: true,
+            },
+            jbxxAh: {
+                required: true,
+            },
+        },
+        submitHandler: function (form) {
+            startClassify();
+        }
+    });
+
+    function clueDetail(){
+        var clueId=$("#clueId").val();
+        var url = ctx + 'module/clue/edits?clueId='+clueId ;
+        $.modal.open("案件详细",url);
+    }
+
+    function startClassify() {
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: prefix + "/releaseClue",
+            data: {
+                "clueId": $("#clueId").val(),
+                "approver": $("#approver").val(),
+                "clueCbrName": $("#clueCbrName").val(),
+                "approverName": $("#approver option:selected").text(),
+                "clueClassify": $('input[name="clueClassify"]:checked').val(),
+                "content": $("#content").val(),
+                "pid": $('input[name="pid"]').val(),
+                "taskId": $('input[name="taskId"]').val(),
+            },
+            async: true,
+            error: function (request) {
+                $.modal.alertError("系统错误");
+            },
+            success: function (data) {
+                if (data.code === 0) {
+                    modalComponent.msgWarning(data.msg);
+                    window.parent.location.reload();
+                    modalComponent.close();
+                } else {
+                    modalComponent.msgWarning(data.msg)
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

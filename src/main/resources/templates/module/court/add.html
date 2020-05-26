@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-court-add">
+			<div class="form-group">	
+				<label class="col-sm-2 control-label">法院名称：</label>
+				<div class="col-sm-9">
+					<input id="courtName" name="courtName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">法院地址：</label>
+				<div class="col-sm-2">
+					<select id="province" class="form-control m-b">
+	                    <option th:each="province:${province}" th:value="${province.id}" th:text="${province.name}"></option>
+	                </select>
+				</div>
+				<div class="col-sm-2">
+					<select id="city" class="form-control m-b">
+	                    
+	                </select>
+				</div>
+				<div class="col-sm-2">
+					<select id="area" class="form-control m-b">
+	                    
+	                </select>
+				</div>
+				<div class="col-sm-2">
+					<select id="street" class="form-control m-b">
+	                    
+	                </select>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-2 control-label">法院负责人：</label>
+				<div class="col-sm-9">
+					<input id="courtPersonName" name="courtPersonName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="form-control-static col-sm-offset-5">
+					<button type="submit" class="btn btn-primary">提交</button>
+					<button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script th:src="@{/ajax/libs/select/select2.js}"></script>
+    <script type="text/javascript">
+	    var prefix = ctx + "module/court";
+		var selectArea=ctx+ "module/area";
+	    $(function(){
+			$("#province").change(function(){
+				var pid=$(this).val();
+				if(pid!=0){
+					$.ajax({
+	                    url:selectArea + "/getAreaByPid", 
+	                    async:false, 
+	                    type:'post', 
+	                    data:{pid:pid}, 
+	                    success:function(data){
+	                        var t3 = $("#city").empty();
+	                        for ( var i = 0; i < data.length; i++) { 
+	                            t3.append("<option value='"+data[i].id+"'>"+ data[i].name+"</option>"); 
+	                        }
+	                        
+	                    } 
+	                })
+	                changeArea();
+					changeStreet();
+				}else{
+					$("#city").empty();
+					$("#area").empty();
+				}
+				
+			})
+			
+			$("#city").change(function(){
+				$.ajax({
+	                url:selectArea + "/getAreaByPid", 
+	                async:false, 
+	                type:'post', 
+	                data:{pid:$(this).val()},
+	                success:function(data){ 
+	                    var t3 = $("#area").empty();
+	                    for ( var i = 0; i < data.length; i++) { 
+	                        t3.append("<option value='"+data[i].id+"'>"+ data[i].name+"</option>"); 
+	                    } 
+	                } 
+	            })
+	            changeStreet()
+			})
+			
+			$("#area").change(function(){
+				$.ajax({
+	                url:selectArea + "/getAreaByPid", 
+	                async:false, 
+	                type:'post', 
+	                data:{pid:$(this).val()},
+	                success:function(data){ 
+	                    var t3 = $("#street").empty();
+	                    for ( var i = 0; i < data.length; i++) { 
+	                        t3.append("<option value='"+data[i].id+"'>"+ data[i].name+"</option>"); 
+	                    } 
+	                } 
+	            })
+			})
+		})
+		function changeArea(){
+			$.ajax({
+                url:selectArea + "/getAreaByPid", 
+                async:false, 
+                type:'post', 
+                data:{pid:$("#city").val()},
+                success:function(data){
+                    var t3 = $("#area").empty();
+                    for ( var i = 0; i < data.length; i++) { 
+                        t3.append("<option value='"+data[i].id+"'>"+ data[i].name+"</option>"); 
+                    } 
+                } 
+           })
+           changeStreet();
+		} 
+		
+		function changeStreet(){
+			$.ajax({
+                url:selectArea + "/getAreaByPid", 
+                async:false, 
+                type:'post', 
+                data:{pid:$("#area").val()},
+                success:function(data){
+                    var t3 = $("#street").empty();
+                    for ( var i = 0; i < data.length; i++) { 
+                        t3.append("<option value='"+data[i].id+"'>"+ data[i].name+"</option>"); 
+                    } 
+                } 
+            })
+		} 
+		
+		$("#form-court-add").validate({
+			rules:{
+				courtName:{
+        			required:true,
+        			minlength: 2,
+        			maxlength: 20,
+        			remote: {
+                        url: prefix+"/checkCourtNameUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                        	name : function() {
+                                return $.common.trim($("#courtName").val());
+                            }
+                        },
+                        dataFilter: function(data, type) {
+                        	return $.validate.unique(data);
+                        }
+                    }
+        		},
+				courtPersonName:{
+					required:true,
+				},
+			},
+			messages: {
+                "courtName": {
+                    remote: "法院名称已经存在"
+                },
+            },
+			submitHandler: function(form) {
+				add();
+			}
+		});
+		
+		function add() {
+        	var courtName = $("input[name='courtName']").val();
+        	var courtAddress =$("#province").find("option:selected").text()+$("#city").find("option:selected").text()+$("#area").find("option:selected").text()+$("#street").find("option:selected").text();
+        	var courtPersonName=$("input[name='courtPersonName']").val();
+        	$.ajax({
+        		cache : true,
+        		type : "POST",
+        		url : prefix+"/add",
+        		data : {
+        			"courtName": courtName,
+        			"courtAddress": courtAddress,
+        			"courtPersonName":courtPersonName,
+        		},
+        		async : false,
+        		error : function(request) {
+        			$.modal.alertError("系统错误");
+        		},
+        		success : function(data) {
+        			$.operate.saveSuccess(data);
+        		}
+        	});
+        }
+	</script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+        <a class="btn btn-success" onclick="$.operate.add()"
+           shiro:hasPermission="module:processMatter:add">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+        <a class="btn btn-danger" onclick="$.operate.removeAll()"
+           shiro:hasPermission="module:processMatter:remove">
+            <i class="fa fa-trash-o"></i> 删除
+        </a>
+    </div>
+
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:processMatter:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:processMatter:remove')}]];
+    var prefix = ctx + "module/processMatter"
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            modalName: "流程事项 ",
+            columns: [{
+                checkbox: true
+            },
+                {
+                    title: '序号',
+                    formatter: function (value, row, index) {
+                        return index + 1;
+                    }
+                },
+                {
+                    field: 'matterId',
+                    title: '事项ID',
+                    visible: false
+                },
+                {
+                    field: 'matterName',
+                    title: '事项名称'
+                },
+                {
+                    field: 'matterContent',
+                    title: '事项内容'
+                },
+                {
+                    field: 'processId',
+                    title: '流程ID',
+                    visible: false
+                },
+                {
+                    field: 'processName',
+                    title: '流程名称',
+                    formatter: function (value, row, index) {
+                        var processName = '';
+                        $.ajax({
+                            url: "process/selectProcessById",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                processId: row.processId
+                            },
+                            success: function (result) {
+                                processName = result.processName;
+                                return result.processName;
+                            },
+                            async: false
+                        });
+                        return processName;
+                    }
+                },
+                {
+                    field: 'nodeId',
+                    title: '节点ID',
+                    visible: false
+                },
+                {
+                    field: 'launchBy',
+                    title: '发起者'
+                },
+                {
+                    field: 'launchTime',
+                    title: '发起时间'
+                },
+                {
+                    field: 'allowBy',
+                    title: '负责人'
+                },
+                {
+                    field: 'remarks',
+                    title: '备注'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.matterId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.matterId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

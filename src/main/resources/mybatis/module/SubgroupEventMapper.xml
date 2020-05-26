@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.subgroupEvent.mapper.SubgroupEventMapper">
+    
+    <resultMap type="SubgroupEvent" id="SubgroupEventResult">
+        <result property="eventId"    column="event_id"    />
+        <result property="eventName"    column="event_name"    />
+        <result property="eventType"    column="event_type"    />
+        <result property="eventMethod"    column="event_method"    />
+        <result property="diagramId"    column="diagram_id"    />
+        <result property="tableName"    column="table_name"    />
+        <result property="btnColor"    column="btn_color"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+	
+	<sql id="selectSubgroupEventVo">
+        select event_id, event_name, event_type, event_method, diagram_id, table_name, btn_color, create_time, update_time from tool_subgroup_event
+    </sql>
+	
+    <select id="selectSubgroupEventList" parameterType="SubgroupEvent" resultMap="SubgroupEventResult">
+        <include refid="selectSubgroupEventVo"/>
+        <where>  
+            <if test="eventId != null and eventId != ''"> and event_id like concat('%',#{eventId},'%')</if>
+             <if test="eventName != null and eventName != ''"> and event_name like concat('%',#{eventName},'%')</if>
+             <if test="eventType != null and eventType != ''"> and event_type = #{eventType}</if>
+             <if test="eventMethod != null and eventMethod != ''"> and event_method like concat('%',#{eventMethod},'%')</if>
+             <if test="diagramId != null and diagramId != ''"> and diagram_id like concat('%',#{diagramId},'%')</if>
+             <if test="tableName != null and tableName != ''"> and table_name like concat('%',#{tableName},'%')</if>
+             <if test="btnColor != null and btnColor != ''"> and btn_color = #{btnColor}</if>
+             <if test="params.beginTime8 != null and params.beginTime8 != ''">
+              and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime8},'%y%m%d')
+             </if>
+            <if test="params.endTime8 != null and params.endTime8 != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime8},'%y%m%d')
+            </if>
+             <if test="params.beginTime9 != null and params.beginTime9 != ''">
+              and date_format(update_time,'%y%m%d') &gt;= date_format(#{params.beginTime9},'%y%m%d')
+             </if>
+            <if test="params.endTime9 != null and params.endTime9 != ''">
+                and date_format(update_time,'%y%m%d') &lt;= date_format(#{params.endTime9},'%y%m%d')
+            </if>
+         </where>
+    </select>
+    
+    <select id="selectSubgroupEventById" parameterType="String" resultMap="SubgroupEventResult">
+        <include refid="selectSubgroupEventVo"/>
+        where event_id = #{eventId}
+    </select>
+        
+    <insert id="insertSubgroupEvent" parameterType="SubgroupEvent">
+        insert into tool_subgroup_event
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="eventId != null  and eventId != ''  ">event_id,</if>
+           <if test="eventName != null  and eventName != ''  ">event_name,</if>
+           <if test="eventType != null  and eventType != ''  ">event_type,</if>
+           <if test="eventMethod != null  and eventMethod != ''  ">event_method,</if>
+           <if test="diagramId != null  and diagramId != ''  ">diagram_id,</if>
+           <if test="tableName != null  and tableName != ''  ">table_name,</if>
+           <if test="btnColor != null  and btnColor != ''  ">btn_color,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="updateTime != null  ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="eventId != null  and eventId != ''  ">#{eventId},</if>
+        <if test="eventName != null  and eventName != ''  ">#{eventName},</if>
+        <if test="eventType != null  and eventType != ''  ">#{eventType},</if>
+        <if test="eventMethod != null  and eventMethod != ''  ">#{eventMethod},</if>
+        <if test="diagramId != null  and diagramId != ''  ">#{diagramId},</if>
+        <if test="tableName != null  and tableName != ''  ">#{tableName},</if>
+        <if test="btnColor != null  and btnColor != ''  ">#{btnColor},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="updateTime != null  ">#{updateTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateSubgroupEvent" parameterType="SubgroupEvent">
+        update tool_subgroup_event
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="eventName != null  and eventName != ''  ">event_name = #{eventName},</if>
+            <if test="eventType != null  and eventType != ''  ">event_type = #{eventType},</if>
+            <if test="eventMethod != null  and eventMethod != ''  ">event_method = #{eventMethod},</if>
+            <if test="diagramId != null  and diagramId != ''  ">diagram_id = #{diagramId},</if>
+            <if test="tableName != null  and tableName != ''  ">table_name = #{tableName},</if>
+            <if test="btnColor != null  and btnColor != ''  ">btn_color = #{btnColor},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+        </trim>
+        where event_id = #{eventId}
+    </update>
+
+	<delete id="deleteSubgroupEventById" parameterType="String">
+        delete from tool_subgroup_event where event_id = #{eventId}
+    </delete>
+	
+    <delete id="deleteSubgroupEventByIds" parameterType="String">
+        delete from tool_subgroup_event where event_id in 
+        <foreach item="eventId" collection="array" open="(" separator="," close=")">
+            #{eventId}
+        </foreach>
+    </delete>
+    
+</mapper>

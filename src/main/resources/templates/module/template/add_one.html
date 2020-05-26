@@ -1,0 +1,187 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" enctype="multipart/form-data"  id="form-template-add">
+        <input id="treeId" name="parentId" type="hidden" th:if="${temp} ne null" th:value="${temp.templateId}"/>
+        <input type="hidden" name="level" id="level" th:if="${temp} ne null" th:value="${temp.level}">
+        <input id="grandparent" name="grandparent" type="hidden" th:value="${grandparent}"/>
+        <input type="hidden" name="templateDocUrl" id="templateDocUrl">
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">模板标题：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="templateName"/>
+            </div>
+        </div>
+        <div class="form-group" th:if="${temp} ne null">
+            <label class="col-sm-3 control-label ">模板类型：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" onclick="selectDeptTree()" id="treeName" readonly="true" th:value="${temp.templateName}"/>
+            </div>
+        </div>
+        <div id="addFile">
+        </div>
+        <div class="form-group">
+            <div class="form-control-static col-sm-offset-5">
+                <button type="submit" class="btn btn-primary">提交</button>
+                <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "module/template";
+
+    /*部门管理-新增-选择父部门树*/
+    function selectDeptTree() {
+        var options = {
+            title: '部门选择',
+            width: "380",
+            height: "380",
+            url: prefix + "/selectTempTree/" + $("#treeId").val(),
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+    function doSubmit(index, layero){
+        var body = layer.getChildFrame('body', index);
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var sNodes = tree.getSelectedNodes();
+        if (sNodes.length > 0) {
+            var level = sNodes[0].level;
+            $("#level").val(level);
+            if(level>=2){
+                $.modal.msgError("当节点前不支持选择")
+                return false;
+            }
+        }
+        var treeId = body.find('#treeId').val();
+        $("#treeId").val(treeId);
+        $("#treeName").val(body.find('#treeName').val());
+        var grandparent = $("#grandparent").val();
+        if(grandparent!=null && grandparent!=''){
+            //判断最顶级
+            if(treeId === grandparent){//是顶级
+                if(document.getElementById("fileUpload")){
+                    $("#fileUpload").remove();
+                    $("#remarkd").remove();
+                }
+            }else{
+                if(!document.getElementById("fileUpload")){
+                    var doc = $("#addFile");
+                    var str = '<div class="form-group" id="fileUpload">' +
+                        '            <input type="hidden" name="templateUrl" id="templateUrl">' +
+                        '            <label class="col-sm-3 control-label ">文件：</label>' +
+                        '            <div class="col-sm-9">' +
+                        '                <input type="file" name="file" id="file"><span style="color: red">目前支持*.doc,*.docx,单个最大限制为50M</span>' +
+                        '            </div>' +
+                        '        </div>'+
+                        '<div class="form-group" id="remarkd">' +
+                        '   <label class="col-sm-3 control-label">说明：</label>' +
+                        '<div class="col-sm-8">' +
+                        '   <textarea rows="8" class="form-control" name="remark" id="remark"></textarea>' +
+                        '   </div>' +
+                        '   </div>';
+                    doc.append(str);
+                }
+            }
+        }else{
+            if(document.getElementById("fileUpload")){
+                $("#fileUpload").remove();
+                $("#remarkd").remove();
+            }
+        }
+        layer.close(index);
+    }
+
+    $("#form-template-add").submit(function(){
+        var isok = check();
+        if(isok == false){
+            return false;
+        }
+        $.modal.loading("正在处理中，请稍后...");
+        $('#form-template-add').ajaxSubmit({
+            forceSync: false,
+            url: prefix +'/add',
+            type: 'post',
+            success: function(result){
+                if (result.code == statusCode.web_status.SUCCESS) {
+                    $.modal.close();
+                    window.parent.$.modal.msgSuccess("保存成功,正在刷新数据请稍后……");
+                    window.parent.$("#add").attr("data-pid",result.pId);
+                    window.parent.$("#add").attr("onclick","javascript:$.operate.add('"+result.pId+"')");
+                    window.parent.$.treeTable.refresh();
+                } else {
+                    modalComponent.alertError(result.msg);
+                }
+                modalComponent.closeLoading();
+            },
+            error: function(response){
+                modalComponent.alertError('系统错误');
+                modalComponent.closeLoading();
+            }
+        });
+        return false;
+    });
+
+    function check(){
+        var templateName = $("input[name='templateName']").val();
+        if(templateName =='' || templateName==null){
+            $.modal.msgError("标题不能为空")
+            return false;
+        }
+        var level = $("#level").val();
+        if(level!=undefined && level!=null && level!=''){
+            if(level>=2){
+                $.modal.msgError("当前节点无法添加")
+                return false;
+            }
+        }
+        if(document.getElementById("file")){
+            if(level==1){
+                if(document.getElementById("file").files[0]==undefined){
+                    $.modal.msgError("当前必须上传附件")
+                    return false;
+                }else{
+                    return imgTypeSize("file", 50)
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 判断上传的文件是类型与大小
+     * @param {string}  FileId  文件按钮id
+     * @param {number}  maxsize  文件大小（单位/M）
+     */
+    function imgTypeSize(FileId, maxsize) {
+        /*获取图片内容对象*/
+        var imgFile = document.getElementById(FileId).files[0];
+        if(imgFile==undefined || imgFile.name == "") {
+        } else {
+            /*文件类型正则验证*/
+            var imgStr = /\.(doc|docx)$/;
+            if(!imgStr.test(imgFile.name)) {
+                $.modal.msgError("文件不是*.doc,*.docx类型");
+                return false;
+            } else {
+                /*w文件大小*/
+                var imagSize = imgFile.size;
+                if(imagSize < (1024 * 1024 * maxsize)) {
+                    return true;
+                } else {
+                    $.modal.msgError(imgFile.name + "大小不能超过" + maxsize + "M");
+                    return false;
+                }
+            }
+        }
+    }
+</script>
+</body>
+</html>

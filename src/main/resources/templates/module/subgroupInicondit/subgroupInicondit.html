@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-info search-collapse">
+        <form id="case" class="form-horizontal">
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>初始条件ID：</label>
+                    <input type="text" name="iniconditId">
+                </div>
+                <div class="col-sm-4">
+                    <label>字段ID：</label>
+                    <input type="text" name="columnName">
+                </div>
+                <div class="col-sm-4">
+                    <label>条件：</label>
+                    <select id="conditionMark" name="conditionMark" th:with="type=${@dict.getType('condition_mark')}">
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>逻辑运算符：</label>
+                    <select id="conditionOperator" name="conditionOperator"
+                            th:with="type=${@dict.getType('condition_operator')}">
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-4 select-time">
+                    <label>创建时间：</label>
+                    <input type="text" class="time-input" id="startTime_6" placeholder="开始时间"
+                           name="params[beginTime_6]"/>
+                    <span class="time-span">-</span>
+                    <input type="text" class="time-input" id="endTime_6" placeholder="结束时间" name="params[endTime_6]"/>
+                </div>
+                <div class="col-sm-4 select-time">
+                    <label>更新时间：</label>
+                    <input type="text" class="time-input" id="startTime_7" placeholder="开始时间"
+                           name="params[beginTime_7]"/>
+                    <span class="time-span">-</span>
+                    <input type="text" class="time-input" id="endTime_7" placeholder="结束时间" name="params[endTime_7]"/>
+                </div>
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-12 select-info-btn">
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i
+                            class="fa fa-search"></i>&nbsp;搜索</a>
+                    <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i
+                            class="fa fa-refresh"></i>&nbsp;重置</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+        <a class="btn btn-success" onclick="operateComponent.add('module/subgroupInicondit/add','初始条件')"
+           shiro:hasPermission="module:subgroupInicondit:add">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+        <a class="btn btn-primary btn-detail disabled" onclick="$.operate.detail()"
+           shiro:hasPermission="module:subgroupInicondit:detail">
+            <i class="fa fa-plus"></i> 详细
+        </a>
+        <a class="btn btn-warning btn-edit disabled"
+           onclick="operateComponent.edit('','module/subgroupInicondit/edit/{id}','初始条件')"
+           shiro:hasPermission="module:subgroupInicondit:edit">
+            <i class="fa fa-plus"></i> 编辑
+        </a>
+        <a class="btn btn-danger btn-del disabled"
+           onclick="operateComponent.removeAll('module/subgroupInicondit/remove')"
+           shiro:hasPermission="module:subgroupInicondit:remove">
+            <i class="fa fa-trash-o"></i> 删除
+        </a>
+    </div>
+
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:subgroupInicondit:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:subgroupInicondit:remove')}]];
+    var prefix = ctx + "module/subgroupInicondit";
+    var datas_3 = [[${@dict.getType('condition_mark')}]];
+    var datas_4 = [[${@dict.getType('condition_operator')}]];
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            search: false,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'iniconditId',
+                    title: '初始条件ID'
+                },
+                {
+                    field: 'columnName',
+                    title: '字段ID'
+                },
+                {
+                    field: 'conditionMark',
+                    title: '条件',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return initSimpleTabl.selectDictLabel(datas_3, value);
+                    }
+                },
+                {
+                    field: 'conditionOperator',
+                    title: '逻辑运算符',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return initSimpleTabl.selectDictLabel(datas_4, value);
+                    }
+                },
+                {
+                    field: 'conditionValue',
+                    title: '值'
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+                {
+                    field: 'updateTime',
+                    title: '更新时间'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="operateComponent.edit(\'' + row.iniconditId + '\'\,\'module/subgroupInicondit/edit/{id}\'\,\'初始条件\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="operateComponent.remove(\'' + row.iniconditId + '\'\,\'module/subgroupInicondit/remove\'\,\'初始条件\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        initSimpleTabl.init(options);
+    });
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime_6', theme: 'molv'});
+        laydate.render({elem: '#endTime_6', theme: 'molv'});
+        laydate.render({elem: '#startTime_7', theme: 'molv'});
+        laydate.render({elem: '#endTime_7', theme: 'molv'});
+    });
+</script>
+</body>
+</html>

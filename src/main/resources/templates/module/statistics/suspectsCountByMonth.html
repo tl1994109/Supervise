@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-info search-collapse">
+        <form id="case" class="form-horizontal">
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>开始时间：</label>
+                    <input type="text"   class="time-input" id="startTime_12" placeholder="请填写开始日期" name="startDate"/>
+                </div>
+
+                <div class="col-sm-4">
+                    <label>结束时间：</label>
+                    <input type="text"   class="time-input" id="endTime_12" placeholder="请填写结束日期" name="endDate"/>
+                </div>
+            </div>
+
+            <div class="form-group select-info-container">
+                <div class="col-sm-12 select-info-btn">
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="searchByDate();"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                    <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-12 select-table table-striped" id="tables">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:clue:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:clue:remove')}]];
+    var releaseFlag = [[${@permission.hasPermi('module:processMatter:addDubvioEvent')}]];
+    var listFlag = [[${@permission.hasPermi('module:clue:list')}]];
+    var datas_18 = [[${@dict.getType('risks_grades')}]];
+    var prefix = ctx + "module/statistics";
+    $(function () {
+        var options = {
+            url: prefix + "/getSuspectsCountByMonth",
+            search: false,
+            showFooter: true,
+            queryParams: queryParams,
+            columns: [
+                {
+                    field: 'clueTime',
+                    title: '月份',
+                },
+                {
+                    field: 'ms',
+                    title: '民事',
+                    formatter: function (value, row, index) {
+                        var ms = "1";
+                        var clueTime = '"' + row.clueTime + '"';
+                        if (row.ms == 0) {
+                            return "<font >" + row.ms + "</font>";
+                        } else {
+                            return "<a style='text-decoration:none'  onclick='suspectsMonthDetail(" + clueTime + "," + ms + ")' ><font color='blue'>" + row.ms + "</font></a>";
+                        }
+                    },
+                    footerFormatter:function (value) {
+                        var sumBalance = 0;
+                        for (var i in value) {
+                            sumBalance += parseFloat(value[i].ms);
+                        }
+                        return "民事：" + sumBalance;
+                    }
+                },
+                {
+                    field: 'xs',
+                    title: '刑事',
+                    formatter: function (value, row, index) {
+                        var xs = "2";
+                        var clueTime = '"' + row.clueTime + '"';
+                        if (row.xs == 0) {
+                            return "<font >" + row.xs + "</font>";
+                        } else {
+
+                            return "<a style='text-decoration:none' onclick='suspectsMonthDetail(" + clueTime + "," + xs + ")' ><font color='blue'>" + row.xs + "</font></a>";
+                        }
+                    },
+                    footerFormatter:function (value) {
+                        var sumBalance = 0;
+                        for (var i in value) {
+                            sumBalance += parseFloat(value[i].xs);
+                        }
+                        return "刑事：" + sumBalance;
+                    }
+                },
+                {
+                    field: 'xz',
+                    title: '行政',
+                    formatter: function (value, row, index) {
+                        var xz = "3";
+                        var clueTime = '"' + row.clueTime + '"';
+                        if (row.xz == 0) {
+                            return "<font >" + row.xz + "</font>";
+                        } else {
+
+
+                            return "<a style='text-decoration:none' onclick='suspectsMonthDetail(" + clueTime + "," + xz + " )' ><font color='blue'>" + row.xz + "</font></a>";
+                        }
+                    },
+                    footerFormatter:function (value) {
+                        var sumBalance = 0;
+                        for (var i in value) {
+                            sumBalance += parseFloat(value[i].xz);
+                        }
+                        return "行政：" + sumBalance;
+                    }
+                },
+                {
+                    field: 'zx',
+                    title: '执行',
+                    formatter: function (value, row, index) {
+                        var zx = "4";
+                        var clueTime = '"' + row.clueTime + '"';
+
+                        if (row.zx == 0) {
+                            return "<font >" + row.zx + "</font>";
+                        } else {
+                            return "<a style='text-decoration:none' onclick='suspectsMonthDetail(" + clueTime + "," + zx + " )' ><font color='blue'>" + row.zx + "</font></a>";
+                        }
+                    },
+                    footerFormatter:function (value) {
+                        var sumBalance = 0;
+                        for (var i in value) {
+                            sumBalance += parseFloat(value[i].zx);
+                        }
+                        return "执行：" + sumBalance;
+                    }
+                },
+
+                {
+                    field: 'total',
+                    title: '总数',
+                    formatter: function (value, row, index) {
+                        var total = "5";
+                        var clueTime = '"' + row.clueTime + '"';
+
+                        if (row.total == 0) {
+                            return "<font >" + row.total + "</font>";
+                        } else {
+
+                            return "<a style='text-decoration:none' onclick='suspectsMonthDetail(" + clueTime + "," + total + " )' ><font color='blue'>" + row.total + "</font></a>";
+                        }
+                    },
+                    footerFormatter:function (value) {
+                        var sumBalance = 0;
+                        for (var i in value) {
+                            sumBalance += parseFloat(value[i].total);
+                        }
+                        return "总数：" + sumBalance;
+                    }
+                },
+
+            ]
+        };
+        initSimpleTabl.init(options);
+    });
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime_12', theme: 'molv', type:"month"});
+        laydate.render({elem: '#endTime_12', theme: 'molv',  type:"month"});
+    });
+
+    function queryParams(params) {
+        return {
+            pageSize: params.limit,
+            pageNum: params.offset / params.limit + 1,
+            searchValue: params.search,
+            orderByColumn: params.sort,
+            isAsc: params.order
+        };
+    }
+    function suspectsMonthDetail(clueTime, name) {
+        var url = prefix + '/suspectDetailByMonth?suspectsTime=' + clueTime + "&caseTypeName=" + name;
+        createMenuItem(url, "月度可疑点详细");
+    }
+
+    function searchByDate(){
+        var startDate = $("#startTime_12").val();
+        var endDate = $("#endTime_12").val();
+        if(new Date(startDate).getTime() > new Date(endDate).getTime()){
+            layer.msg("请填写正确日期查询！");
+            return;
+        }else{
+            initSimpleTabl.search();
+        }
+    }
+</script>
+</body>
+</html>

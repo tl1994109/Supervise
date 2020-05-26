@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<style type="text/css">
+    /* 新增样式20190419 */
+    .select2-container .select2-selection--single{height: 34px;}
+    .select2-container--default .select2-selection--single{border: 1px solid #ddd;}
+    .select2-container--default .select2-selection--single .select2-selection__rendered{line-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {padding: 0px 5px;}
+    .select-info-container input, .select-info-container select{width: 100%}
+    .select2-container{height: 34px;line-height: 34px}
+    .select2-container--default .select2-selection--multiple{height: 34px;width: 100%;border: 1px solid #ddd;}
+    .select2-container .select2-selection--multiple{min-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__rendered{height: 34px; }
+    .select2-container--default.select2-container--focus .select2-selection--multiple{border: 1px solid #ddd;}
+</style>
+
+
+<body class="gray-bg">
+<div class="wrapper animated fadeInRight">
+    <div class="col-sm-12 select-info">
+        <form class="form-horizontal m" id="form-datashareMaster-add">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">法院名称：</label>
+                        <div class="col-xs-10">
+                            <select name="datashareCourtid" id="datashareCourtid" class="form-control">
+                                <option value="">请选择</option>
+                                <option th:each="deptList:${deptList}"
+                                        th:value="${deptList.deptId}"
+                                        th:text="${deptList.deptName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">序号：</label>
+                        <div class="col-xs-10">
+                            <input class="form-control" type="text" name="number">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <input type="hidden" id="statu" name="status"/>
+                        <label class="col-xs-2 control-label">状态：</label>
+                        <div class="col-xs-10">
+                            <div class="onoffswitch">
+                                <input type="checkbox" th:checked="true" class="onoffswitch-checkbox" id="status">
+                                <label class="onoffswitch-label" for="status">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-control-static col-sm-offset-5">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "module/datashareMaster"
+    $("#form-datashareMaster-add").validate({
+        rules: {
+            datashareId: {
+                required: true,
+            },
+        },
+        submitHandler: function (form) {
+            var status = $("#status").is(':checked') == true ? 0 : 1;
+            $("#statu").val(status);
+            $.operate.save(prefix + "/add", $('#form-datashareMaster-add').serialize());
+        }
+    });
+</script>
+</body>
+</html>

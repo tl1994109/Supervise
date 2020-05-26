@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="col-sm-12 select-info search-collapse">
+        <form class="form-horizontal m" id="form-subgroupInicondit-add">
+            <input type="hidden" name="tableName" th:value="${tableName}">
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>字段ID：</label>
+                    <select id="columnName" name="columnName">
+                        <option value="">请选择</option>
+                        <option th:each="columns : ${tableColumnsList}" th:text="${columns.columnName}"
+                                th:value="${columns.columnName}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <label>条件：</label>
+                    <select id="conditionMark" name="conditionMark"
+                            th:with="type=${@dict.getType('condition_mark')}">
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <label>逻辑运算符：</label>
+                    <select id="conditionOperator" name="conditionOperator"
+                            th:with="type=${@dict.getType('condition_operator')}">
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>值：</label>
+                    <input type="text" name="conditionValue">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-control-static col-sm-offset-5">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+    $('.summernote').summernote({
+        height: '220px',
+        lang: 'zh-CN'
+    });
+    var prefix = ctx + "module/subgroupInicondit"
+    $("#form-subgroupInicondit-add").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        submitHandler: function (form) {
+            var json = toolUtil.serializeObject("#form-subgroupInicondit-add");
+            var isok = true;
+            var condition = json.conditionOperator + " " + json.columnName + " " + json.conditionMark + " " + json.conditionValue;
+            var guid = toolUtil.guid();
+            json.guId = guid;
+            var stringify = JSON.stringify(json);
+            var str = '<div class="col-sm-4 modal-div-margin condition" data-incodition="'+json.guId+'">'
+                + '<input type="hidden" name="iniconditJson[]" value=\''+stringify+'\'>'
+                + '  <div class="model-content">'
+                + '      <div class="model-title">'
+                + '          <span>' + condition + '</span>'
+                + '      </div>'
+                + '      <div class="model-btn">'
+                + '          <a href="#">'
+                + '              <button type="button" class="glyphicon glyphicon-pencil condition_edit" data-id=\''+json.iniconditId+'\' data-json=\''+stringify+'\' title="编辑"></button>'
+                + '          </a>'
+                + '          <a href="#">'
+                + '              <button type="button" class="glyphicon glyphicon-remove condition_remove" data-id=\''+json.iniconditId+'\' data-json=\''+stringify+'\' title="删除"></button>'
+                + '          </a>'
+                + '      </div>'
+                + '  </div>'
+                + '</div>';
+            $(str).appendTo(parent.$("#incodition"));
+            modalComponent.close();
+        }
+    });
+</script>
+</body>
+</html>

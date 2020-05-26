@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 select-info search-collapse">
+				<form id="job-form" class="form-horizontal">
+					<div class="form-group select-info-container">
+						<div class="col-sm-4">
+							<label>任务名称：</label><input type="text" name="jobName"/>
+						</div>
+						<div class="col-sm-4">
+							<label>方法名称：</label><input type="text" name="methodName"/>
+						</div>
+						<div class="col-sm-4">
+							<label>任务组名：</label><input type="text" name="jobGroup"/>
+						</div>
+					</div>
+					<div class="form-group select-info-container">
+						<div class="col-sm-4">
+							<label>任务状态：</label>
+							<select name="status" th:with="type=${@dict.getType('sys_job_status')}">
+								<option value="">所有</option>
+								<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group select-info-container">
+						<div class="col-sm-12 select-info-btn">
+							<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+							<a class="btn btn-success btn-rounded btn-sm" onclick="$.table.exportExcel()" shiro:hasPermission="monitor:job:export"><i class="fa fa-download"></i>&nbsp;导出</a>
+						</div>
+					</div>
+				</form>
+			</div>
+			
+			<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="monitor:job:add">
+	                <i class="fa fa-plus"></i> 新增
+	            </a>
+				<a class="btn btn-danger" onclick="$.operate.removeAll()" shiro:hasPermission="monitor:job:remove">
+		            <i class="fa fa-trash-o"></i> 批量删除
+		        </a>
+		        <a class="btn btn-info" onclick="javascript:jobLog()" shiro:hasPermission="monitor:job:list">
+		            <i class="fa fa-list"></i> 日志
+		        </a>
+	        </div>
+        
+	        <div class="col-sm-12 select-table table-striped">
+			    <table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script th:inline="javascript">
+		var editFlag = [[${@permission.hasPermi('monitor:job:edit')}]];
+		var detailFlag = [[${@permission.hasPermi('monitor:job:detail')}]];
+		var removeFlag = [[${@permission.hasPermi('monitor:job:remove')}]];
+		var statusFlag = [[${@permission.hasPermi('monitor:job:changeStatus')}]];
+		var datas = [[${@dict.getType('sys_job_status')}]];
+		var types = [[${@dict.getType('job_type')}]];
+		var corns = [[${@dict.getType('task_cron')}]];
+		var prefix = ctx + "monitor/strategyjob"
+
+		$(function() {
+		    var options = {
+		        url: prefix + "/list",
+		        createUrl: prefix + "/add",
+		        updateUrl: prefix + "/edit/{id}",
+		        removeUrl: prefix + "/remove",
+		        exportUrl: prefix + "/export",
+		        sortName: "createTime",
+		        sortOrder: "desc",
+		        modalName: "任务",
+		        search: false,
+		        showExport: false,
+		        columns: [{
+		            checkbox: true
+		        },
+		        {
+		            field: 'jobId',
+		            title: '任务编号'
+		        },
+		        {
+		            field: 'jobName',
+		            title: '任务名称',
+		            sortable: true
+		        },
+		        {
+		            field: 'jobGroup',
+		            title: '任务组名',
+		            sortable: true
+		        },
+					{
+						field : 'jobType',
+						title : '任务类型',
+						formatter: function(value, row, index) {
+							return $.table.selectDictLabel(types, value);
+						}
+					},
+
+					{
+						field: 'methodName',
+						title: '方法名称',
+					},
+		        {
+		            field: 'cronExpression',
+		            title: '执行表达式',
+					formatter: function(value, row, index) {
+						return $.table.selectDictLabel(corns, value);
+					}
+		        },
+		        {
+		            field: 'status',
+		            title: '任务状态',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	return $.table.selectDictLabel(datas, value);
+		            }
+		        },
+		        {
+		            field: 'createTime',
+		            title: '创建时间',
+		            sortable: true
+		        },
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		                var actions = [];
+		                actions.push(statusTools(row));
+		                actions.push('<a class="btn btn-primary btn-xs ' + statusFlag + '" href="#" onclick="run(\'' + row.jobId + '\')"><i class="fa fa-play-circle-o"></i> 执行</a> ');
+		                 actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.jobId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+						actions.push('<a class="btn btn-info btn-xs ' + detailFlag + '" href="#" onclick="jobdetail(\'' + row.jobId + '\')"><i class="fa fa-list-ul"></i>详细</a> ');
+						actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.jobId + '\')"><i class="fa fa-remove"></i>删除</a>');
+		                return actions.join('');
+		            }
+		        }]
+		    };
+		    $.table.init(options);
+		});
+
+		function statusTools(row) {
+		    if (row.status == 1) {
+		        return '<a class="btn btn-info btn-xs ' + statusFlag + '" href="#" onclick="start(\'' + row.jobId + '\')"><i class="fa fa-play"></i>启用</a> ';
+		    } else {
+		    	return '<a class="btn btn-warning btn-xs ' + statusFlag + '" href="#" onclick="stop(\'' + row.jobId + '\')"><i class="fa fa-pause"></i>暂停</a> ';
+		    }
+		}
+		
+		/*立即执行一次*/
+		function run(jobId) {
+			$.modal.confirm("确认要立即执行任务吗？", function() {
+				$.operate.post(prefix + "/run", { "jobId": jobId});
+		    })
+		}
+
+		/*调度任务-停用*/
+		function stop(jobId) {
+			$.modal.confirm("确认要停用任务吗？", function() {
+				$.operate.post(prefix + "/changeStatus", { "jobId": jobId, "status": 1 });
+		    })
+		}
+
+		/*调度任务-启用*/
+		function start(jobId) {
+			$.modal.confirm("确认要启用任务吗？", function() {
+				$.operate.post(prefix + "/changeStatus", { "jobId": jobId, "status": 0 });
+		    })
+		}
+
+		//调度日志查询
+		function jobLog(id) {
+			var url = ctx + 'monitor/jobLog';
+			createMenuItem(url, "调度日志");
+		}
+
+		/* 任务接口-详细*/
+		function jobdetail(jobId) {
+			var url = prefix + '/detail/' + jobId;
+			createMenuItem(url, "执行方法详细");
+		}
+	</script>
+</body>
+</html>

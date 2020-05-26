@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.itemreport.mapper.ItemreportMapper">
+    
+    <resultMap type="Itemreport" id="ItemreportResult">
+        <result property="sxbgId"    column="sxbg_id"    />
+        <result property="sxbgCid"    column="sxbg_cid"    />
+        <result property="sxbgXm"    column="sxbg_xm"    />
+        <result property="sxbgDwjgzbm"    column="sxbg_dwjgzbm"    />
+        <result property="sxbgZw"    column="sxbg_zw"    />
+        <result property="sxbgHybhqk"    column="sxbg_hybhqk"    />
+        <result property="sxbgCyyscgzjqk"    column="sxbg_cyyscgzjqk"    />
+        <result property="sxbgYscgqk"    column="sxbg_yscgqk"    />
+        <result property="sxbgZnywgthqk"    column="sxbg_znywgthqk"    />
+        <result property="sxbgPozncgdjqk"    column="sxbg_pozncgdjqk"    />
+        <result property="sxbgPoznjsqk"    column="sxbg_poznjsqk"    />
+        <result property="sxbgPoznrcgzgryqk"    column="sxbg_poznrcgzgryqk"    />
+        <result property="sxbgPoznbsfzjqk"    column="sxbg_poznbsfzjqk"    />
+        <result property="sxbgJhsysyznqk"    column="sxbg_jhsysyznqk"    />
+        <result property="sxbgQtsx"    column="sxbg_qtsx"    />
+    </resultMap>
+	
+	<sql id="selectItemreportVo">
+        select sxbg_id, sxbg_cid, sxbg_xm, sxbg_dwjgzbm, sxbg_zw, sxbg_hybhqk, sxbg_cyyscgzjqk, sxbg_yscgqk, sxbg_znywgthqk, sxbg_pozncgdjqk, sxbg_poznjsqk, sxbg_poznrcgzgryqk, sxbg_poznbsfzjqk, sxbg_jhsysyznqk, sxbg_qtsx from arch_itemreport
+    </sql>
+	
+    <select id="selectItemreportList" parameterType="Itemreport" resultMap="ItemreportResult">
+        <include refid="selectItemreportVo"/>
+        <where>  
+            <if test="sxbgId != null and sxbgId != ''"> and sxbg_id like concat('%',#{sxbgId},'%')</if>
+             <if test="sxbgCid != null and sxbgCid != ''"> and sxbg_cid like concat('%',#{sxbgCid},'%')</if>
+             <if test="sxbgXm != null and sxbgXm != ''"> and sxbg_xm like concat('%',#{sxbgXm},'%')</if>
+             <if test="sxbgDwjgzbm != null and sxbgDwjgzbm != ''"> and sxbg_dwjgzbm like concat('%',#{sxbgDwjgzbm},'%')</if>
+             <if test="sxbgZw != null and sxbgZw != ''"> and sxbg_zw like concat('%',#{sxbgZw},'%')</if>
+             <if test="sxbgHybhqk != null and sxbgHybhqk != ''"> and sxbg_hybhqk like concat('%',#{sxbgHybhqk},'%')</if>
+             <if test="sxbgCyyscgzjqk != null and sxbgCyyscgzjqk != ''"> and sxbg_cyyscgzjqk like concat('%',#{sxbgCyyscgzjqk},'%')</if>
+             <if test="sxbgYscgqk != null and sxbgYscgqk != ''"> and sxbg_yscgqk like concat('%',#{sxbgYscgqk},'%')</if>
+             <if test="sxbgZnywgthqk != null and sxbgZnywgthqk != ''"> and sxbg_znywgthqk like concat('%',#{sxbgZnywgthqk},'%')</if>
+             <if test="sxbgPozncgdjqk != null and sxbgPozncgdjqk != ''"> and sxbg_pozncgdjqk like concat('%',#{sxbgPozncgdjqk},'%')</if>
+             <if test="sxbgPoznjsqk != null and sxbgPoznjsqk != ''"> and sxbg_poznjsqk like concat('%',#{sxbgPoznjsqk},'%')</if>
+             <if test="sxbgPoznrcgzgryqk != null and sxbgPoznrcgzgryqk != ''"> and sxbg_poznrcgzgryqk like concat('%',#{sxbgPoznrcgzgryqk},'%')</if>
+             <if test="sxbgPoznbsfzjqk != null and sxbgPoznbsfzjqk != ''"> and sxbg_poznbsfzjqk like concat('%',#{sxbgPoznbsfzjqk},'%')</if>
+             <if test="sxbgJhsysyznqk != null and sxbgJhsysyznqk != ''"> and sxbg_jhsysyznqk like concat('%',#{sxbgJhsysyznqk},'%')</if>
+             <if test="sxbgQtsx != null and sxbgQtsx != ''"> and sxbg_qtsx like concat('%',#{sxbgQtsx},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectItemreportById" parameterType="String" resultMap="ItemreportResult">
+        <include refid="selectItemreportVo"/>
+        where sxbg_id = #{sxbgId}
+    </select>
+        
+    <insert id="insertItemreport" parameterType="Itemreport">
+        insert into arch_itemreport
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="sxbgId != null  and sxbgId != ''  ">sxbg_id,</if>
+           <if test="sxbgCid != null  and sxbgCid != ''  ">sxbg_cid,</if>
+           <if test="sxbgXm != null  and sxbgXm != ''  ">sxbg_xm,</if>
+           <if test="sxbgDwjgzbm != null  and sxbgDwjgzbm != ''  ">sxbg_dwjgzbm,</if>
+           <if test="sxbgZw != null  and sxbgZw != ''  ">sxbg_zw,</if>
+           <if test="sxbgHybhqk != null  and sxbgHybhqk != ''  ">sxbg_hybhqk,</if>
+           <if test="sxbgCyyscgzjqk != null  and sxbgCyyscgzjqk != ''  ">sxbg_cyyscgzjqk,</if>
+           <if test="sxbgYscgqk != null  and sxbgYscgqk != ''  ">sxbg_yscgqk,</if>
+           <if test="sxbgZnywgthqk != null  and sxbgZnywgthqk != ''  ">sxbg_znywgthqk,</if>
+           <if test="sxbgPozncgdjqk != null  and sxbgPozncgdjqk != ''  ">sxbg_pozncgdjqk,</if>
+           <if test="sxbgPoznjsqk != null  and sxbgPoznjsqk != ''  ">sxbg_poznjsqk,</if>
+           <if test="sxbgPoznrcgzgryqk != null  and sxbgPoznrcgzgryqk != ''  ">sxbg_poznrcgzgryqk,</if>
+           <if test="sxbgPoznbsfzjqk != null  and sxbgPoznbsfzjqk != ''  ">sxbg_poznbsfzjqk,</if>
+           <if test="sxbgJhsysyznqk != null  and sxbgJhsysyznqk != ''  ">sxbg_jhsysyznqk,</if>
+           <if test="sxbgQtsx != null  and sxbgQtsx != ''  ">sxbg_qtsx,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="sxbgId != null  and sxbgId != ''  ">#{sxbgId},</if>
+        <if test="sxbgCid != null  and sxbgCid != ''  ">#{sxbgCid},</if>
+        <if test="sxbgXm != null  and sxbgXm != ''  ">#{sxbgXm},</if>
+        <if test="sxbgDwjgzbm != null  and sxbgDwjgzbm != ''  ">#{sxbgDwjgzbm},</if>
+        <if test="sxbgZw != null  and sxbgZw != ''  ">#{sxbgZw},</if>
+        <if test="sxbgHybhqk != null  and sxbgHybhqk != ''  ">#{sxbgHybhqk},</if>
+        <if test="sxbgCyyscgzjqk != null  and sxbgCyyscgzjqk != ''  ">#{sxbgCyyscgzjqk},</if>
+        <if test="sxbgYscgqk != null  and sxbgYscgqk != ''  ">#{sxbgYscgqk},</if>
+        <if test="sxbgZnywgthqk != null  and sxbgZnywgthqk != ''  ">#{sxbgZnywgthqk},</if>
+        <if test="sxbgPozncgdjqk != null  and sxbgPozncgdjqk != ''  ">#{sxbgPozncgdjqk},</if>
+        <if test="sxbgPoznjsqk != null  and sxbgPoznjsqk != ''  ">#{sxbgPoznjsqk},</if>
+        <if test="sxbgPoznrcgzgryqk != null  and sxbgPoznrcgzgryqk != ''  ">#{sxbgPoznrcgzgryqk},</if>
+        <if test="sxbgPoznbsfzjqk != null  and sxbgPoznbsfzjqk != ''  ">#{sxbgPoznbsfzjqk},</if>
+        <if test="sxbgJhsysyznqk != null  and sxbgJhsysyznqk != ''  ">#{sxbgJhsysyznqk},</if>
+        <if test="sxbgQtsx != null  and sxbgQtsx != ''  ">#{sxbgQtsx},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateItemreport" parameterType="Itemreport">
+        update arch_itemreport
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sxbgCid != null   ">sxbg_cid = #{sxbgCid},</if>
+            <if test="sxbgXm != null    ">sxbg_xm = #{sxbgXm},</if>
+            <if test="sxbgDwjgzbm != null   ">sxbg_dwjgzbm = #{sxbgDwjgzbm},</if>
+            <if test="sxbgZw != null    ">sxbg_zw = #{sxbgZw},</if>
+            <if test="sxbgHybhqk != null   ">sxbg_hybhqk = #{sxbgHybhqk},</if>
+            <if test="sxbgCyyscgzjqk != null    ">sxbg_cyyscgzjqk = #{sxbgCyyscgzjqk},</if>
+            <if test="sxbgYscgqk != null   ">sxbg_yscgqk = #{sxbgYscgqk},</if>
+            <if test="sxbgZnywgthqk != null    ">sxbg_znywgthqk = #{sxbgZnywgthqk},</if>
+            <if test="sxbgPozncgdjqk != null   ">sxbg_pozncgdjqk = #{sxbgPozncgdjqk},</if>
+            <if test="sxbgPoznjsqk != null    ">sxbg_poznjsqk = #{sxbgPoznjsqk},</if>
+            <if test="sxbgPoznrcgzgryqk != null   ">sxbg_poznrcgzgryqk = #{sxbgPoznrcgzgryqk},</if>
+            <if test="sxbgPoznbsfzjqk != null  ">sxbg_poznbsfzjqk = #{sxbgPoznbsfzjqk},</if>
+            <if test="sxbgJhsysyznqk != null    ">sxbg_jhsysyznqk = #{sxbgJhsysyznqk},</if>
+            <if test="sxbgQtsx != null    ">sxbg_qtsx = #{sxbgQtsx},</if>
+        </trim>
+        where sxbg_id = #{sxbgId}
+    </update>
+
+	<delete id="deleteItemreportById" parameterType="String">
+        delete from arch_itemreport where sxbg_id = #{sxbgId}
+    </delete>
+	
+    <delete id="deleteItemreportByIds" parameterType="String">
+        delete from arch_itemreport where sxbg_id in 
+        <foreach item="sxbgId" collection="array" open="(" separator="," close=")">
+            #{sxbgId}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+
+<body class="white-bg">
+
+<style>
+    input::-ms-input-placeholder{
+        text-align: center;
+    }
+    input::-webkit-input-placeholder{
+        text-align: center;
+    }
+
+    table{
+        border-collapse: collapse;
+    }
+    .document{
+        width: 100%;
+        height: 100%;
+        font-family: "microsoft yahei";
+    }
+    .document-container{
+        width: 800px;
+        height: auto;
+        margin: 20px auto;
+        border: 1px solid #2f4050;
+        padding: 20px;
+    }
+    .title-1 h2{
+        font-weight: bold;
+    }
+    .title-2, .title-3{
+        margin: 0 auto;
+        text-align: center;
+    }
+    .title-3 input{
+        width: 100px;
+    }
+
+    .title-3 h1{
+        font-weight: bold;
+    }
+
+    .report-content input{
+        width: 80px;
+    }
+    .report-content p{
+        text-indent: 40px;
+        font-size: 16px;
+        font-weight: 300;
+        padding: 10px 0px;
+        text-align: left;
+    }
+    .report-content h2{
+        font-weight: bold;
+    }
+    .report-content input{
+        border: none;
+        outline: 0;
+        border-bottom: 1px solid  #2f4050;
+    }
+    .report-content textarea{
+        width: 100%;
+        height: 80px;
+        /*禁止拉伸*/
+        resize: none;
+    }
+    .report-content .fr{
+        float: right;
+    }
+
+    .report-content .font16{
+        font-size: 16px;
+        font-weight: 300;
+    }
+
+
+</style>
+
+<div class="document">
+    <div class="document-container">
+        <div class="title-1">
+            <h2>密级</h2>
+        </div>
+
+        <div class="title-3">
+            <h1>初步核实方案</h1>
+        </div>
+
+        <div class="report-content">
+            <p class="font16">第一部分：初核依据（应明确批准机关或领导、问题线索和线索来源）和初核起始时间等；</p>
+        </div>
+        <div class="report-content">
+            <p class="font16">第二部分：被核查人（单位）的基本情况；</p>
+        </div>
+        <div class="report-content">
+            <p class="font16">第三部分：需要初步核实的主要问题；</p>
+        </div>
+        <div class="report-content">
+            <p class="font16">第四部分：初步核实的方法和步骤；</p>
+        </div>
+        <div class="report-content">
+            <p class="font16">第五部分：相关要求（包括核查组人员及安全制度、保密制度等）。</p>
+        </div>
+        <div class="report-content">
+            <p style="text-align: right"><input type="text" placeholder="X X X" onfocus="this.placeholder=''" onblur="this.placeholder='X X X'"/>纪委（监委）<input type="text" placeholder="X X X" onfocus="this.placeholder=''" onblur="this.placeholder='X X X'"/>室</p>
+            <p style="text-align: right"><input type="text"/>年 <input type="text"/>月 <input type="text"/>日</p>
+        </div>
+        <div class="form-group">
+            <div class="form-control-static col-sm-offset-5">
+                <button type="reset" class="btn btn-warning">重置</button>
+                <button type="submit" class="btn btn-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:include="include::footer"></div>
+
+
+</body>
+</html>

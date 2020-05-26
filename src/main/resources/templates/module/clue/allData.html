@@ -1,0 +1,548 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<!--表格样式-->
+<style type="text/css">
+    .table-striped .table, .fixed-table-container, table, .table-striped .table, .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        border-bottom: 0px !important;
+    }
+    .table-striped table{
+        width: 100%;
+        overflow: hidden;
+    }
+
+    body, div, td, span {
+        font: normal 12px tahoma, arial, helvetica, sans-serif;
+    }
+
+    td, th {
+        display: table-cell;
+        vertical-align: inherit;
+    }
+
+    table.reportTable {
+        display: table;
+        border-collapse: separate;
+        border-spacing: 1px;
+        border-color: grey;
+        border-bottom: 0 !important;
+    }
+
+    table.reportTable {
+        white-space: normal;
+        line-height: normal;
+        font-weight: normal;
+        font-size: medium;
+        font-style: normal;
+        color: -internal-quirk-inherit;
+        text-align: start;
+        font-variant: normal;
+        border-bottom: 0 !important;
+    }
+
+    tbody {
+        display: table-row-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+
+    tr {
+        display: table-row;
+        vertical-align: inherit;
+        border-color: inherit;
+    }
+
+    .crs-1790493001 {
+        background-color: #337ab7;
+        /* border-top: 2px solid #ffffff;*/
+        /*
+        border-bottom: 1px solid #ffffff;
+        */
+          border-right: 1px solid #ffffff;
+    }
+
+    .crs-799493009 {
+        width: 100%;
+        height: 100%;
+        line-height: 1.3;
+        text-align: center;
+        font-size: 12pt;
+        font-family: "宋体";
+        font-weight: 700;
+    }
+
+    . reportTable{
+        margin-left: 15%;
+    }
+
+    .crs-1562510852 {
+        background-color: #337ab7;
+        /*border-top: 2px solid #ffffff;*/
+        /*border-bottom: 1px solid #eff3f8;*/
+        border-right: 1px solid #ffffff;
+    }
+
+    .crs971421975 {
+        height: 35px;
+        line-height: 35px;
+        background-color: #eff3f8;
+        border-bottom: 1px solid #ffffff;
+        /* border-left: 2px solid #ffffff;*/
+         border-right: 1px solid #ffffff;
+    }
+
+    .crs76534873 {
+        overflow: hidden;
+    }
+
+    .crs-2136543980 {
+        word-break: break-all;
+        word-wrap: break-word;
+        padding-left: 4px;
+        padding-right: 4px;
+        padding-top: 3px;
+        padding-bottom: 2px;
+        text-align: center;
+    }
+
+    .crs-2136543980 a {
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .crs-2136543980 a:hover {
+        text-decoration: underline;
+    }
+
+    .crs-1883216748 {
+        width: 100%;
+        height: 100%;
+        line-height: 1.3;
+        font-size: 10pt;
+        font-family: "宋体";
+    }
+
+    .crs-1505284724 {
+        width: 100%;
+        height: 100%;
+        line-height: 2;
+        font-size: 9pt;
+        font-family: "宋体";
+        text-align: center;
+    }
+
+    .crs1722664596 {
+        width: 100%;
+        height: 100%;
+        /* line-height: 2.8;*/
+        text-align: center;
+        font-size: 10pt;
+        font-family: "宋体";
+        color: #fff;
+    }
+
+    .crs715059164 {
+        width: 100%;
+        height: 100%;
+        line-height: 1.3;
+        text-align: right;
+        font-size: 10pt;
+        font-family: "宋体";
+    }
+
+    .crs-1459024531 {
+        width: 100%;
+        height: 100%;
+        line-height: 1.3;
+        text-align: center;
+        font-size: 10pt;
+        font-family: "宋体";
+        font-weight: 700;
+    }
+
+    .crs-458630052 {
+        height: 35px;
+        line-height: 35px;
+        background-color: #eff3f8;
+        border-bottom: 1px solid #ffffff;
+         border-right: 1px solid #ffffff;
+    }
+
+    .crs-1138720466 {
+        background-color: #ffffff;
+    }
+
+    .crst {
+        width: 100%;
+        height: 100%;
+    }
+
+</style>
+<!--统计样式-->
+<style type="text/css">
+    .table-analysis{
+        width: 100%;
+        margin: 10px 0;
+        padding: 10px 0;
+        overflow: hidden;
+        /*background-color: #fff;*/
+    }
+    .card-shadow{
+        border: none;
+        box-shadow: 0 1px 3px 0px rgba(115, 108, 203, 0.23);
+    }
+    .card{
+        position: relative;
+        margin-top: 0px;
+        background-color: #ffffff;
+        border-radius: 3px;
+    }
+    .card .card-header{
+        height: 50px;
+        line-height: 50px;
+        padding: 1rem;
+        border-bottom: 1px solid #e5e9ec;
+        background: #fff;
+    }
+    .card .card-header .card-title{
+        float: left;
+        width: 50%;
+        margin-bottom: 0;
+        color: #53505f;
+        font-size: 18px;
+        font-weight: 500;
+        border-left: 5px solid #36a2f5;
+    }
+    .card .card-header .card-month{
+        float: right;
+        width: 30%;
+    }
+    .card-body{
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        padding: 1.25rem;
+        height: 300px;
+    }
+
+</style>
+
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-table table-striped">
+        <div class="row form-group select-info-container">
+            <div class="col-sm-4">
+                <label>开始日期：</label>
+                <input type="text"  class="time-input" id="startTime_12"  name="params[startTime]">
+            </div>
+            <div class="col-sm-4">
+                <label>结束日期：</label>
+                <input type="text"  class="time-input" id="startTime_13"  name="params[endTime]">
+            </div>
+            <div class="col-sm-4 select-info-btn">
+                <a class="btn btn-success btn-rounded btn-sm"  style="margin-right: 70%"  onclick="tjData()">
+                    <i class="fa fa-plus"></i> 统计
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 select-table table-striped" th:utext="${table}" id="div" style="text-align: center;margin: 20px auto">
+
+    </div>
+
+
+    <div class="col-sm-12 table-analysis">
+        <div class="card card-shadow mb-4">
+            <div class="card-header">
+                <div class="card-title" style="float: left">
+                   统计月份：<span id="last_mouth"></span>
+                </div>
+                <div class="card-month" style="float: right;">
+                    <div class="form-group">
+                        <div class="col-sm-4" style="text-align: right;padding-right: 0px;height: 30px;line-height: 30px;">
+                            <label>选择月份：</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="time-input" id="startTime_100"  name="params[startTime]" readonly="readonly" style="height: 30px;width: 160px">
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-sm btn-success" id="anjians">查询</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="echars-two" style="height:100%;box-sizing: border-box;"></div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:clue:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:clue:remove')}]];
+    var releaseFlag = [[${@permission.hasPermi('module:processMatter:addDubvioEvent')}]];
+    var listFlag = [[${@permission.hasPermi('module:clue:list')}]];
+    var datas_18 = [[${@dict.getType('risks_grades')}]];
+    var prefix = ctx + "module/clue";
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime_12', theme: 'molv'});
+        laydate.render({elem: '#startTime_100', type: 'month',theme: 'molv'});
+        laydate.render({elem: '#endTime_12', theme: 'molv'});
+        laydate.render({elem: '#startTime_13', theme: 'molv'});
+        laydate.render({elem: '#endTime_13', theme: 'molv'});
+        laydate.render({elem: '#startTime_14', theme: 'molv'});
+        laydate.render({elem: '#endTime_14', theme: 'molv'});
+        laydate.render({elem: '#startTime_15', theme: 'molv'});
+        laydate.render({elem: '#endTime_15', theme: 'molv'});
+        laydate.render({elem: '#startTime_16', theme: 'molv'});
+        laydate.render({elem: '#endTime_16', theme: 'molv'});
+        laydate.render({elem: '#startTime_17', theme: 'molv'});
+        laydate.render({elem: '#endTime_17', theme: 'molv'});
+    });
+    $(function () {
+        var myDate=new Date();
+        myDate.setMonth(myDate.getMonth()-1);
+        var last_mouth = myDate.getFullYear() + "-" + (myDate.getMonth()+1);
+        $('#last_mouth').html(last_mouth)
+    })
+
+
+
+    $('#div table td').find('a').on('click', function () {
+        var startTime=$("#startTime_12").val();
+        var endTime=$("#startTime_13").val();
+        if (isNaN(Number($(this).text()))) {
+            var fyName = $(this).text();
+            var str1 = $(this).attr('href')
+            var str2 = str1.substr(str1.indexOf('con6'));
+            var str3 = str2.split(',');
+            var str4 = str3[0].substr(9);
+            var jbfyId = str4.split('\\')[0]
+            var url = prefix + '/allSecondData?fyName=' + fyName + '&jbfyId=' + jbfyId+"&startDate="+startTime+"&endDate="+endTime;
+            createMenuItem(url, fyName);
+        } else {
+            var number = $(this).text();
+            var str1 = $(this).attr('href')
+            var str2 = str1.substr(str1.indexOf('con2'));
+            var str3 = str2.split(',');
+            var str4 = str3[0].substr(9);
+            var jbfyIds = str4.split('\\')[0]
+            var str5 = str1.substr(str1.indexOf('con7'));
+            var str6 = str5.split(',');
+            var str7 = str6[0].substr(9);
+            var statuss = str7.split('\\')[0];
+            var str8 = str1.substr(str1.indexOf('con9'));
+            var str9 = str8.split(',');
+            var str10 = str9[0].substr(9);
+            var isAll = str10.split('\\')[0];
+            var page="1";
+            if(isAll=="1"){
+                jbfyIds="2203,2204,2205,2206,2207,2208,2209,2210,2211,2212,2213,2214,2215,2216,5013";
+            }
+            var url = prefix + '/allNumberData?status=' + statuss + '&jbfyId=' + jbfyIds+"&totalCount="+number+"&page="+page+"&startDate="+startTime+"&endDate="+endTime;
+            createMenuItem(url, "案件详情");
+        }
+    })
+
+    function tjData() {
+        var startTime=$("#startTime_12").val();
+        var endTime=$("#startTime_13").val();
+        if (startTime.length > 0 && endTime.length > 0) {
+            var startTmp = startTime.split("-");
+            var endTmp = endTime.split("-");
+            var sd = new Date(startTmp[0], startTmp[1], startTmp[2]);
+            var ed = new Date(endTmp[0], endTmp[1], endTmp[2]);
+            if (sd.getTime() > ed.getTime()) {
+               layer.alert("开始日期不能大于结束日期",{
+                   icon:5,
+               });
+                return false;
+            }else {
+                $.ajax({
+                    url:prefix+"/allDataByDate",
+                    data:{startDate:startTime,endDate:endTime},
+                    type:"get",
+                    success:function (data) {
+                        $("#div").html(data);
+
+                        $('#div table td').find('a').on('click', function () {
+
+                            var startTime=$("#startTime_12").val();
+                            var endTime=$("#startTime_13").val();
+                            if (isNaN(Number($(this).text()))) {
+                                var fyName = $(this).text();
+                                var str1 = $(this).attr('href')
+                                var str2 = str1.substr(str1.indexOf('con6'));
+                                var str3 = str2.split(',');
+                                var str4 = str3[0].substr(9);
+                                var jbfyId = str4.split('\\')[0]
+                                var url = prefix + '/allSecondData?fyName=' + fyName + '&jbfyId=' + jbfyId+"&startDate="+startTime+"&endDate="+endTime;
+                                createMenuItem(url, fyName);
+                            } else {
+                                var number = $(this).text();
+                                var str1 = $(this).attr('href')
+                                var str2 = str1.substr(str1.indexOf('con2'));
+                                var str3 = str2.split(',');
+                                var str4 = str3[0].substr(9);
+                                var jbfyIds = str4.split('\\')[0]
+                                var str5 = str1.substr(str1.indexOf('con7'));
+                                var str6 = str5.split(',');
+                                var str7 = str6[0].substr(9);
+                                var statuss = str7.split('\\')[0];
+                                var str8 = str1.substr(str1.indexOf('con9'));
+                                var str9 = str8.split(',');
+                                var str10 = str9[0].substr(9);
+                                var isAll = str10.split('\\')[0];
+                                var page="1";
+                                if(isAll=="1"){
+                                    jbfyIds="2203,2204,2205,2206,2207,2208,2209,2210,2211,2212,2213,2214,2215,2216,5013";
+                                }
+                                var url = prefix + '/allNumberData?status=' + statuss + '&jbfyId=' + jbfyIds+"&totalCount="+number+"&page="+page+"&startDate="+startTime+"&endDate="+endTime;
+                                createMenuItem(url, "案件详情");
+                            }
+                        })
+                    }
+                })
+            }
+        }else{
+            $.ajax({
+                url:prefix+"/allDataByDate",
+                data:{startDate:startTime,endDate:endTime},
+                type:"get",
+                success:function (data) {
+                    $("#div").html(data);
+
+                    $('#div table td').find('a').on('click', function () {
+                        var startTime=$("#startTime_12").val();
+                        var endTime=$("#startTime_13").val();
+                        if (isNaN(Number($(this).text()))) {
+                            var fyName = $(this).text();
+                            var str1 = $(this).attr('href')
+                            var str2 = str1.substr(str1.indexOf('con6'));
+                            var str3 = str2.split(',');
+                            var str4 = str3[0].substr(9);
+                            var jbfyId = str4.split('\\')[0]
+                            var url = prefix + '/allSecondData?fyName=' + fyName + '&jbfyId=' + jbfyId+"&startDate="+startTime+"&endDate="+endTime;
+                            createMenuItem(url, fyName);
+                        } else {
+                            var number = $(this).text();
+                            var str1 = $(this).attr('href')
+                            var str2 = str1.substr(str1.indexOf('con2'));
+                            var str3 = str2.split(',');
+                            var str4 = str3[0].substr(9);
+                            var jbfyIds = str4.split('\\')[0]
+                            var str5 = str1.substr(str1.indexOf('con7'));
+                            var str6 = str5.split(',');
+                            var str7 = str6[0].substr(9);
+                            var statuss = str7.split('\\')[0];
+                            var str8 = str1.substr(str1.indexOf('con9'));
+                            var str9 = str8.split(',');
+                            var str10 = str9[0].substr(9);
+                            var isAll = str10.split('\\')[0];
+                            var page="1";
+                            if(isAll=="1"){
+                                jbfyIds="2203,2204,2205,2206,2207,2208,2209,2210,2211,2212,2213,2214,2215,2216,5013";
+                            }
+                            var url = prefix + '/allNumberData?status=' + statuss + '&jbfyId=' + jbfyIds+"&totalCount="+number+"&page="+page;
+                            createMenuItem(url, "案件详情");
+                        }
+                    })
+                }
+            })
+        }
+        return true;
+    }
+</script>
+
+<!--统计js-->
+<script th:src="@{/js/echarts.js}"></script>
+
+<script type="text/javascript">
+
+
+
+    // 案件收结存排行
+    anjian("");
+    $('#anjians').on("click",function () {
+        var time = $('#startTime_100').val();
+        anjian(time);
+        $('#last_mouth').html(time)
+    })
+    function anjian(time) {
+        $.ajax({
+            type: "GET",
+            url: ctx+"module/fytj/queryAjCountByfyId",
+            data: {date:time},
+            dataType: "json",
+            success: function (data) {
+                var arr = [];
+                var arr1 = [];
+                for (var i = 0; i < data[1].length; i++) {
+                    arr.push(data[1][i].name)
+                    var obj = {};
+                    obj.data = data[1][i].data;
+                    obj.name = data[1][i].name;
+                    obj.type = 'bar';
+                    arr1.push(obj)
+                }
+                var myChart_2 = echarts.init(document.getElementById('echars-two'));
+                option2 = {
+                    title : {
+                        text: '各法院收结存统计'
+                    },
+                    tooltip : {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:arr
+                    },
+                    toolbox: {
+                        show : false,
+                        feature : {
+                            mark : {show: true},
+                            dataView : {show: true, readOnly: false},
+                            magicType : {show: true, type: ['line', 'bar']},
+                            restore : {show: true},
+                            saveAsImage : {show: true}
+                        }
+                    },
+                    calculable : true,
+                    xAxis : [
+
+                        {
+                            type : 'category',
+                            triggerEvent:true,
+                            axisLabel: {
+                                show: true,
+                                interval:0,
+                                rotate:-30
+                            },
+                            data : data[0]
+                        }
+
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value'
+                        }
+                    ],
+                    series : arr1
+                };
+                myChart_2.setOption(option2);
+
+
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>

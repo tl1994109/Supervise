@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.dispositionForm.mapper.DispositionFormMapper">
+    
+    <resultMap type="DispositionForm" id="DispositionFormResult">
+        <result property="formId"    column="form_id"    />
+        <result property="formTitle"    column="form_title"    />
+        <result property="formType"    column="form_type"    />
+        <result property="formContent"    column="form_content"    />
+        <result property="releaseBy"    column="release_by"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+        <result property="deleteBy"    column="delete_by"    />
+        <result property="deleteTime"    column="delete_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+	
+	<sql id="selectDispositionFormVo">
+        select form_id, form_title, form_type, form_content, release_by, status, create_by, create_time, update_by, update_time, delete_flag, delete_by, delete_time, remark from busi_disposition_form
+    </sql>
+	
+    <select id="selectDispositionFormList" parameterType="DispositionForm" resultMap="DispositionFormResult">
+        <include refid="selectDispositionFormVo"/>
+        <where>  
+            <if test="formId != null and formId != ''"> and form_id like concat('%',#{formId},'%')</if>
+             <if test="formTitle != null and formTitle != ''"> and form_title like concat('%',#{formTitle},'%')</if>
+             <if test="formType != null and formType != ''"> and form_type like concat('%',#{formType},'%')</if>
+             <if test="formContent != null and formContent != ''"> and form_content like concat('%',#{formContent},'%')</if>
+             <if test="releaseBy != null and releaseBy != ''"> and release_by like concat('%',#{releaseBy},'%')</if>
+             <if test="status != null and status != ''"> and status like concat('%',#{status},'%')</if>
+             <if test="createBy != null and createBy != ''"> and create_by like concat('%',#{createBy},'%')</if>
+             <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+             <if test="updateBy != null and updateBy != ''"> and update_by like concat('%',#{updateBy},'%')</if>
+             <if test="updateTime != null and updateTime != ''"> and update_time like concat('%',#{updateTime},'%')</if>
+             <if test="deleteFlag != null and deleteFlag != ''"> and delete_flag like concat('%',#{deleteFlag},'%')</if>
+             <if test="deleteBy != null and deleteBy != ''"> and delete_by like concat('%',#{deleteBy},'%')</if>
+             <if test="deleteTime != null and deleteTime != ''"> and delete_time like concat('%',#{deleteTime},'%')</if>
+             <if test="remark != null and remark != ''"> and remark like concat('%',#{remark},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectDispositionFormById" parameterType="String" resultMap="DispositionFormResult">
+        <include refid="selectDispositionFormVo"/>
+        where form_id = #{formId}
+    </select>
+        
+    <insert id="insertDispositionForm" parameterType="DispositionForm">
+        insert into busi_disposition_form
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="formId != null  and formId != ''  ">form_id,</if>
+           <if test="formTitle != null  and formTitle != ''  ">form_title,</if>
+           <if test="formType != null  and formType != ''  ">form_type,</if>
+           <if test="formContent != null  and formContent != ''  ">form_content,</if>
+           <if test="releaseBy != null  and releaseBy != ''  ">release_by,</if>
+           <if test="status != null  and status != ''  ">status,</if>
+           <if test="createBy != null  and createBy != ''  ">create_by,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+           <if test="updateTime != null  ">update_time,</if>
+           <if test="deleteFlag != null  and deleteFlag != ''  ">delete_flag,</if>
+           <if test="deleteBy != null  and deleteBy != ''  ">delete_by,</if>
+           <if test="deleteTime != null  ">delete_time,</if>
+           <if test="remark != null  and remark != ''  ">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="formId != null  and formId != ''  ">#{formId},</if>
+        <if test="formTitle != null  and formTitle != ''  ">#{formTitle},</if>
+        <if test="formType != null  and formType != ''  ">#{formType},</if>
+        <if test="formContent != null  and formContent != ''  ">#{formContent},</if>
+        <if test="releaseBy != null  and releaseBy != ''  ">#{releaseBy},</if>
+        <if test="status != null  and status != ''  ">#{status},</if>
+        <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+        <if test="updateTime != null  ">#{updateTime},</if>
+        <if test="deleteFlag != null  and deleteFlag != ''  ">#{deleteFlag},</if>
+        <if test="deleteBy != null  and deleteBy != ''  ">#{deleteBy},</if>
+        <if test="deleteTime != null  ">#{deleteTime},</if>
+        <if test="remark != null  and remark != ''  ">#{remark},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateDispositionForm" parameterType="DispositionForm">
+        update busi_disposition_form
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="formTitle != null  and formTitle != ''  ">form_title = #{formTitle},</if>
+            <if test="formType != null  and formType != ''  ">form_type = #{formType},</if>
+            <if test="formContent != null  and formContent != ''  ">form_content = #{formContent},</if>
+            <if test="releaseBy != null  and releaseBy != ''  ">release_by = #{releaseBy},</if>
+            <if test="status != null  and status != ''  ">status = #{status},</if>
+            <if test="createBy != null  and createBy != ''  ">create_by = #{createBy},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="deleteFlag != null  and deleteFlag != ''  ">delete_flag = #{deleteFlag},</if>
+            <if test="deleteBy != null  and deleteBy != ''  ">delete_by = #{deleteBy},</if>
+            <if test="deleteTime != null  ">delete_time = #{deleteTime},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+        </trim>
+        where form_id = #{formId}
+    </update>
+
+	<delete id="deleteDispositionFormById" parameterType="String">
+        delete from busi_disposition_form where form_id = #{formId}
+    </delete>
+	
+    <delete id="deleteDispositionFormByIds" parameterType="String">
+        delete from busi_disposition_form where form_id in 
+        <foreach item="formId" collection="array" open="(" separator="," close=")">
+            #{formId}
+        </foreach>
+    </delete>
+    
+</mapper>

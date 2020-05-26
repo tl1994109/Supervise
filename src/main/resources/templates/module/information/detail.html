@@ -1,0 +1,278 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+<style type="text/css">
+    /* 新增样式20190508 */
+    .select2-container .select2-selection--single{height: 34px;}
+    .select2-container--default .select2-selection--single{border: 1px solid #ddd;}
+    .select2-container--default .select2-selection--single .select2-selection__rendered{line-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {padding: 0px 5px;}
+    .select-info-container input, .select-info-container select{width: 100%}
+    /*.select2-container{height: 34px;line-height: 34px}*/
+    .select2-container--default .select2-selection--multiple{height: 100%;width: 100%;border: 1px solid #ddd;}
+    /* .select2-container .select2-selection--multiple{min-height: 34px}*/
+    /*.select2-container--default .select2-selection--multiple .select2-selection__rendered{height: 34px; }*/
+    .select2-container--default.select2-container--focus .select2-selection--multiple{border: 1px solid #ddd;}
+    label.error{right: 30px;}
+    /* 20190506 */
+    .form-control-nowidth {
+        background: #FFFFFF none;
+        border: 1px solid #e5e6e7;
+        border-radius: 5px;
+        color: inherit;
+        display: block;
+        padding: 6px 12px;
+        -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        font-size: 14px;
+    }
+    .form-control-noborder{
+        background: #FFFFFF none;
+        border-radius: 5px;
+        color: inherit;
+        display: block;
+        padding: 6px 12px;
+        -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        font-size: 14px;
+        text-align: center;
+    }
+</style>
+
+
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="col-sm-12 select-info search-collapse">
+        <form class="form-horizontal m" id="form-information-edit" th:object="${information}">
+            <input type="hidden" name="taskId" th:field="*{taskId}">
+            <input type="hidden" name="acId" id="acId" value="">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">任务名称：</label>
+                        <div class="col-xs-10">
+                            <input type="text" readonly="readonly" unselectable="on" name="taskName" th:field="*{taskName}" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">任务类型：</label>
+                        <div class="col-sm-8">
+                            <select disabled id="taskType" name="taskType" th:with="type=${@dict.getType('task_type')}" class="form-control">
+                                <option value="">请选择</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}" th:field="*{taskType}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">日程规划：</label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly="readonly" unselectable="on" class="col-xs-5 form-control-nowidth" id="taskPlanStartdate" placeholder="开始时间"
+                                   name="taskPlanStartdate" th:field="*{taskPlanStartdate}"/>
+                            <span class="col-xs-2 form-control-noborder">~</span>
+                            <input type="text" readonly="readonly" unselectable="on" class="col-xs-5 form-control-nowidth" id="taskPlanEnddate" placeholder="结束时间" name="taskPlanEnddate"
+                                   th:field="*{taskPlanEnddate}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">指派给：</label>
+                        <div class="col-sm-8">
+                            <select id="taskProcessor" name="taskProcessor" class="form-control select2-hidden-accessible"  multiple="">
+                                <option th:each="userList : ${userList}"
+                                        th:text="${userList.user_name}" th:value="${userList.user_id}" th:selected="${userList.del_flag} eq '11' " th:disabled="${userList.status == '1'}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">提交给：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control select2-hidden-accessible"  multiple="">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">重要度：</label>
+                        <div class="col-sm-8">
+                            <select disabled id="taskImportance" name="taskImportance"
+                                    th:with="type=${@dict.getType('task_importance')}" class="form-control">
+                                <option value="">请选择</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}" th:field="*{taskImportance}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">紧迫度：</label>
+                        <div class="col-sm-8">
+                            <select disabled id="taskUrgency" name="taskUrgency" th:with="type=${@dict.getType('task_urgency')}" class="form-control">
+                                <option value="">请选择</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}" th:field="*{taskUrgency}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">实际开始时间：</label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly="readonly" unselectable="on" class="time-input form-control" id="taskStartdate" placeholder="实际开始时间"
+                                   name="taskStartdate" th:field="*{taskStartdate}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">实际结束时间：</label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly="readonly" unselectable="on" class="time-input form-control" id="taskEnddate" placeholder="实际结束时间"
+                                   name="taskEnddate" th:field="*{taskEnddate}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">任务描述：</label>
+                        <div class="col-xs-10">
+                        <textarea readonly="readonly" unselectable="on" rows="8" class="form-control" name="taskContent"
+                                  th:field="*{taskContent}"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">任务总结：</label>
+                        <div class="col-xs-10">
+                        <textarea readonly="readonly" unselectable="on" rows="8" class="form-control" name="taskEndContent"
+                                  th:field="*{taskEndContent}"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" th:if="${size!=0}">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">任务附件：</label>
+                        <div class="col-sm-8">
+                            <table id="table_file">
+                                <tr th:if="${accessoryList} ne null" th:each="accessoryList:${accessoryList}">
+                                    <td th:text="${accessoryList.accessoryOldname}"></td>
+                                    <td>
+                                        <a th:href="@{/module/accessory/downLoad(path=${accessoryList.accessoryUrl},oldName=${accessoryList.accessoryOldname})}"
+                                           class="accessoryDel">下载</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" th:if="${size1!=0}">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">完成附件：</label>
+                        <div class="col-sm-8">
+                            <table id="endTaskFile">
+                                <tr th:if="${accessoryList1} ne null" th:each="accessoryList1:${accessoryList1}">
+                                    <td th:text="${accessoryList1.accessoryOldname}"></td>
+                                    <td>
+                                        <a th:href="@{/module/accessory/downLoad(path=${accessoryList1.accessoryUrl},oldName=${accessoryList1.accessoryOldname})}"
+                                           class="accessoryDel">下载</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" th:if="${appraise} ne null">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">评价等级：</label>
+                        <div class="col-xs-10">
+                            <select disabled name="appraiseLevel"
+                                    th:with="type=${@dict.getType('appraise_level')}" class="form-control">
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}" th:field="${appraise.appraiseLevel}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" th:if="${appraise} ne null">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label  class="col-xs-2 control-label">评价备注：</label>
+                        <div class="col-xs-10">
+                            <textarea readonly="readonly" unselectable="on" rows="8" class="form-control" id="appraiseContent" name="appraiseContent" th:text="${appraise.appraiseContent}"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-sm-12">
+                <div class="form-control-static col-sm-offset-5">
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.cookie-1.4.1.min.js}"></script>
+<!--上传文件插件-->
+<script type="text/javascript" th:src="@{/js/easyUpload.js}"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.summernote').summernote({
+            height: '220px',
+            lang: 'zh-CN'
+        });
+        var content = $("#text_taskContent").val();
+        $('#editor').code(content);
+
+        var task_startContent = $("text_taskStartContent").val();
+        $('#taskStartContent').code(task_startContent);
+
+        var text_taskEndContent = $("text_taskEndContent").val();
+        $('#taskEndContent').code(text_taskEndContent);
+    });
+
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({elem: '#taskPlanStartdate', theme: 'molv'});
+
+        laydate.render({elem: '#taskPlanEnddate', theme: 'molv'});
+
+    });
+</script>
+</body>
+</html>

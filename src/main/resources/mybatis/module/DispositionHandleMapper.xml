@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.dispositionHandle.mapper.DispositionHandleMapper">
+
+	<resultMap type="dispositionHandle" id="dispositionHandleResult">
+		<id     property="deptId"     column="dept_id"     />
+		<result property="parentId"   column="parent_id"   />
+		<result property="ancestors"  column="ancestors"   />
+		<result property="deptName"   column="dept_name"   />
+		<result property="nodeId"   column="node_id"   />
+		<result property="clueId"   column="clue_id"   />
+		<result property="suggestion"     column="suggestion"      />
+		<result property="result"      column="result"       />
+		<result property="way"      column="way"       />
+		<result property="nodeType"      column="node_type"       />
+		<result property="nodeFlag"      column="node_flag"       />
+		<result property="status"     column="status"      />
+		<result property="delFlag"    column="del_flag"    />
+		<result property="createBy"   column="create_by"   />
+		<result property="createTimes" column="create_times" />
+		<result property="updateBy"   column="update_by"   />
+		<result property="updateTime" column="update_time" />
+		<result property="count" column="count" />
+	</resultMap>
+	
+	<sql id="selectdispositionHandleVo">
+        select d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.node_id,d.clue_id, d.suggestion, d.result, d.way, d.status,d.node_type,d.node_flag, d.del_flag, d.create_by, d.create_times,d.count
+        from busi_disposition_handle d
+    </sql>
+	
+	<select id="selectDeptList" parameterType="dispositionHandle" resultMap="dispositionHandleResult">
+        <include refid="selectdispositionHandleVo"/>
+        where d.del_flag = '0'
+        <if test="parentId != null and parentId != 0">
+			AND parent_id = #{parentId}
+		</if>
+		<if test="deptName != null and deptName != ''">
+			AND dept_name like concat('%', #{deptName}, '%')
+		</if>
+		<if test="status != null and status != ''">
+			AND status = #{status}
+		</if>
+		<if test="nodeType != null and nodeType != ''">
+			AND node_type = #{nodeType}
+		</if>
+		<if test="nodeFlag != null and nodeFlag != ''">
+			AND node_flag = #{nodeFlag}
+		</if>
+		<if test="clueId != null and clueId != ''">
+			AND clue_id = #{clueId} and  dept_id !=#{clueId}
+		</if>
+		<if test="nodeId != null and nodeId != ''">
+			AND node_id = #{nodeId}
+		</if>
+		<if test="count != null and count != ''">
+			AND count = #{count}
+		</if>
+
+		<!-- 数据范围过滤 -->
+		${params.dataScope}
+    </select>
+	
+	<select id="selectDeptCount" parameterType="dispositionHandle" resultType="int">
+		select count(1) from busi_disposition_handle
+		where del_flag = '0'
+		<if test="deptId != null and deptId != 0"> and dept_id = #{deptId} </if>
+		<if test="parentId != null and parentId != 0"> and parent_id = #{parentId} </if>
+	</select>
+	
+	<select id="checkDeptNameUnique" resultMap="dispositionHandleResult">
+	    <include refid="selectdispositionHandleVo"/>
+		where dept_name=#{deptName} and parent_id = #{parentId}
+	</select>
+
+	<select id="selectDeptById" parameterType="String" resultMap="dispositionHandleResult">
+		select d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.node_id,d.clue_id, d.suggestion, d.result, d.way, d.status,d.node_flag,d.node_type,d.count,
+			(select dept_name from busi_disposition_handle where dept_id = d.parent_id) parent_name
+		from busi_disposition_handle d
+		where d.dept_id = #{deptId}
+	</select>
+	
+	<insert id="insertDispositionHandle" parameterType="dispositionHandle">
+ 		insert into busi_disposition_handle(
+ 			<if test="deptId != null and deptId != ''">dept_id,</if>
+ 			<if test="parentId != null and parentId != ''">parent_id</if>
+ 			<if test="deptName != null and deptName != ''">,dept_name</if>
+ 			<if test="ancestors != null and ancestors != ''">,ancestors</if>
+ 			<if test="nodeId != null and nodeId != ''">,node_id</if>
+			<if test="clueId != null and clueId != ''">,clue_id</if>
+ 			<if test="suggestion != null and suggestion != ''">,suggestion</if>
+ 			<if test="result != null and result != ''">,result</if>
+ 			<if test="way != null and way != ''">,way</if>
+			<if test="nodeType != null and nodeType != ''">,node_type</if>
+			<if test="nodeFlag != null and nodeFlag != ''">,node_flag</if>
+ 			<if test="status != null">,status</if>
+ 			<if test="createBy != null and createBy != ''">,create_by</if>
+			<if test="createTimes != null and createTimes != ''">,create_times</if>
+			<if test="count != null and count != ''">,count</if>
+ 		)values(
+ 			<if test="deptId != null and deptId != ''">#{deptId},</if>
+ 			<if test="parentId != null and parentId != ''">#{parentId}</if>
+ 			<if test="deptName != null and deptName != ''">,#{deptName}</if>
+ 			<if test="ancestors != null and ancestors != ''">,#{ancestors}</if>
+			<if test="nodeId != null and nodeId != ''">,#{nodeId}</if>
+			<if test="clueId != null and clueId != ''">,#{clueId}</if>
+ 			<if test="suggestion != null and suggestion != ''">,#{suggestion}</if>
+ 			<if test="result != null and result != ''">,#{result}</if>
+ 			<if test="way != null and way != ''">,#{way}</if>
+			<if test="nodeType != null and nodeType != ''">,#{nodeType}</if>
+			<if test="nodeFlag != null and nodeFlag != ''">,#{nodeFlag}</if>
+			<if test="status != null">,#{status}</if>
+ 			<if test="createBy != null and createBy != ''">,#{createBy}</if>
+		    <if test="createTimes != null and createTimes != ''">,#{createTimes}</if>
+			<if test="count != null and count != ''">,#{count}</if>
+ 		)
+	</insert>
+	
+	<update id="updateDispositionHandle" parameterType="dispositionHandle">
+ 		update busi_disposition_handle
+ 		<set>
+ 			<if test="parentId != null and parentId != ''">parent_id = #{parentId},</if>
+ 			<if test="deptName != null and deptName != ''">dept_name = #{deptName},</if>
+ 			<if test="ancestors != null and ancestors != ''">ancestors = #{ancestors},</if>
+			<if test="nodeId != null and nodeId != ''">node_id = #{nodeId},</if>
+			<if test="clueId != null and clueId != ''">clue_id = #{clueId},</if>
+ 			<if test="suggestion != null and suggestion != ''">suggestion = #{suggestion},</if>
+ 			<if test="result != null and result != ''">result = #{result},</if>
+ 			<if test="way != null and way != ''">way = #{way},</if>
+ 			<if test="status != null and status != ''">status = #{status},</if>
+			<if test="nodeType != null and nodeType != ''">node_type = #{nodeType},</if>
+			<if test="nodeFlag != null and nodeFlag != ''">node_flag = #{nodeFlag},</if>
+			<if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+ 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+			<if test="createTimes != null and createTimes != ''">create_times = #{createTimes},</if>
+			<if test="count != null and count != ''">count = #{count},</if>
+ 			update_time = sysdate()
+ 		</set>
+ 		where dept_id = #{deptId}
+	</update>
+	
+	<update id="updateDeptChildren" parameterType="java.util.List">
+	    update busi_disposition_handle set ancestors =
+	    <foreach collection="depts" item="item" index="index"
+	        separator=" " open="case dept_id" close="end">
+	        when #{item.deptId} then #{item.ancestors}
+	    </foreach>
+	    where dept_id in
+	    <foreach collection="depts" item="item" index="index"
+	        separator="," open="(" close=")">
+	        #{item.deptId}
+	    </foreach>
+	 </update>
+
+	<delete id="deleteDeptById" parameterType="String">
+		update busi_disposition_handle set del_flag = '2' where dept_id = #{deptId}
+	</delete>
+
+</mapper> 

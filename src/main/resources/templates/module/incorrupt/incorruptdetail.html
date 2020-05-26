@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/jquery-layout/jquery.layout-latest.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/jquery-ztree/3.5/css/metro/zTreeStyle.css}" rel="stylesheet"/>
+<body class="gray-bg">
+
+<!--<div class="ui-layout-west">
+    <div class="main-content">
+        <div class="box box-main">
+            <div class="box-header">
+                <div class="box-title">
+                    <i class="fa icon-grid"></i> 组织机构
+                </div>
+                <div class="box-tools pull-right">
+                    <a type="button" class="btn btn-box-tool menuItem" href="#" onclick="dept()" title="管理部门"><i class="fa fa-edit"></i></a>
+                    <button type="button" class="btn btn-box-tool" id="btnExpand" title="展开" style="display:none;"><i class="fa fa-chevron-up"></i></button>
+                    <button type="button" class="btn btn-box-tool" id="btnCollapse" title="折叠"><i class="fa fa-chevron-down"></i></button>
+                    <button type="button" class="btn btn-box-tool" id="btnRefresh" title="刷新部门"><i class="fa fa-refresh"></i></button>
+                </div>
+            </div>
+            <div class="ui-layout-content">
+                <div id="tree" class="ztree"></div>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+<div class="container-div ui-layout-center">
+    <div class="row">
+        <div class="col-sm-12 select-info search-collapse">
+            <form id="user-form" class="form-horizontal">
+
+                <input type="hidden" id="deptId" name="deptId">
+                <input type="hidden" id="parentId" name="parentId">
+
+                    <div class="form-group select-info-container">
+                        <div class="col-sm-4">
+                            <label>姓名：</label>
+                            <input type="text"  name="jbqkXm">
+                        </div>
+                        <div class="col-sm-4">
+                            <label>身份证号：</label>
+                            <input type="text"  name="jbqkSfzh">
+                        </div>
+                        <div class="col-sm-4">
+                            <label>政治面貌：</label>
+                            <input type="text"  name="jbqkZzmm">
+                        </div>
+                    </div>
+                    <div class="form-group select-info-container">
+
+                        <div class="col-sm-4">
+                            <label>单位：</label>
+                            <input type="text"  name="jbqkDw">
+                        </div>
+                        <div class="col-sm-4">
+                            <label>入党时间：</label>
+                            <input type="text"  name="jbqkRdsj">
+                        </div>
+                        <div class="col-sm-4">
+                            <label>参加工作时间：</label>
+                            <input type="text"  name="jbqkCjgzsj">
+                        </div>
+                    </div>
+                    <div class="form-group select-info-container">
+                        <div class="col-sm-12 select-info-btn">
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </div>
+                    </div>
+            </form>
+        </div>
+        <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+            <a class="btn btn-select">
+				<span id="exportToolbar" class="btn-group" style="width: 110px; display: inline-block">
+					<select id="sel_exportoption" class="">
+						<option value="">导出当页数据</option>
+						<option value="all">导出全部数据</option>
+						<option value="selected">导出选中数据</option>
+					</select>
+				</span>
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:src="@{/ajax/libs/jquery-layout/jquery.layout-latest.js}"></script>
+<script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
+<script th:inline="javascript">
+    var detailFlag = [[${@permission.hasPermi('module:basicinformation:detail')}]];
+    var prefix = ctx + "module/basicinformation";
+
+    $(function() {
+        $('body').layout({ west__size: 185 });
+        /*queryDeptTree();*/
+        queryUserList();
+    });
+    function queryUserList() {
+
+        var options = {
+            url: prefix + "/list",
+            search: false,
+            data:{},
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field : 'jbqkXm',
+                    title : '姓名',
+                },
+                {
+                    field : 'jbqkXb',
+                    title : '性别',
+                    formatter: function(value, row, index) {
+                        if(value==0){
+                            return "男";
+                        }else if(value==1){
+                            return "女";
+                        }else{
+                            return "未知";
+                        }
+                    }
+                },
+                {
+                    field : 'jbqkCsny',
+                    title : '出生年月',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkCym',
+                    title : '曾用名',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkMz',
+                    title : '民族',
+                },
+                {
+                    field : 'jbqkSfzh',
+                    title : '身份证号',
+                },
+                {
+                    field : 'jbqkJg',
+                    title : '籍贯',
+                },
+                {
+                    field : 'jbqkHyzk',
+                    title : '婚姻状况',
+                },
+                {
+                    field : 'jbqkWhcd',
+                    title : '文化程度',
+                },
+                {
+                    field : 'jbqkZzmm',
+                    title : '政治面貌',
+                },
+                {
+                    field : 'jbqkRdsj',
+                    title : '入党时间',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkCjgzsj',
+                    title : '参加工作时间',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkDw',
+                    title : '单位',
+
+                },
+                {
+                    field : 'jbqkBm',
+                    title : '部门',
+                },
+                {
+                    field : 'jbqkDwxz',
+                    title : '单位性质',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkZw',
+                    title : '职位',
+                },
+                {
+                    field : 'jbqkJb',
+                    title : '级别',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkZc',
+                    title : '职称',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkFggz',
+                    title : '分管工作',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkRxzsj',
+                    title : '任现职时间',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkZz',
+                    title : '住址',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkYb',
+                    title : '邮编',
+                    visible: false,
+                },
+                {
+                    field : 'jbqkJcqk',
+                    title : '奖惩情况',
+                    visible: false,
+                },
+
+                {
+                    field : 'isEdit',
+                    title : '状态',
+                    formatter: function(value, row, index) {
+                        if(row.isEdit == '0'){
+                            return "<span class='badge badge-primary'>通过</span>";
+                        }else if(row.isEdit == '1'){
+                            return "<span class='badge badge-danger'>不通过</span>";
+                        }else if(row.isEdit == '9' && row.approvePerson == null){
+                            return "<span class='badge badge-info'>未提交审核</span>";
+                        }else if(row.isEdit == '9' && row.approvePerson != null){
+                            return "<span class='badge badge-warning'>待审核</span>";
+                        }
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="getDetail(\'' + row.jbqkCid + '\')"><i class="fa fa-address-book"></i>廉政档案</a> ');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    }
+
+
+    /*function queryDeptTree()
+    {
+
+        var url = ctx + "system/courtOrgan/treeData?deptType=99";
+
+        var options = {
+            url: url,
+            expandLevel: 1,
+
+            onClick : zOnClick
+        };
+        $.tree.init(options);
+
+        function zOnClick(event, treeId, treeNode) {
+
+            $("#deptId").val(treeNode.id) ;
+            $("#parentId").val(treeNode.pId);
+
+
+
+
+            $.table.search();
+        }
+    }
+
+
+
+
+
+    $('#btnExpand').click(function() {
+        $._tree.expandAll(true);
+        $(this).hide();
+        $('#btnCollapse').show();
+    });
+
+    $('#btnCollapse').click(function() {
+        $._tree.expandAll(false);
+        $(this).hide();
+        $('#btnExpand').show();
+    });
+
+    $('#btnRefresh').click(function() {
+        queryDeptTree();
+    });
+
+    /!*用户管理-部门*!/
+    function dept() {
+        var url = ctx + "system/dept";
+        createMenuItem(url, "部门管理");
+    }*/
+    
+    function getDetail(jbqkCid) {
+        var url = ctx + 'module/basicinformation/cdetail/' + jbqkCid;
+        createMenuItem(url,"廉政档案");
+    }
+
+</script>
+<!--bootstrap-table-export数据导出-->
+<script type="text/javascript">
+    $("#sel_exportoption").change(function () {
+        //刷新参数设置
+        $('#bootstrap-table').bootstrapTable('refreshOptions', {
+            exportDataType: $(this).val()
+        });
+    });
+</script>
+</body>
+</html>

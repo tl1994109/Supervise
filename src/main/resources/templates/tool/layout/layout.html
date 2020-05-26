@@ -1,0 +1,164 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 select-info search-collapse">
+				<form id="post-form" class="form-horizontal">
+					<div class="form-group select-info-container">
+						<div class="col-sm-4">
+							<label>布局名称：</label>
+							<input id="layoutName" name="layoutName" class="form-control" type="text">
+						</div>
+						<div class="col-sm-4 select-info-btn">
+							<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+						</div>
+
+					</div>
+				</form>
+			</div>
+
+			<div class="col-sm-12 select-table table-striped">
+				<!--布局-->
+				<div class="model-container">
+					<div class="row model-row">
+						<div class="col-sm-12">
+							<div class="model-content" style="margin-bottom: 0px">
+								<div class="model-default">
+									<a href="#" title="新增" onclick="$.operate.addFull()" shiro:hasPermission="tool:layout:add">
+										<img th:src="@{/img/add.png}">
+									</a>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="row model-row" id="model-row"></div>
+				</div>
+				<!--分页-->
+				<div id="pagination" class="pagination" style="float: right"></div>
+			</div>
+		</div>
+    </div>
+
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('tool:layout:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('tool:layout:remove')}]];
+        var prefix = ctx + "tool/layout"
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                modalName: "布局管理",
+				search: false,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'layoutId', 
+					title : '布局ID' 
+				},
+				{
+					field : 'layoutName', 
+					title : '布局名称' 
+				},
+				{
+					field : 'romanceType', 
+					title : '渲染方式' 
+				},
+				{
+					field : 'romanceTable', 
+					title : '布局handsontable--Json(row col)' 
+				},
+				{
+					field : 'remark', 
+					title : '备注' 
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.layoutId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.layoutId + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+
+
+	<script type="text/javascript">
+        var prefix = ctx + "tool/layout"
+		$(function () {
+			$.ajax({
+				url: prefix+'/list',
+				type: 'post',
+				dataType: 'json',
+				data:{},
+				success: function (data) {
+                    succFunction(data.rows);
+                },
+                error: function errorFunction() {
+                    alert("请求错误！");
+                },
+			});
+            function succFunction(data) {
+				if (data!=null && data!=""){
+				    var html = '';
+				    for (var i  =0;i <data.length; i++){
+						html += '<div class="col-sm-3">'
+									+ '<div class="model-content">'
+										+ '<div class="model-title">'
+											+ '<span>' + data[i].layoutName + '</span>'
+										+ '</div>'
+										+ '<div class="model-btn">'
+											+ '<a href="#">'
+												+ '<button class="glyphicon glyphicon-pencil" title="编辑">' + '</button>'
+											+ '</a>'
+                            				+ '<a href="#">'
+                            					+ '<button class="glyphicon glyphicon-remove" title="删除">' + '</button>'
+                            				+ '</a>'
+										+ '</div>'
+									+ '</div>'
+							  + '</div>'
+					}
+                    $("#model-row").empty();
+					var showData = $("#model-row");
+				    showData.html(html);
+				}
+            }
+        })
+
+	</script>
+
+	<!--分页-->
+	<script type="text/javascript">
+        window.onload = function () {
+            new Page({
+                id: 'pagination',
+                pageTotal: 50, //必填,总页数
+                pageAmount: 10,  //每页多少条
+                dataTotal: 500, //总共多少条数据
+                curPage:1, //初始页码,不填默认为1
+                pageSize: 5, //分页个数,不填默认为5
+                showPageTotalFlag:true, //是否显示数据统计,不填默认不显示
+                showSkipInputFlag:true, //是否支持跳转,不填默认不显示
+                getPage: function (page) {
+                    //获取当前页数
+                    console.log(page);
+                }
+            })
+        }
+	</script>
+
+</body>
+</html>

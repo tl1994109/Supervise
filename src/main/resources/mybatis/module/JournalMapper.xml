@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.journal.mapper.JournalMapper">
+
+    <resultMap type="Journal" id="JournalResult">
+        <result property="journalId" column="journal_id"/>
+        <result property="journalContent" column="journal_content"/>
+        <result property="journalTaskid" column="journal_taskId"/>
+        <result property="journalCreatedate" column="journal_createDate"/>
+        <result property="journalCreateby" column="journal_createBy"/>
+        <result property="taskName" column="task_name"/>
+        <result property="type" column="task_type"/>
+        <!--journalType-->
+        <result property="journalType" column="journal_showType"/>
+    </resultMap>
+
+    <sql id="selectJournalVo">
+       select a.journal_id,a.journal_content,a.journal_taskId,a.journal_createDate,p.person_name journal_createBy,a.journal_showType from (
+        select j.journal_id, j.journal_content,t.task_name journal_taskId, j.journal_createDate, j.journal_createBy,j.journal_showType,u.person_id from task_journal j
+        left join task_information t on j.journal_taskId = t.task_id
+        LEFT JOIN sys_user u on j.journal_createBy = u.user_id) a
+        left join sys_person p on a.person_id = p.person_id
+
+    </sql>
+
+    <select id="selectJournalList" parameterType="Journal" resultMap="JournalResult">
+        <include refid="selectJournalVo"/>
+        <where>
+            <if test="journalTaskid != null and journalTaskid != ''">and a.journal_taskId like
+                concat('%',#{journalTaskid},'%')
+            </if>
+        </where>
+        order by journal_createDate asc
+    </select>
+
+    <select id="selectJournalById" parameterType="String" resultMap="JournalResult">
+        select j.*,i.task_name,i.task_type from task_journal j
+        LEFT JOIN task_information i on j.journal_taskId = i.task_id
+        where j.journal_id = #{journalId}
+    </select>
+
+    <insert id="insertJournal" parameterType="Journal">
+        insert into task_journal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="journalId != null  and journalId != ''  ">journal_id,</if>
+            <if test="journalContent != null  and journalContent != ''  ">journal_content,</if>
+            <if test="journalTaskid != null  and journalTaskid != ''  ">journal_taskId,</if>
+            <if test="journalCreatedate != null  ">journal_createDate,</if>
+            <if test="journalCreateby != null  and journalCreateby != ''  ">journal_createBy,</if>
+            <if test="journalType != null  and journalType != ''  ">journal_showType,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="journalId != null  and journalId != ''  ">#{journalId},</if>
+            <if test="journalContent != null  and journalContent != ''  ">#{journalContent},</if>
+            <if test="journalTaskid != null  and journalTaskid != ''  ">#{journalTaskid},</if>
+            <if test="journalCreatedate != null  ">#{journalCreatedate},</if>
+            <if test="journalCreateby != null  and journalCreateby != ''  ">#{journalCreateby},</if>
+            <if test="journalType != null  and journalType != ''  ">#{journalType},</if>
+        </trim>
+    </insert>
+
+    <update id="updateJournal" parameterType="Journal">
+        update task_journal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="journalContent != null  and journalContent != ''  ">journal_content = #{journalContent},</if>
+            <if test="journalTaskid != null  and journalTaskid != ''  ">journal_taskId = #{journalTaskid},</if>
+            <if test="journalCreatedate != null  ">journal_createDate = #{journalCreatedate},</if>
+            <if test="journalCreateby != null  and journalCreateby != ''  ">journal_createBy = #{journalCreateby},</if>
+        </trim>
+        where journal_id = #{journalId}
+    </update>
+
+    <delete id="deleteJournalById" parameterType="String">
+        delete from task_journal where journal_id = #{journalId}
+    </delete>
+
+    <delete id="deleteJournalByIds" parameterType="String">
+        delete from task_journal where journal_id in
+        <foreach item="journalId" collection="array" open="(" separator="," close=")">
+            #{journalId}
+        </foreach>
+    </delete>
+
+    <insert id="bathInsertJournal" parameterType="java.util.List">
+        insert into task_journal
+        (journal_id, journal_content, journal_taskId, journal_createDate, journal_createBy,journal_showType)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.journalId != null  and item.journalId != ''  ">#{item.journalId},</if>
+                <if test="item.journalContent != null  and item.journalContent != ''  ">#{item.journalContent},</if>
+                <if test="item.journalTaskid != null  and item.journalTaskid != ''  ">#{item.journalTaskid},</if>
+                <if test="item.journalCreatedate != null  ">#{item.journalCreatedate},</if>
+                <if test="item.journalCreateby != null  and item.journalCreateby != ''  ">#{item.journalCreateby},</if>
+                <if test="item.journalType != null  and item.journalType != ''  ">#{item.journalType},</if>
+            </trim>
+        </foreach>
+    </insert>
+    <select id="selectGroupByCreateDate" parameterType="String" resultMap="JournalResult">
+        select * from task_journal where journal_taskId=#{journalTaskid} GROUP BY journal_createDate
+    </select>
+
+</mapper>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<!--登录样式20190420-->
+<link th:href="@{/css/login_2.css}" rel="stylesheet"/>
+
+<!--<style type="text/css">-->
+    <!--.menu-title h1{text-align: center}-->
+    <!--.menu-box{margin-bottom: 50px;}-->
+    <!--.menu-content .box-1, .menu-content .box-2{width: 300px;height: 200px;border: 1px solid #337ab7;margin: 20px auto;text-align: center;}-->
+    <!--.menu-content .box-1:hover, .menu-content .box-2:hover {background: rgba(107,166,217,0.91);}-->
+    <!--.menu-content .box-1:hover a span, .menu-content .box-2:hover a span{color: #FFF;}-->
+    <!--.menu-content .box-1 img, .menu-content .box-2 img{display: block;max-width: 100%;height: auto;margin-left: auto;margin-right: auto;}-->
+    <!--.menu-content .box-1 .box-title, .menu-content .box-2 .box-title{width: 300px;height: 40px;line-height:40px; text-align: center;font-size: 24px;color: #36a2f5;margin-top: -50px;}-->
+<!--</style>-->
+
+<style type="text/css">
+    .select-info{
+        box-shadow: none;
+    }
+</style>
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 select-info" style="height: 100%;background-color:#eaeef3">
+            <!--<div class="menu-title">-->
+                <!--<h1>您想进行什么操作？</h1>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6">-->
+                <!--<div class="menu-box">-->
+                    <!--<div class="menu-content">-->
+                        <!--<div class="box-1">-->
+                            <!--<a onclick="checkprogress()" href="/module/incorrupt/checkprogress">-->
+                                <!--<div>-->
+                                    <!--<img th:src="@{/img/process-1.png}" alt="">-->
+                                <!--</div>-->
+                                <!--<div class="box-title">-->
+                                    <!--<span>查看进度</span>-->
+                                <!--</div>-->
+                            <!--</a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6">-->
+                <!--<div class="menu-box">-->
+                    <!--<div class="menu-content">-->
+                        <!--<div class="box-2">-->
+                            <!--<a onclick="editincorrupt()">-->
+                                <!--<div>-->
+                                    <!--<img th:src="@{/img/process-2.png}" alt="">-->
+                                <!--</div>-->
+                                <!--<div class="box-title">-->
+                                    <!--<span>填写廉政档案</span>-->
+                                <!--</div>-->
+                            <!--</a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<form>-->
+                <!--姓名：<input type="text" name="jbqkXm">-->
+                <!--<br/>-->
+                <!--身份证号：<input type="text" name="jbqkSfzh">-->
+                <!--<br/>-->
+                <!--密码：<input type="text" name="passWord">-->
+                <!--<button type="submit"></button>-->
+            <!--</form>-->
+
+            <!--20190420-->
+            <div class="login" id="login" style="margin-top: 50px;">
+                <div class="header">
+                    <div class="switch" id="switch">
+                        <a href="javascript:void(0);" class="switch_btn_focus" id="switch_qlogin" tabindex="7">登录</a>
+                        <a class="switch_btn" id="switch_login" href="javascript:void(0);" tabindex="8">注册</a>
+                        <div class="switch_bottom" id="switch_bottom" style="position: absolute; width: 64px; left: -16px;"></div>
+                    </div>
+                </div>
+                <div class="web_qr_login" id="web_qr_login" style="display: block; height: 405px;">
+                    <!--登录-->
+                    <div class="web_login" id="web_login">
+                        <div class="login-box">
+                            <div class="login_form">
+                                <form action="" name="" accept-charset="utf-8" id="login_form" class="loginForm">
+                                    <div id="loginCue" class="cue" style="display: none"></div>
+                                    <div class="idArea" id="idArea">
+                                        <label class="input-tips">身份证号码：</label>
+                                        <div class="inputOuter">
+                                            <input type="text" name="jbqkSfzh" id="loginCardNo" class="inputstyle"/>
+                                        </div>
+                                    </div>
+                                    <div class="pwdArea" id="pwdArea">
+                                        <label class="input-tips">口令：</label>
+                                        <div class="inputOuter" id="pArea">
+                                            <input type="password" name="passWord" id="passWord" class="inputstyle"/>
+                                        </div>
+                                    </div>
+                                    <div class="forget-pwd">
+                                        <a href="javascript:void(0);" onclick="openFull()"><span>修改口令</span></a>
+                                    </div>
+
+                                    <div style="padding-left:78px;margin-top:20px; min-height: 50px;">
+                                        <input type="button" value="登 录" style="width:150px;" id="loginFrm" class="button_blue"/>
+                                    </div>
+                                    <div class="form-tips">
+                                        <b class="red">提示：</b>已录入过的人初始口令为：123456，请及时修改口令。如提示身份证号不正确，说明您当时填写信息有误或不正确。请先注册重新填写档案。
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--登录end-->
+                </div>
+            </div>
+            <!--注册-->
+            <div class="qlogin" id="qlogin" style="display: none;">
+                <div class="web_login">
+                    <div class="login_form">
+                        <form name="form2" id="regUser" accept-charset="utf-8" action="" method="">
+                            <ul class="reg_form" id="reg-ul">
+                                <div id="userCue" class="cue" style="display: none"></div>
+                                <li>
+                                    <label class="input-tips2">姓名：</label>
+                                    <div class="inputOuter2">
+                                        <input type="hidden" id="jbqkCid" name="jbqkCid">
+                                        <input type="text" id="jbqkXm" name="jbqkXm" maxlength="16" class="inputstyle2" style="width: 160px;float: left" />
+                                        <span onclick="selectPersonTree()" class="input-select">选择</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label class="input-tips2">身份证号码：</label>
+                                    <div class="inputOuter2">
+                                        <input type="text" id="jbqkSfzh" name="jbqkSfzh" class="inputstyle2"/>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label class="input-tips2">工作部门：</label>
+                                    <div class="inputOuter2">
+                                        <input type="text" name="jbqkBm" id="jbqkBm" class="inputstyle2"/>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label class="input-tips2">职务：</label>
+                                    <div class="inputOuter2">
+                                        <input type="text" name="jbqkZw" id="jbqkZw" class="inputstyle2"/>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label class="input-tips2">口令：</label>
+                                    <div class="inputOuter2">
+                                        <input type="password" name="passWord" id="qpassWord_one" class="inputstyle2"/>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label class="input-tips2">确认口令：</label>
+                                    <div class="inputOuter2">
+                                        <input type="password" name="passWord_two" id="qpassWord_two" class="inputstyle2"/>
+                                    </div>
+                                </li>
+                                <!--<li>-->
+                                <!--<label for="passwd" class="input-tips2">密码：</label>-->
+                                <!--<div class="inputOuter2">-->
+                                <!--<input type="password" id="passwd" name="passwd" maxlength="16" class="inputstyle2"/>-->
+                                <!--</div>-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                <!--<label for="passwd2" class="input-tips2">确认密码：</label>-->
+                                <!--<div class="inputOuter2">-->
+                                <!--<input type="password" id="passwd2" name="" maxlength="16" class="inputstyle2"/>-->
+                                <!--</div>-->
+                                <!--</li>-->
+                                <li>
+                                    <div class="inputArea">
+                                        <input type="button" id="reg" style="margin-top:10px;margin-left:120px;" class="button_blue" value="立即注册"/>
+                                    </div>
+                                </li>
+                                <div class="cl"></div>
+                            </ul>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <!--注册end-->
+            <!--忘记密码-->
+            <div class="flogin" id="flogin" style="display: none">
+                <div class="web_login">
+                    <div class="header">
+                        <div class="switch" style="left: 167px;">
+                            <a>修改密码</a>
+                        </div>
+                        <div class="reBack">
+                            <a href="javascript:void(0);" onclick="backFull()">返回上一级</a>
+                        </div>
+                    </div>
+                    <form id="form3" accept-charset="utf-8">
+                       <div class="forget-form">
+                           <div id="frm3Cue" class="cue" style="display: none"></div>
+                           <div class="newPwdArea">
+                               <label class="input-tips">身份证号码：</label>
+                               <div class="inputOuter">
+                                   <input type="text" name="jbqkSfzh" id="f3_jbqkSfzh" class="inputstyle"/>
+                               </div>
+                           </div>
+                           <div class="newPwdArea">
+                               <label class="input-tips">旧口令：</label>
+                               <div class="inputOuter">
+                                   <input type="password" name="password" id="f3_password" class="inputstyle"/>
+                               </div>
+                           </div>
+                           <div class="newPwdArea">
+                               <label class="input-tips">新口令：</label>
+                               <div class="inputOuter">
+                                   <input type="password" name="passWord" id="passWord_one" class="inputstyle"/>
+                               </div>
+                           </div>
+                           <div class="confirmPwdArea">
+                               <label class="input-tips">确认口令：</label>
+                               <div class="inputOuter">
+                                   <input type="password" name="passWord_two" id="passWord_two" class="inputstyle"/>
+                               </div>
+                           </div>
+
+                           <div style="padding-left:78px;margin-top:20px; min-height: 50px;">
+                               <input type="button" id="update_btn" value="提  交" style="width:150px;" class="button_blue"/>
+                           </div>
+                       </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:include="include :: footer"></div>
+
+<script th:src="@{/js/login_2.js}"></script>
+
+<script type="text/javascript">
+    var prefix = ctx + "module/incorrupt";
+    function checkprogress(){
+        var url = prefix + '/checkprogress' ;
+        createMenuItem(url, "查看进度");
+    }
+
+    function editincorrupt(){
+        var url = prefix + '/editincorrupt' ;
+        createMenuItem(url, "填写廉政档案");
+    }
+
+    /*-选择人员树*/
+    function selectPersonTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = ctx + "system/courtOrgan/selectDeptTree/" + deptId;
+        var options = {
+            title: '选择人员',
+            width: "380",
+            height: "380",
+            url: ctx + "system/courtOrgan/selectDeptTree/" + deptId,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        if ($.tree.notAllowParents(tree)) {
+            var body = layer.getChildFrame('body', index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            var name = body.find('#treeName').val();
+            var treeId=body.find('#treeId').val();
+            $("input[name='jbqkXm']").val(name);
+            $.ajax({
+                url: ctx + "system/courtOrgan/selectDeptById",
+                type: "get",
+                dataType: "json",
+                data: {"deptId": treeId},
+                success: function (data) {
+                    $("#jbqkCid").val(data.court.cid);
+                    $("#jbqkSfzh").val(data.court.idcard);
+                }
+            })
+            layer.close(index);
+        }
+    }
+
+</script>
+
+
+<script type="text/javascript">
+    function openFull() {
+        $("#web_qr_login").css("display","none");
+        $("#qlogin").css("display","none");
+        $("#login").css("display","none");
+        $("#flogin").css("display","block");
+    }
+    function backFull() {
+        $("#flogin").css("display","none");
+        $("#web_qr_login").css("display","block");
+        // $("#qlogin").css("display","block");
+        $("#login").css("display","block");
+    }
+</script>
+
+
+
+</body>
+</html>

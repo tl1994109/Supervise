@@ -1,0 +1,187 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+<style type="text/css">
+    /* 新增样式20190419 */
+    .select2-container .select2-selection--single{height: 34px;}
+    .select2-container--default .select2-selection--single{border: 1px solid #ddd;}
+    .select2-container--default .select2-selection--single .select2-selection__rendered{line-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {padding: 0px 5px;}
+    .select-info-container input, .select-info-container select{width: 100%}
+    .select2-container{height: 34px;line-height: 34px}
+    .select2-container--default .select2-selection--multiple{height: 34px;width: 100%;border: 1px solid #ddd;}
+    .select2-container .select2-selection--multiple{min-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__rendered{height: 34px; }
+    .select2-container--default.select2-container--focus .select2-selection--multiple{border: 1px solid #ddd;}
+</style>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="col-sm-12 select-info search-collapse">
+        <form class="form-horizontal m" id="form-notice-edit" th:object="${notice}">
+            <input id="matterId" name="matterId" th:field="*{noticeId}" type="hidden">
+            <input id="noticeContent" name="noticeContent" type="hidden" th:field="*{noticeContent}">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">标题：</label>
+                <div class="col-sm-8">
+                    <input id="matterName" name="matterName" readonly="readonly" th:field="*{noticeTitle}"
+                           class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">类型：</label>
+                <div class="col-sm-8">
+                    <select disabled name="noticeType" class="form-control m-b"
+                            th:with="type=${@dict.getType('sys_notice_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"
+                                th:field="*{noticeType}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">填写类型：</label>
+                <div class="col-sm-8 radio" style="padding-top: 0;"
+                     th:with="willWay=${@dict.getType('notice_willWay')}">
+                    <input type="hidden" name="fillWay" id="fillWay" th:value="${notice.fillWay}">
+                    <label th:each="role:${willWay}"
+                           style="display: inline-block;box-sizing: border-box;position: relative;padding-right: 15px;padding-top: 8px">
+                        <input disabled="" name="fillWay" type="radio" th:value="${role.dictValue}"
+                               th:text="${role.dictLabel}" style="margin-top: 2px;"
+                               th:checked="${role.dictValue} eq ${notice.fillWay}">
+                    </label>
+                </div>
+            </div>
+            <div id="one">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">内容：</label>
+                    <div class="col-sm-8">
+                        <input id="noticeContent" name="noticeContent" th:field="*{noticeContent}" type="hidden">
+                        <div id="editor" class="summernote"></div>
+                    </div>
+                </div>
+                <div class="form-group"
+                     th:if="${notice.noticePhoto ne null && notice.noticePhoto ne '' && notice.fillWay eq '0'}">
+                    <label class="col-sm-3 control-label">首页轮播图：</label>
+                    <div class="col-sm-8">
+                        <img th:src="${notice.noticePhoto}" style="width: 200px;height: 200px;">
+                    </div>
+                </div>
+            </div>
+            <div id="two">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">描述：</label>
+                    <div class="col-sm-8">
+                        <div class="ms"></div>
+                    </div>
+                </div>
+                <div class="form-group"
+                     th:if="${notice.noticePhoto ne null && notice.noticePhoto ne '' && notice.fillWay eq '1'}">
+                    <label class="col-sm-3 control-label">扫描件：</label>
+                    <div class="col-sm-8">
+                        <img th:src="@{/img/pdf.jpg}" id="pdf_old" style="width: 70px;height: 80px;">
+                        <a style="margin-left: 20px" th:attr="data-url=${notice.noticePhoto}" onclick="showPdf(this)"
+                           href="javascript:void(0)">预览</a>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">审批人：</label>
+                <div class="col-sm-8">
+                    <select id="approver" name="approver" class="form-control m-b">
+                        <option th:each="userList : ${userList}" th:text="${userList.userName}"
+                                th:value="${userList.userId}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-control-static col-sm-offset-5">
+                    <button type="submit" class="btn btn-primary">发布</button>
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+    $('.summernote').summernote({
+        height: '500px',
+        lang: 'zh-CN'
+    });
+    $('.ms').summernote({
+        height: '500px',
+        lang: 'zh-CN'
+    });
+    $(function () {
+        var content = $("#noticeContent").val();
+        var fillWay = $("#fillWay").val();
+        if (fillWay == '0') {
+            $('#editor').code(content);
+        } else {
+            $('.ms').code(content);
+        }
+        if (fillWay == '0') {
+            $("#one").css("display", "block");
+            $("#two").css("display", "none");
+        } else {
+            $("#one").css("display", "none");
+            $("#two").css("display", "block");
+        }
+    });
+    var prefix = ctx + "system/notice"
+    $("#form-notice-edit").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        submitHandler: function (form) {
+            add();
+        }
+    });
+
+    function add() {
+        var matterId = $("#matterId").val();
+        var matterName = $("#matterName").val();
+        var noticeType = $("#noticeType").val();
+        var noticeContent = $("#noticeContent").val();
+        var approver = $("#approver").val();
+        var approverName = $("#approver option:selected").text();
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: prefix + "/releaseNotice",
+            data: {
+                "matterId": matterId,
+                "matterName": matterName,
+                "noticeType": noticeType,
+                "noticeContent": noticeContent,
+                "approver": approver,
+                "approverName": approverName,
+            },
+            async: true,
+            error: function (request) {
+                $.modal.alertError("系统错误");
+            },
+            success: function (data) {
+                if (data.code === 0) {
+                    modalComponent.msgWarning(data.msg);
+                    window.parent.location.reload();
+                    modalComponent.close();
+                } else {
+                    modalComponent.msgWarning(data.msg)
+                }
+            }
+        });
+    }
+
+    function showPdf(e) {
+        var url = e.getAttribute("data-url");
+        $.modal.open("预览", ctx + 'ajax/libs/pdfjs-2.0.943/web/viewer.html?file=' + url);
+    }
+</script>
+</body>
+</html>

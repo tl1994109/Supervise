@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.member.mapper.MemberMapper">
+    
+    <resultMap type="Member" id="MemberResult">
+        <result property="id"    column="id"    />
+        <result property="basicinforId"    column="basicinfor_id"    />
+        <result property="relationship"    column="relationship"    />
+        <result property="name"    column="name"    />
+        <result property="birthday"    column="birthday"    />
+        <result property="politicalOutlook"    column="political_outlook"    />
+        <result property="unitPost"    column="unit_post"    />
+        <result property="unitProperty"    column="unit_property"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+	
+	<sql id="selectMemberVo">
+        select id, basicinfor_id, relationship, name, birthday, political_outlook, unit_post, unit_property, create_time, create_by, update_time, update_by from arch_member
+    </sql>
+	
+    <select id="selectMemberList" parameterType="Member" resultMap="MemberResult">
+        <include refid="selectMemberVo"/>
+        <where>  
+            <if test="id != null and id != ''"> and id like concat('%',#{id},'%')</if>
+             <if test="basicinforId != null and basicinforId != ''"> and basicinfor_id like concat('%',#{basicinforId},'%')</if>
+             <if test="relationship != null and relationship != ''"> and relationship like concat('%',#{relationship},'%')</if>
+             <if test="name != null and name != ''"> and name like concat('%',#{name},'%')</if>
+             <if test="birthday != null and birthday != ''"> and birthday like concat('%',#{birthday},'%')</if>
+             <if test="politicalOutlook != null and politicalOutlook != ''"> and political_outlook like concat('%',#{politicalOutlook},'%')</if>
+             <if test="unitPost != null and unitPost != ''"> and unit_post like concat('%',#{unitPost},'%')</if>
+             <if test="unitProperty != null and unitProperty != ''"> and unit_property like concat('%',#{unitProperty},'%')</if>
+             <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+             <if test="createBy != null and createBy != ''"> and create_by like concat('%',#{createBy},'%')</if>
+             <if test="updateTime != null and updateTime != ''"> and update_time like concat('%',#{updateTime},'%')</if>
+             <if test="updateBy != null and updateBy != ''"> and update_by like concat('%',#{updateBy},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectMemberById" parameterType="String" resultMap="MemberResult">
+        <include refid="selectMemberVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertMember" parameterType="Member">
+        insert into arch_member
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="id != null  and id != ''  ">id,</if>
+           <if test="basicinforId != null  and basicinforId != ''  ">basicinfor_id,</if>
+           <if test="relationship != null  and relationship != ''  ">relationship,</if>
+           <if test="name != null  and name != ''  ">name,</if>
+           <if test="birthday != null  and birthday != ''  ">birthday,</if>
+           <if test="politicalOutlook != null  and politicalOutlook != ''  ">political_outlook,</if>
+           <if test="unitPost != null  and unitPost != ''  ">unit_post,</if>
+           <if test="unitProperty != null  and unitProperty != ''  ">unit_property,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="createBy != null  and createBy != ''  ">create_by,</if>
+           <if test="updateTime != null  ">update_time,</if>
+           <if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="id != null  and id != ''  ">#{id},</if>
+        <if test="basicinforId != null  and basicinforId != ''  ">#{basicinforId},</if>
+        <if test="relationship != null  and relationship != ''  ">#{relationship},</if>
+        <if test="name != null  and name != ''  ">#{name},</if>
+        <if test="birthday != null  and birthday != ''  ">#{birthday},</if>
+        <if test="politicalOutlook != null  and politicalOutlook != ''  ">#{politicalOutlook},</if>
+        <if test="unitPost != null  and unitPost != ''  ">#{unitPost},</if>
+        <if test="unitProperty != null  and unitProperty != ''  ">#{unitProperty},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+        <if test="updateTime != null  ">#{updateTime},</if>
+        <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateMember" parameterType="Member">
+        update arch_member
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="basicinforId != null    ">basicinfor_id = #{basicinforId},</if>
+            <if test="relationship != null    ">relationship = #{relationship},</if>
+            <if test="name != null    ">name = #{name},</if>
+            <if test="birthday != null    ">birthday = #{birthday},</if>
+            <if test="politicalOutlook != null    ">political_outlook = #{politicalOutlook},</if>
+            <if test="unitPost != null    ">unit_post = #{unitPost},</if>
+            <if test="unitProperty != null    ">unit_property = #{unitProperty},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="createBy != null    ">create_by = #{createBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="updateBy != null   ">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteMemberById" parameterType="String">
+        delete from arch_member where id = #{id}
+    </delete>
+	
+    <delete id="deleteMemberByIds" parameterType="String">
+        delete from arch_member where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

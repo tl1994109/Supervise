@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+
+<style type="text/css">
+    .container{
+        width: 100%;
+        height: auto;
+    }
+</style>
+
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div style="text-align: center">
+        <!--<span class="glyphicon glyphicon-bookmark"></span>&nbsp;-->
+        <h2><span th:text="${notice.noticeTitle}"></span></h2>
+        <div style="margin-bottom: 20px;">
+            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;
+            <span th:text="${clickCount}"></span> &nbsp;&nbsp;&nbsp;
+            <span class="glyphicon glyphicon-time"></span>&nbsp;
+            <span th:object="${notice}" th:utext="*{#dates.format(createTime,'yyyy-MM-dd')}"></span>
+        </div>
+    </div>
+
+    <div class="form-group container" th:if="${notice.fillWay} eq '0'">
+        <div class="col-sm-12" id="noticeContent" th:object="${notice}" th:utext="*{noticeContent}"></div>
+    </div>
+    <div class="form-group container" th:if="${notice.fillWay} eq '1'">
+        <div class="col-sm-12" id="noticeContent" th:object="${notice}" th:utext="*{noticeContent}"></div>
+        <iframe style="width: 100%" th:src="@{/ajax/libs/pdfjs-2.0.943/web/viewer.html(file=${notice.noticePhoto})}" frameborder="0" scrolling="yes" class="RuoYi_iframe"></iframe>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+</body>
+<script>
+    $(function(){
+        var height = $(window).height() - 50;
+        $("iframe").css("height",height+"px");
+    });
+</script>
+</html>

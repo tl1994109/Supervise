@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-info search-collapse">
+        <form id="case" class="form-horizontal">
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>模板名称：</label>
+                    <input type="text" name="templateName">
+                </div>
+                <div class="col-sm-4 select-info-btn">
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="$.treeTable.search()"><i
+                            class="fa fa-search"></i>&nbsp;搜索</a>
+                    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+        <a class="btn btn-success" th:onclick="|javascript:$.operate.add('${pid}')|" id="add" th:attr="data-pid=${pid}"
+           shiro:hasPermission="module:template:add">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+    </div>
+
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-tree-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<!--<script type="text/javascript" th:src="@{/static/ajax/libs/pdfjs-2.0.943/build/pdf.js}"></script>-->
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:template:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:template:remove')}]];
+    var addFlag = [[${@permission.hasPermi('module:template:add')}]];
+    var previewFlag = [[${@permission.hasPermi('module:template:preview')}]];
+    var prefix = ctx + "module/template";
+    var data = [[${@dict.getType('template_status')}]];
+    $(function () {
+        var options = {
+            id: "templateId",
+            parentId: "parentId",
+            url: prefix + "/list",
+            createUrl: prefix + "/add/{id}",
+            modalName: "模板",
+            columns: [
+                {
+                    field: 'templateName',
+                    title: '模板名称',
+                },
+                {
+                    field: 'oldName',
+                    title: '文件名',
+                    align: "center",
+                },
+                {
+                    field: 'remark',
+                    title: '说明',
+                },
+                {
+                    field: 'createTime',
+                    title: '发布时间',
+                    align: "center"
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var pid = $("#add").data("pid");
+                        if (row.templateUrl != null && row.templateUrl != "") {
+                            actions.push('<a class="btn btn-info  btn-xs ' + previewFlag + '" href="javascript:void(0)" onclick="preview(\'' + row.templateId + '\')"><i class="fa fa-file-pdf-o">预览</i></a> ');
+                        } else {
+                            actions.push('<a class="btn btn-info  btn-xs ' + addFlag + '" href="#" onclick="$.operate.add(\'' + row.templateId + '\')"><i class="fa fa-plus">新增</i></a> ');
+                        }
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="operateComponent.edit(\'' + row.templateId + '\'\,\'module/template/edit/{id}\'\,\'模板管理\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="remove(\'' + row.templateId + '\'\,\'module/template/remove\'\,\'模板管理\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.treeTable.init(options);
+    });
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+    });
+
+    function preview(templateId) {
+        var fileUrl = prefix + "/showview/" + templateId
+        modalComponent.openFull("预览", ctx + 'ajax/libs/pdfjs-2.0.943/web/viewer.html?file=' + fileUrl);
+    }
+
+    function remove(id, url, modalName) {
+        $.modal.confirm("确定删除该条" + modalName + "信息吗？", function () {
+            modalComponent.loading("正在处理中，请稍后...");
+            $.ajax({
+                type: 'post',
+                url: prefix + '/remove',
+                data: {ids: id},
+                success: function (result) {
+                    if (result.code == web_status.SUCCESS) {
+                        $.modal.msgSuccess(result.msg);
+                        $("#add").attr("data-pid",result.pId);
+                        $("#add").attr("onclick","javascript:$.operate.add('"+result.pId+"')");
+                        $.treeTable.refresh();
+                    } else {
+                        $.modal.msgError(result.msg);
+                    }
+                }
+            });
+            modalComponent.closeLoading();
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.usertestinfo.mapper.UsertestinfoMapper">
+    
+    <resultMap type="Usertestinfo" id="UsertestinfoResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="age"    column="age"    />
+        <result property="sex"    column="sex"    />
+        <result property="hobbies"    column="hobbies"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="updateTime"    column="updateTime"    />
+    </resultMap>
+	
+	<sql id="selectUsertestinfoVo">
+        select id, name, age, sex, hobbies, createTime, updateTime from test_usertestinfo
+    </sql>
+	
+    <select id="selectUsertestinfoList" parameterType="Usertestinfo" resultMap="UsertestinfoResult">
+        <include refid="selectUsertestinfoVo"/>
+        <where>  
+            <if test="id != null and id != ''"> and id like concat('%',#{id},'%')</if>
+             <if test="name != null and name != ''"> and name like concat('%',#{name},'%')</if>
+             <if test="age != null and age != ''"> and age like concat('%',#{age},'%')</if>
+             <if test="sex != null and sex != ''"> and sex like concat('%',#{sex},'%')</if>
+             <if test="hobbies != null and hobbies != ''"> and hobbies like concat('%',#{hobbies},'%')</if>
+             <if test="createTime != null and createTime != ''"> and createTime like concat('%',#{createTime},'%')</if>
+             <if test="updateTime != null and updateTime != ''"> and updateTime like concat('%',#{updateTime},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectUsertestinfoById" parameterType="Integer" resultMap="UsertestinfoResult">
+        <include refid="selectUsertestinfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUsertestinfo" parameterType="Usertestinfo">
+        insert into test_usertestinfo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="id != null  ">id,</if>
+           <if test="name != null  and name != ''  ">name,</if>
+           <if test="age != null  ">age,</if>
+           <if test="sex != null  and sex != ''  ">sex,</if>
+           <if test="hobbies != null  and hobbies != ''  ">hobbies,</if>
+           <if test="createTime != null  ">createTime,</if>
+           <if test="updateTime != null  ">updateTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="id != null  ">#{id},</if>
+        <if test="name != null  and name != ''  ">#{name},</if>
+        <if test="age != null  ">#{age},</if>
+        <if test="sex != null  and sex != ''  ">#{sex},</if>
+        <if test="hobbies != null  and hobbies != ''  ">#{hobbies},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="updateTime != null  ">#{updateTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateUsertestinfo" parameterType="Usertestinfo">
+        update test_usertestinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="age != null  ">age = #{age},</if>
+            <if test="sex != null  and sex != ''  ">sex = #{sex},</if>
+            <if test="hobbies != null  and hobbies != ''  ">hobbies = #{hobbies},</if>
+            <if test="createTime != null  ">createTime = #{createTime},</if>
+            <if test="updateTime != null  ">updateTime = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteUsertestinfoById" parameterType="Integer">
+        delete from test_usertestinfo where id = #{id}
+    </delete>
+	
+    <delete id="deleteUsertestinfoByIds" parameterType="String">
+        delete from test_usertestinfo where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

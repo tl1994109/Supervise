@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.memo.mapper.MemoMapper">
+    
+    <resultMap type="Memo" id="MemoResult">
+        <result property="memoId"    column="memo_Id"    />
+        <result property="memoDate"    column="memo_date"    />
+        <result property="memoTime"    column="memo_time"    />
+        <result property="memoContent"    column="memo_content"    />
+        <result property="memoCreateby"    column="memo_createBy"    />
+        <result property="memoCreatedate"    column="memo_createDate"    />
+    </resultMap>
+	
+	<sql id="selectMemoVo">
+        select memo_Id, memo_date, memo_time, memo_content, memo_createBy, memo_createDate from task_memo
+    </sql>
+	
+    <select id="selectMemoList" parameterType="Memo" resultMap="MemoResult">
+        <include refid="selectMemoVo"/>
+        <where>  
+            <if test="memoId != null and memoId != ''"> and memo_Id=#{memoId}</if>
+             <if test="memoDate != null and memoDate != ''"> and memo_date =#{memoDate}</if>
+             <if test="memoTime != null and memoTime != ''"> and memo_time =#{memoTime}</if>
+             <if test="memoContent != null and memoContent != ''"> and memo_content like concat('%',#{memoContent},'%')</if>
+             <if test="memoCreateby != null and memoCreateby != ''"> and memo_createBy like concat('%',#{memoCreateby},'%')</if>
+             <if test="memoCreatedate != null and memoCreatedate != ''"> and memo_createDate like concat('%',#{memoCreatedate},'%')</if>
+         </where>
+        ORDER BY memo_time ASC
+    </select>
+    
+    <select id="selectMemoById" parameterType="String" resultMap="MemoResult">
+        <include refid="selectMemoVo"/>
+        where memo_Id = #{memoId}
+    </select>
+        
+    <insert id="insertMemo" parameterType="Memo">
+        insert into task_memo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="memoId != null  and memoId != ''  ">memo_Id,</if>
+           <if test="memoDate != null  ">memo_date,</if>
+           <if test="memoTime != null  and memoTime != ''  ">memo_time,</if>
+           <if test="memoContent != null  and memoContent != ''  ">memo_content,</if>
+           <if test="memoCreateby != null  and memoCreateby != ''  ">memo_createBy,</if>
+           <if test="memoCreatedate != null  and memoCreatedate != ''  ">memo_createDate,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="memoId != null  and memoId != ''  ">#{memoId},</if>
+        <if test="memoDate != null  ">#{memoDate},</if>
+        <if test="memoTime != null  and memoTime != ''  ">#{memoTime},</if>
+        <if test="memoContent != null  and memoContent != ''  ">#{memoContent},</if>
+        <if test="memoCreateby != null  and memoCreateby != ''  ">#{memoCreateby},</if>
+        <if test="memoCreatedate != null  and memoCreatedate != ''  ">#{memoCreatedate},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateMemo" parameterType="Memo">
+        update task_memo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="memoDate != null  ">memo_date = #{memoDate},</if>
+            <if test="memoTime != null  and memoTime != ''  ">memo_time = #{memoTime},</if>
+            <if test="memoContent != null  and memoContent != ''  ">memo_content = #{memoContent},</if>
+            <if test="memoCreateby != null  and memoCreateby != ''  ">memo_createBy = #{memoCreateby},</if>
+            <if test="memoCreatedate != null  and memoCreatedate != ''  ">memo_createDate = #{memoCreatedate},</if>
+        </trim>
+        where memo_Id = #{memoId}
+    </update>
+
+	<delete id="deleteMemoById" parameterType="String">
+        delete from task_memo where memo_Id = #{memoId}
+    </delete>
+	
+    <delete id="deleteMemoByIds" parameterType="String">
+        delete from task_memo where memo_Id in 
+        <foreach item="memoId" collection="array" open="(" separator="," close=")">
+            #{memoId}
+        </foreach>
+    </delete>
+    <insert id="bathInsertMemo" parameterType="java.util.List">
+        insert into task_memo
+        (memo_Id, memo_date, memo_time, memo_content, memo_createBy, memo_createDate)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.memoId != null  and item.memoId != ''  ">#{item.memoId},</if>
+                <if test="item.memoDate != null  and item.memoDate != ''  ">#{item.memoDate},</if>
+                <if test="item.memoTime != null  and item.memoTime != ''  ">#{item.memoTime},</if>
+                <if test="item.memoContent != null and item.memoContent!='' ">#{item.memoContent},</if>
+                <if test="item.memoCreateby != null  and item.memoCreateby != ''  ">#{item.memoCreateby},</if>
+                <if test="item.memoCreatedate != null  and item.memoCreatedate != ''  ">#{item.memoCreatedate},</if>
+            </trim>
+        </foreach>
+    </insert>
+</mapper>

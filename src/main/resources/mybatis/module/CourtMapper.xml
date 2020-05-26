@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.court.mapper.CourtMapper">
+    
+    <resultMap type="Court" id="CourtResult">
+        <result property="courtId"    column="court_id"    />
+        <result property="courtName"    column="court_name"    />
+        <result property="courtAddress"    column="court_address"    />
+        <result property="courtPersonName"    column="court_person_name"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleteFlay"    column="delete_flay"    />
+        <result property="deleteBy"    column="delete_by"    />
+        <result property="daleteTime"    column="dalete_time"    />
+    </resultMap>
+	
+	<sql id="selectCourtVo">
+        select court_id, court_name, court_address, court_person_name, create_by, create_time, update_by, update_time, delete_flay, delete_by, dalete_time from b_court
+    </sql>
+	
+    <select id="selectCourtList" parameterType="Court" resultMap="CourtResult">
+        <include refid="selectCourtVo"/>
+        <where>  
+            <if test="courtId != null and courtId != ''"> and court_id = #{courtId}</if>
+             <if test="courtName != null and courtName != ''"> and court_name = #{courtName}</if>
+             <if test="courtAddress != null and courtAddress != ''"> and court_address = #{courtAddress}</if>
+             <if test="courtPersonName != null and courtPersonName != ''"> and court_person_name = #{courtPersonName}</if>
+             <if test="createBy != null and createBy != ''"> and create_by = #{createBy}</if>
+             <if test="createTime != null and createTime != ''"> and create_time = #{createTime}</if>
+             <if test="updateBy != null and updateBy != ''"> and update_by = #{updateBy}</if>
+             <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime}</if>
+             <if test="deleteFlay != null and deleteFlay != ''"> and delete_flay = #{deleteFlay}</if>
+             <if test="deleteBy != null and deleteBy != ''"> and delete_by = #{deleteBy}</if>
+             <if test="daleteTime != null and daleteTime != ''"> and dalete_time = #{daleteTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectCourtById" parameterType="Integer" resultMap="CourtResult">
+        <include refid="selectCourtVo"/>
+        where court_id = #{courtId}
+    </select>
+        
+    <insert id="insertCourt" parameterType="Court">
+        insert into b_court
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="courtId != null and courtId != '' ">court_id,</if>
+			<if test="courtName != null and courtName != '' ">court_name,</if>
+			<if test="courtAddress != null and courtAddress != '' ">court_address,</if>
+			<if test="courtPersonName != null and courtPersonName != '' ">court_person_name,</if>
+			<if test="createBy != null and createBy != '' ">create_by,</if>
+			create_time
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="courtId != null and courtId != ''">#{courtId},</if>
+			<if test="courtName != null and courtName != ''">#{courtName},</if>
+			<if test="courtAddress != null and courtAddress != ''">#{courtAddress},</if>
+			<if test="courtPersonName != null and courtPersonName != ''">#{courtPersonName},</if>
+			<if test="createBy != null and createBy != ''">#{createBy},</if>
+			sysdate()
+         </trim>
+    </insert>
+	 
+    <update id="updateCourt" parameterType="Court">
+        update b_court
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="courtName != null  and courtName != ''  ">court_name = #{courtName},</if>
+            <if test="courtAddress != null  and courtAddress != ''  ">court_address = #{courtAddress},</if>
+            <if test="courtPersonName != null  and courtPersonName != ''  ">court_person_name = #{courtPersonName},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            update_time =sysdate()
+        </trim>
+        where court_id = #{courtId}
+    </update>
+
+	<delete id="deleteCourtById" parameterType="Integer">
+        delete from b_court where court_id = #{courtId}
+    </delete>
+	
+    <delete id="deleteCourtByIds" parameterType="String">
+        delete from b_court where court_id in 
+        <foreach item="courtId" collection="array" open="(" separator="," close=")">
+            #{courtId}
+        </foreach>
+    </delete>
+    
+    <select id="checkCourtNameUnique" parameterType="String" resultType="int">
+		select count(1) from b_court where court_name=#{courtName}
+	</select>
+    
+</mapper>

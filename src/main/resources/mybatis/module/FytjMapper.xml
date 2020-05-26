@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.fytj.mapper.FytjMapper">
+    
+    <resultMap type="Fytj" id="FytjResult">
+        <result property="id"    column="id"    />
+        <result property="jbfyName"    column="jbfy_name"    />
+        <result property="jbfyId"    column="jbfy_id"    />
+        <result property="jc"    column="jc"    />
+        <result property="xs"    column="xs"    />
+        <result property="wj"    column="wj"    />
+        <result property="yj"    column="yj"    />
+        <result property="count"    column="count"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="countTime"    column="count_time"    />
+    </resultMap>
+	
+	<sql id="selectFytjVo">
+        select id, jbfy_name, jbfy_id, jc, xs, wj, yj, count, create_time, count_time from sys_fytj
+    </sql>
+	
+    <select id="selectFytjList" parameterType="Fytj" resultMap="FytjResult">
+        <include refid="selectFytjVo"/>
+        <where>  
+            <if test="id != null and id != ''"> and id like concat('%',#{id},'%')</if>
+             <if test="jbfyName != null and jbfyName != ''"> and jbfy_name like concat('%',#{jbfyName},'%')</if>
+             <if test="jbfyId != null and jbfyId != ''"> and jbfy_id like concat('%',#{jbfyId},'%')</if>
+             <if test="jc != null and jc != ''"> and jc like concat('%',#{jc},'%')</if>
+             <if test="xs != null and xs != ''"> and xs like concat('%',#{xs},'%')</if>
+             <if test="wj != null and wj != ''"> and wj like concat('%',#{wj},'%')</if>
+             <if test="yj != null and yj != ''"> and yj like concat('%',#{yj},'%')</if>
+             <if test="count != null and count != ''"> and count like concat('%',#{count},'%')</if>
+             <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+             <if test="countTime != null and countTime != ''"> and count_time like concat('%',#{countTime},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectFytjById" parameterType="Integer" resultMap="FytjResult">
+        <include refid="selectFytjVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFytj" parameterType="Fytj">
+        insert into sys_fytj
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="id != null  ">id,</if>
+           <if test="jbfyName != null  and jbfyName != ''  ">jbfy_name,</if>
+           <if test="jbfyId != null  and jbfyId != ''  ">jbfy_id,</if>
+           <if test="jc != null  and jc != ''  ">jc,</if>
+           <if test="xs != null  and xs != ''  ">xs,</if>
+           <if test="wj != null  and wj != ''  ">wj,</if>
+           <if test="yj != null  and yj != ''  ">yj,</if>
+           <if test="count != null  and count != ''  ">count,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="countTime != null  and countTime != ''  ">count_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="id != null  ">#{id},</if>
+        <if test="jbfyName != null  and jbfyName != ''  ">#{jbfyName},</if>
+        <if test="jbfyId != null  and jbfyId != ''  ">#{jbfyId},</if>
+        <if test="jc != null  and jc != ''  ">#{jc},</if>
+        <if test="xs != null  and xs != ''  ">#{xs},</if>
+        <if test="wj != null  and wj != ''  ">#{wj},</if>
+        <if test="yj != null  and yj != ''  ">#{yj},</if>
+        <if test="count != null  and count != ''  ">#{count},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="countTime != null  and countTime != ''  ">#{countTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateFytj" parameterType="Fytj">
+        update sys_fytj
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="jbfyName != null  and jbfyName != ''  ">jbfy_name = #{jbfyName},</if>
+            <if test="jbfyId != null  and jbfyId != ''  ">jbfy_id = #{jbfyId},</if>
+            <if test="jc != null  and jc != ''  ">jc = #{jc},</if>
+            <if test="xs != null  and xs != ''  ">xs = #{xs},</if>
+            <if test="wj != null  and wj != ''  ">wj = #{wj},</if>
+            <if test="yj != null  and yj != ''  ">yj = #{yj},</if>
+            <if test="count != null  and count != ''  ">count = #{count},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="countTime != null  and countTime != ''  ">count_time = #{countTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteFytjById" parameterType="Integer">
+        delete from sys_fytj where id = #{id}
+    </delete>
+	
+    <delete id="deleteFytjByIds" parameterType="String">
+        delete from sys_fytj where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="queryAllFyAndId" resultType="java.util.HashMap" parameterType="String">
+        SELECT DISTINCT jbfy_id,jbfy_name  from sys_fytj where count_time=#{time}
+    </select>
+
+    <select id="queryJcByFyAndMonth"  resultType="java.lang.String"  >
+        SELECT  jc  from sys_fytj   where  jbfy_id=#{id} and count_time=#{time}
+    </select>
+    <select id="queryXsByFyAndMonth"  resultType="java.lang.String"  >
+        SELECT  xs  from sys_fytj   where  jbfy_id=#{id} and count_time=#{time}
+    </select>
+    <select id="queryWjByFyAndMonth"  resultType="java.lang.String"  >
+        SELECT  wj  from sys_fytj   where  jbfy_id=#{id} and count_time=#{time}
+    </select>
+    <select id="queryYjByFyAndMonth"  resultType="java.lang.String"  >
+        SELECT  yj  from sys_fytj   where  jbfy_id=#{id} and count_time=#{time}
+    </select>
+    
+</mapper>

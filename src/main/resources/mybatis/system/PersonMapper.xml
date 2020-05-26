@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.system.person.mapper.PersonMapper">
+
+    <resultMap type="Person" id="PersonResult">
+        <result property="personId" column="person_id"/>
+        <result property="personName" column="person_name"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="mobilePhone" column="mobile_phone"/>
+        <result property="officePhone" column="office_phone"/>
+        <result property="email" column="email"/>
+        <result property="identityId" column="identity_id"/>
+        <result property="homeAddress" column="home_address"/>
+        <result property="officeAddress" column="office_address"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="officePosition" column="office_position"/>
+        <result property="officeId" column="office_id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="delTime" column="del_time"/>
+        <result property="remarks" column="remarks"/>
+        <result property="deptName" column="deptName"/>
+    </resultMap>
+
+    <sql id="selectPersonVo">
+        SELECT p.*,d.dept_name as deptName
+        FROM sys_person p
+		LEFT JOIN sys_dept d ON d.dept_id = p.dept_id
+    </sql>
+    
+    <select id="selectPersonAll" parameterType="Person"  resultMap="PersonResult">
+        SELECT p.person_id,p.person_name FROM sys_person p 
+		WHERE p.person_id NOT IN (SELECT u.person_id FROM sys_user u WHERE u.del_flag=0) AND p.del_flag=0
+            <if test="deptId != null and deptId != ''">
+                AND p.dept_id in  (select dept_id from sys_dept where parent_id = (
+                select parent_id from sys_dept where dept_id = #{deptId}))
+            </if>
+    </select>
+
+    <select id="selectPersonList" parameterType="Person" resultMap="PersonResult">
+        <include refid="selectPersonVo"/>
+        <where>
+            <if test="personId != null and personId != ''">and p.person_id = #{personId}</if>
+            <if test="personName != null and personName != ''">and p.person_name like concat('%', #{personName}, '%')</if>
+            <if test="sex != null and sex != ''">and p.sex = #{sex}</if>
+            <if test="age != null and age != ''">and p.age = #{age}</if>
+            <if test="mobilePhone != null and mobilePhone != ''">and p.mobile_phone like concat('%', #{mobilePhone}, '%')</if>
+            <if test="officePhone != null and officePhone != ''">and p.office_phone like concat('%', #{officePhone}, '%')</if>
+            <if test="email != null and email != ''">and p.email like concat('%', #{email}, '%')</if>
+            <if test="identityId != null and identityId != ''">and p.identity_id like concat('%', #{identityId}, '%')</if>
+            <if test="homeAddress != null and homeAddress != ''">and p.home_address like concat('%', #{homeAddress}, '%')</if>
+            <if test="officeAddress != null and officeAddress != ''">and p.office_address like concat('%', #{officeAddress}, '%')</if>
+            <if test="parentDeptId != null and parentDeptId != ''">
+                <choose>
+                    <when test="deptId != null and deptId != ''">
+                        and p.dept_id =#{deptId}
+                    </when>
+                    <otherwise>
+                        and p.dept_id in (SELECT dept_id FROM sys_dept WHERE parent_id = #{parentDeptId})
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="officePosition != null and officePosition != ''">and p.office_position = #{officePosition}</if>
+            <if test="officeId != null and officeId != ''">and p.office_id = #{officeId}</if>
+            <if test="remarks != null and remarks != ''">and p.remarks = #{remarks} </if>
+            and p.del_flag=0
+
+        </where>
+    </select>
+
+    <select id="selectPersonById" parameterType="String" resultMap="PersonResult">
+        <include refid="selectPersonVo"/>
+        where p.person_id = #{personId} and p.del_flag=0
+    </select>
+
+    <insert id="insertPerson" parameterType="Person" useGeneratedKeys="true" keyProperty="personId">
+        insert into sys_person
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="personId != null and personId != '' ">person_id,</if>
+            <if test="personName != null and personName != '' ">person_name,</if>
+            <if test="sex != null and sex != '' ">sex,</if>
+            <if test="age != null and age != '' ">age,</if>
+            <if test="mobilePhone != null and mobilePhone != '' ">mobile_phone,</if>
+            <if test="officePhone != null and officePhone != '' ">office_phone,</if>
+            <if test="email != null and email != '' ">email,</if>
+            <if test="identityId != null and identityId != '' ">identity_id,</if>
+            <if test="homeAddress != null and homeAddress != '' ">home_address,</if>
+            <if test="officeAddress != null and officeAddress != '' ">office_address,</if>
+            <if test="deptId != null and deptId != '' ">dept_id,</if>
+            <if test="officePosition != null and officePosition != '' ">office_position,</if>
+            <if test="officeId != null and officeId != '' ">office_id,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="remarks != null and remarks != '' ">remarks,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="personId != null and personId != ''">#{personId},</if>
+            <if test="personName != null and personName != ''">#{personName},</if>
+            <if test="sex != null and sex != ''">#{sex},</if>
+            <if test="age != null and age != ''">#{age},</if>
+            <if test="mobilePhone != null and mobilePhone != ''">#{mobilePhone},</if>
+            <if test="officePhone != null and officePhone != ''">#{officePhone},</if>
+            <if test="email != null and email != ''">#{email},</if>
+            <if test="identityId != null and identityId != ''">#{identityId},</if>
+            <if test="homeAddress != null and homeAddress != ''">#{homeAddress},</if>
+            <if test="officeAddress != null and officeAddress != ''">#{officeAddress},</if>
+            <if test="deptId != null and deptId != ''">#{deptId},</if>
+            <if test="officePosition != null and officePosition != ''">#{officePosition},</if>
+            <if test="officeId != null and officeId != ''">#{officeId},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="remarks != null and remarks != ''">#{remarks},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updatePerson" parameterType="Person">
+        update sys_person
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="personName != null">person_name = #{personName},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="mobilePhone != null">mobile_phone = #{mobilePhone},</if>
+            <if test="officePhone != null  ">office_phone = #{officePhone},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="identityId != null">identity_id = #{identityId},</if>
+            <if test="homeAddress != null">home_address = #{homeAddress},</if>
+            <if test="officeAddress != null">office_address = #{officeAddress},</if>
+            <if test="deptId != null  ">dept_id = #{deptId},</if>
+            <if test="officePosition != null">office_position = #{officePosition},</if>
+            <if test="officeId != null  ">office_id = #{officeId},</if>
+            <if test="updateBy != null ">update_by = #{updateBy},</if>
+ 			<if test="remarks != null">remarks = #{remarks},</if>
+ 			update_time = sysdate()
+        </trim>
+        where person_id = #{personId}
+    </update>
+
+	<!-- 物理删除 -->
+    <delete id="deletePersonById" parameterType="String">
+        delete from sys_person where person_id = #{personId}
+    </delete>
+	<!-- 物理批量删除 -->
+    <delete id="deletePersonByIds" parameterType="String">
+        delete from sys_person where person_id in
+        <foreach item="personId" collection="array" open="(" separator="," close=")">
+            #{personId}
+        </foreach>
+    </delete>
+    <!-- 逻辑批量删除 -->
+    <update id="logicallyDelPersonByIds" parameterType="String">
+        update sys_person set del_flag = 1,del_time = sysdate() 
+        where person_id in
+        <foreach item="personId" collection="array" open="(" separator="," close=")">
+            #{personId}
+        </foreach>
+    </update>
+    
+    <!-- 单条逻辑删除 -->
+    <update id="logicallyDelPersonById" parameterType="String">
+        update sys_person set del_flag = 1,del_time = sysdate() where person_id = #{personId}
+    </update>
+
+</mapper>

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.tool.tableColumns.mapper.TableColumnsMapper">
+    
+    <resultMap type="TableColumns" id="TableColumnsResult">
+        <result property="columnId"    column="column_id"    />
+        <result property="tableName"    column="table_name"    />
+        <result property="isKey"    column="is_key"    />
+        <result property="columnName"    column="column_name"    />
+        <result property="dataType"    column="data_type"    />
+        <result property="isNullable"    column="is_nullable"    />
+        <result property="columnComment"    column="column_comment"    />
+        <result property="isSearch"    column="is_search"    />
+        <result property="isVisible"    column="is_visible"    />
+        <result property="isVisibleType"    column="is_visible_type"    />
+        <result property="dictType"    	  column="dict_type"    />
+        <result property="visibleCols"    column="visible_cols"    />
+        <result property="isSortable"    column="is_sortable"    />
+        <result property="columnsType"    column="columns_type"    />
+    </resultMap>
+	
+	<sql id="selectTableColumnsVo">
+        SELECT tc.* FROM tool_table_columns tc 
+    </sql>
+	
+    <select id="selectTableColumnsList" parameterType="TableColumns" resultMap="TableColumnsResult">
+        <include refid="selectTableColumnsVo"/>
+        LEFT JOIN (SELECT COLUMN_NAME FROM information_schema.columns
+		WHERE table_name =#{tableName} AND table_schema = (SELECT DATABASE()) ORDER BY ordinal_position) c ON c.COLUMN_NAME=tc.column_name
+        <where>  
+             <if test="columnId != null and columnId != ''"> and tc.column_id = #{columnId}</if>
+             <if test="tableName != null and tableName != ''"> and tc.table_name = #{tableName}</if>
+             <if test="isKey != null and isKey != ''"> and tc.is_key = #{isKey}</if>
+             <if test="columnName != null and columnName != ''"> and tc.column_name = #{columnName}</if>
+             <if test="dataType != null and dataType != ''"> and tc.data_type = #{dataType}</if>
+             <if test="isNullable != null and isNullable != ''"> and tc.is_nullable = #{isNullable}</if>
+             <if test="columnComment != null and columnComment != ''"> and tc.column_comment = #{columnComment}</if>
+             <if test="isSearch != null and isSearch != ''"> and tc.is_search = #{isSearch}</if>
+             <if test="isVisible != null and isVisible != ''"> and tc.is_visible = #{isVisible}</if>
+             <if test="isVisibleType != null and isVisibleType != ''"> and tc.is_visible_type = #{isVisibleType}</if>
+             <if test="dictType != null and dictType != ''"> and tc.dict_type = #{dictType}</if>
+             <if test="visibleCols != null and visibleCols != ''"> and tc.visible_cols = #{visibleCols}</if>
+             <if test="isSortable != null and isSortable != ''"> and tc.is_sortable = #{isSortable}</if>
+            <if test="columnsType != null and columnsType != ''"> and tc.columns_type = #{columnsType}</if>
+         </where>
+    </select>
+    
+    <select id="selectTableColumnsById" parameterType="String" resultMap="TableColumnsResult">
+        <include refid="selectTableColumnsVo"/>
+        where tc.column_id = #{columnId}
+    </select>
+        
+    <insert id="insertTableColumns" parameterType="TableColumns">
+        insert into tool_table_columns
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="columnId != null and columnId != '' ">column_id,</if>
+			<if test="tableName != null and tableName != '' ">table_name,</if>
+			<if test="isKey != null and isKey != '' ">is_key,</if>
+			<if test="columnName != null and columnName != '' ">column_name,</if>
+			<if test="dataType != null and dataType != '' ">data_type,</if>
+			<if test="isNullable != null and isNullable != '' ">is_nullable,</if>
+			<if test="columnComment != null and columnComment != '' ">column_comment,</if>
+			<if test="isSearch != null and isSearch != '' ">is_search,</if>
+			<if test="isVisible != null and isVisible != '' ">is_visible,</if>
+			<if test="isVisibleType != null and isVisibleType != '' ">is_visible_type,</if>
+			<if test="dictType != null and dictType != '' ">dict_type,</if>
+			<if test="visibleCols != null and visibleCols != '' ">visible_cols,</if>
+			<if test="isSortable != null and isSortable != '' ">is_sortable,</if>
+            <if test="columnsType != null and columnsType != ''">columns_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="columnId != null and columnId != ''">#{columnId},</if>
+			<if test="tableName != null and tableName != ''">#{tableName},</if>
+			<if test="isKey != null and isKey != ''">#{isKey},</if>
+			<if test="columnName != null and columnName != ''">#{columnName},</if>
+			<if test="dataType != null and dataType != ''">#{dataType},</if>
+			<if test="isNullable != null and isNullable != ''">#{isNullable},</if>
+			<if test="columnComment != null and columnComment != ''">#{columnComment},</if>
+			<if test="isSearch != null and isSearch != ''">#{isSearch},</if>
+			<if test="isVisible != null and isVisible != ''">#{isVisible},</if>
+			<if test="isVisibleType != null and isVisibleType != ''">#{isVisibleType},</if>
+			<if test="dictType != null and dictType != ''">#{dictType},</if>
+			<if test="visibleCols != null and visibleCols != ''">#{visibleCols},</if>
+			<if test="isSortable != null and isSortable != ''">#{isSortable},</if>
+            <if test="columnsType != null and columnsType != ''">#{columnsType}</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTableColumns" parameterType="TableColumns">
+        update tool_table_columns
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="isKey != null  and isKey != ''  ">is_key = #{isKey},</if>
+            <if test="columnName != null  and columnName != ''  ">column_name = #{columnName},</if>
+            <if test="dataType != null  and dataType != ''  ">data_type = #{dataType},</if>
+            <if test="isNullable != null  and isNullable != ''  ">is_nullable = #{isNullable},</if>
+            <if test="columnComment != null  and columnComment != ''  ">column_comment = #{columnComment},</if>
+            <if test="isSearch != null  and isSearch != ''  ">is_search = #{isSearch},</if>
+            <if test="isVisible != null  and isVisible != ''  ">is_visible = #{isVisible},</if>
+            <if test="isVisibleType != null  and isVisibleType != ''  ">is_visible_type = #{isVisibleType},</if>
+            <if test="dictType != null  and dictType != ''  ">dict_type = #{dictType},</if>
+            <if test="visibleCols != null  and visibleCols != ''  ">visible_cols = #{visibleCols},</if>
+            <if test="isSortable != null  and isSortable != ''  ">is_sortable = #{isSortable},</if>
+            <if test="columnsType != null and columnsType != ''">columns_type = #{columnsType}</if>
+        </trim>
+        where column_id = #{columnId}
+    </update>
+
+	<delete id="deleteTableColumnsById" parameterType="String">
+        delete from tool_table_columns where column_id = #{columnId}
+    </delete>
+    
+    <delete id="deleteTableColumnsByTableName" parameterType="String">
+        delete from tool_table_columns where table_name = #{tableName}
+    </delete>
+	
+    <delete id="deleteTableColumnsByIds" parameterType="String">
+        delete from tool_table_columns where column_id in 
+        <foreach item="columnId" collection="array" open="(" separator="," close=")">
+            #{columnId}
+        </foreach>
+    </delete>
+
+    <insert id="insertByBatch" parameterType="java.util.List">
+        insert into tool_table_columns (column_id,`table_name`,is_key,`column_name`,data_type,is_nullable,column_comment,is_search,is_visible,is_visible_type,dict_type,
+           visible_cols,is_sortable,columns_type) values
+         <foreach collection="list" item="item" index="index" separator=",">
+             (#{item.columnId},#{item.tableName},#{item.isKey},#{item.columnName},#{item.dataType},#{item.isNullable},#{item.columnComment},#{item.isSearch},#{item.isVisible},#{item.isVisibleType},#{item.dictType},
+             #{item.visibleCols},#{item.isSortable},#{item.columnsType})
+         </foreach>
+    </insert>
+
+
+    <update id="updateByBatch1" parameterType="java.util.List">
+        update tool_table_columns t
+        <foreach collection="list" item="item" index="index" separator=";">
+             set t.is_visible = #{item.isVisible} WHERE t.column_id = #{item.columnId}
+        </foreach>
+    </update>
+
+    <update id="updateByBatch" parameterType="list">
+        update tool_table_columns
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="is_visible =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.isVisible!=null and i.isVisible!=''">
+                        when column_id=#{i.columnId} then #{i.isVisible}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="is_key =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.isKey!=null and i.isKey!=''">
+                        when column_id=#{i.columnId} then #{i.isKey}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="column_name =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.columnName!=null and i.columnName!=''">
+                        when column_id=#{i.columnId} then #{i.columnName}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="data_type =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.dataType!=null and i.dataType!=''">
+                        when column_id=#{i.columnId} then #{i.dataType}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="is_nullable =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.isNullable!=null and i.isNullable!=''">
+                        when column_id=#{i.columnId} then #{i.isNullable}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="column_comment =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.columnComment!=null and i.columnComment!=''">
+                        when column_id=#{i.columnId} then #{i.columnComment}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="is_search =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.isSearch!=null and i.isSearch!=''">
+                        when column_id=#{i.columnId} then #{i.isSearch}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="is_visible_type =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.isVisibleType!=null and i.isVisibleType!=''">
+                        when column_id=#{i.columnId} then #{i.isVisibleType}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="dict_type =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.dictType!=null and i.dictType!=''">
+                        when column_id=#{i.columnId} then #{i.dictType}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="visible_cols =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.visibleCols!=null and i.visibleCols!=''">
+                        when column_id=#{i.columnId} then #{i.visibleCols}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="is_sortable =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.isSortable!=null and i.isSortable!=''">
+                        when column_id=#{i.columnId} then #{i.isSortable}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="list" separator="or" item="i" index="index" >
+            column_id=#{i.columnId}
+        </foreach>
+    </update>
+
+</mapper>

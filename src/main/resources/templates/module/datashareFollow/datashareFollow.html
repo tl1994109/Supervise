@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <input type="hidden" id="datashareCourtid" th:value="${datashareCourtid}"/>
+    <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+        <a class="btn btn-success" onclick="add()">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+    </div>
+
+<div class="col-sm-12 select-table table-striped">
+    <table id="bootstrap-table" data-mobile-responsive="true"></table>
+</div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var prefix = ctx + "module/datashareFollow";
+    var datas = [[${@dict.getType('sys_normal_disable')}]];
+    $(function () {
+        var options = {
+            url: prefix + "/list?datashareCourtid=" + $("#datashareCourtid").val(),
+            search: false,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'iD',
+                    title: 'ID',
+                    visible: false,
+                },
+                {
+                    field: 'datashareName',
+                    title: '提出法院',
+                },
+                {
+                    field: 'sharecourtName',
+                    title: '可查看数据',
+                },
+                {
+                    field: 'status',
+                    title: '共享状态',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return statusTools(row);
+                    }
+                },
+                {
+                    field: 'number',
+                    title: '序号',
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                },
+                {
+                    field: 'createBy',
+                    title: '创建人',
+                },
+                {
+                    field: 'updateTime',
+                    title: '更新时间',
+                    visible:false,
+                },
+                {
+                    field: 'updateBy',
+                    title: '更新人',
+                    visible:false,
+                }]
+        };
+        initSimpleTabl.init(options);
+    });
+    function add(){
+        $.modal.open("添加可查看数据权",ctx+'module/datashareFollow/add?datashareCourtid='+$("#datashareCourtid").val())
+    }
+    /* 状态显示 */
+    function statusTools(row) {
+        if (row.status == 1) {
+            return '<i class=\"fa fa-toggle-off text-info fa-2x\" onclick="enable(\'' + row.iD + '\')"></i> ';
+        } else {
+            return '<i class=\"fa fa-toggle-on text-info fa-2x\" onclick="disable(\'' + row.iD + '\')"></i> ';
+        }
+    }
+
+    /* 状态停用 */
+    function disable(iD) {
+        $.modal.confirm("确认要停用状态吗？", function() {
+            $.operate.post(prefix + "/edit", { "iD": iD, "status": 1 });
+        })
+    }
+
+    /* 状态启用 */
+    function enable(iD) {
+        $.modal.confirm("确认要启用状态吗？", function() {
+            $.operate.post(prefix + "/edit", { "iD": iD, "status": 0 });
+        })
+    }
+</script>
+</body>
+</html>

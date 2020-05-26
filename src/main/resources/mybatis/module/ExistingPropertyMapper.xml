@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.existingProperty.mapper.ExistingPropertyMapper">
+    
+    <resultMap type="ExistingProperty" id="ExistingPropertyResult">
+        <result property="jtccqkId"    column="jtccqk_id"    />
+        <result property="cid"    column="cid"    />
+        <result property="xycczkFcdz"    column="xycczk_fcdz"    />
+        <result property="xycczkMj"    column="xycczk_mj"    />
+        <result property="xycczkXz"    column="xycczk_xz"    />
+        <result property="xycczkYt"    column="xycczk_yt"    />
+        <result property="xycczkFcly"    column="xycczk_fcly"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+	
+	<sql id="selectExistingPropertyVo">
+        select jtccqk_id, cid, xycczk_fcdz, xycczk_mj, xycczk_xz, xycczk_yt, xycczk_fcly, create_time, create_by, update_time, update_by from arch_existing_property
+    </sql>
+	
+    <select id="selectExistingPropertyList" parameterType="ExistingProperty" resultMap="ExistingPropertyResult">
+        <include refid="selectExistingPropertyVo"/>
+        <where>  
+            <if test="jtccqkId != null and jtccqkId != ''"> and jtccqk_id like concat('%',#{jtccqkId},'%')</if>
+             <if test="cid != null and cid != ''"> and cid like concat('%',#{cid},'%')</if>
+             <if test="xycczkFcdz != null and xycczkFcdz != ''"> and xycczk_fcdz like concat('%',#{xycczkFcdz},'%')</if>
+             <if test="xycczkMj != null and xycczkMj != ''"> and xycczk_mj like concat('%',#{xycczkMj},'%')</if>
+             <if test="xycczkXz != null and xycczkXz != ''"> and xycczk_xz like concat('%',#{xycczkXz},'%')</if>
+             <if test="xycczkYt != null and xycczkYt != ''"> and xycczk_yt like concat('%',#{xycczkYt},'%')</if>
+             <if test="xycczkFcly != null and xycczkFcly != ''"> and xycczk_fcly like concat('%',#{xycczkFcly},'%')</if>
+             <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+             <if test="createBy != null and createBy != ''"> and create_by like concat('%',#{createBy},'%')</if>
+             <if test="updateTime != null and updateTime != ''"> and update_time like concat('%',#{updateTime},'%')</if>
+             <if test="updateBy != null and updateBy != ''"> and update_by like concat('%',#{updateBy},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectExistingPropertyById" parameterType="String" resultMap="ExistingPropertyResult">
+        <include refid="selectExistingPropertyVo"/>
+        where jtccqk_id = #{jtccqkId}
+    </select>
+        
+    <insert id="insertExistingProperty" parameterType="ExistingProperty">
+        insert into arch_existing_property
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="jtccqkId != null  and jtccqkId != ''  ">jtccqk_id,</if>
+           <if test="cid != null  and cid != ''  ">cid,</if>
+           <if test="xycczkFcdz != null  and xycczkFcdz != ''  ">xycczk_fcdz,</if>
+           <if test="xycczkMj != null  and xycczkMj != ''  ">xycczk_mj,</if>
+           <if test="xycczkXz != null  and xycczkXz != ''  ">xycczk_xz,</if>
+           <if test="xycczkYt != null  and xycczkYt != ''  ">xycczk_yt,</if>
+           <if test="xycczkFcly != null  and xycczkFcly != ''  ">xycczk_fcly,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="createBy != null  and createBy != ''  ">create_by,</if>
+           <if test="updateTime != null  ">update_time,</if>
+           <if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="jtccqkId != null  and jtccqkId != ''  ">#{jtccqkId},</if>
+        <if test="cid != null  and cid != ''  ">#{cid},</if>
+        <if test="xycczkFcdz != null  and xycczkFcdz != ''  ">#{xycczkFcdz},</if>
+        <if test="xycczkMj != null  and xycczkMj != ''  ">#{xycczkMj},</if>
+        <if test="xycczkXz != null  and xycczkXz != ''  ">#{xycczkXz},</if>
+        <if test="xycczkYt != null  and xycczkYt != ''  ">#{xycczkYt},</if>
+        <if test="xycczkFcly != null  and xycczkFcly != ''  ">#{xycczkFcly},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+        <if test="updateTime != null  ">#{updateTime},</if>
+        <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateExistingProperty" parameterType="ExistingProperty">
+        update arch_existing_property
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cid != null    ">cid = #{cid},</if>
+            <if test="xycczkFcdz != null    ">xycczk_fcdz = #{xycczkFcdz},</if>
+            <if test="xycczkMj != null    ">xycczk_mj = #{xycczkMj},</if>
+            <if test="xycczkXz != null    ">xycczk_xz = #{xycczkXz},</if>
+            <if test="xycczkYt != null    ">xycczk_yt = #{xycczkYt},</if>
+            <if test="xycczkFcly != null   ">xycczk_fcly = #{xycczkFcly},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="createBy != null    ">create_by = #{createBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="updateBy != null  ">update_by = #{updateBy},</if>
+        </trim>
+        where jtccqk_id = #{jtccqkId}
+    </update>
+
+	<delete id="deleteExistingPropertyById" parameterType="String">
+        delete from arch_existing_property where jtccqk_id = #{jtccqkId}
+    </delete>
+	
+    <delete id="deleteExistingPropertyByIds" parameterType="String">
+        delete from arch_existing_property where jtccqk_id in 
+        <foreach item="jtccqkId" collection="array" open="(" separator="," close=")">
+            #{jtccqkId}
+        </foreach>
+    </delete>
+    
+</mapper>

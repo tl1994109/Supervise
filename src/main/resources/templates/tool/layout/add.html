@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-layout-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">布局名称：</label>
+            <div class="col-sm-8">
+                <input id="layoutName" name="layoutName" class="form-control" type="text">
+                <input type="hidden" id="tableJson" name="romanceTable">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注：</label>
+            <div class="col-sm-8">
+                <input id="remark" name="remark" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+                <a id="addRow" class="btn btn-primary">新增行</a>
+                <a id="removeRow" class="btn btn-primary">删除行</a>
+               <!-- <a id="setCss" class="btn btn-primary" shiro:hasPermission="tool:layout:edit" onclick="doSetCss()">设置css</a>-->
+            </div>
+        </div>
+
+        <!--handsontable主体-->
+        <div class="form-group">
+            <div id="example1"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-control-static col-sm-offset-5">
+                <button type="submit" class="btn btn-primary" >提交</button>
+                <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                <!--<button onclick="MergeCells()" class="btn btn-danger" type="button">测试</button>-->
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "tool/layout"
+    $("#form-layout-add").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        submitHandler: function () {
+            MergeCells();
+            $.operate.save(prefix + "/add", $("#form-layout-add").serialize());
+        }
+    });
+</script>
+
+<script type="text/javascript">
+
+    var selection = [0,0,0,0];
+    var hot;
+    $(document).ready(function(){
+        var container = document.getElementById("example1");
+        hot = new Handsontable(container, {
+            startRows: 12,
+            startCols: 12,
+            minCols: 12,  // 最小列数
+            minRows: 1, // 最小行数
+            /*fixedRowsTop: 12,
+            fixedColumnsLeft: 12,*/
+            /*data: getData(),*/
+            rowHeaders: true,
+            colHeaders: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+            /* columnSorting: true, // 列排序*/
+            /*sortIndicator: true, // 排序指标*/
+            autoWrapCol: true, // 自动包裹列
+            autoWrapRow: true, // 自动包裹行
+            manualColumnResize: true, // 手动调整列的大小
+            manualRowResize: true, // 手动调整行的大小
+            mergeCells: true, // 合并单元格
+            // 右键菜单栏显示
+            contextMenu: {
+                items: {
+                    "row_above": {name: '向上插入一行'},
+                    "row_below": {name: '向下插入一行'},
+                    /*"col-left": {name: '左侧插入行'},
+                    "col-right": {name: '右侧插入行'},*/
+                    "remove_row": {name: '删除行'},
+                    /*"remove_col": {name: '删除列'},*/
+                    "mergeCells": {name: '合并单元格'},
+                    "hsep1": "-------",
+                    "undo": {name: '撤销'},
+                    "redo": {name: '重置'},
+                    "cut": {name: '剪切'},
+                    "copy": {name: '复制'},
+                    "make_read_only": {name: '只读'},
+                }
+            },
+            comments: false,
+            /*colWidths: ['80%',80,80,80,80,80,80,80,80,80,80,80,80], // 定义列宽*/
+            manualColumnResize: true, // 列，允许拖动
+            manualRowResize: true, // 行，允许拖动
+            autoColumnSize: true, // 列宽未设置时，只适应大小
+            stretchH: "all", // 延伸到所有列
+
+            afterSelectionEnd: function(x1, y1, x2, y2){
+                selection = [x1,y1,x2,y2];
+            },
+
+        })
+    });
+
+    // 新增行
+    $('#addRow').click(function(){
+        hot.alter('insert_row',hot.countRows());
+    });
+
+    // 新增列
+    $('#removeRow').click(function(){
+        var ridx = selection[0];
+        var eidx = selection[2];
+        hot.alter('remove_row',ridx,eidx-ridx+1);
+        selection = [0,0,0,0];
+    });
+
+    // 获取合并单元格的数据
+    function MergeCells() {
+        var marginSpan = []
+
+        // 双重遍历行和列
+
+        // 取得所有tr的dom对象（数组）
+        // $(".htCore tbody") 发现有5个，所以取得是第一个
+        var trList = $(".htCore tbody")[0].children; // .children属性，是活的dom元素的子dom列表
+        // 遍历row
+        for(var i = 0; i < trList.length ; i++) {
+            var tr = trList[i] // 获取单个tr的dom对象
+            var tdList = tr.children // 获取tr的子元素列表
+
+            // 遍历col
+            for(var j = 0; j < tdList.length; j ++) {
+                var td = tdList[j] // 获取每一个td
+
+                // 判断是td标签，因为有th标签，所以排除
+                if (td.tagName == 'TD') {
+                    // 判断td含有colspan和rowspan属性，因为只有合并后的单元格才有这俩属性
+                    if( td.colSpan != undefined && td.rowSpan != undefined) {
+
+                        // 发现colSpan和rowSpan的默认值是'1'，不管合并不合并
+                        if(td.colSpan != '1' && td.rowSpan != '1') {
+                            // object 存入数组
+                            marginSpan.push({
+                                row: i,
+                                col: j,
+                                colspan: td.colSpan,
+                                rowspan: td.rowSpan
+                            })
+                        }
+                    }
+                }
+            }
+        }
+        var json = JSON.stringify(marginSpan)
+        /*console.log(json);*/
+        $("#tableJson").val(json);
+
+    }
+</script>
+
+</body>
+</html>

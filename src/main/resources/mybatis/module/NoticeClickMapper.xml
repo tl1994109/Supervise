@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.noticeClick.mapper.NoticeClickMapper">
+    
+    <resultMap type="NoticeClick" id="NoticeClickResult">
+        <result property="noticeClickrateId"    column="notice_clickrate_id"    />
+        <result property="noticeId"    column="notice_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="noticeName"    column="noticeName"    />
+        <result property="userName"    column="userName"    />
+        <result property="clickTime"    column="click_time"    />
+    </resultMap>
+	
+	<sql id="selectNoticeClickVo">
+        SELECT n.notice_title AS noticeName,p.person_name AS userName,nc.*
+		FROM sys_notice_click nc 
+		LEFT JOIN sys_user u ON u.user_id=nc.user_id
+		LEFT JOIN sys_person p ON p.person_id=u.person_id
+		LEFT JOIN sys_notice n ON n.notice_id=nc.notice_id
+    </sql>
+	
+    <select id="selectNoticeClickList" parameterType="NoticeClick" resultMap="NoticeClickResult">
+        <include refid="selectNoticeClickVo"/>
+        <where>  
+            <if test="noticeClickrateId != null and noticeClickrateId != ''"> and notice_clickrate_id = #{noticeClickrateId}</if>
+             <if test="noticeId != null and noticeId != ''"> and notice_id = #{noticeId}</if>
+             <if test="noticeName != null and noticeName != ''"> and n.notice_title like concat('%', #{noticeName}, '%')</if>
+             <if test="userId != null and userId != ''"> and user_id = #{userId}</if>
+             <if test="clickTime != null and clickTime != ''"> and click_time = #{clickTime}</if>
+         </where>
+         order by nc.click_time desc
+    </select>
+    
+    <select id="selectNoticeClickCount" parameterType="NoticeClick" resultType="Integer">
+        SELECT COUNT(1) FROM sys_notice_click WHERE notice_id = #{noticeId}
+    </select>
+    
+    <select id="selectNoticeClickById" parameterType="Integer" resultMap="NoticeClickResult">
+        <include refid="selectNoticeClickVo"/>
+        where notice_clickrate_id = #{noticeClickrateId}
+    </select>
+        
+    <insert id="insertNoticeClick" parameterType="NoticeClick">
+        insert into sys_notice_click
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="noticeClickrateId != null and noticeClickrateId != '' ">notice_clickrate_id,</if>
+			<if test="noticeId != null and noticeId != '' ">notice_id,</if>
+			<if test="userId != null and userId != '' ">user_id,</if>
+			<if test="clickTime!=null">click_time</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="noticeClickrateId != null and noticeClickrateId != ''">#{noticeClickrateId},</if>
+			<if test="noticeId != null and noticeId != ''">#{noticeId},</if>
+			<if test="userId != null and userId != ''">#{userId},</if>
+            <if test="clickTime!=null">#{clickTime}</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateNoticeClick" parameterType="NoticeClick">
+        update sys_notice_click
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="noticeId != null  ">notice_id = #{noticeId},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="clickTime != null  ">click_time = #{clickTime},</if>
+        </trim>
+        where notice_clickrate_id = #{noticeClickrateId}
+    </update>
+
+	<delete id="deleteNoticeClickById" parameterType="Integer">
+        delete from sys_notice_click where notice_clickrate_id = #{noticeClickrateId}
+    </delete>
+	
+    <delete id="deleteNoticeClickByIds" parameterType="String">
+        delete from sys_notice_click where notice_clickrate_id in 
+        <foreach item="noticeClickrateId" collection="array" open="(" separator="," close=")">
+            #{noticeClickrateId}
+        </foreach>
+    </delete>
+    
+</mapper>

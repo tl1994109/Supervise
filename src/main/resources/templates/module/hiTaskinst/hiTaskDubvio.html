@@ -1,0 +1,285 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<body class="gray-bg">
+<div class="wrapper animated fadeInRight ibox-content">
+    <div class="col-sm-12 select-info search-collapse">
+        <form class="form-horizontal m" id="form-dubvioEvent-edit" th:object="${dubvioEvent}">
+            <input type="hidden" id="dubvioId" name="dubvioId" th:field="*{dubvioId}">
+            <input type="hidden" name="taskId" th:value="${taskId}" id="taskId">
+            <input type="hidden" name="pid" th:value="${pid}" id="pid">
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">可疑点：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="dubvioStrategyName" th:field="*{dubvioStrategyName}" readonly="readonly">
+                        </div>
+                        <!--<div class="col-sm-4">-->
+                        <!--<label>立案日期：</label>-->
+                        <input type="hidden" name="jbxxLarq" th:field="*{jbxxLarq}" readonly="readonly">
+                        <!--</div>-->
+                        <!--<div class="col-sm-4">-->
+                        <!--&lt;!&ndash;<label>策略ID：</label>&ndash;&gt;-->
+                        <!--<input type="hidden"  name="dubvioStrategyId" th:field="*{dubvioStrategyId}">-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-4">-->
+                        <!--&lt;!&ndash;<label>案件编号：</label>&ndash;&gt;-->
+                        <!--<input type="hidden"  name="jbxxAjbh" th:field="*{jbxxAjbh}">-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">案号：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="jbxxAh" th:field="*{jbxxAh}" readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">被反映人：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="jbxxCbrName" th:field="*{jbxxCbrName}" readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">创建时间：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="createTime" th:field="*{createTime}" readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <!--<label>被告人：</label>-->
+                        <input type="hidden" name="jbxxBgr" th:field="*{jbxxBgr}" readonly="readonly">
+                        <!--<label>案件类别：</label>-->
+                        <input type="hidden" name="jbxxAjlb" th:field="*{jbxxAjlb}" readonly="readonly">
+                        <!--<label>法官ID：</label>-->
+                        <input type="hidden" name="jbxxCbrId" th:field="*{jbxxCbrId}">
+                        <!--<label>法官姓名：</label>-->
+                        <!--<label>收案日期：</label>-->
+                        <input type="hidden" name="jbxxSarq" th:field="*{jbxxSarq}" readonly="readonly">
+                        <!--<label>分案日期：</label>-->
+                        <input type="hidden" name="jbxxFarq" th:field="*{jbxxFarq}" readonly="readonly">
+                        <!--<label>承办庭ID：</label>-->
+                        <input type="hidden" name="jbxxCbtId" th:field="*{jbxxCbtId}">
+                        <!--<label>承办庭名称：</label>-->
+                        <input type="hidden" name="jbxxCbtName" th:field="*{jbxxCbtName}">
+                        <!--<label>开庭日期：</label>-->
+                        <input type="hidden" name="jbxxKtrq" th:field="*{jbxxKtrq}" readonly="readonly">
+                        <!--<label>结案日期：</label>-->
+                        <input type="hidden" name="jbxxJarq" th:field="*{jbxxJarq}" readonly="readonly">
+                        <!--<label>归档日期：</label>-->
+                        <input type="hidden" name="jbxxGdrq" th:field="*{jbxxGdrq}" readonly="readonly">
+                        <!--<div class="col-sm-4">-->
+                        <!--<label>风险等级</label>-->
+                        <!--<select id="risksLevel" name="risksLevel" th:with="type=${@dict.getType('risks_grades')}" disabled="true">-->
+                        <!--<option value="">请选择</option>-->
+                        <!--<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{risksLevel}"></option>-->
+                        <!--</select>-->
+                        <!--</div>-->
+
+
+                        <!--<div class="col-sm-4">-->
+                        <!--<label>审批人</label>-->
+                        <!--<select id="approver" name="approver" >-->
+                        <!--<option value="">请选择</option>-->
+                        <!--<option th:each="userList : ${userList}" th:text="${userList.userName}" th:value="${userList.userId}"></option>-->
+                        <!--</select>-->
+                        <!--</div>-->
+
+                        <!--<label class="col-sm-3 control-label">审批人：</label>-->
+                        <!--<div class="col-sm-8">-->
+                        <!--<select id="approver" name="approver" class="form-control m-b">-->
+                        <!--<option th:each="userList : ${userList}" th:text="${userList.userName}" th:value="${userList.userId}"></option>-->
+                        <!--</select>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">审批操作：</label>
+                        <div class="col-xs-10">
+                            <label class="radio-inline">
+                                <input type="radio" name="isok" value="true" checked> 同意
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="isok" value="false"> 不同意
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">审批批注：</label>
+                        <div class="col-xs-10">
+                            <textarea rows="8" style="width: 100%;" id="opinion" name="opinion" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group" th:if="${proIsok == 1}">
+                        <label class="col-xs-2 control-label">承办人：</label>
+                        <div class="col-xs-10">
+                            <select id="approver" name="approver" class="form-control m-b">
+                                <option th:each="userList : ${userList}" th:text="${userList.userName}"
+                                        th:value="${userList.userId}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">流程记录：</label>
+                        <div class="col-xs-10">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <th class="col-md-2">承办人</th>
+                                <th class="col-md-2">操作</th>
+                                <th class="col-md-4">批注</th>
+                                <th class="col-md-2">开始时间</th>
+                                <th class="col-md-2">结束时间</th>
+                                </thead>
+                                <tbody id="tbody" th:each="comment:${commentInfoList}">
+                                <td th:text="${comment.userName}"></td>
+                                <td th:if="${comment.isok} eq 'true'" th:text="同意"></td>
+                                <td th:if="${comment.isok} eq 'false'" th:text="驳回"></td>
+                                <td th:if="${comment.isok} eq '处理中...'" th:text="处理中"></td>
+                                <td th:text="${comment.content}"></td>
+                                <td th:text="${comment.startTime}"></td>
+                                <td th:text="${comment.endTime}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-control-static col-sm-offset-5">
+                    <!--<button type="submit" class="btn btn-primary">发布</button>-->
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.summernote').summernote({
+            height: '220px',
+            lang: 'zh-CN'
+        });
+
+
+    });
+
+
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+    });
+
+    var prefix = ctx + "module/dubvioEvent"
+    $("#form-dubvioEvent-edit").validate({
+        rules: {
+            dubvioId: {
+                required: true,
+            },
+            dubvioStrategyId: {
+                required: true,
+            },
+            jbxxAjbh: {
+                required: true,
+            },
+            jbxxAh: {
+                required: true,
+            },
+        },
+        // submitHandler: function(form) {
+        //
+        //     // var row=0;
+        //     //
+        //     // $.operate.save(prefix + "/edit", $('#form-dubvioEvent-edit').serialize());
+        //     add();
+        // }
+    });
+
+
+    $(document).on("click", "#submitFrm", function () {
+        var isok = $("input[name=isok]:checked").val()
+        var opinion = $("#opinion").val();
+        var taskId = $("#taskId").val();
+        var pid = $("#pid").val();
+        var approver = '';
+        if (document.getElementById("approver")) {
+            approver = $("#approver").val();
+        }
+        $.ajax({
+            url: ctx + 'module/ruTask/compleTask',
+            type: 'post',
+            data: {isok: isok, opinion: opinion, taskId: taskId, pid: pid, approver: approver},
+            success: function (result) {
+                if (result.code === 0) {
+                    modalComponent.msgWarning(result.msg)
+                } else {
+                    modalComponent.msgWarning(result.msg)
+                }
+                modalComponent.close();
+                window.parent.location.reload();
+            },
+            error: function (data) {
+                modalComponent.msgWarning(data)
+            }
+        });
+
+    });
+
+    // $(document).on("click","#submitCase",function(){
+    //     debugger
+    //     var dubvioId = $("#dubvioId").val();
+    //
+    //     $.ajax({
+    //         url:prefix+'/edit',
+    //         type:'post',
+    //         data:{dubvioId:dubvioId}
+    //
+    //
+    //     })
+    //
+    // });
+
+    function release() {
+        var dubvioId = $("#dubvioId").val();
+
+        $.modal.open("案件详细", prefix + "/edit/" + dubvioId);
+    }
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="col-sm-12 select-info search-collapse">
+        <form class="form-horizontal m" id="form-subgroupEvent-edit" th:object="${subgroupEvent}">
+            <div class="form-group select-info-container">
+                <input type="hidden" id="eventId" name="eventId" th:field="*{eventId}">
+                <input type="hidden" id="fasteventName" value="">
+                <div class="col-sm-4">
+                    <label>事件名称：</label>
+                    <input type="text" name="eventName" th:field="*{eventName}">
+                </div>
+                <div class="col-sm-4">
+                    <label>事件类型：</label>
+                    <select id="eventType" name="eventType" th:with="type=${@dict.getType('event_type')}">
+                        <option value="">请选择</option>
+                        <option th:field="*{eventType}" th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <label>事件方法名称：</label>
+                    <input type="text" name="eventMethod" th:field="*{eventMethod}">
+                </div>
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>引用组图：</label>
+                    <select id="diagramId" name="diagramId" th:with="type=${@dict.getType('diagram_id')}">
+                        <option value="">请选择</option>
+                        <option th:field="*{diagramId}" th:each="diagram : ${diagramList}"
+                                th:text="${diagram.diagramName}" th:value="${diagram.diagramId}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <label>按钮颜色：</label>
+                    <select id="btnColor" name="btnColor" th:with="type=${@dict.getType('btn_color')}">
+                        <option value="">请选择</option>
+                        <option th:field="*{btnColor}" th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-control-static col-sm-offset-5">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+    <div th:include="include::footer"></div>
+    <script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+    <script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+    <script type="text/javascript">
+
+        $('.summernote').summernote({
+            height: '220px',
+            lang: 'zh-CN'
+        });
+
+
+        var prefix = ctx + "module/subgroupEvent"
+        $("#form-subgroupEvent-edit").validate({
+            rules: {
+                xxxx: {
+                    required: true,
+                },
+            },
+            submitHandler: function (form) {
+               try {
+                   modalComponent.loading("正在处理中，请稍后...");
+                   var eventName = $("#fasteventName").val();
+                   var event_div = parent.$("div[name="+eventName+"]");
+                   var frm_json = toolUtil.serializeObject("#form-subgroupEvent-edit");
+                   var isok = true;
+                   parent.$(".data_event").each(function(i){
+                       if($(this).attr("name") === frm_json.eventName){
+                           isok = false;
+                           modalComponent.alertWarning("事件名称已存在！");
+                           return  isok;
+                       }
+                   });
+                   if(!isok){
+                       modalComponent.closeLoading();
+                       return;
+                   }
+                   parent.$(event_div).find("span").html(frm_json.eventName);
+                    parent.$(event_div).find(".editBtn").attr("data-json",JSON.stringify(frm_json));
+                    parent.$(event_div).find(".removeBtn").attr("data-json",JSON.stringify(frm_json));
+                   parent.$(event_div).find("input[type=hidden]").val(JSON.stringify(frm_json));
+                   event_div.attr("name",frm_json.eventName);
+                   modalComponent.close();
+                   modalComponent.closeLoading();
+               }
+               catch (e) {
+                   modalComponent.msgError("系统异常！");
+               }
+            }
+        });
+    </script>
+</body>
+</html>

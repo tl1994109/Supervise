@@ -1,0 +1,71 @@
+html,body {
+  font-size: 16px;
+}
+
+#main .title-box {
+  height: 30px;
+  position: relative;
+  padding-left: 16px;
+}
+#main .title-box h3 {
+  color: #fff;
+}
+#main .title-box h3 p {
+  width: 0;
+  height: 24px;
+  border-left: 6px solid #0e94ea;
+  position: absolute;
+  left: 6px;
+  top: 2px;
+}
+#main .main-left .main-left-top .top-a {
+  height: 50%;
+  box-sizing: border-box;
+  padding: 12px;
+}
+#main .main-left .main-left-top .top-a h3 {
+  color: #0e94ea;
+  height: 100px;
+  text-align: center;
+  box-sizing: border-box;
+  padding-top: 12px;
+  /*background: url(../images/border_bg01.png) center no-repeat;*/
+  background-size: 80% 100%;
+  font-size: 0.06666667rem;
+}
+#main .main-left .main-left-top .top-a p {
+  color: #fff;
+  font-size: 0.13333333rem;
+  margin-top: 4px;
+}
+#main .main-left .main-left-top .top-b {
+  height: 50%;
+  box-sizing: border-box;
+}
+#main .main-left .main-left-top .top-b h3 {
+  float: left;
+  width: 50%;
+  height: 100%;
+  text-align: center;
+  color: #0e94ea;
+  border: 1px dashed #384D67;
+  box-sizing: border-box;
+  padding-top: 12px;
+  font-size: 0.06666667rem;
+}
+#main .main-left .main-left-top .top-b h3 p {
+  color: #fff;
+  margin-top: 10px;
+  font-size: 0.13333333rem;
+}
+#main .minute {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+  color: #fff;
+  line-height: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 10;
+}

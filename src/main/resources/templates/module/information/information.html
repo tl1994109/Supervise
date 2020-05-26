@@ -1,0 +1,317 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-info search-collapse">
+        <form id="case" class="form-horizontal">
+            <input type="hidden" name="isTXStatus" id="isTXStatus" th:value="${isTXStatus}">
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>任务名称：</label>
+                    <input type="text" name="taskName">
+                </div>
+                <div class="col-sm-4">
+                    <label>处理人：</label>
+                    <input type="text" name="taskProcessorName">
+                </div>
+                <div class="col-sm-4">
+                    <label>任务状态：</label>
+                    <select id="taskStatus" name="taskStatus" th:with="type=${@dict.getType('task_status')}">
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>完成人：</label>
+                    <input type="text" name="taskConsimmatorName">
+                </div>
+                <div class="col-sm-4">
+                    <label>任务创建人：</label>
+                    <input type="text" name="taskCreateName">
+                </div>
+                <div class="col-sm-4">
+                    <label>重要度：</label>
+                    <select id="taskImportance" name="taskImportance"
+                            th:with="type=${@dict.getType('task_importance')}">
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>紧迫度：</label>
+                    <select id="taskUrgency" name="taskUrgency" th:with="type=${@dict.getType('task_urgency')}">
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-4 select-time">
+                    <label>开始时间：</label>
+                    <input type="text" class="time-input" id="startTime_10" placeholder="开始时间"
+                           name="params[beginTime_10]"/>
+                    <span class="time-span">-</span>
+                    <input type="text" class="time-input" id="endTime_10" placeholder="结束时间" name="params[endTime_10]"/>
+                </div>
+                <div class="col-sm-4 select-time">
+                    <label>结束时间：</label>
+                    <input type="text" class="time-input" id="startTime_11" placeholder="开始时间"
+                           name="params[beginTime_11]"/>
+                    <span class="time-span">-</span>
+                    <input type="text" class="time-input" id="endTime_11" placeholder="结束时间" name="params[endTime_11]"/>
+                </div>
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-4 select-time">
+                    <label>任务创建时间：</label>
+                    <input type="text" class="time-input" id="startTime_13" placeholder="开始时间"
+                           name="params[beginTime_13]"/>
+                    <span class="time-span">-</span>
+                    <input type="text" class="time-input" id="endTime_13" placeholder="结束时间" name="params[endTime_13]"/>
+                </div>
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-12 select-info-btn">
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i
+                            class="fa fa-search"></i>&nbsp;搜索</a>
+                    <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i
+                            class="fa fa-refresh"></i>&nbsp;重置</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+        <a class="btn btn-success" onclick="operateComponent.addFull('module/information/add','任务')"
+           shiro:hasPermission="module:information:add">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+        <!--<a class="btn btn-primary btn-detail disabled"-->
+           <!--onclick="operateComponent.detailFull('module/information/detail/{id}','','任务')"-->
+           <!--shiro:hasPermission="module:information:detail">-->
+            <!--<i class="fa fa-plus"></i> 详细-->
+        <!--</a>-->
+        <!--<a class="btn btn-warning btn-edit disabled"-->
+           <!--onclick="operateComponent.editFull('','module/information/edit/{id}','任务')"-->
+           <!--shiro:hasPermission="module:information:edit">-->
+            <!--<i class="fa fa-plus"></i> 编辑-->
+        <!--</a>-->
+        <!--<a class="btn btn-danger btn-del disabled" onclick="operateComponent.removeAll('module/information/remove')"-->
+           <!--shiro:hasPermission="module:information:remove">-->
+            <!--<i class="fa fa-trash-o"></i> 批量删除-->
+        <!--</a>-->
+        <a class="btn btn-select">
+				<span id="exportToolbar" class="btn-group" style="width: 110px; display: inline-block">
+					<select id="sel_exportoption" class="">
+						<option value="">导出当页数据</option>
+						<option value="all">导出全部数据</option>
+						<option value="selected">导出选中数据</option>
+					</select>
+				</span>
+        </a>
+    </div>
+
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:information:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:information:remove')}]];
+    var appraiseFlag = [[${@permission.hasPermi('module:information:appraise')}]];
+    var prefix = ctx + "module/information";
+    var datas_3 = [[${@dict.getType('task_status')}]];
+    var datas_6 = [[${@dict.getType('task_importance')}]];
+    var datas_7 = [[${@dict.getType('task_urgency')}]];
+    var datas_app = [[${@dict.getType('appraise_level')}]];
+    $(function () {
+        debugger;
+        var listUrl = '';
+        var isTXStatus = $("#isTXStatus").val();
+        if($.common.isNotEmpty(isTXStatus)){
+            listUrl = prefix + "/isTXStatusList?isTXStatus="+isTXStatus;
+        }else{
+            listUrl = prefix + "/list";
+        }
+        var options = {
+            url: listUrl,
+            detailUrl: prefix + "/detail/{id}",
+            search: false,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'taskId',
+                    title: '任务编号',
+                    visible: false,
+                },
+                {
+                    field: 'taskName',
+                    title: '任务名称',
+                    formatter: function (value, row, index) {
+                        //'','','任务'
+                        return "<a style='text-decoration:none' onclick='operateComponent.detailFull(\"module/information/detail/{id}\",\""+
+                            row.taskId+"\",\"任务\")' >" +
+                            "<font color='blue'>" + row.taskName + "</font></a>";
+                    }
+                },
+                {
+                    field: 'taskStatus',
+                    title: '任务状态',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return initSimpleTabl.selectDictLabel(datas_3, value);
+                    }
+                },
+                {
+                    field: 'appraise_level',
+                    title: '评价',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return initSimpleTabl.selectDictLabel(datas_app, value);
+                    }
+                },
+                {
+                    field: 'taskProcessorName',
+                    title: '处理人',
+                },
+                {
+                    field: 'taskConsimmatorName',
+                    title: '完成人',
+                },
+                {
+                    field: 'taskImportance',
+                    title: '重要度',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return initSimpleTabl.selectDictLabel(datas_6, value);
+                    }
+                },
+                {
+                    field: 'taskUrgency',
+                    title: '紧迫度',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return initSimpleTabl.selectDictLabel(datas_7, value);
+                    }
+                },
+                {
+                    field: 'taskPlanStartdate',
+                    title: '规划开始时间',
+                },
+                {
+                    field: 'taskPlanEnddate',
+                    title: '规划结束时间',
+                },
+                {
+                    field: 'taskStartdate',
+                    title: '开始时间',
+                },
+                {
+                    field: 'taskEnddate',
+                    title: '结束时间',
+                },
+                {
+                    field: 'taskCreateName',
+                    title: '创建人',
+                },
+                {
+                    field: 'taskCreatedate',
+                    title: '创建时间',
+                    visible: false
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        if(row.taskStatus == '0'||row.taskStatus == '1'||row.taskStatus == '3'||row.taskStatus == '5'||row.taskStatus == '6'){
+                            actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="edit_task(\'' + row.taskId + '\',\'module/information/edit/{id}\',\'任务\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        }else{
+                            actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" disabled="disabled"><i class="fa fa-edit"></i>编辑</a> ');
+                        }
+                        if(row.taskStatus == '2' || row.taskStatus == '4'){
+                            if(row.appContent!=null && row.appContent!=''){
+                                actions.push('<a disabled="" class="btn btn-success btn-xs ' + appraiseFlag + '" href="javascript:void(0)"><i class="fa fa-edit"></i>评价</a> ');
+                            }else{
+                                actions.push('<a class="btn btn-success btn-xs ' + appraiseFlag + '" href="javascript:void(0)" onclick="appraise(\''+row.taskId+'\')"><i class="fa fa-edit"></i>评价</a> ');
+                            }
+                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="operateComponent.remove(\'' + row.taskId + '\'\,\'module/information/remove\'\,\'任务\')"><i class="fa fa-remove"></i>删除</a>');
+                        }else{
+                            actions.push('<a disabled="" class="btn btn-success btn-xs ' + appraiseFlag + '" href="javascript:void(0)"><i class="fa fa-edit"></i>评价</a> ');
+                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" disabled="disabled"><i class="fa fa-remove"></i>删除</a>');
+                        }
+                        return actions.join('');
+                    }
+                }]
+        };
+        initSimpleTabl.init(options);
+    });
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime_10', theme: 'molv'});
+        laydate.render({elem: '#endTime_10', theme: 'molv'});
+        laydate.render({elem: '#startTime_11', theme: 'molv'});
+        laydate.render({elem: '#endTime_11', theme: 'molv'});
+        laydate.render({elem: '#startTime_13', theme: 'molv'});
+        laydate.render({elem: '#endTime_13', theme: 'molv'});
+    });
+
+    function appraise(taskId){
+        var config = {
+            url:prefix+"/checkAppraise",
+            type:"post",
+            data:{"taskId":taskId},
+            success:function(result){
+                if(result.code == web_status.SUCCESS){
+                    var height = $(window).height() - 200;
+                    modalComponent.openFull('任务评价',prefix+'/appraise?taskId='+taskId);
+                }else{
+                    $.modal.msgError(result.msg)
+                }
+            },
+            error:function (i) {
+                $.modal.alertError(i)
+            }
+        };
+        $.ajax(config);
+    }
+
+    function edit_task(taskId,url,modalName){
+        var config = {
+            url : prefix + '/checkEditTask',
+            type:'post',
+            data:{'taskId':taskId},
+            success:function(result){
+                if(result.code == web_status.SUCCESS){
+                    operateComponent.editFull(taskId,url,modalName);
+                }else{
+                    $.modal.msgError(result.msg)
+                }
+            },
+            error:function(i){
+                $.modal.alertError(i)
+            }
+        };
+        $.ajax(config)
+    }
+
+</script>
+<!--bootstrap-table-export数据导出-->
+<script type="text/javascript">
+    $("#sel_exportoption").change(function () {
+        //刷新参数设置
+        $('#bootstrap-table').bootstrapTable('refreshOptions', {
+            exportDataType: $(this).val()
+        });
+    });
+</script>
+</body>
+</html>

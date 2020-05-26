@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.system.courtOrgan.mapper.CourtOrganMapper">
+
+    <resultMap type="CourtOrgan" id="CourtOrganResult">
+        <id property="deptId" column="dept_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="ancestors" column="ancestors"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="leader" column="leader"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="status" column="status"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="parentName" column="parent_name"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="idcard" column="idcard"/>
+        <result property="deptType" column="dept_type"/>
+        <result property="cid" column="cid"/>
+        <result property="leaderStatus" column="leaderStatus"/>
+    </resultMap>
+
+    <sql id="selectDeptVo">
+        SELECT d.dept_id, d.parent_id, d.cid,d.ancestors, d.dept_name, d.order_num,
+         d.leader, d.phone, d.email, d.status, d.del_flag, d.create_by, d.create_time,d.idcard,d.dept_type,
+         d.leaderStatus
+        FROM sys_court_organ d
+    </sql>
+
+    <select id="selectRoleDeptTree" parameterType="Long" resultType="String">
+		select concat(d.dept_id, d.dept_name) as dept_name
+		from sys_court_organ d
+			left join sys_role_dept rd on d.dept_id = rd.dept_id
+		where d.del_flag = '0' and rd.role_id = #{roleId}
+		order by d.parent_id, d.order_num
+	</select>
+
+    <select id="selectDeptList" parameterType="Dept" resultMap="CourtOrganResult">
+        <include refid="selectDeptVo"/>
+        where d.del_flag = '0'
+        <if test="parentId != null and parentId != 0">
+            AND parent_id = #{parentId}
+        </if>
+        <if test="deptName != null and deptName != ''">
+            AND dept_name like concat('%', #{deptName}, '%')
+        </if>
+        <if test="idcard != null and idcard != ''">
+            AND idcard like concat('%', #{idcard}, '%')
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        <if test="deptType != null and deptType != ''and deptType!='99' ">
+            AND dept_type = #{deptType}
+        </if>
+        <!--99表示查询院庭数据 -->
+        <if test="deptType != null and deptType != '' and deptType=='99'">
+            AND dept_type =1 or dept_type=2
+        </if>
+        <if test="deptId!=null and deptId!='' and deptType!='99'">
+            and (d.dept_id in (select substring_index(substring_index(a.ancestors,',',b.help_topic_id+1),',',-1) tag
+            from (select DISTINCT ancestors from sys_court_organ where dept_id= #{deptId}) a join
+            mysql.help_topic b
+            on b.help_topic_id &lt;(length(a.ancestors) - length(replace(a.ancestors,',',''))+1)) or d.dept_id
+            =#{deptId}
+            or d.parent_id = #{deptId}
+            or d.parent_id in (select dept_id from sys_court_organ where parent_id=#{deptId}))
+        </if>
+        <if test="leaderStatus!=null and leaderStatus!=''">
+            and d.leaderStatus = #{leaderStatus}
+        </if>
+        <if test="createBy!=null and createBy!=''">
+            AND  d.create_by != #{createBy}
+        </if>
+
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
+    </select>
+
+
+    <select id="selectDeptListOrder" parameterType="Dept" resultMap="CourtOrganResult">
+        <include refid="selectDeptVo"/>
+        where d.del_flag = '0'
+        <if test="parentId != null and parentId != 0">
+            AND parent_id = #{parentId}
+        </if>
+        <if test="deptName != null and deptName != ''">
+            AND dept_name like concat('%', #{deptName}, '%')
+        </if>
+        <if test="idcard != null and idcard != ''">
+            AND idcard like concat('%', #{idcard}, '%')
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        <if test="deptType != null and deptType != ''and deptType!='99' ">
+            AND dept_type = #{deptType}
+        </if>
+        <!--99表示查询院庭数据 -->
+        <if test="deptType != null and deptType != '' and deptType=='99'">
+            AND dept_type =1 or dept_type=2
+        </if>
+        <if test="deptId!=null and deptId!='' and deptType!='99'">
+            and (d.dept_id in (select substring_index(substring_index(a.ancestors,',',b.help_topic_id+1),',',-1) tag
+            from (select DISTINCT ancestors from sys_court_organ where dept_id= #{deptId}) a join
+            mysql.help_topic b
+            on b.help_topic_id &lt;(length(a.ancestors) - length(replace(a.ancestors,',',''))+1)) or d.dept_id
+            =#{deptId}
+            or d.parent_id = #{deptId}
+            or d.parent_id in (select dept_id from sys_court_organ where parent_id=#{deptId}))
+        </if>
+        <if test="leaderStatus!=null and leaderStatus!=''">
+            and d.leaderStatus = #{leaderStatus}
+        </if>
+        <if test="createBy!=null and createBy!=''">
+            AND  d.create_by != #{createBy}
+        </if>
+        ORDER BY order_num
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
+    </select>
+
+    <select id="selectDeptByCid" parameterType="String" resultMap="CourtOrganResult">
+        <include refid="selectDeptVo"/>
+        where d.cid = #{cid}
+    </select>
+
+    <select id="checkDeptExistUser" parameterType="Long" resultType="int">
+		select count(1) from sys_user where dept_id = #{deptId} and del_flag = '0'
+	</select>
+
+    <select id="selectDeptCount" parameterType="Dept" resultType="int">
+        select count(1) from sys_court_organ
+        where del_flag=0
+        <if test="deptId != null and deptId != 0">and dept_id = #{deptId}</if>
+        <if test="parentId != null and parentId != 0">and parent_id = #{parentId}</if>
+    </select>
+
+    <select id="checkDeptNameUnique" resultMap="CourtOrganResult">
+        <include refid="selectDeptVo"/>
+        where dept_name=#{deptName} and parent_id = #{parentId} and del_flag=0
+    </select>
+
+    <select id="selectDeptById" parameterType="Long" resultMap="CourtOrganResult">
+		select d.cid,d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status,d.idcard,d.dept_type,
+			(select dept_name from sys_court_organ where dept_id = d.parent_id) parent_name
+		from sys_court_organ d
+		where d.dept_id = #{deptId} and d.del_flag=0
+	</select>
+
+    <insert id="insertDept" parameterType="CourtOrgan">
+        insert into sys_court_organ(
+        <if test="deptId != null and deptId != 0">dept_id,</if>
+        <if test="parentId != null and parentId != 0">parent_id,</if>
+        <if test="deptName != null and deptName != ''">dept_name,</if>
+        <if test="ancestors != null and ancestors != ''">ancestors,</if>
+        <if test="orderNum != null and orderNum != ''">order_num,</if>
+        <if test="leader != null and leader != ''">leader,</if>
+        <if test="phone != null and phone != ''">phone,</if>
+        <if test="email != null and email != ''">email,</if>
+        <if test="status != null">status,</if>
+        <if test="createBy != null and createBy != ''">create_by,</if>
+        <if test="idcard != null and idcard != ''">idcard,</if>
+        <if test="deptType != null and deptType != ''">dept_type,</if>
+        <if test="cid != null and cid != ''">cid,</if>
+        <if test="leaderStatus != null and leaderStatus != ''">leaderStatus,</if>
+        create_time
+        )values(
+        <if test="deptId != null and deptId != 0">#{deptId},</if>
+        <if test="parentId != null and parentId != 0">#{parentId},</if>
+        <if test="deptName != null and deptName != ''">#{deptName},</if>
+        <if test="ancestors != null and ancestors != ''">#{ancestors},</if>
+        <if test="orderNum != null and orderNum != ''">#{orderNum},</if>
+        <if test="leader != null and leader != ''">#{leader},</if>
+        <if test="phone != null and phone != ''">#{phone},</if>
+        <if test="email != null and email != ''">#{email},</if>
+        <if test="status != null">#{status},</if>
+        <if test="createBy != null and createBy != ''">#{createBy},</if>
+        <if test="idcard != null and idcard != ''">#{idcard},</if>
+        <if test="deptType != null and deptType != ''">#{deptType},</if>
+        <if test="cid != null and cid != ''">#{cid},</if>
+        <if test="leaderStatus != null and leaderStatus != ''">#{leaderStatus},</if>
+        sysdate()
+        )
+    </insert>
+
+    <update id="updateDept" parameterType="CourtOrgan">
+        update sys_court_organ
+        <set>
+            <if test="parentId != null and parentId != 0">parent_id = #{parentId},</if>
+            <if test="deptName != null">dept_name = #{deptName},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="leader != null">leader = #{leader},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="idcard != null">idcard = #{idcard},</if>
+            <if test="deptType != null">dept_type = #{deptType},</if>
+            <if test="leaderStatus != null">leaderStatus = #{leaderStatus},</if>
+            <if test="cid != null">cid = #{cid},</if>
+            update_time = sysdate()
+        </set>
+        where dept_id = #{deptId}
+    </update>
+
+    <update id="updateDeptChildren" parameterType="java.util.List">
+        update sys_court_organ set ancestors =
+        <foreach collection="depts" item="item" index="index"
+                 separator=" " open="case dept_id" close="end">
+            when #{item.deptId} then #{item.ancestors}
+        </foreach>
+        where dept_id in
+        <foreach collection="depts" item="item" index="index"
+                 separator="," open="(" close=")">
+            #{item.deptId}
+        </foreach>
+    </update>
+
+    <delete id="deleteDeptById" parameterType="Long">
+		update sys_court_organ set del_flag = '2' where dept_id = #{deptId} and del_flag=0
+	</delete>
+
+    <select id="queryDeptNameByCid" resultType="java.lang.String" parameterType="Map">
+		SELECT dept_name from sys_court_organ where cid=#{cid} and dept_type = #{deptType} and del_flag=0
+
+	</select>
+
+    <select id="selectCourtOrganByCid" parameterType="CourtOrgan" resultMap="CourtOrganResult">
+		select * from sys_court_organ where cid=#{cid} and dept_type=#{deptType} and del_flag=0
+	</select>
+
+    <select id="selectCourtOrganByParentId" parameterType="java.lang.String" resultMap="CourtOrganResult">
+		SELECT * FROM sys_court_organ WHERE parent_id=(SELECT dept_id FROM sys_court_organ  WHERE cid=#{cid}) AND dept_type=2 AND del_flag=0;
+	</select>
+
+
+    <select id="selectDeptByDeptId" parameterType="Long" resultMap="CourtOrganResult">
+		SELECT * FROM  sys_court_organ d where d.dept_id = #{deptId} and del_flag = '0'
+	</select>
+
+    <select id="selectAllFy" resultMap="CourtOrganResult">
+		SELECT * FROM sys_court_organ t WHERE FIND_IN_SET ('100',t.ancestors) AND t.dept_type='1' and del_flag = 0
+	</select>
+
+    <select id="queryCidByParentId" resultType="java.lang.String">
+		SELECT  cid from sys_court_organ where parent_id=#{id} and dept_type=2  and del_flag=0
+	</select>
+
+
+    <select id="selectAllListByCid" parameterType="CourtOrgan" resultMap="CourtOrganResult">
+        SELECT * from sys_court_organ
+
+        <where>
+            <if test="cid != null and cid != ''">
+                and cid in
+                <foreach item="cid" index="index" collection="cid.split(',')" open="(" separator="," close=")">
+                    #{cid}
+                </foreach>
+            </if>
+            <if test="deptType != null and deptType != ''"> and dept_type like concat('%',#{deptType},'%')</if>
+        </where>
+        and del_flag=0
+    </select>
+    <select id="selectLeaderByCardNo" parameterType="String" resultMap="CourtOrganResult">
+        select * from sys_court_organ where idcard = #{idcard} and del_flag=0
+    </select>
+
+    <select id="selectAllLeader" resultMap="CourtOrganResult">
+        <include refid="selectDeptVo"/>
+        WHERE d.leaderStatus='1' and del_flag=0 and dept_type=3 ORDER BY order_num
+    </select>
+
+    <select id="selectCourtOrganAllByParnetId"  parameterType="String" resultMap="CourtOrganResult">
+        select * from sys_court_organ where parent_id= #{parentId} and del_flag=0
+    </select>
+
+    <select id="selectSprList"  resultType="java.util.HashMap" parameterType="Map" >
+SELECT
+	 c.dept_name as ryName,c.dept_id as deptId ,c.idcard as idCard,c.order_num ,b.dept_name AS deptName,a.dept_name as fyName
+FROM
+	sys_court_organ c
+LEFT JOIN sys_court_organ b ON c.parent_id = b.dept_id LEFT JOIN  sys_court_organ a on  b.parent_id = a.dept_id
+WHERE
+	c.leaderStatus = 1
+AND c.dept_type = 3
+AND c.del_flag = 0
+        <if test="deptName != null and deptName != ''">
+            AND c.dept_name like concat('%', #{deptName}, '%')
+        </if>
+
+        <if test="idcard != null and idcard != ''">
+            AND c.idcard like concat('%', #{idcard}, '%')
+        </if>
+ORDER BY
+	c.order_num
+
+    </select>
+
+</mapper>

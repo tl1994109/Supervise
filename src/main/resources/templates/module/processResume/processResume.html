@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+	<input type="hidden" name="matterId" th:value="${matterId}"/>
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:processResume:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:processResume:remove')}]];
+    var prefix = ctx + "module/processResume"
+
+    $(function () {
+        var options = {
+            url: prefix + "/list?matterId="+$("input[name='matterId']").val(),
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            sortName: "operationTime",
+	        sortOrder: "asc",
+            modalName: "流程履历 ",
+            search:false,
+            showRefresh: false,
+            showColumns: false,
+            showToggle: false,
+            showExport: false,
+            columns: [
+                {
+                    title: '序号',
+                    formatter: function (value, row, index) {
+                        return index + 1;
+                    }
+                },
+                {
+                    field: 'id',
+                    title: '主键ID',
+                    visible: false
+                },
+                {
+                    field: 'processId',
+                    title: '流程ID',
+                    visible: false
+                },
+                {
+                    field: 'processName',
+                    title: '流程名称',
+                    formatter: function (value, row, index) {
+                        var processName = '';
+                        $.ajax({
+                            url: "process/selectProcessById",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                processId: row.processId
+                            },
+                            success: function (result) {
+                                processName = result.processName;
+                                return result.processName;
+                            },
+                            async: false
+                        });
+                        return processName;
+                    }
+                },
+                {
+                    field: 'nodeId',
+                    title: '节点ID',
+                    visible: false
+                },
+                {
+                    field: 'nodeName',
+                    title: '节点名称'
+                },
+                {
+                    field: 'operationContent',
+                    title: '操作内容'
+                },
+                {
+                    field: 'personName',
+                    title: '操作者'
+                },
+                {
+                    field: 'operationTime',
+                    title: '操作时间'
+                },
+                {
+                    field: 'nextNodeName',
+                    title: '下一节点名称'
+                },
+                {
+                    field: 'nextAllowBy',
+                    title: '下一节点操作人',
+                    formatter: function (value, row, index) {
+                        var nextAllowBy = '';
+                        if(value!=null){
+                        	var results=value.split(",");
+                            for(var i=0;i<results.length;i++){
+                            	$.ajax({
+                                    url: ctx+"system/user/getUserById",
+                                    type: "post",
+                                    dataType: "json",
+                                    data: {
+                                    	userId:results[i]
+                                    },
+                                    success: function (result) {
+                                        return nextAllowBy += result.userName+" ";;
+                                    },
+                                    async: false
+                                });
+                            }
+                            return nextAllowBy;
+                        }
+                        return ""
+                    }
+                },]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

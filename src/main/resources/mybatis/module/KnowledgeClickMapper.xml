@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.knowledgeClick.mapper.KnowledgeClickMapper">
+    
+    <resultMap type="KnowledgeClick" id="KnowledgeClickResult">
+        <result property="id"    column="id"    />
+        <result property="knowledgeId"    column="knowledge_id"    />
+        <result property="clickDate"    column="click_date"    />
+        <result property="clickUser"    column="click_user"    />
+        <result property="knowledgeTitle"    column="knowledge_title"    />
+        <result property="clickUserName"    column="user_name"    />
+    </resultMap>
+	
+	<sql id="selectKnowledgeClickVo">
+        select k.*,u.user_name,g.knowledge_title from  sys_knowledge_click k
+        LEFT JOIN sys_knowledge g on k.knowledge_id = g.knowledge_id
+        LEFT JOIN sys_user u on k.click_user = u.user_id
+    </sql>
+	
+    <select id="selectKnowledgeClickList" parameterType="KnowledgeClick" resultMap="KnowledgeClickResult">
+        <include refid="selectKnowledgeClickVo"/>
+        <where>  
+            <if test="id != null and id != ''"> and k.id = #{id}</if>
+            <if test="knowledgeTitle != null and knowledgeTitle != ''">and g.knowledge_title like concat('%',#{knowledgeTitle},'%')</if>
+             <if test="knowledgeId != null and knowledgeId != ''"> and k.knowledge_id = #{knowledgeId}</if>
+             <if test="params.beginTime3 != null and params.beginTime3 != ''">
+              and date_format(k.click_date,'%y%m%d') &gt;= date_format(#{params.beginTime3},'%y%m%d')
+             </if>
+            <if test="params.endTime3 != null and params.endTime3 != ''">
+                and date_format(k.click_date,'%y%m%d') &lt;= date_format(#{params.endTime3},'%y%m%d')
+            </if>
+             <if test="clickUser != null and clickUser != ''"> and u.user_name like concat('%',#{clickUser},'%')</if>
+         </where>
+         ORDER BY k.click_date desc
+    </select>
+    
+    <select id="selectKnowledgeClickById" parameterType="String" resultMap="KnowledgeClickResult">
+        <include refid="selectKnowledgeClickVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertKnowledgeClick" parameterType="KnowledgeClick">
+        insert into sys_knowledge_click
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="id != null  and id != ''  ">id,</if>
+           <if test="knowledgeId != null  and knowledgeId != ''  ">knowledge_id,</if>
+           <if test="clickDate != null  ">click_date,</if>
+           <if test="clickUser != null  and clickUser != ''  ">click_user,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="id != null  and id != ''  ">#{id},</if>
+        <if test="knowledgeId != null  and knowledgeId != ''  ">#{knowledgeId},</if>
+        <if test="clickDate != null  ">#{clickDate},</if>
+        <if test="clickUser != null  and clickUser != ''  ">#{clickUser},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateKnowledgeClick" parameterType="KnowledgeClick">
+        update sys_knowledge_click
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="knowledgeId != null  and knowledgeId != ''  ">knowledge_id = #{knowledgeId},</if>
+            <if test="clickDate != null  ">click_date = #{clickDate},</if>
+            <if test="clickUser != null  and clickUser != ''  ">click_user = #{clickUser},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteKnowledgeClickById" parameterType="String">
+        delete from sys_knowledge_click where id = #{id}
+    </delete>
+	
+    <delete id="deleteKnowledgeClickByIds" parameterType="String">
+        delete from sys_knowledge_click where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectKnowledgeClickByKnowledgeId" parameterType="string" resultType="Integer">
+        select count(1) from sys_knowledge_click where knowledge_id = #{knowledgeId}
+    </select>
+    
+</mapper>

@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="include :: header"></head>
+<style type="text/css">
+    .modal-border {
+        border: #CCCCCC 1px solid;
+    }
+
+    .model-container {
+        padding: 10px 0px;
+    }
+
+    .model-content {
+        width: 100%;
+        height: 58px;
+        line-height: 58px;
+        border: 1px solid #ddd;
+        padding: 0px 5px;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .model-title {
+        width: 67%;
+        float: left;
+        color: inherit;
+        text-align: left;
+    }
+
+    .model-default {
+        text-align: center;
+    }
+
+    .model-btn {
+        width: 30%;
+        float: left;
+        display: flex;
+    }
+
+    .model-btn a {
+        color: #676a6c;
+    }
+
+    .model-btn button {
+        border: none;
+        background-color: #fff;
+    }
+
+    .modal-div-margin {
+        margin: 5px 0px;
+    }
+
+    .ele {
+        /*设置元素绝对定位*/
+        position: absolute;
+        /*top 50%*/
+        top: 50%;
+        /*left 50%*/
+        left: 7%;
+        /*css3   transform 实现*/
+        transform: translate(-50%, -50%);
+    }
+
+    .ele-re {
+        position: relative;
+        padding-left: 150px;
+    }
+
+    .modal-col-sm-12 {
+        width: 97%;
+    }
+
+    #tbody input, #tbody select {
+        width: 100%;
+    }
+
+    #datatbody input,#datatbody select{
+        width: 100%;
+    }
+</style>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 select-info search-collapse">
+            <div class="col-sm-10 col-sm-offset-1" th:switch="${subgroupStyle}">
+                <div class="subgroup-head">
+                    <form class="form-horizontal" role="form" id="subgroupFrm" th:object="${subgroup}">
+                        <input type="hidden" th:value="*{subgroupId}" name="subgroupId"></input>
+                        <div class="form-group select-info-container">
+                            <div class="col-sm-4">
+                                <label>组件名称：</label>
+                                <input id="subgroupName" name="subgroupName" class="form-control"
+                                       type="text" th:value="*{subgroupName}">
+                            </div>
+                            <div class="col-sm-4">
+                                <label>组件代码：</label>
+                                <input id="subgroupCode" name="subgroupCode" class="form-control"
+                                       th:value="*{subgroupCode}" type="text">
+                            </div>
+                            <div class="col-sm-4">
+                                <label>显示方式：</label>
+                                <select id="subgroupStyle" name="subgroupStyle"
+                                        th:with="type=${@dict.getType('subgroup_Type')}">
+                                    <option th:field="*{subgroupStyle}" th:each="dict : ${type}"
+                                            th:text="${dict.dictLabel}"
+                                            th:value="${dict.dictValue}" value="0">数据表格
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group select-info-container">
+                            <div class="col-sm-4">
+                                <label>数据模型：</label>
+                                <select id="tableName" name="tableName">
+                                    <option value="">请选择</option>
+                                    <option th:field="*{tableName}" th:each="table:${tableInfoList}"
+                                            th:text="${table.tableName}"
+                                            th:value="${table.tableName}"></option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>主键：</label>
+                                <select id="primaryKey" name="primaryKey" class="primaryKey">
+                                    <option value="">请选择</option>
+                                    <option th:field="*{primaryKey}" th:each="columnInfoList:${columnInfoList}"
+                                            th:text="${columnInfoList.columnName}"
+                                            th:value="${columnInfoList.columnName}"></option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>主键规则：</label>
+                                <select id="isKey" name="isKey"
+                                th:with="type=${@dict.getType('subgroup_isKey')}">
+                                <option th:field="*{isKey}" th:each="dict : ${type}"
+                                        th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}" value="0">
+                                </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group select-info-container">
+                            <div class="col-sm-4">
+                                <label>排序字段：</label>
+                                <select id="sortField" name="sortField" class="sortField">
+                                    <option value="">请选择</option>
+                                    <option th:field="*{sortField}" th:each="columnInfoList:${columnInfoList}"
+                                            th:text="${columnInfoList.columnName}"
+                                            th:value="${columnInfoList.columnName}"></option>
+                                </select>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>排序规则：</label>
+                                <select id="isSortable" name="isSortable"
+                                        th:with="type=${@dict.getType('subgroup_isSortable')}">
+                                    <option value="">请选择</option>
+                                    <option th:field="*{isSortable}" th:each="dict : ${type}"
+                                            th:text="${dict.dictLabel}"
+                                            th:value="${dict.dictValue}" value="5">5
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>显示列数：</label>
+                                <select id="visibleCols" name="visibleCols"
+                                        th:with="type=${@dict.getType('subgroup_visibleCols')}">
+                                    <option value="">请选择</option>
+                                    <option th:field="*{visibleCols}" th:each="dict : ${type}"
+                                            th:text="${dict.dictLabel}"
+                                            th:value="${dict.dictValue}" value="5">5
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="subgroup-container" th:case="0">
+                    <form id="subgroupFrm_container" th:object="${subgroup}">
+                        <div class="modal-border model-container" id="centerArea">
+                            <div class="row model-row model-container ele-re ">
+                                <div class="col-sm-1  ele">
+                                    <label style="text-align: center;">操作事件：</label>
+                                </div>
+                                <div class="col-sm-12 modal-col-sm-12">
+                                    <div class="col-sm-3 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-default">
+                                                <a href="#" title="新增" onclick="event_click()"
+                                                   shiro:hasPermission="system:layout:add">
+                                                    <img th:src="@{/img/add.png}">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="event" th:if="${subgroupEventList}">
+                                        <div class="data_event col-sm-3 modal-div-margin"
+                                             th:each="subgroupEventList:${subgroupEventList}"
+                                             th:name="${subgroupEventList.eventName}">
+                                            <input type="hidden" name="eventJson[]" value=""
+                                                   th:value="${subgroupEventList.jsonStr}">
+                                            <div class="model-content">
+                                                <div class="model-title">
+                                                    <span th:text="${subgroupEventList.eventName}"></span>
+                                                </div>
+                                                <div class="model-btn">
+                                                    <a href="#">
+                                                        <button type="button" class="glyphicon glyphicon-pencil editBtn"
+                                                                th:attr="data-id=${subgroupEventList.eventId}+'',data-json=${subgroupEventList.jsonStr}+''"
+                                                                title="编辑"></button>
+                                                    </a>
+                                                    <a href="#">
+                                                        <button type="button"
+                                                                class="glyphicon glyphicon-remove removeBtn"
+                                                                th:attr="data-id=${subgroupEventList.eventId}+'',data-json=${subgroupEventList.jsonStr}+''"
+                                                                title="删除"></button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row model-row model-container ele-re ">
+                                <div class="col-sm-1  ele">
+                                    <label style="text-align: center;">初始条件：</label>
+                                </div>
+                                <div class="col-sm-12 modal-col-sm-12">
+                                    <div class="col-sm-4 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-default">
+                                                <a href="#" title="新增" onclick="incodition_click()"
+                                                   shiro:hasPermission="system:layout:add">
+                                                    <img th:src="@{/img/add.png}">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="incodition" th:if="${subgroupIniconditList}">
+                                        <div class="col-sm-4 modal-div-margin condition"
+                                             th:each="subgroupIniconditList:${subgroupIniconditList}"
+                                             th:attr="data-incodition=${subgroupIniconditList.guId}+''">
+                                            <input type="hidden" name="iniconditJson[]" value=""
+                                                   th:value="${subgroupIniconditList.jsonStr}">
+                                            <div class="model-content">
+                                                <div class="model-title">
+                                                    <span th:text="${subgroupIniconditList.conditionOperator}+' '+${subgroupIniconditList.columnName}+' '+${subgroupIniconditList.conditionMark}+' '+${subgroupIniconditList.conditionValue}"></span>
+                                                </div>
+                                                <div class="model-btn">
+                                                    <a href="#">
+                                                        <button type="button"
+                                                                class="glyphicon glyphicon-pencil condition_edit"
+                                                                th:attr="data-id=${subgroupIniconditList.iniconditId}+'',data-json=${subgroupIniconditList.jsonStr}+''"
+                                                                title="编辑"></button>
+                                                    </a>
+                                                    <a href="#">
+                                                        <button type="button"
+                                                                class="glyphicon glyphicon-remove condition_remove"
+                                                                th:attr="data-id=${subgroupIniconditList.iniconditId}+'',data-json=${subgroupIniconditList.jsonStr}+''"
+                                                                title="删除"></button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        ;
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="select-info-container modal-div-margin row model-row model-container">
+                                <div class="col-sm-4">
+                                    <label>是否分页：</label>
+                                    <select id="isPaging" name="isPaging"
+                                            th:with="type=${@dict.getType('subgroup_isPage')}">
+                                        <option th:field="*{isPaging}" th:each="dict : ${type}"
+                                                th:text="${dict.dictLabel}"
+                                                th:value="${dict.dictValue}" value="5">5
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>分页条数：</label>
+                                    <select id="pageSize" name="pageSize"
+                                            th:with="type=${@dict.getType('subgroup_pageSize')}">
+                                        <option th:field="*{pageSize}" th:each="dict : ${type}"
+                                                th:text="${dict.dictLabel}"
+                                                th:value="${dict.dictValue}" value="5">5
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>分页风格：</label>
+                                    <select id="pageStyle" name="pageStyle"
+                                            th:with="type=${@dict.getType('subgroup_pageStyle')}">
+                                        <option th:field="*{pageStyle}" th:each="dict : ${type}"
+                                                th:text="${dict.dictLabel}"
+                                                th:value="${dict.dictValue}" value="5">5
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-border modal-contaniner">
+                            <div class="row model-row model-container">
+                                <div class="col-sm-12 select-info-container">
+                                    <div class="col-sm-12">
+                                        <label style="width: 10%;padding-left: 5px">字段配置：</label>
+                                        <div class="col-sm-10 modal-border">
+                                            <table class="table table-striped table-hover">
+                                                <thead>
+                                                <th class="col-md-1">字段ID</th>
+                                                <th class="col-md-1">字段名称</th>
+                                                <th class="col-md-1">字段类型</th>
+                                                <th class="col-md-1">显示状态</th>
+                                                <th class="col-md-1">数据字典</th>
+                                                </thead>
+                                                <tbody id="tbody" th:if="${tableColumnsList}">
+                                                <tr th:each="tableColumnsList:${tableColumnsList}">
+                                                    <input type="hidden" name="tableColumn[][columnId]" th:value="${tableColumnsList.columnId}" >
+                                                    <td>
+                                                        <input type="text" value="" th:value="${tableColumnsList.columnName}"
+                                                               name="tableColumn[][columnName]" readonly="readonly">
+                                                    </td>
+                                                    <td>
+                                                        <input class="select" type="text"
+                                                               name="tableColumn[][columnComment]"
+                                                               value="" th:value="${tableColumnsList.columnComment}">
+                                                    </td>
+                                                    <td>
+                                                        <select class="select" id="dataType"
+                                                                name="tableColumn[][dataType]">
+                                                            <option value="varchar" th:selected="${tableColumnsList.dataType == 'varchar'}">varchar</option>
+                                                            <option value="char" th:selected="${tableColumnsList.dataType == 'char'}">char</option>
+                                                            <option value="datetime" th:selected="${tableColumnsList.dataType == 'datetime'}">datetime</option>
+                                                            <option value="int" th:selected="${tableColumnsList.dataType == 'int'}">int</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select class="select" id="isVisible"
+                                                                name="tableColumn[][isVisible]">
+                                                            <option value="0" th:selected="${tableColumnsList.isVisible == '0'}">显示</option>
+                                                            <option value="1" th:selected="${tableColumnsList.isVisible == '1'}">隐藏</option>
+                                                        </select>
+                                                    </td>
+
+                                                    <td>
+                                                        <select class="select2" name="tableColumn[][dictType]">
+                                                            <option value="">请选择</option>
+                                                            <option th:each="dict:${dictList}" th:value="${dict.dictType}"
+                                                                    th:text="${dict.dictName}" th:selected="${tableColumnsList.dictType==dict.dictType}"></option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div >
+                <div class="subgroup-container" id="SecondCenterArea" th:case="2">
+                    <form id="secondSubgroupFrm_container">
+                        <div class="modal-border modal-contaniner">
+                            <div class="row model-row model-container">
+                                <div class="col-sm-12 select-info-container">
+                                    <div class="col-sm-12">
+                                        <label style="width: 10%;padding-left: 5px">字段配置：</label>
+                                        <div class="col-sm-10 modal-border">
+                                            <table class="table table-striped table-hover">
+                                                <thead>
+                                                <th class="col-md-1">字段ID</th>
+                                                <th class="col-md-1">字段名称</th>
+                                                <th class="col-md-1">字段类型</th>
+                                                <th class="col-md-1">查询条件</th>
+                                                <th class="col-md-1">显示状态</th>
+                                                <th class="col-md-1">显示方式</th>
+                                                <th class="col-md-1">数据字典</th>
+                                                </thead>
+                                                <tbody id="datatbody" th:if="${tableColumnsList}">
+                                                <tr th:each="tableColumnsList:${tableColumnsList}">
+                                                    <input type="hidden" name="tableColumn[][columnId]" th:value="${tableColumnsList.columnId}" >
+                                                    <td>
+                                                        <input type="text" value="" th:value="${tableColumnsList.columnName}"
+                                                               name="tableColumn[][columnName]" readonly="readonly">
+                                                    </td>
+                                                    <td>
+                                                        <input class="select" type="text"
+                                                               name="tableColumn[][columnComment]"
+                                                               value="" th:value="${tableColumnsList.columnComment}">
+                                                    </td>
+                                                    <td>
+                                                        <select class="select" id="dataType"
+                                                                name="tableColumn[][dataType]">
+                                                            <option value="varchar" th:selected="${tableColumnsList.dataType == 'varchar'}">varchar</option>
+                                                            <option value="char" th:selected="${tableColumnsList.dataType == 'char'}">char</option>
+                                                            <option value="datetime" th:selected="${tableColumnsList.dataType == 'datetime'}">datetime</option>
+                                                            <option value="int" th:selected="${tableColumnsList.dataType == 'int'}">int</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select class="select" id="isSearch" name="tableColumn[][isSearch]">
+                                                            <option value="0" th:selected="${tableColumnsList.isSearch == '0'}">是</option>
+                                                            <option value="1" th:selected="${tableColumnsList.isSearch == '1'}">否</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select class="select" id="isVisible"
+                                                                name="tableColumn[][isVisible]">
+                                                            <option value="0" th:selected="${tableColumnsList.isVisible == '0'}">显示</option>
+                                                            <option value="1" th:selected="${tableColumnsList.isVisible == '1'}">隐藏</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select class="selected" id="isVisibleType" name="tableColumn[][isVisibleType]">
+                                                            <option value="0" th:selected="${tableColumnsList.isVisibleType == '0'}">输入框</option>
+                                                            <option value="1" th:selected="${tableColumnsList.isVisibleType == '1'}">下拉框</option>
+                                                            <option value="2" th:selected="${tableColumnsList.isVisibleType == '2'}">文本域</option>
+                                                            <option value="3" th:selected="${tableColumnsList.isVisibleType == '3'}">日期</option>
+                                                            <option value="4" th:selected="${tableColumnsList.isVisibleType == '4'}">密码框</option>
+                                                            <option value="5" th:selected="${tableColumnsList.isVisibleType == '5'}">隐藏框</option>
+                                                            <option value="6" th:selected="${tableColumnsList.isVisibleType == '6'}">富文本框</option>
+                                                            <option value="7" th:selected="${tableColumnsList.isVisibleType == '7'}">单选框</option>
+                                                            <option value="8" th:selected="${tableColumnsList.isVisibleType == '8'}">复选框</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select class="select2" name="tableColumn[][dictType]">
+                                                            <option value="">请选择</option>
+                                                            <option th:each="dict:${dictList}" th:value="${dict.dictType}"
+                                                                    th:text="${dict.dictName}" th:selected="${tableColumnsList.dictType==dict.dictType}"></option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="subgroup-foot" style="margin: 20px 0px">
+                    <div class="select-info-container row model-row">
+                        <div class="col-sm-2 col-sm-offset-4">
+                            <button type="button" class="btn btn-primary" id="formSubmit">提交</button>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-danger" id="colseModal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script type="text/javascript">
+    $(document).on("click", "#colseModal", function () {
+        modalComponent.close();
+    });
+
+    $(document).on("click", ".editBtn", function () {
+        var json_Str = $(this).attr("data-json");
+        var json = jQuery.parseJSON(json_Str);
+        var str = '?eventId=' + json.eventId + '&eventName=' + json.eventName
+            + '&eventType=' + json.eventType + '&eventMethod=' + json.eventMethod
+            + "&diagramId=" + json.diagramId + '&btnColor=' + json.btnColor;
+        layer.open({
+            type: 2,
+            area: ['800px', $(window).height() - 50 + 'px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: "修改操作事件",
+            content: ctx + "module/subgroupEvent/editEvent" + str,
+            // 弹层外区域关闭
+            shadeClose: true,
+            success: function (layero, index) {
+                var body = layer.getChildFrame('body', index);
+                body.find("#fasteventName").val(json.eventName);
+            }
+        });
+    });
+
+    $(document).on("click", ".removeBtn", function () {
+        var json = jQuery.parseJSON($(this).attr("data-json"));
+        $("div[name=" + json.eventName + "]").remove();
+    });
+
+    function event_click() {
+        var table_name = $("#tableName").val();
+        if (table_name == null || table_name == '') {
+            modalComponent.alertWarning("请先选择数据模型！");
+            return;
+        }
+        operateComponent.add('module/subgroupEvent/add?tableName=' + table_name, '操作事件')
+    }
+
+    function incodition_click() {
+        var table_name = $("#tableName").val();
+        if (table_name == null || table_name == '') {
+            modalComponent.alertWarning("请先选择数据模型！");
+            return;
+        }
+        operateComponent.add('module/subgroupInicondit/add?tableName=' + table_name, '初始条件')
+    }
+
+    $(document).on("click", ".condition_edit", function () {
+        var jsonStr = $(this).attr("data-json");
+        var json = jQuery.parseJSON(jsonStr);
+        var str = '?iniconditId=' + json.iniconditId + '&columnName=' + json.columnName
+            + '&conditionMark=' + json.conditionMark + '&conditionOperator=' + json.conditionOperator
+            + "&tableName=" + json.tableName + '&conditionValue=' + json.conditionValue + "&guId=" + json.guId;
+        modalComponent.open("修改初始条件", ctx + "module/subgroupInicondit/edit_condition" + str)
+    });
+
+    $(document).on("click", ".condition_remove", function () {
+        var jsonStr = $(this).attr("data-json");
+        var json = jQuery.parseJSON(jsonStr);
+        $("div[data-incodition=" + json.guId + "]").remove();
+    });
+
+    $(document).on("click","#formSubmit",function () {
+        modalComponent.loading("正在处理中，请稍后...");
+        //头部所有参数
+        var head_json = toolUtil.serializeObject("#subgroupFrm");
+        if (head_json.subgroupStyle === '0') {
+            var contaniner_json = $('#subgroupFrm_container').serializeJSON();
+            if (contaniner_json.eventJson != null && contaniner_json.eventJson != '') {
+                head_json.eventJson = (JSON.stringify(contaniner_json.eventJson)).replace(/\\/g, "").replace(/"{/g, "{").replace(/}"/g, "}");
+            }
+            if (contaniner_json.iniconditJson != null && contaniner_json.iniconditJson != '') {
+                head_json.iniconditJson = (JSON.stringify(contaniner_json.iniconditJson)).replace(/\\/g, "").replace(/"{/g, "{").replace(/}"/g, "}");
+            }
+            head_json.isPaging = contaniner_json.isPaging;
+            head_json.pageSize = contaniner_json.pageSize;
+            head_json.pageStyle = contaniner_json.pageStyle;
+            $.ajax({
+                url: ctx + "module/subgroup/edit",
+                type: "post",
+                dataType: "json",
+                data:{"json_str":JSON.stringify(head_json),"json_table":JSON.stringify(contaniner_json.tableColumn)} ,
+                success: function (result) {
+                    if (result.code === 0) {
+                        modalComponent.msgReload("保存成功,正在刷新数据请稍后……", modal_status.SUCCESS)
+                    } else {
+                        modalComponent.msgError(result.msg);
+                    }
+                    modalComponent.closeLoading();
+                }
+            });
+
+        }else if(head_json.subgroupStyle === '2'){
+            var contaniner_json = $('#secondSubgroupFrm_container').serializeJSON();
+            if (contaniner_json.eventJson != null && contaniner_json.eventJson != '') {
+                head_json.eventJson = (JSON.stringify(contaniner_json.eventJson)).replace(/\\/g, "").replace(/"{/g, "{").replace(/}"/g, "}");
+            }
+            if (contaniner_json.iniconditJson != null && contaniner_json.iniconditJson != '') {
+                head_json.iniconditJson = (JSON.stringify(contaniner_json.iniconditJson)).replace(/\\/g, "").replace(/"{/g, "{").replace(/}"/g, "}");
+            }
+            head_json.isPaging = contaniner_json.isPaging;
+            head_json.pageSize = contaniner_json.pageSize;
+            head_json.pageStyle = contaniner_json.pageStyle;
+            $.ajax({
+                url: ctx + "module/subgroup/edit",
+                type: "post",
+                dataType: "json",
+                data:{"json_str":JSON.stringify(head_json),"json_table":JSON.stringify(contaniner_json.tableColumn)} ,
+                success: function (result) {
+                    if (result.code === 0) {
+                        modalComponent.msgReload("保存成功,正在刷新数据请稍后……", modal_status.SUCCESS)
+                    } else {
+                        modalComponent.msgError(result.msg);
+                    }
+                    modalComponent.closeLoading();
+                }
+            });
+        }else{
+            modalComponent.msgError("尚未开放！");
+            modalComponent.closeLoading();
+        }
+    });
+</script>
+</body>
+</html>

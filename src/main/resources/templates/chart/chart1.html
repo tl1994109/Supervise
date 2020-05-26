@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<style>
+    .chart {
+        height: 500px;
+    }
+</style>
+<script>
+    var myData = {
+        id: "main",
+        title: "访问数据",
+        axisData: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+        seriesData: [
+            {name: '邮件营销', data: [120, 132, 101, 134, 120, 230, 210]},
+            {name: '联盟广告', data: [220, 182, 191, 234, 290, 330, 310]},
+            {name: '视频广告', data: [150, 212, 201, 154, 190, 330, 410]},
+            {name: '直接访问', data: [320, 302, 301, 334, 390, 330, 320]},
+            {name: '搜索引擎', data: [820, 832, 901, 934, 1290, 1330, 1320]}
+        ]
+    };
+
+</script>
+<body>
+<div style="border: 1px solid #ccc; padding: 10px; ">
+    显示方式：<select class="select" id="select_chart"
+                 onchange="select_pic(this.options[this.options.selectedIndex].value)">
+    <option value="0" label="请选择图表类型">请选择图表类型
+    </option>
+    <option value="bar" label="条形统计图">条形统计图
+    </option>
+    <option value="pie" label="扇形统计图">扇形统计图
+    </option>
+    <option value="line" label="折线统计图">折线统计图
+    </option>
+    <option value="rax" label="雷达统计图">雷达统计图
+    </option>
+    <option value="lineArea" label="折线面积统计图">折线面积统计图
+    </option>
+</select>
+    <a href="#" id="button">导出echarts图片</a>
+</div>
+<div id="main" class="chart" style="border: 1px solid #ccc; padding: 10px;"></div>
+
+<div th:include="include :: footer"></div>
+</body>
+<script th:src="@{../js/jquery.min.js}"></script>
+<script th:src="@{../js/echarts.js}"></script>
+<script th:src="@{../datcent/component/charts/pieCharts.js}"></script>
+<script th:src="@{../datcent/component/charts/lineCharts.js}"></script>
+<script th:src="@{../datcent/component/charts/barCharts.js}"></script>
+<script th:src="@{../datcent/component/charts/raxCharts.js}"></script>
+<script th:src="@{../datcent/component/charts/lineAreaCharts.js}"></script>
+
+<script>
+    var myChart;
+
+    function select_pic(val) {
+        if (!myData) {
+            document.getElementById("main").innerHTML = "暂无数据";
+        } else {
+            myChart = echarts.init(document.getElementById(myData.id));
+            if (val == "bar") {
+                myChart.clear();
+                myChart.setOption(option3)
+            } else if (val == "line") {
+                myChart.clear();
+                myChart.setOption(option2)
+            } else if (val == "pie") {
+                myChart.clear();
+                myChart.setOption(option1)
+            }else if (val == "rax") {
+                myChart.clear();
+                myChart.setOption(option4)
+            }
+            else if (val == "lineArea") {
+                myChart.clear();
+                myChart.setOption(option5)
+            }
+        }
+    }
+
+    $("#button").click(function () {
+        var i = myChart.getDataURL({
+            type: 'png',
+            backgroundColor: '#676a6c'
+            // 导出的图片分辨率比例，默认为 1。
+            //pixelRatio: number,
+        });
+        $(this).attr("href", i);
+        $(this).attr("download", "test.png");
+    });
+    window.addEventListener("resize", function () {
+        myChart.resize();
+    });
+
+</script>
+</html>

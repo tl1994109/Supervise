@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <div class="container-div">
+        <div class="col-sm-12 select-info search-collapse">
+            <form id="case" class="form-horizontal">
+                <input type="hidden" name="strategyJob" id="strategyJob" th:value="${jobId}">
+              <div class="form-group select-info-container">
+                  <div class="col-sm-6">
+                      <label>策略名称：</label>
+                      <input type="text"  name="strategyName">
+                  </div>
+
+                  <div class="col-sm-6">
+                      <label>策略方法：</label>
+                      <input type="text"  name="strategyCode">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+
+                  <div class="col-sm-6">
+                      <label>策略状态：</label>
+                      <input type="text"  name="strategyStatus">
+                  </div>
+                      <div class="col-sm-6 select-time">
+                          <label>创建时间：</label>
+                          <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+                          <span class="time-span">-</span>
+                          <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+                      </div>
+               </div>
+                <div class="form-group select-info-container">
+                    <div class="col-sm-12 select-info-btn">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+			<a class="btn btn-success" th:onclick="'javascript:$.operate.add(\''+${jobId}+'\')'" shiro:hasPermission="module:strategy:add">
+				<i class="fa fa-plus"></i> 新增
+			</a>
+            <!--
+            <a class="btn btn-primary btn-detail disabled" onclick="$.operate.detail()" shiro:hasPermission="module:strategy:detail">
+                <i class="fa fa-plus"></i> 详细
+            </a>
+            -->
+            <a class="btn btn-warning btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="module:strategy:edit">
+                <i class="fa fa-plus"></i> 编辑
+            </a>
+			<a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="module:strategy:remove">
+				<i class="fa fa-trash-o"></i> 批量删除
+			</a>
+		</div>
+			
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('module:strategyjob:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('module:strategyjob:remove')}]];
+        var strategy_type = [[${@dict.getType('strategy_type')}]];
+        var strategy_status = [[${@dict.getType('strategy_status')}]];
+        var case_type = [[${@dict.getType('case_type')}]];
+        var prefix = ctx + "module/strategy";
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add/{id}",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                queryParams: queryParams,
+                sortName: "createTime",
+                sortOrder: "desc",
+                modalName: "数据",
+                showExport: true,
+                search: false,
+                columns: [{
+		            checkbox: true
+		        },
+                {
+                    field : 'strategyId',
+                    title : '策略ID',
+                    visible:false
+                                    },
+
+                {
+                    field : 'strategyName',
+                    title : '策略名称',
+                                    },
+
+                    {
+                        field : 'strategyDefine',
+                        title : '策略定义',
+                    },
+                    {
+                        field : 'strategyAjlb',
+                        title : '适用案件类型',
+                        formatter: function (value, row, index){
+                            debugger
+                            var ajlb=[];
+                            var ajLbArr=value.split(',')
+                            for ( var i = 0; i <ajLbArr.length; i++){
+                                ajlb.push($.table.selectDictLabel(case_type, ajLbArr[i]))
+                            }
+                            return ajlb.join('')
+                        }
+                    },
+                {
+                    field : 'strategyStatus',
+                    title : '策略状态',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(strategy_status, value);
+                    }
+                },
+
+                {
+                    field : 'createBy',
+                    title : '创建者',
+                                    },
+                {
+                    field : 'createTime',
+                    title : '创建时间',
+                                    },
+                    /*
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="operateComponent.edit(\'' + row.strategyId + '\'\,\'module/strategy/edit/{id}\'\,\'策略 \')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="operateComponent.remove(\'' + row.strategyId + '\'\,\'module/strategy/remove\'\,\'策略 \')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }*/
+		        ]
+            };
+            $.table.init(options);
+        });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+    });
+
+        function queryParams(params) {
+            return {
+                strategyJob: $("#strategyJob").val(),
+                pageSize:       params.limit,
+                pageNum:        params.offset / params.limit + 1,
+                searchValue:    params.search,
+                orderByColumn:  params.sort,
+                isAsc:          params.order
+            };
+        }
+
+    </script>
+</body>
+</html>

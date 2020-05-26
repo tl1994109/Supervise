@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<style>
+    /*table {
+        table-layout: fixed;
+    }*/
+</style>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-info search-collapse">
+        <form id="case" class="form-horizontal">
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>标题：</label>
+                    <input type="text" name="knowledgeTitle">
+                </div>
+                <div class="col-sm-4">
+                    <label>法规分类：</label>
+                    <select id="typeOne" name="typeOne" th:with="type=${@dict.getType('knowledge_typeOne')}">
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <select id="typeTwo" name="typeTwo" style="display: none;">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <div class="col-sm-4 select-info-btn">
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i
+                            class="fa fa-search"></i>&nbsp;搜索</a>
+                    <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i
+                            class="fa fa-refresh"></i>&nbsp;重置</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+        <a class="btn btn-success" onclick="addType()" shiro:hasPermission="module:knowledge:add">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+        <a class="btn btn-primary btn-detail disabled"
+           onclick="operateComponent.detail('module/knowledge/detail/{id}',null,'知识管理')"
+           shiro:hasPermission="module:knowledge:detail">
+            <i class="fa fa-plus"></i> 详细
+        </a>
+        <!--<a class="btn btn-warning btn-edit disabled" onclick="editType()" shiro:hasPermission="module:knowledge:edit">-->
+            <!--<i class="fa fa-plus"></i> 编辑-->
+        <!--</a>-->
+        <a class="btn btn-danger btn-del disabled" onclick="operateComponent.removeAll('module/knowledge/remove')"
+           shiro:hasPermission="module:knowledge:remove">
+            <i class="fa fa-trash-o"></i> 批量删除
+        </a>
+        <a class="btn btn-select">
+				<span id="exportToolbar" class="btn-group" style="width: 110px; display: inline-block">
+					<select id="sel_exportoption" class="">
+						<option value="">导出当页数据</option>
+						<option value="all">导出全部数据</option>
+						<option value="selected">导出选中数据</option>
+					</select>
+				</span>
+        </a>
+    </div>
+
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:knowledge:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:knowledge:remove')}]];
+    var prefix = ctx + "module/knowledge";
+    var datas_4 = [[${@dict.getType('knowledge_type')}]];
+    var knowledge_typeOne = [[${@dict.getType('knowledge_typeOne')}]];
+    var datas_5 = [[${@dict.getType('knowledge_typeTwo_one')}]];
+    var datas_6 = [[${@dict.getType('knowledge_typeTwo_two')}]];
+    $(function () {
+        var options = {
+            url: prefix + "/list?knowledgeType=0",
+            search: false,
+            columns: [{
+                checkbox: true
+            },
+            {
+                field: 'knowledgeId',
+                title: '编号',
+                visible: false,
+            },
+            {
+                field: 'knowledgeTitle',
+                title: '标题',
+
+            },
+            {
+                field: 'knowledgeContent',
+                title: '内容',
+                visible: false,
+            },
+            {
+                field: 'typeOne',
+                title: '分类一',
+                formatter: function (value, row, index) {
+                    return initSimpleTabl.selectDictLabel(knowledge_typeOne, value);
+                }
+            },
+            {
+                field: 'typeTwo',
+                title: '分类二',
+                formatter: function (value, row, index) {
+                    if (row.typeOne == '0') {
+                        return initSimpleTabl.selectDictLabel(datas_5, value);
+                    } else if (row.typeOne == '1') {
+                        return initSimpleTabl.selectDictLabel(datas_6, value);
+                    }
+
+                }
+            },
+            {
+                field: 'knowledgeCreatetime',
+                title: '创建时间',
+                align: 'center',
+            },
+            {
+                field: 'userName',
+                title: '发布人',
+                align: 'center',
+            },
+            {
+                title: '操作',
+                align: 'center',
+                formatter: function (value, row, index) {
+                    var actions = [];
+                    actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="operateComponent.editFull(\'' + row.knowledgeId + '\'\,\'module/knowledge/edit/{id}\'\,\'政策法规\')"><i class="fa fa-edit"></i>编辑</a> ');
+                    actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="operateComponent.remove(\'' + row.knowledgeId + '\'\,\'module/knowledge/remove\'\,\'政策法规\')"><i class="fa fa-remove"></i>删除</a>');
+                    return actions.join('');
+                }
+            }]
+        };
+        initSimpleTabl.init(options);
+    });
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime_5', theme: 'molv'});
+        laydate.render({elem: '#endTime_5', theme: 'molv'});
+    });
+
+
+    var prefix = ctx + "module/knowledge"
+    $("#typeOne").change(function () {
+        if ($("#typeOne").val() == "" || $("#typeOne").val() == null) {
+            $("#typeTwo").css("display", "none");
+        } else {
+            $("#typeTwo").css("display", "block");
+        }
+        var one = $(this).val();
+        var type_event = $("#typeTwo");
+        type_event.empty();
+        var str = '';
+        if (one == '0') {
+            var datas = [[${@dict.getType('knowledge_typeTwo_one')}]];
+            str += '<option value="">请选择</option>';
+            $.each(datas, function (i, data) {
+                str += '<option value=\"' + data.dictValue + '\">' + data.dictLabel + '</option>'
+            });
+        } else {
+            var datas = [[${@dict.getType('knowledge_typeTwo_two')}]];
+            str += '<option value="">请选择</option>';
+            $.each(datas, function (i, data) {
+                str += '<option value=\"' + data.dictValue + '\">' + data.dictLabel + '</option>'
+            });
+        }
+        type_event.append(str)
+    });
+
+    function addType() {
+        operateComponent.addFull('module/knowledge/add?type=0', '政策法规');
+    }
+
+    function editType() {
+        operateComponent.editFull('', 'module/knowledge/edit/{id}', '政策法规')
+    }
+</script>
+<!--bootstrap-table-export数据导出-->
+<script type="text/javascript">
+    $("#sel_exportoption").change(function () {
+        //刷新参数设置
+        $('#bootstrap-table').bootstrapTable('refreshOptions', {
+            exportDataType: $(this).val()
+        });
+    });
+</script>
+</body>
+</html>

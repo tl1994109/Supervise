@@ -1,0 +1,277 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<style type="text/css">
+    .nav-tabs{
+        border-bottom: none;
+    }
+
+    .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+        color: #555;
+        cursor: default;
+        background-color: #fff;
+        border-bottom: 2px solid #2196f3;
+        border-bottom-color: none;
+    }
+    .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+        border-top: none;
+        border-right: none;
+        border-left: none;
+    }
+    .nav-tabs>li>a{
+        padding: 14px 20px 14px 25px;
+    }
+
+    .row-container th {
+        background-color: #f3f3f3;
+    }
+    .row-container table{
+        margin: 10px 0px;
+        /*width: 95%;*/
+        overflow: hidden;
+    }
+    .row-container table th{
+        /*background: #f1f1f1 !important;*/
+        text-align: center;
+    }
+    .row-container table thead th{
+        height: 40px;
+        color: #fff;
+        background-color: rgba(107,166,217,0.91);
+    }
+    .row-container table thead th a {
+        display: inline-block;
+        line-height: 40px;
+        color: inherit;
+    }
+    .row-container table tbody tr{
+        height: 40px;
+    }
+    /* 重写bootstrap tab样式  */
+
+    #tab-title {
+        width: 99px;
+        margin-bottom: 20px;
+        cursor: default;
+        background-color: #fff;
+        border-bottom: 2px solid #2196f3;
+        border-bottom-color: none;
+    }
+    #tab-title a{
+        color: #555;
+        display: block;
+        padding: 14px 20px 14px 25px;
+        font-weight: 600;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+    }
+
+    #approver-error{
+        z-index: 9999;
+    }
+</style>
+<style type="text/css">
+    /* 新增样式20190419 */
+    .select2-container .select2-selection--single{height: 34px;}
+    .select2-container--default .select2-selection--single{border: 1px solid #ddd;}
+    .select2-container--default .select2-selection--single .select2-selection__rendered{line-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {padding: 0px 5px;}
+    .select-info-container input, .select-info-container select{width: 100%}
+    .select2-container{height: 34px;line-height: 34px}
+    .select2-container--default .select2-selection--multiple{height: 34px;width: 100%;border: 1px solid #ddd;}
+    .select2-container .select2-selection--multiple{min-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__rendered{height: 34px; }
+    .select2-container--default.select2-container--focus .select2-selection--multiple{border: 1px solid #ddd;}
+</style>
+<body class="gray-bg">
+<div class="wrapper animated fadeInRight " style="height: 100%">
+    <form class="form-horizontal m" id="form-dubvioEvent-edit">
+        <div class="col-sm-12 white-bg">
+            <ul id="Tab" class="nav nav-tabs" style="padding-left: 15px;">
+                <li class="active">
+                    <a href="#myHandle" data-toggle="tab">基本信息</a>
+                </li>
+            </ul>
+            <div id="TabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="myHandle">
+                    <div class="col-sm-12 select-info search-collapse" th:object="${dubvioEvent}">
+                        <input type="hidden" id="dubvioId" name="dubvioId" th:field="*{dubvioId}">
+                        <input type="hidden" id="dubvioCzjg" name="dubvioCzjg" th:value="${dubvioCzjg}">
+
+                        <div class="row-container">
+                            <table border="1" cellpadding="0" cellspacing="0" style="margin-top: 0px;">
+                                <tbody>
+                                    <tr align="center">
+                                        <th class="col-xs-1">信访序号：</th>
+                                        <td class="col-xs-2"><a style="text-decoration: underline;color: #23527c;" th:text="*{jbxxXfxh}"></a></td>
+                                        <th class="col-xs-1">信访反映时间：</th>
+                                        <td class="col-xs-2" th:text="*{jbxxXffysj}"></td>
+                                        <th class="col-xs-1">反映人：</th>
+                                        <td class="col-xs-2" th:text="*{dubvioFyr}"></td>
+                                    </tr>
+                                    <tr align="center">
+                                        <th class="col-xs-1">联系方式：</th>
+                                        <td class="col-xs-2" th:text="*{dubvioFyrdh}"></td>
+                                        <th class="col-xs-1">反映对象：</th>
+                                        <td class="col-xs-2" th:text="*{dubvioFydx}"></td>
+                                        <th class="col-xs-1">信访来源：</th>
+                                        <td class="col-xs-2" th:text="*{jbxxXfly}" ></td>
+                                    </tr>
+                                    <tr rowspan="2">
+                                        <th class="col-xs-1">经办法院：</th>
+                                        <td colspan="5" class="col-xs-2" th:text="*{jbfyName}" style="text-align: left"></td>
+                                    </tr>
+                                    <tr rowspan="2">
+                                        <th class="col-xs-1">反映问题：</th>
+                                        <td colspan="5" class="col-xs-2" th:text="*{dubvioStrategyName}" style="text-align: left"></td>
+                                    </tr>
+                                    <tr rowspan="2">
+                                        <th class="col-xs-1">信访处置情况：</th>
+                                        <td colspan="5" class="col-xs-2" th:text="*{jbxxXfczqk}" style="text-align: left"></td>
+                                    </tr>
+                                    <tr rowspan="2">
+                                        <th class="col-xs-1">信访承办人：</th>
+                                        <td colspan="5" class="col-xs-2" th:text="*{jbxxXfcbr}" style="text-align: left"></td>
+                                    </tr>
+                                    <tr rowspan="2">
+                                        <th class="col-xs-1">信访处置结果：</th>
+                                        <td colspan="5" class="col-xs-2" th:text="*{jbxxXfczjg}" style="text-align: left"></td>
+                                    </tr>
+                                    <tr rowspan="2">
+                                        <th class="col-xs-1">信访备注：</th>
+                                        <td colspan="5" class="col-xs-2" th:text="*{jbxxXfbz}" style="text-align: left"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="tab-title">
+                            <a>转入操作</a>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-xs-2 control-label">审批人：</label>
+                                    <div class="col-xs-10">
+                                        <select id="approver" name="approver" class="form-control">
+                                            <option th:each="userList : ${userList}" th:text="${userList.userName}"
+                                                    th:value="${userList.userId}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group select-info-container">
+                                <div class="form-control-static col-sm-offset-5">
+                                    <button type="submit" class="btn btn-primary">转入</button>
+                                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="caseDetail">
+                    111
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.summernote').summernote({
+            height: '220px',
+            lang: 'zh-CN'
+        });
+    });
+
+    function clueDetail(){
+        var dubvioId=$("#dubvioId").val();
+        var url = prefix+"/edits?dubvioId="+dubvioId;
+        $.modal.openFull("案件详情",url);
+    }
+
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+    });
+
+    var prefix = ctx + "module/dubvioEvent"
+    $("#form-dubvioEvent-edit").validate({
+        rules: {
+            dubvioId: {
+                required: true,
+            },
+            dubvioStrategyId: {
+                required: true,
+            },
+            jbxxAjbh: {
+                required: true,
+            },
+            jbxxAh: {
+                required: true,
+            },
+            approver:{
+                required: true,
+            }
+
+
+        },
+        messages: {
+            approver:{
+                required: "请先添加审批人！",
+            }
+        },
+        submitHandler: function (form) {
+            add();
+        }
+    });
+
+
+    function add() {
+        var dubvioId = $("#dubvioId").val();
+        var dubvioCzjg = $("#dubvioCzjg").val();
+        var approver = $("#approver").val();
+        var approverName = $("#approver option:selected").text();
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: prefix + "/releaseDubvioEvent",
+            data: {
+                "dubvioId": dubvioId,
+                "approver": approver,
+                "approverName": approverName,
+                "dubvioCzjg": dubvioCzjg,
+            },
+            async: true,
+            error: function (request) {
+                $.modal.alertError("系统错误");
+            },
+            success: function (data) {
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                if (data.code === 0) {
+
+                    modalComponent.msgWarning(data.msg);
+                    window.parent.location.reload();
+                  // var sss = $("#dubvioCzjg",window.parent.document).val(data.dubvioCzjg) ;
+                  //   alert(data.dubvioCzjg);
+                    // alert(sss);
+                    modalComponent.close();
+                } else {
+                    modalComponent.msgWarning(data.msg)
+                }
+            }
+        });
+    }
+</script>
+
+
+</body>
+</html>

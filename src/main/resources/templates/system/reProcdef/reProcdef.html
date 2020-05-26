@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <div class="container-div">
+        <div class="col-sm-12 select-info search-collapse">
+            <form id="case" class="form-horizontal">
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>部署编号：</label>
+                      <input type="text"  name="deploymentId">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>流程名称：</label>
+                      <input type="text"  name="name">
+                  </div>
+               </div>
+                <div class="form-group select-info-container">
+                    <div class="col-sm-12 select-info-btn">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+			<!--<a class="btn btn-success" onclick="operateComponent.add('system/reProcdef/add','业务流程定义')" shiro:hasPermission="module:reProcdef:add">-->
+				<!--<i class="fa fa-plus"></i> 新增-->
+			<!--</a>-->
+            <!--<a class="btn btn-primary btn-detail disabled" onclick="$.operate.detail()" shiro:hasPermission="module:reProcdef:detail">-->
+                <!--<i class="fa fa-plus"></i> 详细-->
+            <!--</a>-->
+            <!--<a class="btn btn-warning btn-edit disabled" onclick="operateComponent.edit('','system/reProcdef/edit/{id}','业务流程定义')" shiro:hasPermission="module:reProcdef:edit">-->
+                <!--<i class="fa fa-plus"></i> 编辑-->
+            <!--</a>-->
+			<a class="btn btn-danger btn-del disabled" onclick="batchDelete()" shiro:hasPermission="module:reProcdef:remove">
+				<i class="fa fa-trash-o"></i> 批量删除
+			</a>
+		</div>
+			
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('module:reProcdef:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('module:reProcdef:remove')}]];
+        var prefix = ctx + "system/reProcdef";
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+				search: false,
+                columns: [{
+		            checkbox: true
+		        },
+                {
+                    field : 'key',
+                    title : '流程KEY',
+                                    },
+                {
+                    field : 'rev',
+                    title : 'rev',
+                    visible:false
+                                    },
+                {
+                    field : 'category',
+                    title : '流程命名空间',
+                                    },
+                {
+                    field : 'name',
+                    title : '流程名称',
+                                    },
+                {
+                    field : 'version',
+                    title : '流程版本号',
+                                    },
+                {
+                    field : 'deploymentId',
+                    title : '部署编号',
+                                    },
+                {
+                    field : 'resourceName',
+                    title : '资源文件名称',
+                                    },
+                {
+                    field : 'dgrmResourceName',
+                    title : '图片资源文件名称',
+                                    },
+                {
+                    field : 'description',
+                    title : '备注',
+                                    },
+                {
+                    field : 'suspensionState',
+                    title : '是否挂起'
+                                    },
+                {
+                    field : 'tenantId',
+                    title : '租户id',
+                                    },
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	/*actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="operateComponent.edit(\'' + row.id + '\'\,\'system/reProcdef/edit/{id}\'\,\'业务流程定义\')"><i class="fa fa-edit"></i>编辑</a> ');*/
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="operateComponent.remove(\'' + row.deploymentId + '\'\,\'system/reProcdef/remove\'\,\'业务流程定义\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            initSimpleTabl.init(options);
+        });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+    });
+
+    function batchDelete(){
+        var ids = $.map($('#bootstrap-table').bootstrapTable('getSelections'), function (row) {
+            return row[initSimpleTabl._option.columns[7].field];
+        });
+        $.ajax({
+            url:prefix+"/remove",
+            type:"post",
+            dataType:"json",
+            data:{ids:ids.toString()},
+            async:true,
+            success:function(data){
+                if(data.code ===0){
+                    modalComponent.msgWarning(data.msg)
+                    initSimpleTabl.refresh()
+                }else{
+                    modalComponent.msgWarning(data.msg)
+                }
+            },
+            error:function(err){
+                modalComponent.msgWarning(err)
+            }
+        });
+    }
+    </script>
+</body>
+</html>

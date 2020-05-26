@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+
+<body class="white-bg">
+
+<style>
+    input::-ms-input-placeholder{
+        text-align: center;
+    }
+    input::-webkit-input-placeholder{
+        text-align: center;
+    }
+
+    table{
+        border-collapse: collapse;
+    }
+    .document{
+        width: 100%;
+        height: 100%;
+        font-family: "microsoft yahei";
+    }
+    .document-container{
+        width: 800px;
+        height: auto;
+        margin: 20px auto;
+        border: 1px solid #2f4050;
+        padding: 20px;
+    }
+    .title-1 h2{
+        font-weight: bold;
+    }
+    .title-2, .title-3{
+        margin: 0 auto;
+        text-align: center;
+    }
+    .title-3 input{
+        width: 100px;
+    }
+
+    .title-3 h1{
+        font-weight: bold;
+    }
+
+    .report-content input{
+        width: 80px;
+    }
+    .report-content p{
+        text-indent: 40px;
+        font-size: 16px;
+        font-weight: 300;
+        padding: 10px 0px;
+        text-align: left;
+    }
+    .report-content h2{
+        font-weight: bold;
+    }
+    .report-content input{
+        border: none;
+        outline: 0;
+        border-bottom: 1px solid  #2f4050;
+    }
+    .report-content textarea{
+        width: 100%;
+        height: 80px;
+        /*禁止拉伸*/
+        resize: none;
+    }
+    .report-content .fr{
+        float: right;
+    }
+
+
+
+</style>
+
+<div class="document">
+    <div class="document-container">
+        <div class="title-1">
+            <h2>密级</h2>
+        </div>
+
+        <div class="title-3">
+            <h1>关于对<input type="text" placeholder="X X X" onfocus="this.placeholder=''" onblur="this.placeholder='X X X'"/>谈话（函询）的情况报告</h1>
+        </div>
+
+        <div class="report-content">
+            <p><input type="text"/>年 <input type="text"/>月 <input type="text"/>日收到<input type="text"/>的问题线索，经领导批示，对反映的问题进行谈话（函询）。<input type="text"/>月<input type="text"/>日我室对<input type="text"/>进行了谈话（函询）。（谈话需要注明谈话地点）</p>
+        </div>
+        <div class="report-content">
+            <h3>一、被谈话（函询）人基本情况</h3>
+            <p>姓名<input type="text"/>，性别<input type="text"/>，民族<input type="text"/>，出生年月<input type="text"/>，籍贯<input type="text"/>，文化程度<input type="text"/>，政治面貌（入党时间）<input type="text"/>，参加工作时间<input type="text"/>，主要工作经历<input type="text"/>，现在工作单位及职务（职级）<input type="text"/>。</p>
+        </div>
+        <div class="report-content">
+            <h3>二、问题线索主要内容</h3>
+            <textarea type="text" placeholder="请输入.." onfocus="this.placeholder=''" onblur="this.placeholder='请输入..'"></textarea>
+        </div>
+        <div class="report-content">
+            <h3>三、谈话（函询）情况</h3>
+            <textarea type="text" placeholder="请输入.." onfocus="this.placeholder=''" onblur="this.placeholder='请输入..'"></textarea>
+        </div>
+        <div class="report-content">
+            <h3>四、处理建议</h3>
+            <textarea type="text" placeholder="请输入.." onfocus="this.placeholder=''" onblur="this.placeholder='请输入..'"></textarea>
+        </div>
+        <div class="report-content">
+            <p style="text-align: right"><input type="text" placeholder="X X X" onfocus="this.placeholder=''" onblur="this.placeholder='X X X'"/>纪委（监委）<input type="text" placeholder="X X X" onfocus="this.placeholder=''" onblur="this.placeholder='X X X'"/>室</p>
+            <p style="text-align: right"><input type="text"/>年 <input type="text"/>月 <input type="text"/>日</p>
+        </div>
+        <div class="form-group">
+            <div class="form-control-static col-sm-offset-5">
+                <button type="reset" class="btn btn-warning">重置</button>
+                <button type="submit" class="btn btn-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:include="include::footer"></div>
+
+
+</body>
+</html>

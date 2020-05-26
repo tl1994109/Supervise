@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+<style type="text/css">
+    .nav > li.active {
+        border-bottom: 1px solid #fff;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        border-bottom: 1px solid #fff;
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    .tab-content {
+        width: 100%;
+        height: 100%;
+        margin: 20px auto;
+        /*border: 1px solid #eaeef3;*/
+    }
+
+    .tab-pane {
+        padding: 20px 0px;
+    }
+
+    .tab-pane h1 {
+        text-align: center;
+    }
+
+    .h1-title {
+        text-align: center;
+        padding: 20px 0px;
+    }
+
+    .pane-container {
+        padding: 20px 0px;
+    }
+
+    .pane-container p {
+        margin-left: 35%;
+        font-size: 18px;
+        font-family: inherit;
+    }
+
+    .pane-container strong {
+        font-weight: 300;
+        display: inline-block;
+        width: 140px;
+    }
+
+    .pane-container input {
+        border: none;
+        text-align: center;
+        border-bottom: 1px solid #eaeef3;
+        width: 200px;
+        display: inline-block;
+    }
+
+    .pane-container input:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .pane-container table {
+        width: 100%;
+        margin: auto;
+        /*overflow: hidden;*/
+    }
+
+    .pane-container table tr {
+        height: 40px;
+    }
+
+    .pane-container table th {
+        text-align: center;
+    }
+
+    .height_500 {
+        height: 500px;
+    }
+
+    .panel-footer {
+        margin-top: 10px;
+    }
+
+    .panel-footer h1 {
+        text-align: center;
+    }
+    #one table td input, #two table td input, #three table td input, #four table td input,  #five table td input,  #six table td input,  #seven table td input,  #eight table td input{
+        width: 100%;
+        height: 40px;
+        border-bottom: none;
+    }
+
+    #two table td textarea {
+        height: 60px;
+        width: 100%;
+        border: 0;
+    }
+</style>
+
+<body class="gray-bg">
+<div class="">
+    <div class="col-sm-12 select-info search-collapse">
+        <ul id="myTab" class="nav nav-tabs">
+            <li class="active">
+                <a href="#home" data-toggle="tab">
+                    首页
+                </a>
+            </li>
+            <li>
+                <a href="#one" data-toggle="tab">
+                    廉政档案表一
+                </a>
+            </li>
+
+            <li>
+                <a href="#two" data-toggle="tab">
+                    廉政档案表二
+                </a>
+            </li>
+            <li>
+                <a href="#three" data-toggle="tab" onclick="dotext()">
+                    廉政档案表三
+                </a>
+            </li>
+            <li>
+                <a href="#four" data-toggle="tab">
+                    廉政档案表四
+                </a>
+            </li>
+            <li>
+                <a href="#five" data-toggle="tab">
+                    廉政档案表五
+                </a>
+            </li>
+            <li>
+                <a href="#six" data-toggle="tab">
+                    廉政档案表六
+                </a>
+            </li>
+            <li>
+                <a href="#seven" data-toggle="tab">
+                    廉政档案表七
+                </a>
+            </li>
+            <li>
+                <a href="#eight" data-toggle="tab">
+                    廉政档案表八
+                </a>
+            </li>
+
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <!--封页-->
+            <div class="tab-pane fade in active" id="home">
+                <form class="form-horizontal m" id="form-basicinformation-add">
+                    <div style="border: 1px solid #eaeef3">
+                        <div class="h1-title">
+                            <h1><strong>南阳市中级人民法院 </br>工作人员廉政档案登记表</strong></h1>
+                        </div>
+                        </br>
+                        </br>
+                        </br>
+                        <input type="hidden" id="jbqkId" name="jbqkId">
+                        <div class="pane-container">
+                            <p><strong> 填报人（签名）</strong>
+                                <input type="hidden" id="jbqkCid" name="jbqkCid">
+                                <input type="text" id="jbqkXm" name="jbqkXm" class="pane-input">
+                                <span onclick="selectPersonTree()">选择</span>
+                            </p>
+                            <p><strong> 工作部门</strong>
+                                <input type="hidden" id="jbqkBmid" name="jbqkBmd">
+                                <input type="text" id="jbqkBm" name="jbqkBm" class="pane-input">
+                            </p>
+							<p><strong> 职务</strong><input type="text" name="jbqkZw" class="pane-input"></p>
+
+                            <!--<p><strong> 部门意见</br>（签字盖章）</strong><input type="text" class="pane-input"></p>-->
+                        </div>
+                        </br>
+                        </br>
+                        </br>
+                        <p style="text-align: center;font-size: 16px;font-weight: 500">南阳市中级人民法院纪检组监察室监制</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-control-static col-sm-offset-5">
+                            <button type="submit" class="btn btn-primary">提交</button>
+                        </div>
+                    </div>
+
+                    <!--填表说明-->
+                    <div class="tab-pane fade in active" style="margin-top: 20px">
+                        <div class="panel-footer">
+                            <h1><strong>填表说明</strong></h1>
+                            <div class="panel-footer-text">
+                                <p>1、请先填写首页内容，点击姓名栏后面的“选择”，找到自己对应的姓名。首页填写完成确认无误后，点击提交按钮，提示“保存成功”；</p>
+                                <p>2、如没有在组织树中找到自己，可直接输入自己的姓名；</p>
+                                <p>3、首页填写完成后，切换至“廉政档案表一”填写，填写完成点击“提交”按钮；</p>
+                                <p>4、每页廉政档案信息只允许提交一次，请确认无误后再提交。</p>
+                                <p>5、所列事项无填报内容的，请在填空处注明“无”，不得空白。</p>
+                                <p>6、表（一）至表（五）均由本人填写。</p>
+                                <p>7、表（一）《工作人员基本情况登记表》中“照片”一栏，暂不需要添加；“奖惩情况”一栏，奖励指受市级单位以上的奖励或表彰，惩处指任职以来所受的党政纪处分。</p>
+                                <p>8、表（四）《工作人员家庭财产情况登记表》“房产性质”一栏填写：房改房、单位集资房、商品房、经济适用房、自建房、租房、其他房；“汽车”填写内容：型号、购车价、号牌和购置时间；“有价证券”包括本人、配偶和子女持有的股票、期货、基金、投资型保险以及其他金融理财产品。“债权债物”包括本人、配偶和子女投资公司（企业）的情况及在境外存款和投资情况。</p>
+                                <p>9、表（五）《工作人员出国（境）情况登记表》“种类”一栏填写因公或因私。</p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--工作人员基本情况登记表-->
+            <div class="tab-pane fade" id="one">
+                <h1>工作人员基本情况登记表</h1>
+                <div class="pane-container">
+                    <form class="form-horizontal m" id="form-basicinformation-addtwo">
+                        <table border="1" cellspacing="0" cellpadding="0"
+                               style="border-collapse: collapse;border-spacing: 0;">
+                            <tr align="center">
+                                <th class="col-xs-1">姓名</th>
+                                <td class="col-xs-2" >
+                                    <input type="text" name="jbqkXm" class="pane-input" readonly>
+                                </td>
+                                <th class="col-xs-1">性别</th>
+                                <td class="col-xs-2">
+                                    <select id="sex" name="jbqkXb" class="form-control m-b"
+                                            th:with="type=${@dict.getType('sys_user_sex')}">
+                                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                                th:value="${dict.dictValue}"></option>
+                                    </select>
+                                </td>
+                                <th class="col-xs-1">出生年月</th>
+                                <td class="col-xs-2" >
+                                    <input type="text" class="time-input" name="jbqkCsny" >
+                                </td>
+                                <td rowspan="4" colspan="2">照片</td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">曾用名</th>
+                                <td class="col-xs-2" >
+                                    <input type="text" name="jbqkCym" class="pane-input">
+                                </td>
+                                <th class="col-xs-1">民族</th>
+                                <td class="col-xs-2">
+                                    <input type="text" name="jbqkMz" class="pane-input">
+                                </td>
+                                <th class="col-xs-1">身份证号码</th>
+                                <td class="col-xs-2"  >
+                                    <input type="text" name="jbqkSfzh" class="pane-input">
+                                </td>
+                                <!--<td class="col-xs-2" rowspan="2" colspan="4">照片</td>-->
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">籍贯</th>
+                                <td class="col-xs-2"  >
+                                    <input type="text" name="jbqkJg" class="pane-input">
+                                </td>
+                                <th class="col-xs-1">婚姻状况</th>
+                                <td class="col-xs-2"  >
+                                    <input type="text" name="jbqkHyzk" class="pane-input">
+                                </td>
+                                <th class="col-xs-1">文化程度</th>
+                                <td class="col-xs-2"  >
+                                    <input type="text" name="jbqkWhcd" class="pane-input">
+                                </td>
+                                <!--<td class="col-xs-2" rowspan="2" colspan="4">照片</td>-->
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">政治面貌</th>
+                                <td class="col-xs-2"  >
+                                    <input type="text" name="jbqkZzmm" class="pane-input">
+                                </td>
+                                <th class="col-xs-1">入党时间</th>
+                                <td class="col-xs-2"  >
+                                    <input type="text" class="time-input"  name="jbqkRdsj" >
+                                </td>
+                                <th class="col-xs-1">参加工作时间</th>
+                                <td class="col-xs-2" >
+                                    <input type="text" class="time-input" name="jbqkCjgzsj" >
+                                </td>
+                                <!--<td class="col-xs-2" rowspan="2" colspan="4">照片</td>-->
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">单位</th>
+                                <td class="col-xs-2" colspan="3" >
+                                    <select  name="jbqkDw" class="form-control m-b"
+                                            th:with="courtOrgan=${@dict.getFy()}">
+                                        <option th:each="court : ${courtOrgan}" th:text="${court.deptName}"
+                                                th:value="${court.deptName}"></option>
+                                    </select>
+                                    <!--
+                                    <input type="text" name="jbqkDw" class="pane-input">
+                                    -->
+                                </td>
+                                <th class="col-xs-1">单位性质</th>
+                                <td class="col-xs-2" colspan="4" >
+                                    <input type="text" name="jbqkDwxz" class="pane-input">
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">职务</th>
+                                <td class="col-xs-2"  colspan="3">
+                                    <input type="text" name="jbqkZw" class="pane-input">
+                                </td>
+                                <th class="col-xs-1">级别</th>
+                                <td class="col-xs-2" >
+                                    <input type="text" name="jbqkJb" class="pane-input">
+                                </td>
+                                <th class="col-xs-1">职称</th>
+                                <td class="col-xs-2">
+                                    <input type="text" name="jbqkZc" class="pane-input">
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">分管工作</th>
+                                <td class="col-xs-2" colspan="3" >
+                                    <input type="text" name="jbqkFggz" class="pane-input">
+                                </td>
+                                <th class="col-xs-1">任现职时间</th>
+                                <td class="col-xs-2" colspan="4" >
+                                    <input type="text" class="time-input" name="jbqkRxzsj" >
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">住址</th>
+                                <td class="col-xs-2" colspan="5" >
+                                    <input type="text" name="jbqkZz" class="pane-input">
+                                </td>
+                                <th class="col-xs-1">邮编</th>
+                                <td class="col-xs-2">
+                                    <input type="text" name="jbqkYb" class="pane-input">
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">主要任职情况</th>
+                                <td colspan="8">
+                                    <table id="jbqkZyrz" border="1" cellspacing="0" cellpadding="0"
+                                           style="border-collapse: collapse;border-spacing: 0;">
+                                        <thead>
+                                        <th class="col-xs-1">起始时间</th>
+                                        <th class="col-xs-1">终止时间</th>
+                                        <th class="col-xs-1">所在单位</th>
+                                        <th class="col-xs-1">担任职务</th>
+                                        </thead>
+                                        <tbody>
+                                        <tr align="center">
+                                            <input type="hidden" name="id">
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input" >
+                                            </td>
+                                            <td class="col-xs-2"  >
+                                                <input type="text" class="pane-input" >
+                                            </td>
+                                            <td class="col-xs-2"  name="toUnit">
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2"  name="assumeOffice">
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <input type="hidden" name="id">
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input" >
+                                            </td>
+                                            <td class="col-xs-2"  >
+                                                <input type="text" class="pane-input" >
+                                            </td>
+                                            <td class="col-xs-2"  name="toUnit">
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2"  name="assumeOffice">
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <input type="hidden" name="id">
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input" >
+                                            </td>
+                                            <td class="col-xs-2"  >
+                                                <input type="text" class="pane-input" >
+                                            </td>
+                                            <td class="col-xs-2"  name="toUnit">
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2"  name="assumeOffice">
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <input type="hidden" name="id">
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input" >
+                                            </td>
+                                            <td class="col-xs-2"  >
+                                                <input type="text" class="pane-input" >
+                                            </td>
+                                            <td class="col-xs-2"  name="toUnit">
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2"  name="assumeOffice">
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <input type="hidden" name="id">
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input" >
+                                            </td>
+                                            <td class="col-xs-2"  >
+                                                <input type="text" class="pane-input" >
+                                            </td>
+                                            <td class="col-xs-2"  name="toUnit">
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2"  name="assumeOffice">
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <input type="hidden" name="id">
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input" >
+                                            </td>
+                                            <td class="col-xs-2"  >
+                                                <input type="text" class="pane-input" >
+                                            </td>
+                                            <td class="col-xs-2"  name="toUnit">
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2"  name="assumeOffice">
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">家庭成员情况</th>
+                                <td colspan="8">
+                                    <table id="jbqkJtcy" border="1" cellspacing="0" cellpadding="0"
+                                           style="border-collapse: collapse;border-spacing: 0;">
+                                        <thead>
+                                        <th class="col-xs-1">与本人关系</th>
+                                        <th class="col-xs-1">姓名</th>
+                                        <th class="col-xs-1">出生年月</th>
+                                        <th class="col-xs-1">政治面貌</th>
+                                        <th class="col-xs-3">工作单位及职务</th>
+                                        </thead>
+                                        <tbody>
+                                        <tr align="center">
+                                            <input type="hidden" name="id">
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-3" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <input type="hidden" name="id">
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-3" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <input type="hidden" name="id">
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-3" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <input type="hidden" name="id">
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-3" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <input type="hidden" name="id">
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-3" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <input type="hidden" name="id">
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-2" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                            <td class="col-xs-3" >
+                                                <input type="text" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </td>
+                            </tr>
+                            <tr align="center" style="height: 100px">
+                                <th>奖励情况</th>
+                                <td colspan="8">
+                                    <textarea style="height: 100px;width: 100%;border: 0;" name="jbqkJcqk"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="form-group">
+                            <div class="form-control-static col-sm-offset-5">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--工作人员个人有关事项报告表-->
+            <div class="tab-pane fade" id="two">
+                <h1>工作人员个人有关事项报告表</h1>
+                <div class="pane-container">
+                    <form class="form-horizontal m" id="form-itemreport-add">
+                        <input type="hidden" id="sxbgId" name="sxbgId">
+                        <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;border-spacing: 0;">
+                            <tr align="center">
+                                <th class="col-xs-1">姓名</th>
+                                <td class="col-xs-2">
+                                    <input type="text" name="jbqkXm" class="pane-input">
+                                </td>
+                                <th class="col-xs-1">工作部门</th>
+                                <td class="col-xs-2">
+                                    <input type="text" name="jbqkBm" class="pane-input">
+                                </td>
+                                <th class="col-xs-1">职务</th>
+                                <td class="col-xs-2">
+                                    <input type="text" name="jbqkZw" class="pane-input">
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <th>应当报告事项</th>
+                                <td colspan="8">
+                                    <table border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse;border-spacing: 0;">
+                                        <tr style="height: 60px">
+                                            <td class="col-xs-6" align="left" colspan="4">1、本人的婚姻变化情况</td>
+                                            <td class="col-xs-6" colspan="4">
+                                                <input type="text" name="sxbgHybhqk" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr style="height: 60px">
+                                            <td class="col-xs-6" align="left" colspan="4">2、本人持有因私出国（境）证件的情况</td>
+                                            <td class="col-xs-6" colspan="4">
+                                                <input type="text" name="sxbgCyyscgzjqk" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr style="height: 60px">
+                                            <td class="col-xs-6" align="left" colspan="4">3、本人因私出国（境）的情况</td>
+                                            <td class="col-xs-6" colspan="4">
+                                                <input type="text" name="sxbgYscgqk" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr style="height: 60px">
+                                            <td class="col-xs-6" align="left" colspan="4">4、子女与外国人、港澳台居民通婚的情况</td>
+                                            <td class="col-xs-6" colspan="4">
+                                                <input type="text" name="sxbgZnywgthqk" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr style="height: 60px">
+                                            <td class="col-xs-6" align="left" colspan="4">5、配偶、子女出国（境）定居及有关情况</td>
+                                            <td class="col-xs-6" colspan="4">
+                                                <input type="text" name="sxbgPozncgdjqk" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr style="height: 60px">
+                                            <td class="col-xs-6" align="left" colspan="4">6、配偶、共同生活的子女（指同财共居的子女，下同）私人在国（境）外经商办企业的情况</td>
+                                            <td class="col-xs-6" colspan="4">
+                                                <input type="text" name="sxbgPoznjsqk" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr style="height: 60px">
+                                            <td class="col-xs-6" align="left" colspan="4">7、配偶、共同生活的子女担任外国公司驻华、港澳台公司驻境内分支机构主管人员的情况</td>
+                                            <td class="col-xs-6" colspan="4">
+                                                <input type="text" name="sxbgPoznrcgzgryqk" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr style="height: 60px">
+                                            <td class="col-xs-6" align="left" colspan="4">8、配偶、子女被司法机关追究刑事责任的情况</td>
+                                            <td class="col-xs-6" colspan="4">
+                                                <input type="text" name="sxbgPoznbsfzjqk" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr style="height: 60px">
+                                            <td class="col-xs-6" align="left" colspan="4">9、计划生育、收养子女方面的情况</td>
+                                            <td class="col-xs-6" colspan="4">
+                                                <input type="text" name="sxbgJhsysyznqk" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr style="height: 60px">
+                                            <td class="col-xs-6" align="left" colspan="4">10、本人认为应报告的其他事项</td>
+                                            <td class="col-xs-6" colspan="4">
+                                                <input type="text" name="sxbgQtsx" class="pane-input">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="form-group">
+                            <div class="form-control-static col-sm-offset-5">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--工作人员配偶、子女及其配偶从业情况登记表-->
+            <div class="tab-pane fade" id="three">
+                <h1>工作人员配偶、子女及其配偶从业情况登记表</h1>
+                <form class="form-horizontal m" id="form-memberPractitioners-add">
+                    <input type="hidden" id="pozncyqkId" name="pozncyqkId" class="pane-input">
+                    <div class="pane-container">
+                        <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;border-spacing: 0;">
+                            <tr align="center">
+                                <th class="col-xs-1">姓名</th>
+                                <td class="col-xs-2">
+                                    <input type="text" name="jbqkXm" class="pane-input">
+                                </td>
+                                <th class="col-xs-1">部门</th>
+                                <td class="col-xs-2">
+                                    <input type="text" name="jbqkBm" class="pane-input">
+                                </td>
+                                <th class="col-xs-1">职务</th>
+                                <td class="col-xs-2">
+                                    <input type="text" name="jbqkZw" class="pane-input">
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">本人分管业务范围</th>
+                                <td class="col-xs-2">
+                                    <input type="text" name="pozncyqkBrfgywfw" class="pane-input">
+                                </td>
+                                <th class="col-xs-1">兼职单位</th>
+                                <td class="col-xs-2">
+                                    <input type="text" name="pozncyqkJzdw" class="pane-input">
+                                </td>
+                                <th class="col-xs-1">兼职职务</th>
+                                <td class="col-xs-2">
+                                    <input type="text" name="pozncyqkJzzw" class="pane-input">
+                                </td>
+                            </tr>
+                        </table>
+                        <table id="poznJtcy" border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;border-spacing: 0;">
+                            <thead>
+                            <th class="col-xs-2">配偶、子女及子女配偶姓名</th>
+                            <th class="col-xs-2">与填表人关系</th>
+                            <th class="col-xs-2">工作单位及职务</th>
+                            <th class="col-xs-2">单位性质</th>
+                            </thead>
+                            <tbody>
+						    <tr align="center">
+                                <input type="hidden" name="id">
+                                <td>
+                                    <input type="text">
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <input type="hidden" name="id">
+                                <td>
+                                    <input type="text">
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <input type="hidden" name="id">
+                                <td>
+                                    <input type="text">
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <input type="hidden" name="id">
+                                <td>
+                                    <input type="text">
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <input type="hidden" name="id">
+                                <td>
+                                    <input type="text">
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <input type="hidden" name="id">
+                                <td>
+                                    <input type="text">
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                                <td>
+                                    <input type="text" >
+                                </td>
+                            </tr>
+
+
+                            <tr align="center">
+                                <th>个人经商办企业情况</th>
+                                <td colspan="4">
+                                    <table border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse;border-spacing: 0;">
+                                        <tr align="center">
+                                            <th class="col-xs-1">与填表人关系</th>
+                                            <td class="col-xs-2">
+                                                <input type="text" name="jsbqyqkYtbrgx" class="pane-input">
+                                            </td>
+                                            <th class="col-xs-1">姓名</th>
+                                            <td class="col-xs-2">
+                                                <input type="text" name="jsbqyqkXm" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <th class="col-xs-1">企业名称及地址</th>
+                                            <td colspan="4">
+                                                <input type="text" name="jsbqyqkQymcjdz" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <th class="col-xs-1">经商办企业形式</th>
+                                            <td colspan="4">
+                                                <input type="text" name="jsbqyqkJsbqyxs" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <th class="col-xs-1">企业登记注册机关</th>
+                                            <td colspan="4">
+                                                <input type="text" name="jsbqyqkQydjzcjg" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <th class="col-xs-1">经营范围</th>
+                                            <td colspan="4">
+                                                <input type="text" name="jsbqyqkJyfw" class="pane-input">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <th>在外商独资企业或中外企业任职情况</th>
+                                <td colspan="4">
+                                    <table border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse;border-spacing: 0;">
+                                        <tr align="center">
+                                            <th class="col-xs-1">与填表人关系</th>
+                                            <td class="col-xs-2">
+                                                <input type="text" name="zwqyrzqkYtbrgx" class="pane-input">
+                                            </td>
+                                            <th class="col-xs-1">姓名</th>
+                                            <td class="col-xs-2">
+                                                <input type="text" name="zwqyrzqkXm" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <th class="col-xs-1">企业名称及地址</th>
+                                            <td colspan="4">
+                                                <input type="text" name="zwqyrzqkQymcjdz" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <th class="col-xs-1">企业组织形式</th>
+                                            <td colspan="4">
+                                                <input type="text" name="zwqyrzqkQyzzxs" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <th class="col-xs-1">受何方委派聘任</th>
+                                            <td colspan="4">
+                                                <input type="text" name="zwqyrzqkShfwppr" class="pane-input">
+                                            </td>
+                                        </tr>
+                                        <tr align="center">
+                                            <th class="col-xs-1">经营范围</th>
+                                            <td colspan="4">
+                                                <input type="text" name="zwqyrzqkJyfw" class="pane-input">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <th>备注</th>
+                                <td colspan="4">
+                                    <textarea style="height: 80px;width: 100%;border: 0;" name="remarks"></textarea>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-control-static col-sm-offset-5">
+                            <button type="submit" class="btn btn-primary">提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--工作人员家庭财产情况登记表-->
+            <div class="tab-pane fade" id="four">
+                <h1>工作人员家庭财产情况登记表</h1>
+                <div class="pane-container">
+                    <form class="form-horizontal m" id="form-property-add">
+                    <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;border-spacing: 0;">
+                        <tr align="center">
+                            <th class="col-xs-1">姓名</th>
+                            <td class="col-xs-2 all_name"></td>
+                            <th class="col-xs-1">部门</th>
+                            <td class="col-xs-2 dep"></td>
+                            <th class="col-xs-1">职务</th>
+                            <td class="col-xs-2 all_post"></td>
+                        </tr>
+                        <tr align="center">
+                            <th class="col-xs-1">现有财产状况</th>
+                            <td colspan="5">
+                                <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;border-spacing: 0;">
+                                    <tr align="center">
+                                        <th colspan="5" align="center">家庭财产情况</th>
+                                    </tr>
+                                    <tr align="center">
+                                        <th>房产地址</th>
+                                        <th>面积</th>
+                                        <th>性质</th>
+                                        <th>用途</th>
+                                        <th>房产来源</th>
+                                    </tr>
+                                    <tr align="center">
+                                        <td>
+                                            <input type="text" name="pList[][xycczkFcdz]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkMj]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkXz]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkYt]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkFcly]">
+                                        </td>
+                                    </tr>
+                                    <tr align="center">
+                                        <td>
+                                            <input type="text" name="pList[][xycczkFcdz]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkMj]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkXz]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkYt]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkFcly]">
+                                        </td>
+                                    </tr>
+                                    <tr align="center">
+                                        <td>
+                                            <input type="text" name="pList[][xycczkFcdz]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkMj]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkXz]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkYt]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkFcly]">
+                                        </td>
+                                    </tr>
+                                    <tr align="center">
+                                        <td>
+                                            <input type="text" name="pList[][xycczkFcdz]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkMj]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkXz]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkYt]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkFcly]">
+                                        </td>
+                                    </tr>
+                                    <tr align="center">
+                                        <td>
+                                            <input type="text" name="pList[][xycczkFcdz]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkMj]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkXz]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkYt]">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="pList[][xycczkFcly]">
+                                        </td>
+                                    </tr>
+                                    <tr align="center">
+                                        <th colspan="5" align="center">家庭其他财产（包括汽车、有价证券、债权债物等）</th>
+                                    </tr>
+                                    <tr align="center">
+                                        <td colspan="5">
+                                            <textarea name="jtqnsrGqtcc" id="jtqnsrGqtcc" style="border: 0;height: 80px;width: 100%" ></textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr align="center">
+                            <th class="col-xs-1">家庭全年收入情况</th>
+                            <td colspan="5">
+                                <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;border-spacing: 0;">
+                                    <tr>
+                                        <th class="col-xs-3">工资收入（包括单位发放的工资、各类奖金、补贴、津贴、奖励等）</th>
+                                        <td colspan="4">
+                                            <textarea id="jtqnsrGzsr" name="jtqnsrGzsr" style="height: 80px;width: 100%;border: 0;"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-xs-3">工资外收入（包括兼职取得的报酬；从事咨询、讲学、写作、审稿、书画等劳务所得；承包经营、承租经营所得；财产出租收益、投资收益及其他收入等</th>
+                                        <td colspan="4">
+                                            <textarea id="jtqnsrGzwsr" name="jtqnsrGzwsr" style="height: 100px;width: 100%;border: 0;"></textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr align="center">
+                            <th class="col-xs-1">备注</th>
+                            <td colspan="5">
+                                <textarea id="remarks" name="remarks" style="height: 100px;width: 100%;border: 0;"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="form-group">
+                        <div class="form-control-static col-sm-offset-5">
+                            <button type="button" id="propertyAdd" class="btn btn-primary">提交</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+            <!--工作人员出国（境）情况登记表-->
+            <div class="tab-pane fade" id="five">
+                <h1>工作人员出国（境）情况登记表</h1>
+                <div class="pane-container">
+                    <form class="form-horizontal m" id="form-going-add">
+                        <table border="1" cellspacing="0" cellpadding="0"
+                               style="border-collapse: collapse;border-spacing: 0;">
+                            <tr align="center">
+                                <th class="col-xs-1">姓名</th>
+                                <td class="col-xs-2 all_name"></td>
+                                <th class="col-xs-1">单位</th>
+                                <td class="col-xs-2 ">
+                                    <input class="all_deptname" type="text">
+                                </td>
+                                <th class="col-xs-1">职位</th>
+                                <td class="col-xs-2 all_post"></td>
+                            </tr>
+                            <tr align="center">
+                                <td colspan="6">
+                                    <table border="1" cellspacing="0" cellpadding="0"
+                                           style="border-collapse: collapse;border-spacing: 0;">
+                                        <tr>
+                                            <th class="col-xs-1">出国种类</th>
+                                            <th class="col-xs-1">批准单位</th>
+                                            <th class="col-xs-1">目的地</th>
+                                            <th class="col-xs-1">起始时间</th>
+                                            <th class="col-xs-2">资金来源</th>
+                                            <th class="col-xs-2">出国（境）事由</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="cgqkdjCgzl"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="cgqkdjPzdw"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="cgqkdjMdd"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="cgqkdjQssj"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="cgqkdjZjly"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="cgqkdjCgsy"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="form-group">
+                            <div class="form-control-static col-sm-offset-5">
+                                <button type="button" id="goingAdd" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--落实规章制度情况-->
+            <div class="tab-pane fade" id="six">
+                <h1>落实规章制度情况</h1>
+                <div class="pane-container">
+                    <form class="form-horizontal m" id="form-imp-add">
+                        <input type="hidden" name="lsgzzdqkXm" class="pname">
+                        <input type="hidden" name="lsgzzdqkDw" class="pdw">
+                        <input type="hidden" name="lsgzzdqkZw" class="pzw">
+                        <table border="1" cellspacing="0" cellpadding="0"
+                               style="border-collapse: collapse;border-spacing: 0;">
+                            <tr align="center">
+                                <th class="col-xs-1">姓名</th>
+                                <td class="col-xs-2 all_name"></td>
+                                <th class="col-xs-1">单位</th>
+                                <td class="col-xs-2 ">
+                                    <input class="all_deptname" type="text">
+                                </td>
+                                <th class="col-xs-1">职位</th>
+                                <td class="col-xs-2 all_post"></td>
+                            </tr>
+                            <tr align="center">
+                                <td colspan="6">
+                                    <table border="1" cellspacing="0" cellpadding="0"
+                                           style="border-collapse: collapse;border-spacing: 0;">
+                                        <tr>
+                                            <th class="col-xs-1">落实庭审纪律情况</th>
+                                            <th class="col-xs-1">落实“十严禁”暂行规定情况</th>
+                                            <th class="col-xs-1">执行回避制度情况</th>
+                                            <th class="col-xs-1">过问职务外案件情况</th>
+                                            <th class="col-xs-2">操办婚丧喜庆事宜情况</th>
+                                            <th class="col-xs-2">其他遵守法官职业道德情况</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="lsgzzdqkLstsjl"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="lsgzzdqkLssyjzxgd"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="lsgzzdqkZxhbzdqk"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="lsgzzdqkGwzwwajqk"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="lsgzzdqkZbhsxqsyqk"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="lsgzzdqkQtdsfgzyddqk"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div class="form-group">
+                        <div class="form-control-static col-sm-offset-5">
+                            <button type="button" id="implAdd" class="btn btn-primary">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--党政纪处理及“四拒”情况-->
+            <div class="tab-pane fade" id="seven">
+                <h1>党政纪处理及“四拒”情况</h1>
+                <div class="pane-container">
+                    <form class="form-horizontal m" id="form-hand-add">
+                        <input type="hidden" name="cljsjqkXm" class="pname">
+                        <input type="hidden" name="cljsjqkDw" class="pdw">
+                        <input type="hidden" name="cljsjqkZw" class="pzw">
+                        <table border="1" cellspacing="0" cellpadding="0"
+                               style="border-collapse: collapse;border-spacing: 0;">
+                            <tr align="center">
+                                <th class="col-xs-1">姓名</th>
+                                <td class="col-xs-2 all_name"></td>
+                                <th class="col-xs-1">单位</th>
+                                <td class="col-xs-2 ">
+                                    <input class="all_deptname" type="text">
+                                </td>
+                                <th class="col-xs-1">职位</th>
+                                <td class="col-xs-2 all_post"></td>
+                            </tr>
+                            <tr align="center">
+                                <td colspan="6">
+                                    <table border="1" cellspacing="0" cellpadding="0"
+                                           style="border-collapse: collapse;border-spacing: 0;">
+                                        <tr align="center">
+                                            <td class="col-xs-1" colspan="2">党政纪处理</td>
+                                            <td class="col-xs-1" colspan="2">非党政纪处理</td>
+                                            <td class="col-xs-1" colspan="2">“四拒”情况登记</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="col-xs-1">违纪违法事实</th>
+                                            <th class="col-xs-1">处理情况</th>
+                                            <th class="col-xs-1">违纪违法事实</th>
+                                            <th class="col-xs-1">处理情况</th>
+                                            <th class="col-xs-1">上交礼品礼金情况</th>
+                                            <th class="col-xs-1">处置结果</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="dzjclWjwfss"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="dzjclClqk"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="fdzjclWjwfss"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="fdzjclClqk"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="sjqkdjSjlpljqk"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="sjqkdjCzjg"
+                                                          style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div class="form-group">
+                        <div class="form-control-static col-sm-offset-5">
+                            <button type="button" id="handAdd" class="btn btn-primary">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--群众举报情况-->
+            <div class="tab-pane fade" id="eight">
+                <h1>群众举报情况（由监察处填写）</h1>
+                <div class="pane-container">
+                    <form class="form-horizontal m" id="form-masses-add">
+                        <input type="hidden" name="xfjbqkXm" class="pname">
+                        <input type="hidden" name="xfjbqkDw" class="pdw">
+                        <input type="hidden" name="xfjbqkZw" class="pzw">
+                        <table border="1" cellspacing="0" cellpadding="0"
+                               style="border-collapse: collapse;border-spacing: 0;">
+                            <tr align="center">
+                                <th class="col-xs-1">姓名</th>
+                                <td class="col-xs-2 all_name"></td>
+                                <th class="col-xs-1">单位</th>
+                                <td class="col-xs-2 ">
+                                    <input class="all_deptname" type="text">
+                                </td>
+                                <th class="col-xs-1">职位</th>
+                                <td class="col-xs-2 all_post"></td>
+                            </tr>
+                            <tr align="center">
+                                <td colspan="6">
+                                    <table border="1" cellspacing="0" cellpadding="0"
+                                           style="border-collapse: collapse;border-spacing: 0;">
+                                        <tr>
+                                            <th class="col-xs-1">举报人姓名</th>
+                                            <th class="col-xs-1">举报时间</th>
+                                            <th class="col-xs-1">举报方式</th>
+                                            <th class="col-xs-1">受理途径及受理人</th>
+                                            <th class="col-xs-2">举报内容</th>
+                                            <th class="col-xs-2">处理情况</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="xfjbqkJbrxm" style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="xfjbqkJbsj" style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="xfjbqkJbfs" style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="xfjbqkSltjjslr" style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="xfjbqkJbnr" style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                            <td class="col-xs-2 height_500">
+                                                <textarea name="xfjbqkClqk" style="height: 500px;width: 100%;border: 0;"></textarea>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div class="form-group">
+                        <div class="form-control-static col-sm-offset-5">
+                            <button type="button" id="massesAdd" class="btn btn-primary">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script type="text/javascript">
+    /* 时间插件*/
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+    });
+
+    /*-选择人员树*/
+    function selectPersonTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = ctx + "system/courtOrgan/selectDeptTree/" + deptId;
+        var options = {
+            title: '选择人员',
+            width: "380",
+            height: "380",
+            url: ctx + "system/courtOrgan/selectDeptTree/" + deptId,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        if ($.tree.notAllowParents(tree)) {
+            var body = layer.getChildFrame('body', index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            var name = body.find('#treeName').val();
+            var treeId=body.find('#treeId').val();
+            $("input[name='jbqkXm']").val(name);
+            $.ajax({
+                url: ctx + "system/courtOrgan/selectDeptById",
+                type: "get",
+                dataType: "json",
+                data: {"deptId": treeId},
+                success: function (data) {
+                    $("input").val("");
+                    $("textarea").val("");
+                    $("input[name='jbqkXm']").val(name);
+                    $("#jbqkCid").val(data.court.cid);
+                    $("input[name='jbqkDw']").val(data.grandCourt.deptName);
+                    $("input[name='jbqkBm']").val(data.parentCourt.deptName);
+                    $("#jbqkBmid").val(data.parentCourt.cid);
+                    $(".all_name").text(name);
+                    $(".all_deptname").text(data.grandCourt.deptName);
+                    $(".pdw").val(data.grandCourt.deptName);
+                    $(".pname").val(name);
+                    $(".dep").text(data.parentCourt.deptName);
+                    clear();
+
+                }
+            })
+            layer.close(index);
+        }
+    }
+
+    function clear(){
+        $("#jbqkId").val("");
+        var trs=$("#poznJtcy tbody tr");
+        for (var i=0;i<6;i++){
+            var tds=trs[i].children;
+            tds[0].value="";
+            (tds[1].children)[0].value="";
+            (tds[2].children)[0].value="";
+            (tds[3].children)[0].value="";
+            (tds[4].children)[0].value="";
+        }
+
+    }
+
+    /**
+     * form-basicinformation-add
+     */
+    $("#form-basicinformation-add").validate({
+        rules: {
+            jbqkXm:{
+                required: true,
+            },
+            jbqkBm:{
+                required: true,
+            },
+            jbqkZw:{
+                required: true,
+            },
+        },
+        submitHandler: function (form) {
+            var data=$('#form-basicinformation-add').serialize();
+            $.ajax({
+                url:ctx + "module/basicinformation/add",
+                data:data,
+                type: "POST",
+                success:function (result) {
+                    if (result.code == 200) {
+                        $("input").val("");
+                        $("textarea").val("");
+
+                        $("input[name='jbqkZw']").val(result.jbqkZw);
+                        $("#jbqkId").val(result.jbqkId);
+                        $("#jbqkCid").val(result.jbqkCid);
+                        $("input[name='jbqkXm']").val(result.jbqkXm);
+                        $("input[name='jbqkDw']").val(result.jbqkDw);
+                        $("input[name='jbqkBm']").val(result.jbqkBm);
+                        $(".all_post").text(result.jbqkZw);
+                        $(".pzw").val(result.jbqkZw);
+                        $(".all_name").text(result.jbqkXm);
+                        $(".all_deptname").text(result.jbqkDw);
+                        $(".pdw").val(result.jbqkDw);
+                        $(".pname").val(result.jbqkXm);
+                        $(".dep").text(result.jbqkBm);
+                        $.modal.msgSuccess(result.msg);
+                    } else {
+                        $.modal.alertError(result.msg);
+                    }
+                }
+            })
+        }
+    });
+    /**
+     * form-basicinformation-addtwo
+     */
+    $("#form-basicinformation-addtwo").validate({
+        rules: {
+            jbqkXm:{
+                required: true,
+            },
+            jbqkBm:{
+                required: true,
+            },
+        },
+        submitHandler: function (form) {
+            var jbqkCid=$("#jbqkCid").val();
+            var jbqkId=$("#jbqkId").val();
+            var basic=$('#form-basicinformation-addtwo').serializeJSON();
+            var basicdata=$.param({
+                'jbqkCid':jbqkCid,
+                'jbqkId':jbqkId
+            })+"&"+$('#form-basicinformation-addtwo').serializeArray();
+            var data2=[];
+            $("#jbqkZyrz tbody tr").each(function () {
+                var id=($(this)[0].children)[0].value;
+                var td=$(this).find("td");
+                var startTime=td.eq(0).find("input").val();
+                var endTime=td.eq(1).find("input").val();
+                var toUnit=td.eq(2).find("input").val();
+                var assumeOffice=td.eq(3).find("input").val();
+                data2.push({
+                    "id":id,
+                    "startTime":startTime,
+                    "endTime":endTime,
+                    "toUnit":toUnit,
+                    "assumeOffice":assumeOffice,
+                    });
+            });
+            var jbqkZyrz=JSON.stringify(data2);
+            var data3=[];
+            $("#jbqkJtcy tbody tr").each(function () {
+                var id=($(this)[0].children)[0].value;
+                var td=$(this).find("td");
+                var relationship=td.eq(0).find("input").val();
+                var name=td.eq(1).find("input").val();
+                var birthday=td.eq(2).find("input").val();
+                var politicalOutlook=td.eq(3).find("input").val();
+                var unitPost=td.eq(4).find("input").val();
+                data3.push({
+                    "id":id,
+                    "relationship":relationship,
+                    "name":name,
+                    "birthday":birthday,
+                    "politicalOutlook":politicalOutlook,
+                    "unitPost":unitPost,
+                });
+            });
+            var jbqkJtcy=JSON.stringify(data3);
+            $.ajax({
+                url:ctx + "module/basicinformation/edit",
+                data:{
+                    "jbqkZyrz":jbqkZyrz,
+                    "jbqkJtcy":jbqkJtcy,
+                    "jbqkId":jbqkId,
+                    'jbqkCid':jbqkCid,
+                    "basicdata":JSON.stringify(basic)
+                },
+                type: "POST",
+                success:function (result) {
+                    if (result.code == 200) {
+                        $.modal.msgSuccess(result.msg)
+                    } else {
+                        $.modal.alertError(result.msg);
+                    }
+                }
+            });
+        }
+    });
+
+    /**
+     * form-itemreport-add
+     */
+    $("#form-itemreport-add").validate({
+        submitHandler: function (form) {
+            var sxbgCid=$("#jbqkCid").val();
+            var sxbgXm=$("input[name='jbqkXm']").val();
+            var sxbgDwjgzbm=$("input[name='jbqkBm']").val();
+            var sxbgZw=$("input[name='jbqkZw']").val();
+            var data=$.param({
+                'sxbgCid':sxbgCid,
+                'sxbgXm':sxbgXm,
+                'sxbgDwjgzbm':sxbgDwjgzbm,
+                'sxbgZw':sxbgZw,
+            })+"&"+$('#form-itemreport-add').serialize();
+            $.ajax({
+                url:ctx + "module/itemreport/add",
+                data:data,
+                type: "POST",
+                success:function (result) {
+                    if (result.code == 200) {
+                        $("#sxbgId").val(result.sxbgId);
+                        $.modal.msgSuccess(result.msg)
+                    } else {
+                        $.modal.alertError(result.msg);
+                    }
+                }
+            });
+        }
+    });
+
+    /**
+     * form-memberPractitioners-add
+     */
+    $("#form-memberPractitioners-add").validate({
+        submitHandler: function (form) {
+            var jbqkId=$("#jbqkId").val();
+            var cid=$("#jbqkCid").val();
+            var pozncyqkXm=$("input[name='jbqkXm']").val();
+            var pozncyqkDw=$("input[name='jbqkBm']").val();
+            var pozncyqkZw=$("input[name='jbqkZw']").val();
+            var data2=[];
+            var trs=$("#poznJtcy tbody tr");
+            for (var i=0;i<6;i++){
+                var tds=trs[i].children;
+                var id= tds[0].value;
+                var name=(tds[1].children)[0].value;
+                var relationship=(tds[2].children)[0].value;
+                var unitPost=(tds[3].children)[0].value;
+                var unitProperty=(tds[4].children)[0].value;
+                data2.push({
+                    "id":id,
+                    "name":name,
+                    "relationship":relationship,
+                    "unitPost":unitPost,
+                    "unitProperty":unitProperty,
+                });
+            }
+            var poznJtcy=JSON.stringify(data2);
+            var memberpra=$('#form-memberPractitioners-add').serializeJSON();
+
+            $.ajax({
+                url:ctx + "module/memberPractitioners/add",
+                data:{
+                    "jbqkId":jbqkId,
+                    "cid":cid,
+                    "poznJtcy":poznJtcy,
+                    "pozncyqkXm":pozncyqkXm,
+                    "pozncyqkDw":pozncyqkDw,
+                    'pozncyqkZw':pozncyqkZw,
+                    "memberpra":JSON.stringify(memberpra)
+                },
+                type: "POST",
+                success:function (result) {
+                    if (result.code == 200) {
+                        $("#pozncyqkId").val(result.pozncyqkId);
+                        $.modal.msgSuccess(result.msg)
+                    } else {
+                        $.modal.alertError(result.msg);
+                    }
+                }
+            });
+        }
+    });
+
+    /**
+     * 家庭成员信息显示
+     */
+    function dotext() {
+                var jbqkId=$("#jbqkId").val();
+                if(jbqkId !=''){
+                    $.ajax({
+                        url:ctx + "module/member/select",
+                        data:{
+                            "basicinforId":jbqkId
+                        },
+                        type: "POST",
+                        success:function (result) {
+                            var trs=$("#poznJtcy tbody tr");
+                            for (var i=0;i<result.length;i++){
+                                var tds=trs[i].children;
+                                tds[0].value=result[i].id;
+                                (tds[1].children)[0].value=result[i].name;
+                                (tds[2].children)[0].value=result[i].relationship;
+                                (tds[3].children)[0].value=result[i].unitPost;
+                                (tds[4].children)[0].value=result[i].unitProperty;
+                            }
+                        }
+                    })
+                }
+
+            }
+
+
+
+
+
+
+
+    $("#propertyAdd").click(function () {
+        $.modal.loading("正在处理中，请稍后...");
+        var serializeObj = $('#four #form-property-add').serializeJSON();
+        var cid = $("#jbqkCid").val();
+        var jtqnsrGzsr=$("#jtqnsrGzsr").val();
+        var jtqnsrGqtcc=$("#jtqnsrGqtcc").val();
+        var jtqnsrGzwsr=$("#jtqnsrGzwsr").val();
+        var remarks=$("#remarks").val();
+        var config = {
+            url: ctx + 'module/existingProperty/add',
+            type: 'post',
+            data: {"json_str": JSON.stringify(serializeObj), "cid": cid,"jtqnsrGzsr":jtqnsrGzsr,"jtqnsrGzwsr":jtqnsrGzwsr,"jtqnsrGqtcc":jtqnsrGqtcc,"remarks":remarks},
+            success: function (result) {
+                if (result.code == 0) {
+                    $.modal.msgSuccess(result.msg)
+                } else {
+                    $.modal.msgError(result.msg)
+                }
+                $.modal.closeLoading()
+            },
+            error: function (data) {
+                $.modal.msgError('系统异常！');
+                $.modal.closeLoading()
+            }
+        };
+        $.ajax(config)
+    });
+
+    $("#goingAdd").click(function () {
+        $.modal.loading("正在处理中，请稍后...");
+        var cid = $("#jbqkCid").val();
+        var str = $("#form-going-add").serialize() + "&cid=" + cid;
+        var config = {
+            url: ctx + 'module/goingAbroad/add',
+            type: 'post',
+            data: str,
+            success: function (result) {
+                if (result.code == 0) {
+                    $.modal.msgSuccess(result.msg)
+                } else {
+                    $.modal.msgError(result.msg)
+                }
+                $.modal.closeLoading()
+            },
+            error: function (data) {
+                $.modal.msgError('系统异常！');
+                $.modal.closeLoading()
+            }
+        };
+        $.ajax(config)
+    });
+    $("#implAdd").click(function () {
+        $.modal.loading("正在处理中，请稍后...");
+        var cid = $("#jbqkCid").val();
+        var str = $("#form-imp-add").serialize() + "&cid=" + cid;
+        var config = {
+            url: ctx + 'module/implementationSystem/add',
+            type: 'post',
+            data: str,
+            success: function (result) {
+                if (result.code == 0) {
+                    $.modal.msgSuccess(result.msg)
+                } else {
+                    $.modal.msgError(result.msg)
+                }
+                $.modal.closeLoading()
+            },
+            error: function (data) {
+                $.modal.msgError('系统异常！');
+                $.modal.closeLoading()
+            }
+        };
+        $.ajax(config)
+    });
+    $("#handAdd").click(function () {
+        $.modal.loading("正在处理中，请稍后...");
+        var cid = $("#jbqkCid").val();
+        var str = $("#form-hand-add").serialize() + "&cid=" + cid;
+        var config = {
+            url: ctx + 'module/handlingSituation/add',
+            type: 'post',
+            data: str,
+            success: function (result) {
+                if (result.code == 0) {
+                    $.modal.msgSuccess(result.msg)
+                } else {
+                    $.modal.msgError(result.msg)
+                }
+                $.modal.closeLoading()
+            },
+            error: function (data) {
+                $.modal.msgError('系统异常！');
+                $.modal.closeLoading()
+            }
+        };
+        $.ajax(config)
+    });
+    $("#massesAdd").click(function () {
+        $.modal.loading("正在处理中，请稍后...");
+        var cid = $("#jbqkCid").val();
+        var str = $("#form-masses-add").serialize() + "&cid=" + cid;
+        var config = {
+            url: ctx + 'module/massesReport/add',
+            type: 'post',
+            data: str,
+            success: function (result) {
+                if (result.code == 0) {
+                    $.modal.msgSuccess(result.msg)
+                } else {
+                    $.modal.msgError(result.msg)
+                }
+                $.modal.closeLoading()
+            },
+            error: function (data) {
+                $.modal.msgError('系统异常！');
+                $.modal.closeLoading()
+            }
+        };
+        $.ajax(config)
+    });
+</script>
+
+</body>
+
+</html>

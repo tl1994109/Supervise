@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <div class="container-div">
+        <div class="col-sm-12 select-info search-collapse">
+            <form id="case" class="form-horizontal">
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>编号：</label>
+                      <input type="text"  name="id">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>姓名：</label>
+                      <input type="text"  name="name">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>年龄：</label>
+                      <input type="text"  name="age">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>性别：</label>
+                      <input type="text"  name="sex">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>爱好：</label>
+                      <input type="text"  name="hobbies">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>创建时间：</label>
+                      <input type="text"  name="createTime">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>更新时间：</label>
+                      <input type="text"  name="updateTime">
+                  </div>
+              </div>
+                <div class="form-group select-info-container">
+                    <div class="col-sm-12 select-info-btn">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+			<a class="btn btn-success" onclick="operateComponent.add('module/usertestinfo/add','测试')" shiro:hasPermission="module:usertestinfo:add">
+				<i class="fa fa-plus"></i> 新增
+			</a>
+            <a class="btn btn-primary btn-detail disabled" onclick="$.operate.detail()" shiro:hasPermission="module:usertestinfo:detail">
+                <i class="fa fa-plus"></i> 详细
+            </a>
+            <a class="btn btn-warning btn-edit disabled" onclick="operateComponent.edit('','module/usertestinfo/edit/{id}','测试')" shiro:hasPermission="module:usertestinfo:edit">
+                <i class="fa fa-plus"></i> 编辑
+            </a>
+			<a class="btn btn-danger btn-del disabled" onclick="operateComponent.removeAll('module/usertestinfo/remove')" shiro:hasPermission="module:usertestinfo:remove">
+				<i class="fa fa-trash-o"></i> 删除
+			</a>
+		</div>
+			
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('module:usertestinfo:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('module:usertestinfo:remove')}]];
+        var prefix = ctx + "module/usertestinfo";
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+				search: false,
+                columns: [{
+		            checkbox: true
+		        },
+                {
+                    field : 'id',
+                    title : '编号',
+                                    },
+                {
+                    field : 'name',
+                    title : '姓名',
+                                    },
+                {
+                    field : 'age',
+                    title : '年龄',
+                                    },
+                {
+                    field : 'sex',
+                    title : '性别',
+                                    },
+                {
+                    field : 'hobbies',
+                    title : '爱好',
+                                    },
+                {
+                    field : 'createTime',
+                    title : '创建时间',
+                                    },
+                {
+                    field : 'updateTime',
+                    title : '更新时间',
+                                    },
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="operateComponent.edit(\'' + row.id + '\'\,\'module/usertestinfo/edit/{id}\'\,\'测试\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="operateComponent.remove(\'' + row.id + '\'\,\'module/usertestinfo/remove\'\,\'测试\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            initSimpleTabl.init(options);
+        });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+    });
+    </script>
+</body>
+</html>

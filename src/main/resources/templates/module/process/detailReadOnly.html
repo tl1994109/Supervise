@@ -1,0 +1,235 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-process-edit" th:object="${process}">
+        <input class="form-control" type="hidden" id="processId" th:field="*{processId}" name="processId">
+        <input class="form-control" type="hidden" id="processConfig" th:field="*{processConfig}" name="processConfig">
+        <div class="title-row"  th:object="${process}">
+            <p>流程预览</p>
+            <input class="form-control" type="hidden" id="processConfig" th:field="*{processConfig}" name="processConfig">
+            <div class="form-group">
+                <div class="col-sm-12 process">
+                    <div id="demo" style="position: relative">
+                        <div class="process-container">
+                            <div id="node_config" style="width: inherit">
+                                <div class="form-group" style="text-align: center;border-bottom: 1px solid #fff">
+                                    <h3>节点属性配置</h3>
+                                </div>
+
+                                <div class="form-group group-row">
+                                    <label class="col-sm-3 control-label ">节点名称</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" type="hidden" id="node_id" name="node_id"/>
+                                        <input class="form-control" type="text" id="node_name" name="node_name"
+                                               onchange="change_node_name()"/>
+                                    </div>
+                                </div>
+                                <div class="form-group group-row" id="allow_by_label">
+                                    <label class="col-sm-3 control-label">负责人</label>
+                                    <div class="col-sm-9">
+                                        <select id="allow_by" name="allow_by" class="form-control select2-hidden-accessible"
+                                                multiple="" onchange="change_allow_by()">
+                                            <option th:each="user:${users}" th:value="${user.userId}" th:text="${user.userName}"
+                                                    th:disabled="${user.status == '1'}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group group-row" id="is_update_label">
+                                    <label class="col-sm-3 control-label">可否修改</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="is_update"
+                                                name="is_update" onchange="change_is_update()"
+                                                th:with="type=${@dict.getType('process_node_is_update')}">
+                                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                                    th:value="${dict.dictValue}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="line_config" style="width: inherit">
+                                <div class="form-group" style="text-align: center;border-bottom: 1px solid #fff">
+                                    <h3>线条属性配置</h3>
+                                </div>
+                                <div class="form-group group-row">
+                                    <label class="col-sm-3 control-label">线条名称</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" type="hidden" id="line_id" name="line_id">
+                                        <input class="form-control" type="text" id="line_name" name="line_name"
+                                               onchange="change_line_name()"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    // 页面只读
+    $("#form-process-edit").find("input,button,textarea,select,span").attr("disabled", "disabled")
+</script>
+<script type="text/javascript">
+    var property = {
+        toolBtns: ["start round", "end round", "task capsule"],//左边工具栏
+        headBtns: ["undo", "redo", "reload"],//如果haveHead=true，则定义HEAD区的按钮
+        haveHead: true,
+        haveTool: true,
+        haveGroup: false,
+        useOperStack: true
+    };
+    var remark = {
+        cursor: "选择指针",
+        direct: "结点连线",
+        start: "入口结点",
+        end: "结束结点",
+        task: "任务结点"
+    };
+    var demo;
+    $(document).ready(function () {
+    	if($("#processConfig").val()!=null){
+    		var process_config = JSON.parse($("#processConfig").val());
+            demo = $.createGooFlow($("#demo"), property);
+            demo.setNodeRemarks(remark);
+            
+            demo.loadData(process_config[0]);
+            demo.onItemFocus = function (id, type) {
+                var obj;
+                if (type == "line") {
+                    $("#node_config").hide();
+                    $("#line_config").show();
+                    obj = this.$lineData[id];
+                    $("#line_id").val(id);
+                    $("#line_name").val(obj.name);
+                } else if (type == "node") {
+                    $("#node_config").show();
+                    $("#line_config").hide();
+                    obj = this.$nodeData[id];
+                    $("#node_id").val(id);
+                    $("#node_name").val(obj.name);
+                    if (obj.type.indexOf(" round") < 0) {
+                        $("#allow_by_label").show();
+                        $("#is_update_label").show();
+                        var obj_allow_by = obj.allow_by.toString();
+                        if (!obj_allow_by) {
+                            obj_allow_by = $('#allow_by option:first').val();
+                        }
+                        $("#allow_by").val(obj_allow_by.split(',')).trigger('change');
+
+                        var obj_is_update = obj.is_update;
+                        if (!obj_is_update) {
+                            obj_is_update = $('#is_update option:first').val();
+                        }
+                        $("#is_update").val(obj_is_update).trigger('change');
+                    } else {
+                        $("#allow_by_label").hide();
+                        $("#is_update_label").hide();
+                    }
+                }
+                return true;
+            };
+            $("#node_config").hide();
+            $("#line_config").hide();
+    	}
+    });
+
+    //线条类型change事件
+    function change_line_name() {
+        var line_id = $("#line_id").val();
+        if (!line_id) {
+            return;
+        }
+        demo.setName(line_id, $("#line_name").val(), 'line');
+    }
+
+    //负责人change事件
+    function change_allow_by() {
+        var node_id = $("#node_id").val();
+        if (!node_id) {
+            return;
+        }
+        var allow_by = $.form.selectSelects("allow_by");
+        demo.$nodeData[node_id].allow_by = allow_by;
+    }
+
+    //可否修改change事件
+    function change_is_update() {
+        var node_id = $("#node_id").val();
+        if (!node_id) {
+            return;
+        }
+        demo.$nodeData[node_id].is_update = $('#is_update option:selected').val();
+    }
+
+    //节点名称change事件
+    function change_node_name() {
+        var node_id = $("#node_id").val();
+        if (!node_id) {
+            return;
+        }
+        demo.setName(node_id, $("#node_name").val(), 'node');
+    }
+
+    //流程名称change事件
+    function change_processName() {
+        demo.setTitle($("#processName").val());
+    }
+
+
+    var prefix = ctx + "module/process";
+    $("#form-process-edit").validate({
+        rules: {
+            processName: {
+                required: true,
+                remote: {
+                    url: prefix + "/findProcessName",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        processId: $("#processId").val(),
+                        processName: function () {
+                            return $.common.trim($("#processName").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        return $.validate.unique(data);
+                    }
+                }
+            }
+        },
+        messages: {
+            "processName": {
+                remote: "流程名称已经存在！"
+            }
+        },
+        submitHandler: function (form) {
+            var processId = $('#processId').val();
+            var processName = $('#processName').val();
+            var remarks = $('#remarks').val();
+            var status = $('#status')[0].checked;
+            if (status) status = 0;
+            else status = 1;
+            var exportData = demo.exportData();
+            if ($.isEmptyObject(exportData.nodes) || $.isEmptyObject(exportData.lines)) {
+                $.modal.alertWarning("请将流程图绘制完整！");
+                return;
+            }
+            var processConfig = JSON.stringify(new Array(exportData));
+            var data = {
+                processId: processId,
+                processName: processName,
+                processConfig: processConfig,
+                status: status,
+                remarks: remarks
+            };
+            $.operate.save(prefix + "/edit", data);
+        }
+    });
+</script>
+</body>
+</html>

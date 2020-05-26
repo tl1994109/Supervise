@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.tool.diagram.mapper.DiagramMapper">
+    
+    <resultMap type="Diagram" id="DiagramResult">
+        <result property="diagramId"    column="diagram_id"    />
+        <result property="diagramName"    column="diagram_name"    />
+        <result property="diagramCode"    column="diagram_code"    />
+        <result property="layoutId"    column="layout_id"    />
+        <result property="remarks"    column="remarks"    />
+    </resultMap>
+	
+	<sql id="selectDiagramVo">
+        select diagram_id, diagram_name, diagram_code, layout_id, remarks from tool_diagram
+    </sql>
+	
+    <select id="selectDiagramList" parameterType="Diagram" resultMap="DiagramResult">
+        <include refid="selectDiagramVo"/>
+        <where>  
+            <if test="diagramId != null and diagramId != ''"> and diagram_id like concat('%',#{diagramId},'%')</if>
+             <if test="diagramName != null and diagramName != ''"> and diagram_name like concat('%',#{diagramName},'%')</if>
+             <if test="diagramCode != null and diagramCode != ''"> and diagram_code like concat('%',#{diagramCode},'%')</if>
+              <if test="remarks != null and remarks != ''"> and remarks like concat('%',#{remarks},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectDiagramById" parameterType="String" resultMap="DiagramResult">
+        <include refid="selectDiagramVo"/>
+        where diagram_id = #{diagramId}
+    </select>
+        
+    <insert id="insertDiagram" parameterType="Diagram">
+        insert into tool_diagram
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="diagramId != null and diagramId != '' ">diagram_id,</if>
+			<if test="diagramName != null and diagramName != '' ">diagram_name,</if>
+			<if test="diagramCode != null and diagramCode != '' ">diagram_code,</if>
+			<if test="layoutId != null and layoutId != '' ">layout_id,</if>
+			<if test="remarks != null and remarks != '' ">remarks,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="diagramId != null and diagramId != ''">#{diagramId},</if>
+			<if test="diagramName != null and diagramName != ''">#{diagramName},</if>
+			<if test="diagramCode != null and diagramCode != ''">#{diagramCode},</if>
+			<if test="layoutId != null and layoutId != ''">#{layoutId},</if>
+			<if test="remarks != null and remarks != ''">#{remarks},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateDiagram" parameterType="Diagram">
+        update tool_diagram
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="diagramName != null  and diagramName != ''  ">diagram_name = #{diagramName},</if>
+            <if test="diagramCode != null  and diagramCode != ''  ">diagram_code = #{diagramCode},</if>
+            <if test="layoutId != null  and layoutId != ''  ">layout_id = #{layoutId},</if>
+            <if test="remarks != null  and remarks != ''  ">remarks = #{remarks},</if>
+        </trim>
+        where diagram_id = #{diagramId}
+    </update>
+
+	<delete id="deleteDiagramById" parameterType="String">
+        delete from tool_diagram where diagram_id = #{diagramId}
+    </delete>
+	
+    <delete id="deleteDiagramByIds" parameterType="String">
+        delete from tool_diagram where diagram_id in 
+        <foreach item="diagramId" collection="array" open="(" separator="," close=")">
+            #{diagramId}
+        </foreach>
+    </delete>
+    
+</mapper>

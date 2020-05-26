@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.basicinformation.mapper.BasicinformationMapper">
+
+    <resultMap type="Basicinformation" id="BasicinformationResult">
+        <result property="jbqkId"    column="jbqk_id"    />
+        <result property="jbqkCid"    column="jbqk_cid"    />
+        <result property="jbqkXm"    column="jbqk_xm"    />
+        <result property="jbqkXb"    column="jbqk_xb"    />
+        <result property="jbqkCsny"    column="jbqk_csny"    />
+        <result property="jbqkCym"    column="jbqk_cym"    />
+        <result property="jbqkMz"    column="jbqk_mz"    />
+        <result property="jbqkSfzh"    column="jbqk_sfzh"    />
+        <result property="jbqkJg"    column="jbqk_jg"    />
+        <result property="jbqkHyzk"    column="jbqk_hyzk"    />
+        <result property="jbqkWhcd"    column="jbqk_whcd"    />
+        <result property="jbqkZzmm"    column="jbqk_zzmm"    />
+        <result property="jbqkRdsj"    column="jbqk_rdsj"    />
+        <result property="jbqkCjgzsj"    column="jbqk_cjgzsj"    />
+        <result property="jbqkDw"    column="jbqk_dw"    />
+        <result property="jbqkDwxz"    column="jbqk_dwxz"    />
+        <result property="jbqkBm"    column="jbqk_bm"    />
+        <result property="jbqkBmd"    column="jbqk_bmid"    />
+        <result property="jbqkZw"    column="jbqk_zw"    />
+        <result property="jbqkJb"    column="jbqk_jb"    />
+        <result property="jbqkZc"    column="jbqk_zc"    />
+        <result property="jbqkFggz"    column="jbqk_fggz"    />
+        <result property="jbqkRxzsj"    column="jbqk_rxzsj"    />
+        <result property="jbqkZz"    column="jbqk_zz"    />
+        <result property="jbqkYb"    column="jbqk_yb"    />
+        <result property="jbqkJcqk"    column="jbqk_jcqk"    />
+        <result property="isEdit"    column="is_edit"    />
+        <result property="passWord"    column="password"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="approvePerson"    column="approvePerson"    />
+    </resultMap>
+
+    <sql id="selectBasicinformationVo">
+        SELECT * FROM arch_basicinformation p
+    </sql>
+
+    <select id="selectBasicinformationList" parameterType="Basicinformation" resultMap="BasicinformationResult">
+        <include refid="selectBasicinformationVo"/>
+        <where>
+        <if test="jbqkId != null and jbqkId != ''"> and p.jbqk_id = #{jbqkId}</if>
+        <if test="jbqkCid != null and jbqkCid != ''"> and p.jbqk_cid = #{jbqkCid}</if>
+        <if test="jbqkXm != null and jbqkXm != ''"> and p.jbqk_xm like concat('%',#{jbqkXm},'%')</if>
+        <if test="jbqkXb != null and jbqkXb != ''"> and p.jbqk_xb like concat('%',#{jbqkXb},'%')</if>
+        <if test="jbqkCsny != null and jbqkCsny != ''"> and p.jbqk_csny like concat('%',#{jbqkCsny},'%')</if>
+        <if test="jbqkCym != null and jbqkCym != ''"> and p.jbqk_cym like concat('%',#{jbqkCym},'%')</if>
+        <if test="jbqkMz != null and jbqkMz != ''"> and p.jbqk_mz like concat('%',#{jbqkMz},'%')</if>
+        <if test="jbqkSfzh != null and jbqkSfzh != ''"> and p.jbqk_sfzh = #{jbqkSfzh}</if>
+        <if test="jbqkJg != null and jbqkJg != ''"> and p.jbqk_jg like concat('%',#{jbqkJg},'%')</if>
+        <if test="jbqkHyzk != null and jbqkHyzk != ''"> and p.jbqk_hyzk like concat('%',#{jbqkHyzk},'%')</if>
+        <if test="jbqkWhcd != null and jbqkWhcd != ''"> and p.jbqk_whcd like concat('%',#{jbqkWhcd},'%')</if>
+        <if test="jbqkZzmm != null and jbqkZzmm != ''"> and p.jbqk_zzmm like concat('%',#{jbqkZzmm},'%')</if>
+        <if test="jbqkRdsj != null and jbqkRdsj != ''"> and p.jbqk_rdsj like concat('%',#{jbqkRdsj},'%')</if>
+        <if test="jbqkCjgzsj != null and jbqkCjgzsj != ''"> and p.jbqk_cjgzsj like concat('%',#{jbqkCjgzsj},'%')</if>
+        <if test="jbqkDw != null and jbqkDw != ''"> and p.jbqk_dw like concat('%',#{jbqkDw},'%')</if>
+        <if test="jbqkDwxz != null and jbqkDwxz != ''"> and p.jbqk_dwxz like concat('%',#{jbqkDwxz},'%')</if>
+        <if test="jbqkBm != null and jbqkBm != ''"> and p.jbqk_bm like concat('%',#{jbqkBm},'%')</if>
+        <if test="jbqkBmd != null and jbqkBmd != ''">
+            and p.jbqk_bmid in
+            <foreach item="jbqkBmd" index="index" collection="jbqkBmd.split(',')"  open="(" separator="," close=")">
+                #{jbqkBmd}
+            </foreach>
+        </if>
+        <if test="jbqkZw != null and jbqkZw != ''"> and p.jbqk_zw like concat('%',#{jbqkZw},'%')</if>
+        <if test="jbqkJb != null and jbqkJb != ''"> and p.jbqk_jb like concat('%',#{jbqkJb},'%')</if>
+        <if test="jbqkZc != null and jbqkZc != ''"> and p.jbqk_zc like concat('%',#{jbqkZc},'%')</if>
+        <if test="jbqkFggz != null and jbqkFggz != ''"> and p.jbqk_fggz like concat('%',#{jbqkFggz},'%')</if>
+        <if test="jbqkRxzsj != null and jbqkRxzsj != ''"> and p.jbqk_rxzsj like concat('%',#{jbqkRxzsj},'%')</if>
+        <if test="jbqkZz != null and jbqkZz != ''"> and p.jbqk_zz like concat('%',#{jbqkZz},'%')</if>
+        <if test="jbqkYb != null and jbqkYb != ''"> and p.jbqk_yb like concat('%',#{jbqkYb},'%')</if>
+        <if test="jbqkJcqk != null and jbqkJcqk != ''"> and p.jbqk_jcqk like concat('%',#{jbqkJcqk},'%')</if>
+        <if test="isEdit != null and isEdit != ''"> and p.is_edit like concat('%',#{isEdit},'%')</if>
+        <if test="passWord != null and passWord != ''"> and p.password like concat('%',#{passWord},'%')</if>
+        <if test="approvePerson!=null and approvePerson!=''">and p.approvePerson = #{approvePerson}</if>
+        </where>
+        order  by p.is_edit desc
+    </select>
+
+    <select id="selectBasicinformationById" parameterType="String" resultMap="BasicinformationResult">
+        <include refid="selectBasicinformationVo"/>
+        where p.jbqk_id = #{jbqkId}
+    </select>
+
+    <insert id="insertBasicinformation" parameterType="Basicinformation">
+        insert into arch_basicinformation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="jbqkId != null  and jbqkId != ''  ">jbqk_id,</if>
+            <if test="jbqkCid != null  and jbqkCid != ''  ">jbqk_cid,</if>
+            <if test="jbqkXm != null  and jbqkXm != ''  ">jbqk_xm,</if>
+            <if test="jbqkXb != null  and jbqkXb != ''  ">jbqk_xb,</if>
+            <if test="jbqkCsny != null  and jbqkCsny != ''  ">jbqk_csny,</if>
+            <if test="jbqkCym != null  and jbqkCym != ''  ">jbqk_cym,</if>
+            <if test="jbqkMz != null  and jbqkMz != ''  ">jbqk_mz,</if>
+            <if test="jbqkSfzh != null  and jbqkSfzh != ''  ">jbqk_sfzh,</if>
+            <if test="jbqkJg != null  and jbqkJg != ''  ">jbqk_jg,</if>
+            <if test="jbqkHyzk != null  and jbqkHyzk != ''  ">jbqk_hyzk,</if>
+            <if test="jbqkWhcd != null  and jbqkWhcd != ''  ">jbqk_whcd,</if>
+            <if test="jbqkZzmm != null  and jbqkZzmm != ''  ">jbqk_zzmm,</if>
+            <if test="jbqkRdsj != null  and jbqkRdsj != ''  ">jbqk_rdsj,</if>
+            <if test="jbqkCjgzsj != null  and jbqkCjgzsj != ''  ">jbqk_cjgzsj,</if>
+            <if test="jbqkDw != null  and jbqkDw != ''  ">jbqk_dw,</if>
+            <if test="jbqkDwxz != null  and jbqkDwxz != ''  ">jbqk_dwxz,</if>
+
+            <if test="jbqkBm != null  and jbqkBm != ''  ">jbqk_bm,</if>
+            <if test="jbqkBmd != null  and jbqkBmd != ''  ">jbqk_bmid,</if>
+
+            <if test="jbqkZw != null  and jbqkZw != ''  ">jbqk_zw,</if>
+            <if test="jbqkJb != null  and jbqkJb != ''  ">jbqk_jb,</if>
+            <if test="jbqkZc != null  and jbqkZc != ''  ">jbqk_zc,</if>
+            <if test="jbqkFggz != null  and jbqkFggz != ''  ">jbqk_fggz,</if>
+            <if test="jbqkRxzsj != null  and jbqkRxzsj != ''  ">jbqk_rxzsj,</if>
+            <if test="jbqkZz != null  and jbqkZz != ''  ">jbqk_zz,</if>
+            <if test="jbqkYb != null  and jbqkYb != ''  ">jbqk_yb,</if>
+            <if test="jbqkJcqk != null  and jbqkJcqk != ''  ">jbqk_jcqk,</if>
+            <if test="isEdit != null and isEdit != ''"> is_edit,</if>
+            <if test="passWord != null and passWord != ''"> password,</if>
+            <if test="approvePerson != null and approvePerson != ''"> approvePerson,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="jbqkId != null  and jbqkId != ''  ">#{jbqkId},</if>
+            <if test="jbqkCid != null  and jbqkCid != ''  ">#{jbqkCid},</if>
+            <if test="jbqkXm != null  and jbqkXm != ''  ">#{jbqkXm},</if>
+            <if test="jbqkXb != null  and jbqkXb != ''  ">#{jbqkXb},</if>
+            <if test="jbqkCsny != null  and jbqkCsny != ''  ">#{jbqkCsny},</if>
+            <if test="jbqkCym != null  and jbqkCym != ''  ">#{jbqkCym},</if>
+            <if test="jbqkMz != null  and jbqkMz != ''  ">#{jbqkMz},</if>
+            <if test="jbqkSfzh != null  and jbqkSfzh != ''  ">#{jbqkSfzh},</if>
+            <if test="jbqkJg != null  and jbqkJg != ''  ">#{jbqkJg},</if>
+            <if test="jbqkHyzk != null  and jbqkHyzk != ''  ">#{jbqkHyzk},</if>
+            <if test="jbqkWhcd != null  and jbqkWhcd != ''  ">#{jbqkWhcd},</if>
+            <if test="jbqkZzmm != null  and jbqkZzmm != ''  ">#{jbqkZzmm},</if>
+            <if test="jbqkRdsj != null  and jbqkRdsj != ''  ">#{jbqkRdsj},</if>
+            <if test="jbqkCjgzsj != null  and jbqkCjgzsj != ''  ">#{jbqkCjgzsj},</if>
+            <if test="jbqkDw != null  and jbqkDw != ''  ">#{jbqkDw},</if>
+            <if test="jbqkDwxz != null  and jbqkDwxz != ''  ">#{jbqkDwxz},</if>
+            <if test="jbqkBm != null  and jbqkBm != ''  ">#{jbqkBm},</if>
+            <if test="jbqkBmd != null  and jbqkBmd != ''  ">#{jbqkBmd},</if>
+            <if test="jbqkZw != null  and jbqkZw != ''  ">#{jbqkZw},</if>
+            <if test="jbqkJb != null  and jbqkJb != ''  ">#{jbqkJb},</if>
+            <if test="jbqkZc != null  and jbqkZc != ''  ">#{jbqkZc},</if>
+            <if test="jbqkFggz != null  and jbqkFggz != ''  ">#{jbqkFggz},</if>
+            <if test="jbqkRxzsj != null  and jbqkRxzsj != ''  ">#{jbqkRxzsj},</if>
+            <if test="jbqkZz != null  and jbqkZz != ''  ">#{jbqkZz},</if>
+            <if test="jbqkYb != null  and jbqkYb != ''  ">#{jbqkYb},</if>
+            <if test="jbqkJcqk != null  and jbqkJcqk != ''  ">#{jbqkJcqk},</if>
+            <if test="isEdit != null and isEdit != ''"> #{isEdit},</if>
+            <if test="passWord != null and passWord != ''"> #{passWord},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="createBy != null    ">create_by = #{createBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="updateBy != null   ">update_by = #{updateBy},</if>
+            <if test="approvePerson != null and approvePerson != ''"> #{approvePerson},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBasicinformation" parameterType="Basicinformation">
+        update arch_basicinformation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="jbqkCid != null   ">jbqk_cid = #{jbqkCid},</if>
+            <if test="jbqkXm != null    ">jbqk_xm = #{jbqkXm},</if>
+            <if test="jbqkXb != null   ">jbqk_xb = #{jbqkXb},</if>
+            <if test="jbqkCsny != null    ">jbqk_csny = #{jbqkCsny},</if>
+            <if test="jbqkCym != null    ">jbqk_cym = #{jbqkCym},</if>
+            <if test="jbqkMz != null    ">jbqk_mz = #{jbqkMz},</if>
+            <if test="jbqkSfzh != null    ">jbqk_sfzh = #{jbqkSfzh},</if>
+            <if test="jbqkJg != null    ">jbqk_jg = #{jbqkJg},</if>
+            <if test="jbqkHyzk != null    ">jbqk_hyzk = #{jbqkHyzk},</if>
+            <if test="jbqkWhcd != null   ">jbqk_whcd = #{jbqkWhcd},</if>
+            <if test="jbqkZzmm != null    ">jbqk_zzmm = #{jbqkZzmm},</if>
+            <if test="jbqkRdsj != null   ">jbqk_rdsj = #{jbqkRdsj},</if>
+            <if test="jbqkCjgzsj != null    ">jbqk_cjgzsj = #{jbqkCjgzsj},</if>
+            <if test="jbqkDw != null    ">jbqk_dw = #{jbqkDw},</if>
+            <if test="jbqkDwxz != null    ">jbqk_dwxz = #{jbqkDwxz},</if>
+            <if test="jbqkBm != null   ">jbqk_bm=#{jbqkBm},</if>
+            <if test="jbqkBmd != null   ">jbqk_bmid=#{jbqkBmd},</if>
+            <if test="jbqkZw != null    ">jbqk_zw = #{jbqkZw},</if>
+            <if test="jbqkJb != null   ">jbqk_jb = #{jbqkJb},</if>
+            <if test="jbqkZc != null   ">jbqk_zc = #{jbqkZc},</if>
+            <if test="jbqkFggz != null    ">jbqk_fggz = #{jbqkFggz},</if>
+            <if test="jbqkRxzsj != null    ">jbqk_rxzsj = #{jbqkRxzsj},</if>
+            <if test="jbqkZz != null  ">jbqk_zz = #{jbqkZz},</if>
+            <if test="jbqkYb != null    ">jbqk_yb = #{jbqkYb},</if>
+            <if test="jbqkJcqk != null   ">jbqk_jcqk = #{jbqkJcqk},</if>
+            <if test="isEdit != null "> is_edit =#{isEdit},</if>
+            <if test="passWord != null "> password=#{passWord},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="createBy != null    ">create_by = #{createBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="updateBy != null   ">update_by = #{updateBy},</if>
+            <if test="approvePerson != null "> approvePerson=#{approvePerson},</if>
+        </trim>
+        where jbqk_id = #{jbqkId}
+    </update>
+
+    <delete id="deleteBasicinformationById" parameterType="String">
+        delete from arch_basicinformation where jbqk_id = #{jbqkId}
+    </delete>
+
+    <delete id="deleteBasicinformationByIds" parameterType="String">
+        delete from arch_basicinformation where jbqk_id in
+        <foreach item="jbqkId" collection="array" open="(" separator="," close=")">
+            #{jbqkId}
+        </foreach>
+    </delete>
+    <select id="selectBasicinformationByCardNo" parameterType="String" resultType="java.lang.Integer">
+      select count(1) from arch_basicinformation where jbqk_sfzh=#{jbqkSfzh}
+    </select>
+    <select id="selectBasicinformationByApproveAndCardNo" parameterType="Basicinformation" resultMap="BasicinformationResult">
+      select * from (
+      select * from arch_basicinformation b where b.approvePerson = #{jbqkSfzh} or b.jbqk_sfzh = #{jbqkSfzh}) a
+      <where>
+          <if test="jbqkXm != null  and jbqkXm != ''  "> and a.jbqk_xm like concat('%',#{jbqkXm},'%')</if>
+      </where>
+        order  by a.is_edit desc
+    </select>
+</mapper>

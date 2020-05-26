@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.tool.diagramSubgroup.mapper.DiagramSubgroupMapper">
+
+    <resultMap type="DiagramSubgroup" id="DiagramSubgroupResult">
+        <result property="id"    column="id"    />
+        <result property="diagramId"    column="diagram_id"    />
+        <result property="subgroupId"    column="subgroup_id"    />
+    </resultMap>
+
+    <sql id="selectDiagramSubgroupVo">
+        select id, diagram_id, subgroup_id from tool_diagram_subgroup
+    </sql>
+
+    <select id="selectDiagramSubgroupList" parameterType="DiagramSubgroup" resultMap="DiagramSubgroupResult">
+        <include refid="selectDiagramSubgroupVo"/>
+        <where>
+            <if test="id != null and id != ''"> and id like concat('%',#{id},'%')</if>
+            <if test="diagramId != null and diagramId != ''"> and diagram_id like concat('%',#{diagramId},'%')</if>
+            <if test="subgroupId != null and subgroupId != ''"> and subgroup_id like concat('%',#{subgroupId},'%')</if>
+        </where>
+    </select>
+
+    <select id="selectDiagramSubgroupById" parameterType="String" resultMap="DiagramSubgroupResult">
+        <include refid="selectDiagramSubgroupVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDiagramSubgroup" parameterType="DiagramSubgroup">
+        insert into tool_diagram_subgroup
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != '' ">id,</if>
+            <if test="diagramId != null and diagramId != '' ">diagram_id,</if>
+            <if test="subgroupId != null and subgroupId != '' ">subgroup_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="diagramId != null and diagramId != ''">#{diagramId},</if>
+            <if test="subgroupId != null and subgroupId != ''">#{subgroupId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDiagramSubgroup" parameterType="DiagramSubgroup">
+        update tool_diagram_subgroup
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="diagramId != null  and diagramId != ''  ">diagram_id = #{diagramId},</if>
+            <if test="subgroupId != null  and subgroupId != ''  ">subgroup_id = #{subgroupId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDiagramSubgroupById" parameterType="String">
+        delete from tool_diagram_subgroup where id = #{id}
+    </delete>
+
+    <delete id="deleteDiagramSubgroupByIds" parameterType="String">
+        delete from tool_diagram_subgroup where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

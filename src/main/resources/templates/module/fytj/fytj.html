@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <div class="container-div">
+        <div class="col-sm-12 select-info search-collapse">
+            <form id="case" class="form-horizontal">
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>主键：</label>
+                      <input type="text"  name="id">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>经办法院：</label>
+                      <input type="text"  name="jbfyName">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>经办法院编号：</label>
+                      <input type="text"  name="jbfyId">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>旧存数量：</label>
+                      <input type="text"  name="jc">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>新收数量：</label>
+                      <input type="text"  name="xs">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>未结数量：</label>
+                      <input type="text"  name="wj">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>已结数量：</label>
+                      <input type="text"  name="yj">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>总计数量：</label>
+                      <input type="text"  name="count">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>创建时间：</label>
+                      <input type="text"  name="createTime">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>统计时间：</label>
+                      <input type="text"  name="countTime">
+                  </div>
+              </div>
+                <div class="form-group select-info-container">
+                    <div class="col-sm-12 select-info-btn">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+			<a class="btn btn-success" onclick="operateComponent.add('module/fytj/add','法院统计')" shiro:hasPermission="module:fytj:add">
+				<i class="fa fa-plus"></i> 新增
+			</a>
+            <a class="btn btn-primary btn-detail disabled" onclick="$.operate.detail()" shiro:hasPermission="module:fytj:detail">
+                <i class="fa fa-plus"></i> 详细
+            </a>
+            <a class="btn btn-warning btn-edit disabled" onclick="operateComponent.edit('','module/fytj/edit/{id}','法院统计')" shiro:hasPermission="module:fytj:edit">
+                <i class="fa fa-plus"></i> 编辑
+            </a>
+			<a class="btn btn-danger btn-del disabled" onclick="operateComponent.removeAll('module/fytj/remove')" shiro:hasPermission="module:fytj:remove">
+				<i class="fa fa-trash-o"></i> 批量删除
+			</a>
+		</div>
+			
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('module:fytj:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('module:fytj:remove')}]];
+        var prefix = ctx + "module/fytj";
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+				search: false,
+                columns: [{
+		            checkbox: true
+		        },
+                {
+                    field : 'id',
+                    title : '主键',
+                                    },
+                {
+                    field : 'jbfyName',
+                    title : '经办法院',
+                                    },
+                {
+                    field : 'jbfyId',
+                    title : '经办法院编号',
+                                    },
+                {
+                    field : 'jc',
+                    title : '旧存数量',
+                                    },
+                {
+                    field : 'xs',
+                    title : '新收数量',
+                                    },
+                {
+                    field : 'wj',
+                    title : '未结数量',
+                                    },
+                {
+                    field : 'yj',
+                    title : '已结数量',
+                                    },
+                {
+                    field : 'count',
+                    title : '总计数量',
+                                    },
+                {
+                    field : 'createTime',
+                    title : '创建时间',
+                                    },
+                {
+                    field : 'countTime',
+                    title : '统计时间',
+                                    },
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="operateComponent.edit(\'' + row.id + '\'\,\'module/fytj/edit/{id}\'\,\'法院统计\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="operateComponent.remove(\'' + row.id + '\'\,\'module/fytj/remove\'\,\'法院统计\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            initSimpleTabl.init(options);
+        });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.process.mapper.ProcessMapper">
+
+    <resultMap type="Process" id="ProcessResult">
+        <result property="processId" column="process_id"/>
+        <result property="processName" column="process_name"/>
+        <result property="processConfig" column="process_config" typeHandler="com.datcent.common.utils.BlobTypeHandle"/>
+        <result property="remarks" column="remarks"/>
+        <result property="status" column="status"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="deleteBy" column="delete_by"/>
+        <result property="deleteTime" column="delete_time"/>
+    </resultMap>
+
+    <sql id="selectProcessVo">
+        select process_id, process_name, process_config, remarks, status, create_by, create_time, update_by, update_time, delete_by, delete_time from oa_process
+    </sql>
+
+    <select id="selectProcessList" parameterType="Process" resultMap="ProcessResult">
+        <include refid="selectProcessVo"/>
+        <where>
+            <if test="processId != null and processId != ''">and process_id = #{processId}</if>
+            <if test="processName != null and processName != ''">and process_name = #{processName}</if>
+            <if test="processConfig != null and processConfig != ''">and process_config = #{processConfig}</if>
+            <if test="remarks != null and remarks != ''">and remarks = #{remarks}</if>
+            <if test="status != null and status != ''">and status = #{status}</if>
+            <if test="createBy != null and createBy != ''">and create_by = #{createBy}</if>
+            <if test="createTime != null ">and create_time = #{createTime}</if>
+            <if test="updateBy != null and updateBy != ''">and update_by = #{updateBy}</if>
+            <if test="updateTime != null ">and update_time = #{updateTime}</if>
+            <if test="deleteBy != null and deleteBy != ''">and delete_by = #{deleteBy}</if>
+            <if test="deleteTime != null ">and delete_time = #{deleteTime}</if>
+            and status != 2
+        </where>
+    </select>
+
+    <select id="selectProcessById" parameterType="String" resultMap="ProcessResult">
+        <include refid="selectProcessVo"/>
+        where process_id = #{processId}
+    </select>
+
+    <insert id="insertProcess" parameterType="Process">
+        insert into oa_process
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="processId != null and processId != '' ">process_id,</if>
+            <if test="processName != null and processName != '' ">process_name,</if>
+            <if test="processConfig != null and processConfig != '' ">process_config,</if>
+            <if test="remarks != null and remarks != '' ">remarks,</if>
+            <if test="status != null and status != '' ">status,</if>
+            <if test="createBy != null and createBy != '' ">create_by,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="updateBy != null and updateBy != '' ">update_by,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="deleteBy != null and deleteBy != '' ">delete_by,</if>
+            <if test="deleteTime != null  ">delete_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="processId != null and processId != ''">#{processId},</if>
+            <if test="processName != null and processName != ''">#{processName},</if>
+            <if test="processConfig != null and processConfig != ''">#{processConfig},</if>
+            <if test="remarks != null and remarks != ''">#{remarks},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="deleteBy != null and deleteBy != ''">#{deleteBy},</if>
+            <if test="deleteTime != null ">#{deleteTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateProcess" parameterType="Process">
+        update oa_process
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="processName != null  and processName != ''  ">process_name = #{processName},</if>
+            <if test="processConfig != null  ">process_config = #{processConfig},</if>
+            <if test="remarks != null  and remarks != ''  ">remarks = #{remarks},</if>
+            <if test="status != null  ">status = #{status},</if>
+            <if test="createBy != null  and createBy != ''  ">create_by = #{createBy},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="deleteBy != null  and deleteBy != ''  ">delete_by = #{deleteBy},</if>
+            <if test="deleteTime != null  ">delete_time = #{deleteTime},</if>
+        </trim>
+        where process_id = #{processId}
+    </update>
+
+    <delete id="deleteProcessById" parameterType="String">
+        delete from oa_process where process_id = #{processId}
+    </delete>
+
+    <delete id="deleteProcessByIds" parameterType="String">
+        delete from oa_process where process_id in
+        <foreach item="processId" collection="array" open="(" separator="," close=")">
+            #{processId}
+        </foreach>
+    </delete>
+
+</mapper>

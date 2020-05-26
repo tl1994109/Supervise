@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+
+<style type="text/css">
+    .container{
+        width: 100%;
+        height: auto;
+    }
+</style>
+
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div style="text-align: center">
+        <!--<span class="glyphicon glyphicon-bookmark"></span>&nbsp;-->
+        <h2><span th:text="${knowledge.knowledgeTitle}"></span></h2>
+        <div style="margin-bottom: 20px;">
+            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;
+            <span th:text="${count}"></span> &nbsp;&nbsp;&nbsp;
+            <span class="glyphicon glyphicon-time"></span>&nbsp;
+            <span th:object="${knowledge}" th:utext="*{#dates.format(knowledgeCreatetime,'yyyy-MM-dd')}"></span>
+        </div>
+    </div>
+    <div class="form-group container" th:if="${knowledge.remark ne null && knowledge.remark ne ''}" style="margin-bottom: 10px">
+        <div class="col-sm-12" id="remark" th:object="${knowledge}" th:text="*{remark}"></div>
+    </div>
+    <div class="form-group container" th:if="${knowledge.fillWay eq '0'}">
+        <div class="col-sm-12" id="noticeContent" th:object="${knowledge}" th:utext="*{knowledgeContent}"></div>
+    </div>
+    <div class="form-group container"th:if="${knowledge.fillWay eq '1'}">
+        <iframe style="width: 100%" th:src="@{/ajax/libs/pdfjs-2.0.943/web/viewer.html(file=${knowledge.knowledgeContent})}" frameborder="0" scrolling="yes" class="RuoYi_iframe"></iframe>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script>
+    $(function(){
+        var height = $(window).height() - 50;
+        $("iframe").css("height",height+"px");
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+<style type="text/css">
+    .colStyle {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+</style>
+
+<body class="gray-bg">
+<div >
+    <div class="container-div">
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "module/dubvioEvent";
+    $(function() {
+        var chidubvioStrategyName=$("#dubvioStrategyName" , parent.document).val();
+        var dubvioFyr=$("#dubvioFyr" , parent.document).val();
+        var options = {
+            url: prefix + "/queryList",
+            search: false,
+            queryParams:{
+                "dubvioFyr":dubvioFyr,
+                "chidubvioStrategyName":chidubvioStrategyName
+            },
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field : 'dubvioFyr',
+                    title : '反映人',
+                },
+                {
+                    field : 'dubvioFydx',
+                    title : '反映对象',
+                },
+                {
+                    field : 'dubvioStrategyName',
+                    title : '反映问题',
+                    class:'colStyle',
+                    width: 120,
+                    formatter:paramsMatter
+                },
+                {
+                    field : 'dubvioFyrdh',
+                    title : '反映电话',
+                },
+                {
+                    field : 'jbxxXffysj',
+                    title : '反映时间',
+                },
+                {
+                    field : 'similer',
+                    title : '相似度',
+                },
+                ]
+        };
+        initSimpleTabl.init(options);
+    });
+    function paramsMatter(value, row, index) {
+
+        var values = row.dubvioStrategyName;//获取当前字段的值
+        //替换空格，因为字符串拼接的时候如果遇到空格，会自动将后面的部分截掉，所有这里用html的转义符
+        // 代替
+        if(values !=null && values!=""){
+            values = values.replace(/\s+/g,'');
+            return "<p style='text-overflow:ellipsis;overflow: hidden;white-space:nowrap;width: 120px;margin: 0px;' title="+values+">"+row.dubvioStrategyName+"</p>";
+        }
+        return "";
+    }
+    
+    function gettabledata() {
+        var rows=$('#bootstrap-table').bootstrapTable('getSelections');
+        console.log(rows);
+        return rows;
+    }
+
+
+
+
+</script>
+</body>
+</html>

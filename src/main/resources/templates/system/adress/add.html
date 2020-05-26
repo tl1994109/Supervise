@@ -1,0 +1,224 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+<style type="text/css">
+    /* 新增样式20190508 */
+    .select2-container .select2-selection--single{height: 34px;}
+    .select2-container--default .select2-selection--single{border: 1px solid #ddd;}
+    .select2-container--default .select2-selection--single .select2-selection__rendered{line-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {padding: 0px 5px;}
+    .select-info-container input, .select-info-container select{width: 100%}
+    /*.select2-container{height: 34px;line-height: 34px}*/
+    .select2-container--default .select2-selection--multiple{height: 100%;width: 100%;border: 1px solid #ddd;}
+    /* .select2-container .select2-selection--multiple{min-height: 34px}*/
+    /*.select2-container--default .select2-selection--multiple .select2-selection__rendered{height: 34px; }*/
+    .select2-container--default.select2-container--focus .select2-selection--multiple{border: 1px solid #ddd;}
+</style>
+
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="col-sm-12 select-info search-collapse">
+        <form class="form-horizontal m" id="form-adress-add">
+            <div class="form-group">
+                    <label class="col-sm-3 control-label">姓名：</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="name" class="form-control">
+                    </div>
+            </div>
+
+            <div class="form-group">
+                    <label class="col-sm-3 control-label">单位：</label>
+                <div class="col-sm-8">
+                    <select name="jbfyId" id="jbfyId" class="form-control">
+                        <option value="">请选择</option>
+                        <option th:each="deptList:${deptList}" th:value="${deptList.cid}"
+                                th:text="${deptList.deptName}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                    <label  class="col-sm-3 control-label">职务：</label>
+                <div class="col-sm-8">
+                    <input type="text" name="type" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                    <label class="col-sm-3 control-label">手机号码：</label>
+                    <div class="col-sm-8">
+                    <input type="text" id="phone" name="phone" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                    <label class="col-sm-3 control-label">办公室电话：</label>
+                <div class="col-sm-8">
+                    <input type="text" id="officePhone" name="officePhone" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                    <label class="col-sm-3 control-label">QQ / 微信账号：</label>
+                    <div class="col-sm-8">
+                    <input type="text" id="qqWx" name="qqWx" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                    <label class="col-sm-3 control-label">邮箱：</label>
+            <div class="col-sm-8">
+                    <input type="text" id="email" name="email" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+
+                    <label class="col-sm-3 control-label">传真：</label>
+                    <div class="col-sm-8">
+                    <input type="text" id="fax" name="fax" class="form-control">
+                </div>
+            </div>
+
+
+<!--            <div class="form-group">-->
+
+<!--                <label  class="col-sm-3 control-label">所属法院：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <select name="jbfyId" id="jbfyId" class="form-control">-->
+<!--                        <option value="">请选择</option>-->
+<!--                        <option th:each="deptList:${deptList}" th:value="${deptList.deptId}"-->
+<!--                                th:text="${deptList.deptName}"></option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <div class="form-group">
+                <div class="form-control-static col-sm-offset-5">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+
+    $('.summernote').summernote({
+        height: '220px',
+        lang: 'zh-CN'
+    });
+
+
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime', theme: 'molv'});
+    });
+
+    var prefix = ctx + "system/adress"
+
+
+    $("#form-adress-add").validate({
+        rules: {
+
+            id: {
+                required: true,
+            },
+            type:{
+                required:true,
+            },
+            name: {
+                required: true,
+            },
+            dept: {
+                required: true,
+            },
+            phone:{
+                required:true,
+            },
+            qqWx:{
+                required:false,
+            },
+            email:{
+                required:false,
+            },
+            officePhone:{
+                required:false,
+            },
+        },
+        submitHandler: function (form) {
+            var row = 0;
+            checkTel();
+        }
+    });
+
+
+    function checkTel() {
+        var tel = $("#phone").val();
+        var officePhone=$("#officePhone").val();
+        var mobile = /^[1][3,4,5,7,8][0-9]{9}$/
+        var phone = /^0\d{2,3}-?\d{7,8}$/;
+        var wxreg = /^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$/
+        var qq = /^[1-9]\d{4,9}$/
+        var qqWx = $("#qqWx").val();
+        var email = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
+        var emails = $("#email").val();
+
+        if (!mobile.test(tel)) {
+            layer.msg('手机号码格式不正确，请输入正确的手机号码！', {
+                time: 1500,//3s后自动关闭
+                icon: 5
+            });
+
+            return false;
+        }
+
+        if(officePhone.length > 0){
+            if(!phone.test(officePhone)){
+                layer.msg('办公室电话格式不正确，请输入正确的办公室电话！', {
+                    time: 1500,//3s后自动关闭
+                    icon: 5
+                });
+
+                return false;
+            }
+        }
+
+        if(qqWx.length > 0 ){
+            if (!qq.test(qqWx) || !wxreg.test(qqWx)) {
+                layer.msg('请输入正确的微信账号或QQ格式', {
+                    time: 1500,//3s后自动关闭
+                    icon: 5
+                });
+
+                return false;
+            }
+        }
+
+        if(emails.length > 0){
+            if(!email.test(emails)){
+                layer.msg('请输入正确的邮箱格式', {
+                    time: 1500,//3s后自动关闭
+                    icon: 5
+                });
+
+                return false;
+            }
+        }
+
+        $.operate.save(prefix + "/add", $('#form-adress-add').serialize());
+    }
+</script>
+</body>
+</html>

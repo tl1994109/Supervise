@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.implementationSystem.mapper.ImplementationSystemMapper">
+    
+    <resultMap type="ImplementationSystem" id="ImplementationSystemResult">
+        <result property="lsgzzdqkId"    column="lsgzzdqk_id"    />
+        <result property="cid"    column="cid"    />
+        <result property="lsgzzdqkXm"    column="lsgzzdqk_xm"    />
+        <result property="lsgzzdqkDw"    column="lsgzzdqk_dw"    />
+        <result property="lsgzzdqkZw"    column="lsgzzdqk_zw"    />
+        <result property="lsgzzdqkLstsjl"    column="lsgzzdqk_lstsjl"    />
+        <result property="lsgzzdqkLssyjzxgd"    column="lsgzzdqk_lssyjzxgd"    />
+        <result property="lsgzzdqkZxhbzdqk"    column="lsgzzdqk_zxhbzdqk"    />
+        <result property="lsgzzdqkGwzwwajqk"    column="lsgzzdqk_gwzwwajqk"    />
+        <result property="lsgzzdqkZbhsxqsyqk"    column="lsgzzdqk_zbhsxqsyqk"    />
+        <result property="lsgzzdqkQtdsfgzyddqk"    column="lsgzzdqk_qtdsfgzyddqk"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+	
+	<sql id="selectImplementationSystemVo">
+        select lsgzzdqk_id, cid, lsgzzdqk_xm, lsgzzdqk_dw, lsgzzdqk_zw, lsgzzdqk_lstsjl, lsgzzdqk_lssyjzxgd, lsgzzdqk_zxhbzdqk, lsgzzdqk_gwzwwajqk, lsgzzdqk_zbhsxqsyqk, lsgzzdqk_qtdsfgzyddqk, create_time, create_by, update_time, update_by from arch_implementation_system
+    </sql>
+	
+    <select id="selectImplementationSystemList" parameterType="ImplementationSystem" resultMap="ImplementationSystemResult">
+        <include refid="selectImplementationSystemVo"/>
+        <where>  
+            <if test="lsgzzdqkId != null and lsgzzdqkId != ''"> and lsgzzdqk_id like concat('%',#{lsgzzdqkId},'%')</if>
+             <if test="cid != null and cid != ''"> and cid like concat('%',#{cid},'%')</if>
+             <if test="lsgzzdqkXm != null and lsgzzdqkXm != ''"> and lsgzzdqk_xm like concat('%',#{lsgzzdqkXm},'%')</if>
+             <if test="lsgzzdqkDw != null and lsgzzdqkDw != ''"> and lsgzzdqk_dw like concat('%',#{lsgzzdqkDw},'%')</if>
+             <if test="lsgzzdqkZw != null and lsgzzdqkZw != ''"> and lsgzzdqk_zw like concat('%',#{lsgzzdqkZw},'%')</if>
+             <if test="lsgzzdqkLstsjl != null and lsgzzdqkLstsjl != ''"> and lsgzzdqk_lstsjl like concat('%',#{lsgzzdqkLstsjl},'%')</if>
+             <if test="lsgzzdqkLssyjzxgd != null and lsgzzdqkLssyjzxgd != ''"> and lsgzzdqk_lssyjzxgd like concat('%',#{lsgzzdqkLssyjzxgd},'%')</if>
+             <if test="lsgzzdqkZxhbzdqk != null and lsgzzdqkZxhbzdqk != ''"> and lsgzzdqk_zxhbzdqk like concat('%',#{lsgzzdqkZxhbzdqk},'%')</if>
+             <if test="lsgzzdqkGwzwwajqk != null and lsgzzdqkGwzwwajqk != ''"> and lsgzzdqk_gwzwwajqk like concat('%',#{lsgzzdqkGwzwwajqk},'%')</if>
+             <if test="lsgzzdqkZbhsxqsyqk != null and lsgzzdqkZbhsxqsyqk != ''"> and lsgzzdqk_zbhsxqsyqk like concat('%',#{lsgzzdqkZbhsxqsyqk},'%')</if>
+             <if test="lsgzzdqkQtdsfgzyddqk != null and lsgzzdqkQtdsfgzyddqk != ''"> and lsgzzdqk_qtdsfgzyddqk like concat('%',#{lsgzzdqkQtdsfgzyddqk},'%')</if>
+             <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+             <if test="createBy != null and createBy != ''"> and create_by like concat('%',#{createBy},'%')</if>
+             <if test="updateTime != null and updateTime != ''"> and update_time like concat('%',#{updateTime},'%')</if>
+             <if test="updateBy != null and updateBy != ''"> and update_by like concat('%',#{updateBy},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectImplementationSystemById" parameterType="String" resultMap="ImplementationSystemResult">
+        <include refid="selectImplementationSystemVo"/>
+        where lsgzzdqk_id = #{lsgzzdqkId}
+    </select>
+        
+    <insert id="insertImplementationSystem" parameterType="ImplementationSystem">
+        insert into arch_implementation_system
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="lsgzzdqkId != null  and lsgzzdqkId != ''  ">lsgzzdqk_id,</if>
+           <if test="cid != null  and cid != ''  ">cid,</if>
+           <if test="lsgzzdqkXm != null  and lsgzzdqkXm != ''  ">lsgzzdqk_xm,</if>
+           <if test="lsgzzdqkDw != null  and lsgzzdqkDw != ''  ">lsgzzdqk_dw,</if>
+           <if test="lsgzzdqkZw != null  and lsgzzdqkZw != ''  ">lsgzzdqk_zw,</if>
+           <if test="lsgzzdqkLstsjl != null  and lsgzzdqkLstsjl != ''  ">lsgzzdqk_lstsjl,</if>
+           <if test="lsgzzdqkLssyjzxgd != null  and lsgzzdqkLssyjzxgd != ''  ">lsgzzdqk_lssyjzxgd,</if>
+           <if test="lsgzzdqkZxhbzdqk != null  and lsgzzdqkZxhbzdqk != ''  ">lsgzzdqk_zxhbzdqk,</if>
+           <if test="lsgzzdqkGwzwwajqk != null  and lsgzzdqkGwzwwajqk != ''  ">lsgzzdqk_gwzwwajqk,</if>
+           <if test="lsgzzdqkZbhsxqsyqk != null  and lsgzzdqkZbhsxqsyqk != ''  ">lsgzzdqk_zbhsxqsyqk,</if>
+           <if test="lsgzzdqkQtdsfgzyddqk != null  and lsgzzdqkQtdsfgzyddqk != ''  ">lsgzzdqk_qtdsfgzyddqk,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="createBy != null  and createBy != ''  ">create_by,</if>
+           <if test="updateTime != null  ">update_time,</if>
+           <if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="lsgzzdqkId != null  and lsgzzdqkId != ''  ">#{lsgzzdqkId},</if>
+        <if test="cid != null  and cid != ''  ">#{cid},</if>
+        <if test="lsgzzdqkXm != null  and lsgzzdqkXm != ''  ">#{lsgzzdqkXm},</if>
+        <if test="lsgzzdqkDw != null  and lsgzzdqkDw != ''  ">#{lsgzzdqkDw},</if>
+        <if test="lsgzzdqkZw != null  and lsgzzdqkZw != ''  ">#{lsgzzdqkZw},</if>
+        <if test="lsgzzdqkLstsjl != null  and lsgzzdqkLstsjl != ''  ">#{lsgzzdqkLstsjl},</if>
+        <if test="lsgzzdqkLssyjzxgd != null  and lsgzzdqkLssyjzxgd != ''  ">#{lsgzzdqkLssyjzxgd},</if>
+        <if test="lsgzzdqkZxhbzdqk != null  and lsgzzdqkZxhbzdqk != ''  ">#{lsgzzdqkZxhbzdqk},</if>
+        <if test="lsgzzdqkGwzwwajqk != null  and lsgzzdqkGwzwwajqk != ''  ">#{lsgzzdqkGwzwwajqk},</if>
+        <if test="lsgzzdqkZbhsxqsyqk != null  and lsgzzdqkZbhsxqsyqk != ''  ">#{lsgzzdqkZbhsxqsyqk},</if>
+        <if test="lsgzzdqkQtdsfgzyddqk != null  and lsgzzdqkQtdsfgzyddqk != ''  ">#{lsgzzdqkQtdsfgzyddqk},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+        <if test="updateTime != null  ">#{updateTime},</if>
+        <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateImplementationSystem" parameterType="ImplementationSystem">
+        update arch_implementation_system
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cid != null   ">cid = #{cid},</if>
+            <if test="lsgzzdqkXm != null    ">lsgzzdqk_xm = #{lsgzzdqkXm},</if>
+            <if test="lsgzzdqkDw != null    ">lsgzzdqk_dw = #{lsgzzdqkDw},</if>
+            <if test="lsgzzdqkZw != null    ">lsgzzdqk_zw = #{lsgzzdqkZw},</if>
+            <if test="lsgzzdqkLstsjl != null    ">lsgzzdqk_lstsjl = #{lsgzzdqkLstsjl},</if>
+            <if test="lsgzzdqkLssyjzxgd != null    ">lsgzzdqk_lssyjzxgd = #{lsgzzdqkLssyjzxgd},</if>
+            <if test="lsgzzdqkZxhbzdqk != null    ">lsgzzdqk_zxhbzdqk = #{lsgzzdqkZxhbzdqk},</if>
+            <if test="lsgzzdqkGwzwwajqk != null   ">lsgzzdqk_gwzwwajqk = #{lsgzzdqkGwzwwajqk},</if>
+            <if test="lsgzzdqkZbhsxqsyqk != null    ">lsgzzdqk_zbhsxqsyqk = #{lsgzzdqkZbhsxqsyqk},</if>
+            <if test="lsgzzdqkQtdsfgzyddqk != null   ">lsgzzdqk_qtdsfgzyddqk = #{lsgzzdqkQtdsfgzyddqk},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="createBy != null    ">create_by = #{createBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="updateBy != null    ">update_by = #{updateBy},</if>
+        </trim>
+        where lsgzzdqk_id = #{lsgzzdqkId}
+    </update>
+
+	<delete id="deleteImplementationSystemById" parameterType="String">
+        delete from arch_implementation_system where lsgzzdqk_id = #{lsgzzdqkId}
+    </delete>
+	
+    <delete id="deleteImplementationSystemByIds" parameterType="String">
+        delete from arch_implementation_system where lsgzzdqk_id in 
+        <foreach item="lsgzzdqkId" collection="array" open="(" separator="," close=")">
+            #{lsgzzdqkId}
+        </foreach>
+    </delete>
+    
+</mapper>

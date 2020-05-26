@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>智慧监督管理平台（法院）</title>
+    <script>
+        getRem(750, 100);
+        window.onresize = function () {
+            getRem(750, 100);
+        };
+        //用来设置html的font-size
+        function getRem(pwidth, prem) {
+            //获取html元素
+            var html = document.getElementsByTagName("html")[0];
+            //获取视窗宽度
+            //下面的代码是为了考虑兼容性
+            //在IE7、IE8、Firefox中，document.body.clientWidth以及 document.body.clientHeightzhi值为0，此时，可以使用 document.documentElement.clientHeight等代替。
+            var oWidth =
+                document.documentElement.clientWidth || document.body.clientWidth;
+            html.style.fontSize = (oWidth / pwidth) * prem + "px";
+        }
+    </script>
+    <script th:inline="javascript"> var ctx = [[@{/}]]; </script>
+    <!--统计平台echarts-->
+    <link rel="stylesheet" th:href="@{/css/echarts/echarts.css}">
+    <link rel="stylesheet" th:href="@{/css/echarts/guo.css}">
+
+</head>
+
+<body>
+
+
+<header id="header">
+    <div class="header-container">
+        <div class="head-left">
+            <div class="logo">
+                <img th:src="@{/img/echarts/logo.png}" width="58" height="46" alt="logo">
+            </div>
+            <div class="head-title">
+                <a th:href="@{/index}" title="返回首页" style="color: #fff"><span class="font28">智慧监督管理平台</span>法院</a>
+            </div>
+        </div>
+        <div class="head-right">
+            <ul>
+                <li>
+                    <a th:href="@{/echarts/Tjfx/home}"><img th:src="@{/img/echarts/head-icon-1.png}" alt="">线索数据分析</a>
+                </li>
+                <li>
+                    <a th:href="@{/echarts/Tjfx/disposal}"><img th:src="@{/img/echarts/head-icon-3.png}" alt="">纪检处置事件分析</a>
+                </li>
+                <li>
+                    <a th:href="@{/echarts/Tjfx/work}"><img th:src="@{/img/echarts/head-icon-4.png}" alt="">纪检工作管理分析</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+<main id="main">
+    <div class="main-container">
+        <div class="main-left">
+            <div class="main-left-top">
+                <div class="top-a">
+                    <h3 id="clue">处置线索总量<p>32,232</p></h3>
+                </div>
+                <div class="top-b">
+                    <h3 id="clue_ok">完成处置数量<p>32,232</p>
+                    </h3>
+                    <h3 id="clue_num">处置中的数量<p>2232</p>
+                    </h3>
+                </div>
+            </div>
+            <div class="main-left-middle">
+                <div class="title-box">
+                    <h3>
+                        <p></p>完成处置占比分析
+                    </h3>
+                </div>
+                <div id="echarts-1" style="height:100%;margin-top: -30px"></div>
+            </div>
+            <div class="main-left-bottom">
+                <div class="title-box">
+                    <h3>
+                        <p></p>已处置部门分析
+                    </h3>
+                </div>
+                <div id="echarts-2" style="height:100%;margin-top: -30px"></div>
+            </div>
+        </div>
+        <div class="main-center">
+            <div class="main-center-map">
+                <div id="nanyang_map" style="width: 100%;height: 95%;"></div>
+            </div>
+            <div class="main-center-bottom">
+                <div class="title-box">
+                    <h3>
+                        <p></p>近6月处置中的事件分析
+                    </h3>
+                </div>
+                <div id="echarts-3" style="height:100%;margin-top: -30px"></div>
+            </div>
+        </div>
+        <div class="main-right">
+            <div class="main-right-top">
+                <div class="title-box">
+                    <h3>
+                        <p></p>已处置人员分布
+                    </h3>
+                </div>
+                <div id="echarts-4" style="height: 100%;margin-top: -30px;"></div>
+            </div>
+            <div class="main-right-middle">
+                <div class="title-box">
+                    <h3>
+                        <p></p>已处置人员严重度分析
+                    </h3>
+                </div>
+                <div id="echarts-5" style="height: 100%;margin-top: -30px;"></div>
+            </div>
+            <div class="main-right-bottom">
+                <div class="title-box">
+                    <h3>
+                        <p></p>已处置人员全员占比统计
+                    </h3>
+                </div>
+                <div id="echarts-6" style="height:100%;margin-top: -30px"></div>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+<script th:src="@{/js/jquery.js}"></script>
+<script th:src="@{/js/echarts.js}"></script>
+
+<!--统计平台echarts-->
+<script type="text/javascript" th:src="@{/js/echarts/infographic.js}"></script>
+<script type="text/javascript" th:src="@{/js/echarts/nanyang.js}"></script>
+<script type="text/javascript" th:src="@{/js/echarts/map_3.js}"></script>
+
+<!--<script type="text/javascript" th:src="@{/js/echarts/base.js}"></script>-->
+<script type="text/javascript" th:src="@{/js/echarts/base_pro.js}"></script>
+
+
+</html>

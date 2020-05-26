@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.subgroupInicondit.mapper.SubgroupIniconditMapper">
+    
+    <resultMap type="SubgroupInicondit" id="SubgroupIniconditResult">
+        <result property="iniconditId"    column="inicondit_id"    />
+        <result property="columnName"    column="column_name"    />
+        <result property="conditionMark"    column="condition_mark"    />
+        <result property="conditionOperator"    column="condition_operator"    />
+        <result property="tableName"    column="table_name"    />
+        <result property="conditionValue"    column="condition_value"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+	
+	<sql id="selectSubgroupIniconditVo">
+        select inicondit_id, column_name, condition_mark, condition_operator, table_name, condition_value, create_time, update_time from tool_subgroup_inicondit
+    </sql>
+	
+    <select id="selectSubgroupIniconditList" parameterType="SubgroupInicondit" resultMap="SubgroupIniconditResult">
+        <include refid="selectSubgroupIniconditVo"/>
+        <where>  
+            <if test="iniconditId != null and iniconditId != ''"> and inicondit_id like concat('%',#{iniconditId},'%')</if>
+             <if test="columnName != null and columnName != ''"> and column_name like concat('%',#{columnName},'%')</if>
+             <if test="conditionMark != null and conditionMark != ''"> and condition_mark = #{conditionMark}</if>
+             <if test="conditionOperator != null and conditionOperator != ''"> and condition_operator = #{conditionOperator}</if>
+             <if test="tableName != null and tableName != ''"> and table_name like concat('%',#{tableName},'%')</if>
+             <if test="conditionValue != null and conditionValue != ''"> and condition_value like concat('%',#{conditionValue},'%')</if>
+             <if test="params.beginTime7 != null and params.beginTime7 != ''">
+              and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime7},'%y%m%d')
+             </if>
+            <if test="params.endTime7 != null and params.endTime7 != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime7},'%y%m%d')
+            </if>
+             <if test="params.beginTime8 != null and params.beginTime8 != ''">
+              and date_format(update_time,'%y%m%d') &gt;= date_format(#{params.beginTime8},'%y%m%d')
+             </if>
+            <if test="params.endTime8 != null and params.endTime8 != ''">
+                and date_format(update_time,'%y%m%d') &lt;= date_format(#{params.endTime8},'%y%m%d')
+            </if>
+         </where>
+    </select>
+    
+    <select id="selectSubgroupIniconditById" parameterType="String" resultMap="SubgroupIniconditResult">
+        <include refid="selectSubgroupIniconditVo"/>
+        where inicondit_id = #{iniconditId}
+    </select>
+        
+    <insert id="insertSubgroupInicondit" parameterType="SubgroupInicondit">
+        insert into tool_subgroup_inicondit
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="iniconditId != null  and iniconditId != ''  ">inicondit_id,</if>
+           <if test="columnName != null  and columnName != ''  ">column_name,</if>
+           <if test="conditionMark != null  and conditionMark != ''  ">condition_mark,</if>
+           <if test="conditionOperator != null  and conditionOperator != ''  ">condition_operator,</if>
+           <if test="tableName != null  and tableName != ''  ">table_name,</if>
+           <if test="conditionValue != null  and conditionValue != ''  ">condition_value,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="updateTime != null  ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="iniconditId != null  and iniconditId != ''  ">#{iniconditId},</if>
+        <if test="columnName != null  and columnName != ''  ">#{columnName},</if>
+        <if test="conditionMark != null  and conditionMark != ''  ">#{conditionMark},</if>
+        <if test="conditionOperator != null  and conditionOperator != ''  ">#{conditionOperator},</if>
+        <if test="tableName != null  and tableName != ''  ">#{tableName},</if>
+        <if test="conditionValue != null  and conditionValue != ''  ">#{conditionValue},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="updateTime != null  ">#{updateTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateSubgroupInicondit" parameterType="SubgroupInicondit">
+        update tool_subgroup_inicondit
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="columnName != null  and columnName != ''  ">column_name = #{columnName},</if>
+            <if test="conditionMark != null  and conditionMark != ''  ">condition_mark = #{conditionMark},</if>
+            <if test="conditionOperator != null  and conditionOperator != ''  ">condition_operator = #{conditionOperator},</if>
+            <if test="tableName != null  and tableName != ''  ">table_name = #{tableName},</if>
+            <if test="conditionValue != null  and conditionValue != ''  ">condition_value = #{conditionValue},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+        </trim>
+        where inicondit_id = #{iniconditId}
+    </update>
+
+	<delete id="deleteSubgroupIniconditById" parameterType="String">
+        delete from tool_subgroup_inicondit where inicondit_id = #{iniconditId}
+    </delete>
+	
+    <delete id="deleteSubgroupIniconditByIds" parameterType="String">
+        delete from tool_subgroup_inicondit where inicondit_id in 
+        <foreach item="iniconditId" collection="array" open="(" separator="," close=")">
+            #{iniconditId}
+        </foreach>
+    </delete>
+    
+</mapper>

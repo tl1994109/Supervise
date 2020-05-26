@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.system.reProcdef.mapper.ReProcdefMapper">
+    
+    <resultMap type="ReProcdef" id="ReProcdefResult">
+        <result property="id"    column="ID_"    />
+        <result property="rev"    column="REV_"    />
+        <result property="category"    column="CATEGORY_"    />
+        <result property="name"    column="NAME_"    />
+        <result property="key"    column="KEY_"    />
+        <result property="version"    column="VERSION_"    />
+        <result property="deploymentId"    column="DEPLOYMENT_ID_"    />
+        <result property="resourceName"    column="RESOURCE_NAME_"    />
+        <result property="dgrmResourceName"    column="DGRM_RESOURCE_NAME_"    />
+        <result property="description"    column="DESCRIPTION_"    />
+        <result property="hasStartFormKey"    column="HAS_START_FORM_KEY_"    />
+        <result property="hasGraphicalNotation"    column="HAS_GRAPHICAL_NOTATION_"    />
+        <result property="suspensionState"    column="SUSPENSION_STATE_"    />
+        <result property="tenantId"    column="TENANT_ID_"    />
+    </resultMap>
+	
+	<sql id="selectReProcdefVo">
+        select ID_, REV_, CATEGORY_, NAME_, KEY_, VERSION_, DEPLOYMENT_ID_, RESOURCE_NAME_, DGRM_RESOURCE_NAME_, DESCRIPTION_, HAS_START_FORM_KEY_, HAS_GRAPHICAL_NOTATION_, SUSPENSION_STATE_, TENANT_ID_ from act_re_procdef
+    </sql>
+	
+    <select id="selectReProcdefList" parameterType="ReProcdef" resultMap="ReProcdefResult">
+        <include refid="selectReProcdefVo"/>
+        <where>  
+            <if test="id != null and id != ''"> and ID_ like concat('%',#{id},'%')</if>
+             <if test="rev != null and rev != ''"> and REV_ like concat('%',#{rev},'%')</if>
+             <if test="category != null and category != ''"> and CATEGORY_ like concat('%',#{category},'%')</if>
+             <if test="name != null and name != ''"> and NAME_ like concat('%',#{name},'%')</if>
+             <if test="key != null and key != ''"> and KEY_ like concat('%',#{key},'%')</if>
+             <if test="version != null and version != ''"> and VERSION_ like concat('%',#{version},'%')</if>
+             <if test="deploymentId != null and deploymentId != ''"> and DEPLOYMENT_ID_ like concat('%',#{deploymentId},'%')</if>
+             <if test="resourceName != null and resourceName != ''"> and RESOURCE_NAME_ like concat('%',#{resourceName},'%')</if>
+             <if test="dgrmResourceName != null and dgrmResourceName != ''"> and DGRM_RESOURCE_NAME_ like concat('%',#{dgrmResourceName},'%')</if>
+             <if test="description != null and description != ''"> and DESCRIPTION_ like concat('%',#{description},'%')</if>
+             <if test="hasStartFormKey != null and hasStartFormKey != ''"> and HAS_START_FORM_KEY_ like concat('%',#{hasStartFormKey},'%')</if>
+             <if test="hasGraphicalNotation != null and hasGraphicalNotation != ''"> and HAS_GRAPHICAL_NOTATION_ like concat('%',#{hasGraphicalNotation},'%')</if>
+             <if test="suspensionState != null and suspensionState != ''"> and SUSPENSION_STATE_ like concat('%',#{suspensionState},'%')</if>
+             <if test="tenantId != null and tenantId != ''"> and TENANT_ID_ like concat('%',#{tenantId},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectReProcdefById" parameterType="String" resultMap="ReProcdefResult">
+        <include refid="selectReProcdefVo"/>
+        where ID_ = #{id}
+    </select>
+        
+    <insert id="insertReProcdef" parameterType="ReProcdef">
+        insert into act_re_procdef
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="id != null  and id != ''  ">ID_,</if>
+           <if test="rev != null  ">REV_,</if>
+           <if test="category != null  and category != ''  ">CATEGORY_,</if>
+           <if test="name != null  and name != ''  ">NAME_,</if>
+           <if test="key != null  and key != ''  ">KEY_,</if>
+           <if test="version != null  ">VERSION_,</if>
+           <if test="deploymentId != null  and deploymentId != ''  ">DEPLOYMENT_ID_,</if>
+           <if test="resourceName != null  and resourceName != ''  ">RESOURCE_NAME_,</if>
+           <if test="dgrmResourceName != null  and dgrmResourceName != ''  ">DGRM_RESOURCE_NAME_,</if>
+           <if test="description != null  and description != ''  ">DESCRIPTION_,</if>
+           <if test="hasStartFormKey != null  ">HAS_START_FORM_KEY_,</if>
+           <if test="hasGraphicalNotation != null  ">HAS_GRAPHICAL_NOTATION_,</if>
+           <if test="suspensionState != null  ">SUSPENSION_STATE_,</if>
+           <if test="tenantId != null  and tenantId != ''  ">TENANT_ID_,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="id != null  and id != ''  ">#{id},</if>
+        <if test="rev != null  ">#{rev},</if>
+        <if test="category != null  and category != ''  ">#{category},</if>
+        <if test="name != null  and name != ''  ">#{name},</if>
+        <if test="key != null  and key != ''  ">#{key},</if>
+        <if test="version != null  ">#{version},</if>
+        <if test="deploymentId != null  and deploymentId != ''  ">#{deploymentId},</if>
+        <if test="resourceName != null  and resourceName != ''  ">#{resourceName},</if>
+        <if test="dgrmResourceName != null  and dgrmResourceName != ''  ">#{dgrmResourceName},</if>
+        <if test="description != null  and description != ''  ">#{description},</if>
+        <if test="hasStartFormKey != null  ">#{hasStartFormKey},</if>
+        <if test="hasGraphicalNotation != null  ">#{hasGraphicalNotation},</if>
+        <if test="suspensionState != null  ">#{suspensionState},</if>
+        <if test="tenantId != null  and tenantId != ''  ">#{tenantId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateReProcdef" parameterType="ReProcdef">
+        update act_re_procdef
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="rev != null  ">REV_ = #{rev},</if>
+            <if test="category != null  and category != ''  ">CATEGORY_ = #{category},</if>
+            <if test="name != null  and name != ''  ">NAME_ = #{name},</if>
+            <if test="key != null  and key != ''  ">KEY_ = #{key},</if>
+            <if test="version != null  ">VERSION_ = #{version},</if>
+            <if test="deploymentId != null  and deploymentId != ''  ">DEPLOYMENT_ID_ = #{deploymentId},</if>
+            <if test="resourceName != null  and resourceName != ''  ">RESOURCE_NAME_ = #{resourceName},</if>
+            <if test="dgrmResourceName != null  and dgrmResourceName != ''  ">DGRM_RESOURCE_NAME_ = #{dgrmResourceName},</if>
+            <if test="description != null  and description != ''  ">DESCRIPTION_ = #{description},</if>
+            <if test="hasStartFormKey != null  ">HAS_START_FORM_KEY_ = #{hasStartFormKey},</if>
+            <if test="hasGraphicalNotation != null  ">HAS_GRAPHICAL_NOTATION_ = #{hasGraphicalNotation},</if>
+            <if test="suspensionState != null  ">SUSPENSION_STATE_ = #{suspensionState},</if>
+            <if test="tenantId != null  and tenantId != ''  ">TENANT_ID_ = #{tenantId},</if>
+        </trim>
+        where ID_ = #{id}
+    </update>
+
+	<delete id="deleteReProcdefById" parameterType="String">
+        delete from act_re_procdef where ID_ = #{id}
+    </delete>
+	
+    <delete id="deleteReProcdefByIds" parameterType="String">
+        delete from act_re_procdef where ID_ in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

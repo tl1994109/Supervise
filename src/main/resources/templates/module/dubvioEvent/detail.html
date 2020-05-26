@@ -1,0 +1,484 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+
+<style type="text/css">
+
+    .select-info-container input, .select-info-container select{
+        width: 80%;
+    }
+    label.error {
+        position: absolute;
+        right: 20px;
+        width: 20%;
+        /* top: 3px; */
+        color: rgb(239, 57, 43);
+        font-size: 12px;
+        text-align: right;
+    }
+    .form-header{
+        font-size: 15px;
+        color: #6379bb;
+        border-bottom: 1px solid #ddd;
+        margin: 8px 10px 25px 10px;
+        padding-bottom: 5px;
+        text-align: center;
+    }
+</style>
+<style type="text/css">
+    /* 新增样式20190419 */
+    .select2-container .select2-selection--single{height: 34px;}
+    .select2-container--default .select2-selection--single{border: 1px solid #ddd;}
+    .select2-container--default .select2-selection--single .select2-selection__rendered{line-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {padding: 0px 5px;}
+    .select-info-container input, .select-info-container select{width: 100%}
+    .select2-container{height: 34px;line-height: 34px}
+    .select2-container--default .select2-selection--multiple{height: 34px;width: 100%;border: 1px solid #ddd;}
+    .select2-container .select2-selection--multiple{min-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__rendered{height: 34px; }
+    .select2-container--default.select2-container--focus .select2-selection--multiple{border: 1px solid #ddd;}
+</style>
+
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+<div class="col-sm-12 select-info search-collapse">
+<form class="form-horizontal m" id="form-dubvioEvent-detail" th:object="${dubvioEvent}">
+
+   <input type="hidden" id="dubvioId"  name="dubvioId"  th:field="*{dubvioId}" >
+
+    <!--<h4 class="form-header h4">基本信息</h4>-->
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">序号：</label>
+                <div class="col-sm-8">
+                    <input type="text" name="jbxxXfxh" id="jbxxXfxh"  th:field="*{jbxxXfxh}" readonly="readonly" unselectable="on" class="form-control" style="background-color:#eee">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">反映时间：</label>
+                <div class="col-sm-8">
+                    <input type="text" name="jbxxXffysj" id="jbxxXffysj" th:field="*{jbxxXffysj}" readonly="readonly" unselectable="on" class="form-control" style="background-color:#eee">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">反映人：</label>
+                <div class="col-sm-8">
+                    <input type="text" name="dubvioFyr" readonly="readonly" unselectable="on" th:field="*{dubvioFyr}" style="background-color:#eee" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">联系方式：</label>
+                <div class="col-sm-8">
+                    <input type="text" id="dubvioFyrdh" name="dubvioFyrdh"  readonly="readonly" unselectable="on" th:field="*{dubvioFyrdh}"  style="background-color:#eee" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">反映对象：</label>
+                <div class="col-sm-8">
+                    <!--<span onclick="selectPersonTree()" style="position: absolute;left: 0;margin-left:80%;z-index:5;display: block;width: 17%;border-radius: 5px;text-align: center;height:30px; line-height: 30px;border: 1px solid #ddd;">选择</span>-->
+                    <input type="text" name="dubvioFydx"  id="treeName" readonly="readonly" unselectable="on" style="float: left;background-color:#eee" th:field="*{dubvioFydx}" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">线索来源：</label>
+                <div class="col-sm-8">
+                    <input type="text" name="jbxxXfly" id="jbxxXfly" th:field="*{jbxxXfly}" readonly="readonly" unselectable="on" class="form-control" style="background-color:#eee">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label class="col-xs-2 control-label">经办法院：</label>
+                <div class="col-xs-10">
+                    <input type="text" class="jbfyName form-control" id="jbfyName" name="jbfyName"  readonly="readonly" unselectable="on" th:field="*{jbfyName}" style="background-color:#eee">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label class="col-xs-2 control-label">反映问题：</label>
+                <div class="col-xs-10">
+                    <textarea name="dubvioStrategyName" rows="8" readonly="readonly"  th:field="*{dubvioStrategyName}"  unselectable="on" class="form-control" style="background-color:#eee"></textarea>
+                    <!--<input id="dubvioStrategyName" name="dubvioStrategyName" type="week">-->
+                    <!--<div class="summernote"></div>-->
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label class="col-xs-2 control-label">处置情况：</label>
+                <div class="col-xs-10">
+                    <textarea name="jbxxXfczqk" th:field="*{jbxxXfczqk}" rows="8" readonly="readonly" unselectable="on" class="form-control" style="background-color:#eee"></textarea>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label class="col-xs-2 control-label">信访承办人：</label>
+                <div class="col-xs-10">
+                    <input type="text" name="jbxxXfcbr" th:field="*{jbxxXfcbr}" readonly="readonly" unselectable="on" class="form-control" style="background-color:#eee">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label class="col-xs-2 control-label">处置结果：</label>
+                <div class="col-xs-10">
+                    <textarea name="jbxxXfczjg" th:field="*{jbxxXfczjg}" rows="8" readonly="readonly" unselectable="on" class="form-control" style="background-color:#eee"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label class="col-xs-2 control-label">备注：</label>
+                <div class="col-xs-10">
+                    <textarea name="jbxxXfbz" th:field="*{jbxxXfbz}" rows="8" readonly="readonly" unselectable="on" class="form-control" style="background-color:#eee"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="form-group">-->
+        <!--<div class="select-info-container col-sm-6">-->
+            <!--<label class="col-sm-3 control-label">反映人：</label>-->
+            <!--<div class="col-sm-8">-->
+                <!--<input type="text" name="dubvioFyr"  readonly="readonly" th:field="*{dubvioFyr}"   style="background-color:#eee">-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="select-info-container col-sm-6">-->
+            <!--<label class="col-sm-3 control-label">反映电话：</label>-->
+            <!--<div class="col-sm-8">-->
+                <!--<input type="text" id="dubvioFyrdh" name="dubvioFyrdh"  readonly="readonly"  th:field="*{dubvioFyrdh}"  style="background-color:#eee">-->
+            <!--</div>-->
+        <!--</div>-->
+
+    <!--</div>-->
+    <!--<div class="form-group">-->
+        <!--<div class="select-info-container col-sm-6">-->
+            <!--<label class="col-sm-3 control-label">被反映人：</label>-->
+            <!--<div class="col-sm-8" style="">-->
+                <!--&lt;!&ndash;                        <span onclick="selectPersonTree()"&ndash;&gt;-->
+                <!--&lt;!&ndash;                              style="position: absolute;left: 0;margin-left:60%;z-index:5;display: block;padding: 4px;width: 17%;border-radius: 5px;text-align: center;line-height: 20px;border: 1px solid #ddd;">选择</span>&ndash;&gt;-->
+                <!--<input type="text" name="dubvioFydx"  id="treeName" readonly="readonly" onchange="doSubmits()" style="float: left;background-color:#eee" th:field="*{dubvioFydx}" >-->
+
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class=" select-info-container col-sm-6">-->
+            <!--<label class="col-sm-3 control-label">案号：</label>-->
+            <!--<div class="col-sm-8">-->
+                <!--<input type="text" name="jbxxAh" id="jbxxAh" class="jbxxAh"  readonly="readonly"  th:field="*{jbxxAh}"   style="background-color:#eee">-->
+
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+<!--&lt;!&ndash;    <div class="form-group" id="tHead">&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;        <div class="form-group col-sm-6">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <label class="col-sm-3 control-label">违纪事件案号：</label>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <div class="col-sm-8">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <select id="ah" name="ah" class="ah">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                    <option value="">请选择</option>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                </select>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;        <div class="form-group col-sm-6">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <label class="col-sm-3 control-label">可疑违纪事件来源：</label>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <div class="col-sm-8">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <select id="dubvioSource" name="dubvioSource" class="dubvioSource">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                    <option value="">请选择</option>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                    <option value="2">信访录入</option>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                </select>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+    <!--<div id="main" class="main">-->
+
+    <!--</div>-->
+
+    <!--&lt;!&ndash;<div id="thirdMain" class="thirdMain">&ndash;&gt;-->
+
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--<div id="secondMain" class="secondMain">-->
+        <!--<div class="form-group ">-->
+
+            <!--&lt;!&ndash;                    <div class="form-group col-sm-6">&ndash;&gt;-->
+            <!--&lt;!&ndash;                        <label class="col-sm-3 control-label">可疑点：</label>&ndash;&gt;-->
+            <!--&lt;!&ndash;                        &lt;!&ndash;<input type="text" name="dubvioStrategyName"  >&ndash;&gt;&ndash;&gt;-->
+            <!--&lt;!&ndash;                        <div class="col-sm-8">&ndash;&gt;-->
+            <!--&lt;!&ndash;                            <select name="dubvioStrategyIds" id="dubvioStrategyIds">&ndash;&gt;-->
+
+            <!--&lt;!&ndash;                                <option th:each="list:${strategyList}" th:value="${list.id}"&ndash;&gt;-->
+            <!--&lt;!&ndash;                                        th:text="${list.name}"></option>&ndash;&gt;-->
+            <!--&lt;!&ndash;                            </select>&ndash;&gt;-->
+            <!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+            <!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+
+            <!--<div class="select-info-container col-sm-6">-->
+                <!--<label class="col-sm-3 control-label">被告人：</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<input type="text" name="jbxxBgr" readonly="readonly" th:field="*{jbxxBgr}"  style="background-color:#eee">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="select-info-container col-sm-6">-->
+                <!--<label class="col-sm-3 control-label">承办庭：</label>-->
+                <!--&lt;!&ndash;<input type="text" name="jbxxCbtName"  >&ndash;&gt;-->
+                <!--<div class="col-sm-8">-->
+                    <!--&lt;!&ndash;                    <select name="jbxxCbtName" id="jbxxCbtName" th:field="*{jbxxCbtName}" readonly="readonly">&ndash;&gt;-->
+
+                    <!--&lt;!&ndash;                        <option th:each="cbtList:${cbtList}" th:value="${cbtList.cbtName}"&ndash;&gt;-->
+                    <!--&lt;!&ndash;                                th:text="${cbtList.cbtName}"></option>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                    </select>&ndash;&gt;-->
+
+                    <!--<input type="text" name="jbxxCbtName"  th:field="*{jbxxCbtName}" readonly="readonly" style="background-color:#eee">-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group ">-->
+            <!--<div class="select-info-container col-sm-6">-->
+                <!--<label class="col-sm-3 control-label">案件类别：</label>-->
+                <!--<div class="col-sm-8">-->
+<!--&lt;!&ndash;                    <select id="jbxxAjlb" name="jbxxAjlb" th:field="*{jbxxAjlb}" readonly="readonly" >&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option value="">请选择</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option value="刑事">刑事</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option value="民事">民事</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option value="执行">执行</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option value="行政">行政</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </select>&ndash;&gt;-->
+
+                    <!--<input type="text" name="jbxxAjlb"  th:field="*{jbxxAjlb}" readonly="readonly" style="background-color:#eee">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="select-info-container col-sm-6">-->
+                <!--<label class="col-sm-3 control-label">收案日期：</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<input type="text" class="time-input" id="startTime_13" name="jbxxSarq" readonly="readonly" th:field="*{jbxxSarq}" style="background-color:#eee">-->
+                <!--</div>-->
+            <!--</div>-->
+
+        <!--</div>-->
+        <!--<div class="form-group">-->
+<!--&lt;!&ndash;            <div class="form-group col-sm-6">&ndash;&gt;-->
+<!--&lt;!&ndash;                <label class="col-sm-3 control-label">创建时间：</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="col-sm-8">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <input type="text" class="time-input" id="startTime" name="createTimes" th:field="*{createTime}">&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+            <!--<div class="select-info-container col-sm-6">-->
+                <!--<label class="col-sm-3 control-label">归档日期：</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<input type="text" class="time-input" id="startTime_18" name="jbxxGdrq" readonly="readonly" th:field="*{jbxxGdrq}" style="background-color:#eee">-->
+
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class=" select-info-container col-sm-6">-->
+                <!--<label class="col-sm-3 control-label">立案日期：</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<input type="text" class="time-input" id="startTime_14" name="jbxxLarq" readonly="readonly" th:field="*{jbxxLarq}" style="background-color:#eee">-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+
+            <!--<div class="select-info-container col-sm-6">-->
+                <!--<label class="col-sm-3 control-label">分案日期：</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<input type="text" class="time-input" id="startTime_15" name="jbxxFarq" readonly="readonly" th:field="*{jbxxFarq}"  style="background-color:#eee">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="select-info-container col-sm-6">-->
+                <!--<label class="col-sm-3 control-label">开庭日期：</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<input type="text" class="time-input" id="startTime_16" name="jbxxKtrq" readonly="readonly" th:field="*{jbxxKtrq}" style="background-color:#eee">-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<div class=" select-info-container col-sm-6">-->
+                <!--<label class="col-sm-3 control-label">结案日期：</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<input type="text" class="time-input" id="startTime_17" name="jbxxJarq"  readonly="readonly" th:field="*{jbxxJarq}" style="background-color:#eee">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="select-info-container col-sm-6">-->
+                <!--<label class="col-sm-3 control-label">经办法院：</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<input type="text" class="jbfyName" id="jbfyName" name="jbfyName"  readonly="readonly" th:field="*{jbfyName}" style="background-color:#eee">-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="form-group" >-->
+        <!--<div class="col-sm-12">-->
+            <!--<label class="col-sm-2 w16">反映问题：</label>-->
+            <!--<div class="col-sm-9" >-->
+                <!--<textarea name="dubvioStrategyName" rows="8" readonly="readonly" th:field="*{dubvioStrategyName}"  style="width: 104%"></textarea>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="form-group col-sm-12">
+        <div class="form-control-static col-sm-offset-5">
+<!--            <button type="submit" id="dubvioEventAdd" class="btn btn-primary">提交</button>-->
+            <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+        </div>
+    </div>
+</form>
+</div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+    $(function() {
+    $('.summernote').summernote({
+        height : '220px',
+        lang : 'zh-CN'
+    });
+        var content = $("#dubvioStrategyName").val();
+        $('#detailor').code(content);
+
+
+    });
+
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime', theme: 'molv'});
+        laydate.render({elem: '#startTime_13', theme: 'molv'});
+        laydate.render({elem: '#startTime_14', theme: 'molv'});
+        laydate.render({elem: '#startTime_15', theme: 'molv'});
+        laydate.render({elem: '#startTime_16', theme: 'molv'});
+        laydate.render({elem: '#startTime_17', theme: 'molv'});
+        laydate.render({elem: '#startTime_18', theme: 'molv'});
+
+    });
+
+    var prefix = ctx + "module/dubvioEvent"
+    $("#form-dubvioEvent-detail").validate({
+        rules:{
+                dubvioId:{
+                required:true,
+            },
+                dubvioStrategyId:{
+                required:true,
+            },
+                jbxxAh:{
+                required:true,
+            },
+        },
+        submitHandler: function(form) {
+
+            var row=0;
+            checkTel();
+
+        }
+    });
+
+
+    function checkTel() {
+        var tel = $("#dubvioFyrdh").val();
+        var mobile = /^[1][3,4,5,7,8][0-9]{9}$/
+        var phone = /^0\d{2,3}-?\d{7,8}$/;
+
+
+        if (mobile.test(tel) || phone.test(tel)) {
+            $.operate.save(prefix + "/detail", $('#form-dubvioEvent-detail').serialize());
+        } else {
+            layer.msg('联系方式格式不正确，请输入正确的手机号或带区号的固定电话！', {
+                time: 1500,//3s后自动关闭
+                icon: 5
+            });
+
+        }
+    }
+
+
+    /*-选择人员树*/
+    function selectPersonTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = ctx + "system/courtOrgan/selectDeptTree/" + deptId;
+        var options = {
+            title: '选择人员',
+            width: "380",
+            height: "380",
+            url: ctx + "system/courtOrgan/selectDeptTree/" + deptId,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        if ($.tree.notAllowParents(tree)) {
+            var body = layer.getChildFrame('body', index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            var name = body.find('#treeName').val();
+            $("#ah").empty()
+            $("#main").hide();
+            $("#secondMain").show();
+            $.ajax({
+                url: ctx + "module/dubvioEvent/queyAhAndAjbhByAjbh",
+                type: "get",
+                dataType: "json",
+                data: {"name": name},
+                success: function (result) {
+                    var string = ' <option value="">请选择</option>';
+                    $("#tHead").find('.ah').append(string);
+                    for (var i = 0; i < result.length; i++) {
+                        var newOption = document.createElement("option");
+                        newOption.text = result[i].jbxx_ah;
+                        newOption.value = result[i].jbxx_ajbh;
+                        $("#tHead").find('.ah').append(newOption);
+                    }
+                }
+
+            })
+            layer.close(index);
+
+
+        }
+    }
+
+
+</script>
+</body>
+</html>

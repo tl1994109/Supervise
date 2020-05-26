@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+
+<body class="white-bg">
+
+<style>
+    table{
+        border-collapse: collapse;
+    }
+    input::-ms-input-placeholder{
+        text-align: center;
+    }
+    input::-webkit-input-placeholder{
+        text-align: center;
+    }
+    .document{
+        width: 100%;
+        height: 100%;
+        font-family: "microsoft yahei";
+    }
+    .document-container{
+        width: 800px;
+        height: auto;
+        margin: 20px auto;
+        border: 1px solid #2f4050;
+        padding: 20px;
+    }
+    .title-1 h2{
+        font-weight: bold;
+    }
+    .title-2, .title-3{
+        margin: 0 auto;
+        text-align: center;
+    }
+    .title-2 input{
+        width: 80px;
+    }
+    .title-2 p{
+        font-size: 24px;
+        font-weight: 400;
+    }
+    .title-3 h1{
+        font-weight: bold;
+    }
+    .title-4 input{
+        width: 80px;
+    }
+    /*.title-4 p{*/
+    /*padding: 5px 0px;*/
+    /*}*/
+    .title-5 p{
+        margin-top: 15px;
+        text-align: center;
+    }
+    .title-5 input{
+        width: 100px;
+    }
+    .title-5 .color-p{
+        color: red;
+        padding-top: 40px;
+        text-align: left;
+    }
+    .title-5 .fl, .title-4 .fl{
+        display: block;
+        float: left;
+    }
+    .title-5 .fr, .title-4 .fr{
+        display: block;
+        float: right;
+    }
+    table.table-content{
+        width: 758px;
+        height: auto;
+        box-sizing: border-box;
+    }
+    /*table.table-content tr{*/
+    /*height: 100px;*/
+    /*}*/
+    table.table-content th{
+        background-color: #f5f5f5;
+        text-align: center !important;
+    }
+
+
+
+
+</style>
+
+<div class="document">
+    <div class="document-container">
+        <div class="title-1">
+            <h2>密级</h2>
+        </div>
+        <div class="title-2">
+            <p><input type="text" placeholder="X X X" onfocus="this.placeholder=''" onblur="this.placeholder='X X X'"/>监察委员会</p>
+        </div>
+        <div class="title-3">
+            <p><h1>使用询问措施呈批表</h1></p>
+        </div>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="60">
+                <th width="150">询问对象姓名</th>
+                <td contenteditable="true"></td>
+                <th width="150">性别</th>
+                <td contenteditable="true"></td>
+                <th width="150">出生年月</th>
+                <td contenteditable="true"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="60">
+                <th width="150">工作单位及职务职级</th>
+                <td contenteditable="true" colspan="4"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="60">
+                <th width="150">承办部门</th>
+                <td contenteditable="true" colspan="2"></td>
+                <th width="150">询问人</th>
+                <td contenteditable="true" colspan="2"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="60">
+                <th width="150">询问时间</th>
+                <td contenteditable="true" colspan="2"></td>
+                <th width="150">询问地点</th>
+                <td contenteditable="true" colspan="2"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="100">
+                <th width="150">询问措施及理由</th>
+                <td contenteditable="true"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="100">
+                <th width="150">承办部门意见</th>
+                <td contenteditable="true"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="100">
+                <th width="150">分管委员意见</th>
+                <td contenteditable="true"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="100">
+                <th width="150">分管副主任意见</th>
+                <td contenteditable="true"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="100">
+                <th width="150">备注</th>
+                <td contenteditable="true"></td>
+            </tr>
+        </table>
+
+        <div class="form-group">
+            <div class="form-control-static col-sm-offset-5">
+                <button type="reset" class="btn btn-warning">重置</button>
+                <button type="submit" class="btn btn-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:include="include::footer"></div>
+
+
+</body>
+</html>

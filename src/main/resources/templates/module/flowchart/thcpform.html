@@ -1,0 +1,192 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+
+<body class="white-bg">
+
+<style>
+    table{
+        border-collapse: collapse;
+    }
+    input::-ms-input-placeholder{
+        text-align: center;
+    }
+    input::-webkit-input-placeholder{
+        text-align: center;
+    }
+    .document{
+        width: 100%;
+        height: 100%;
+        font-family: "microsoft yahei";
+    }
+    .document-container{
+        width: 800px;
+        height: auto;
+        margin: 20px auto;
+        border: 1px solid #2f4050;
+        padding: 20px;
+    }
+    .title-1 h2{
+        font-weight: bold;
+    }
+    .title-2, .title-3{
+        margin: 0 auto;
+        text-align: center;
+    }
+    .title-2 input{
+        width: 80px;
+    }
+    .title-2 p{
+        font-size: 24px;
+        font-weight: 400;
+    }
+    .title-3 h1{
+        font-weight: bold;
+    }
+    .title-4 input{
+        width: 80px;
+    }
+    /*.title-4 p{*/
+        /*padding: 5px 0px;*/
+    /*}*/
+    .title-5 p{
+        margin-top: 15px;
+        text-align: center;
+    }
+    .title-5 input{
+        width: 100px;
+    }
+    .title-5 .color-p{
+        color: red;
+        padding-top: 40px;
+        text-align: left;
+    }
+    .title-5 .fl, .title-4 .fl{
+        display: block;
+        float: left;
+    }
+    .title-5 .fr, .title-4 .fr{
+        display: block;
+        float: right;
+    }
+    table.table-content{
+        width: 758px;
+        height: auto;
+        box-sizing: border-box;
+    }
+    /*table.table-content tr{*/
+    /*height: 100px;*/
+    /*}*/
+    table.table-content th{
+        background-color: #f5f5f5;
+        text-align: center !important;
+    }
+
+
+
+
+</style>
+
+<div class="document">
+    <div class="document-container">
+        <div class="title-1">
+            <h2>密级</h2>
+        </div>
+        <div class="title-2">
+            <p>中共<input type="text" placeholder="X X X" onfocus="this.placeholder=''" onblur="this.placeholder='X X X'" />纪律委员会</p>
+            <p><input type="text" placeholder="X X X" onfocus="this.placeholder=''" onblur="this.placeholder='X X X'"/>监察委员会</p>
+        </div>
+        <div class="title-3">
+            <p><h1>谈话呈批表</h1></p>
+        </div>
+        <div class="title-4">
+                <div class="fl">呈报部门:<input type="text"></div>
+                <div class="fr">呈报日期:<input type="text"/>年 <input type="text"/>月 <input type="text"/>日</div>
+        </div>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tbody>
+                <tr height="60">
+                    <th width="150">被谈话人</th>
+                    <td width="200" contenteditable="true"></td>
+                    <th width="150">单位及职务</th>
+                    <td width="200" contenteditable="true" colspan="5"></td>
+                </tr>
+            </tbody>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="80">
+                <th width="75">性别</th>
+                <td width="75" contenteditable="true"></td>
+                <th width="75">出生年月</th>
+                <td width="75" contenteditable="true"></td>
+                <th width="75">政治面貌</th>
+                <td width="75" contenteditable="true"></td>
+                <th width="75">民族</th>
+                <td width="75" contenteditable="true"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="100">
+                <th width="150">线索来源</th>
+                <td contenteditable="true"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="100">
+                <th width="150">反映的主要问题</th>
+                <td contenteditable="true"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="100">
+                <th width="150">承办部门意见</th>
+                <td contenteditable="true"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="100">
+                <th width="150">分管常委（委员）意见</th>
+                <td contenteditable="true"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="100">
+                <th width="150">分管副书记（副主任）意见</th>
+                <td contenteditable="true"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="100">
+                <th width="150">书记（主任）意见</th>
+                <td contenteditable="true"></td>
+            </tr>
+        </table>
+        <table border="1" cellpadding="0" cellspacing="0" class="table-content">
+            <tr height="100">
+                <th width="150">备注</th>
+                <td contenteditable="true"></td>
+            </tr>
+        </table>
+        <div class="title-5">
+            <div class="fl">填表人：<input type="text"/> </div>
+            <div class="fr"><input type="text"/>年 <input type="text"/>月 <input type="text"/>日</div>
+            <p class="color-p">说明：1.对需要谈话的下一级党委（党组）主要负责人，报书记（主任）批准。书记（主任）对此前呈报的问题线索已同意以谈话方式处置的，此表可不再呈报书记（主任）签批，在备注一栏注明情况即可。
+                2.需向同级党委主要负责人报告的，另行请示报告并在备注一栏注明报告情况。3.此表附谈话方案和相关工作预案呈报审批。</p>
+        </div>
+
+        <div class="form-group">
+            <div class="form-control-static col-sm-offset-5">
+                <button type="reset" class="btn btn-warning">重置</button>
+                <button type="submit" class="btn btn-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:include="include::footer"></div>
+
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.system.adress.mapper.AdressMapper">
+
+    <resultMap type="Adress" id="AdressResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="dept" column="dept"/>
+        <result property="phone" column="phone"/>
+        <result property="type" column="type"/>
+        <result property="createTimes" column="create_time"/>
+        <result property="updateTimes" column="update_time"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="status" column="status"/>
+        <result property="createBy" column="create_by"/>
+        <result property="qqWx" column="qq_wx"/>
+        <result property="email" column="email"/>
+        <result property="officePhone" column="office_phone"/>
+        <result property="fax" column="fax"/>
+        <result property="jbfyId" column="jbfy_id"/>
+    </resultMap>
+
+    <sql id="selectAdressVo">
+        select id, name,office_phone,fax,jbfy_id, dept, phone, type, create_time, update_time, delete_flag,status,create_by,qq_wx,email
+        from sys_adress
+    </sql>
+
+    <select id="selectAdressList" parameterType="Adress" resultMap="AdressResult">
+        <include refid="selectAdressVo"/>
+        <where>
+            <if test="id != null and id != ''">and id like concat('%',#{id},'%')</if>
+            <if test="name != null and name != ''">and name like concat('%',#{name},'%')</if>
+            <if test="dept != null and dept != ''">and dept like concat('%',#{dept},'%')</if>
+            <if test="phone != null and phone != ''">and phone like concat('%',#{phone},'%')</if>
+            <if test="type != null and type != ''">and type like concat('%',#{type},'%')</if>
+            <if test="createTimes != null and createTime != ''">and create_time like concat('%',#{createTimes},'%')</if>
+            <if test="updateTimes != null and updateTime != ''">and update_time like concat('%',#{updateTimes},'%')</if>
+            <if test="deleteFlag != null and deleteFlag != ''">and delete_flag like concat('%',#{deleteFlag},'%')</if>
+            <if test="status != null and status != ''">and status like concat('%',#{status},'%')</if>
+            <if test="createBy != null and createBy != ''">and create_by like concat('%',#{createBy},'%')</if>
+            <if test="qqWx != null and qqWx != ''">and qq_wx like concat('%',#{qqWx},'%')</if>
+            <if test="email != null and email != ''">and email like concat('%',#{email},'%')</if>
+            <if test="officePhone != null and officePhone != ''">and office_phone like concat('%',#{officePhone},'%')</if>
+            <if test="fax != null and fax != ''">and fax like concat('%',#{fax},'%')</if>
+            <if test="jbfyId != null and jbfyId != ''">and jbfy_id like concat('%',#{jbfyId},'%')</if>
+        </where>
+    </select>
+
+    <select id="selectAdressById" parameterType="Integer" resultMap="AdressResult">
+        <include refid="selectAdressVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAdress" parameterType="Adress">
+        insert into sys_adress
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  ">id,</if>
+            <if test="name != null  and name != ''  ">name,</if>
+            <if test="dept != null  and dept != ''  ">dept,</if>
+            <if test="phone != null  and phone != ''  ">phone,</if>
+            <if test="type != null  and type != ''  ">type,</if>
+            <if test="createTimes != null  ">create_time,</if>
+            <if test="updateTimes != null  ">update_time,</if>
+            <if test="deleteFlag != null  and deleteFlag != ''  ">delete_flag,</if>
+            <if test="status != null  and status != ''  ">status,</if>
+            <if test="createBy != null  and createBy != ''  ">create_by,</if>
+            <if test="qqWx != null  and qqWx != ''  ">qq_wx,</if>
+            <if test="email != null  and email != ''  ">email,</if>
+            <if test="officePhone != null  and officePhone != ''  ">office_phone,</if>
+            <if test="fax != null  and fax != ''  ">fax,</if>
+            <if test="jbfyId != null  and jbfyId != ''  ">jbfy_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  ">#{id},</if>
+            <if test="name != null  and name != ''  ">#{name},</if>
+            <if test="dept != null  and dept != ''  ">#{dept},</if>
+            <if test="phone != null  and phone != ''  ">#{phone},</if>
+            <if test="type != null  and type != ''  ">#{type},</if>
+            <if test="createTimes != null  ">#{createTimes},</if>
+            <if test="updateTimes != null  ">#{updateTimes},</if>
+            <if test="deleteFlag != null  and deleteFlag != ''  ">#{deleteFlag},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+            <if test="qqWx != null  and qqWx != ''  ">#{qqWx},</if>
+            <if test="email != null  and email != ''  ">#{email},</if>
+            <if test="officePhone != null  and officePhone != ''  ">#{officePhone},</if>
+            <if test="fax != null  and fax != ''  ">#{fax},</if>
+            <if test="jbfyId != null  and jbfyId != ''  ">#{jbfyId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAdress" parameterType="Adress">
+        update sys_adress
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null ">name = #{name},</if>
+            <if test="dept != null">dept = #{dept},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="createTimes != null  ">create_time = #{createTimes},</if>
+            <if test="updateTimes != null  ">update_time = #{updateTimes},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="qqWx != null">qq_wx = #{qqWx},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="officePhone != null">office_phone = #{officePhone},</if>
+            <if test="fax != null">fax = #{fax},</if>
+            <if test="jbfyId != null  and jbfyId != ''  ">jbfy_id = #{jbfyId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAdressById" parameterType="Integer">
+        update  sys_adress  set delete_flag='1' where id = #{id}
+    </delete>
+
+    <delete id="deleteAdressByIds" parameterType="String">
+        update sys_adress set delete_flag='1' where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <sql id="selectAllAdressVo">
+        SELECT * from (SELECT DISTINCT
+	  NAME,
+	  phone,
+	dept,
+	DATE_FORMAT(create_time,'%Y-%m-%d') as create_time
+   FROM
+	sys_adress where status=1 and delete_flag=0 and phone is not null
+UNION
+	SELECT DISTINCT
+		person_name AS NAME,
+		mobile_phone AS phone,
+		f.dept_name AS dept,
+		DATE_FORMAT(e.create_time,'%Y-%m-%d') as create_time
+	FROM
+		sys_person e
+	LEFT JOIN sys_dept f ON e.dept_id = f.dept_id  where  e.del_flag=0 AND  (e.mobile_phone !='' OR e.mobile_phone!=NULL)
+	UNION
+		SELECT DISTINCT
+			c.dept_name AS NAME,
+			c.phone,
+			cu.dept_name AS dept,
+			DATE_FORMAT(c.create_time,'%Y-%m-%d') as create_time
+		FROM
+			sys_court_organ c
+		LEFT JOIN sys_court_organ cu ON cu.dept_id = c.parent_id
+		WHERE
+			c.dept_type = 3  and  cu.del_flag=0 AND c.phone!=NULL) a
+    </sql>
+
+
+    <select id="selectAllAdressList" parameterType="Adress" resultMap="AdressResult">
+        <include refid="selectAllAdressVo"/>
+        <where>
+            <if test="name != null and name != ''">and a.name like concat('%',#{name},'%')</if>
+            <if test="phone != null and phone != ''">and a.phone like concat('%',#{phone},'%')</if>
+            <if test="dept != null and dept != ''">and a.dept like concat('%',#{dept},'%')</if>
+        </where>
+    </select>
+
+</mapper>

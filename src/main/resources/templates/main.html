@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include :: header">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="stylesheet" href="../css/main_a.css">-->
+</head>
+<link rel="stylesheet" th:href="@{/css/main_a.css}">
+<!--缩略-->
+<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+<link rel="stylesheet" th:href="@{/css/slider.css}">
+<style>
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        border: 1px solid #ddd;
+        color: #555555;
+        cursor: default;
+        background-color: #fff;
+        margin-right: 0;
+        border-bottom: 1px solid #fff;
+    }
+
+    .s-carousel img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .mail_list .pagination-detail {
+        display: none;
+    !important;
+    }
+    .btn-style{
+        background-color: #fff;
+        border: 1px solid #337ab7;
+        color: #337ab7;
+        font-size: 12px;
+        margin-top: 1%;
+        padding: 5px 5px;
+    }
+</style>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <div class="main_right">
+        <div class="box">
+            <!--提醒-->
+            <div class="remind">
+                <div class="title">
+                    <h5><i class="fa fa-bullhorn"></i>提醒</h5>
+                </div>
+                <div class="remind_box" id="news">
+                    <ul id="news_ul">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- 我的日志 时间 -->
+        <div class="box">
+            <div class="right_top">
+                <div class="title">
+                    <h5><i class="fa fa-address-card"></i>备忘录</h5>
+                </div>
+                <div class="time">
+                    <!--<div class="today">-->
+                    <!--<p>15</p>-->
+                    <!--<p>星期二</p>-->
+                    <!--</div>-->
+                    <div class="time_date">
+                        <div class="account-box">
+                            <h2 class="account-title">
+                                <span class="left c3"></span>
+                                <a href="javascript:void(0)" class="f-btn-fhby right">今天</a>
+                                <div class="clearfix right">
+                                    <div class="f-btn-jian left"><</div>
+                                    <div class="left f-riqi"><span class="f-year">2017</span>年<span
+                                            class="f-month">1</span>月
+                                    </div>
+                                    <div class="f-btn-jia left">></div><!-- 一定不能换行-->
+                                </div>
+                            </h2>
+                            <div class="f-rili-table">
+                                <div class="f-rili-head celarfix">
+                                    <div class="f-rili-th">周日</div>
+                                    <div class="f-rili-th">周一</div>
+                                    <div class="f-rili-th">周二</div>
+                                    <div class="f-rili-th">周三</div>
+                                    <div class="f-rili-th">周四</div>
+                                    <div class="f-rili-th">周五</div>
+                                    <div class="f-rili-th">周六</div>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="f-tbody clearfix">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task">
+                    <ul id="memo_list">
+                        <!--<li><a href="#"><span>     </span>-->
+                        <!--<p>暂无</p></a></li>-->
+                    </ul>
+                    <a href="javascript:void(0)" class="task_add">+</a>
+                </div>
+            </div>
+        </div>
+        <!-- 通讯录 -->
+        <div class="box">
+            <div class="mail_list">
+                <div class="title">
+                    <h5><i class="fa fa-align-justify"></i>通讯录<a style="float: right" onclick="selectProcess()">更多</a>
+                    </h5>
+                </div>
+                <div style="margin-left: 10%;" class="form-group select-info-container">
+                    <input type="text" id="addressName" oninput="findAddressName();" style="margin-top: 1%;">&nbsp;<p class="addressName btn btn-primary btn-style">搜索</p>
+                </div>
+                <form action="" class="form form-inline">
+                    <table class="table" id="bootstrap-table_address" data-mobile-responsive="true">
+
+                    </table>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="main_left">
+        <!-- 轮播图 列表 -->
+        <div class="box">
+            <div class="meeting_notice">
+                <!--轮播-->
+                <div class="title">
+                    <h5><i class="fa fa-clipboard"></i>公告</h5>
+                </div>
+
+                <div class="s-carousel"
+                     style="float: left;width: 40%;height: 300px;overflow: hidden;padding-right: 2px;">
+                    <!--<h1>Title</h1>-->
+                    <div id="slider-wrap">
+                        <ul id="slider">
+                        </ul>
+                        <!--controls-->
+                        <div class="btns" id="next"><i class="fa fa-arrow-right"></i></div>
+                        <div class="btns" id="previous"><i class="fa fa-arrow-left"></i></div>
+                        <div id="counter"></div>
+                        <div id="pagination-wrap">
+                            <ul>
+                            </ul>
+                        </div>
+                        <!--controls-->
+                    </div>
+                </div>
+                <!--列表-->
+                <div class="meeting_list">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#notice-tab" data-toggle="tab">公告</a>
+                        </li>
+                        <li>
+                            <a href="#news-tab" data-toggle="tab">通知</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="notice-tab" style="height: 270px;padding: 0 10px;">
+                            <table id="bootstrap-table_one" data-mobile-responsive="true"></table>
+                        </div>
+                        <div class="tab-pane fade" id="news-tab" style="height: 270px;padding: 0 10px;">
+                            <table id="bootstrap-table_two" data-mobile-responsive="true"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 流程中心 -->
+        <div class="box">
+            <div class="flow">
+                <div class="title">
+                    <h5><i class="fa fa-briefcase"></i>任务中心</h5>
+                </div>
+                <ul role="tablist" class="nav nav-tabs">
+                    <li class="active"><a href="#messages" data-toggle="tab">任务未完成</a>
+                    </li>
+                    <li id="task_two"><a href="#noEndTask" data-toggle="tab">任务完成</a>
+                    </li>
+                    <li th:if="${roleKey} eq 'true'"><a href="#home" data-toggle="tab">流程待办</a></li>
+                    <li th:if="${roleKey} eq 'true'"><a href="#profile" data-toggle="tab">流程已办</a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active" id="messages">
+                        <table id="bootstrap-table_task_three" data-mobile-responsive="true"></table>
+                    </div>
+                    <div class="tab-pane" id="noEndTask">
+                        <table id="bootstrap-table_task_fourth" data-mobile-responsive="true"></table>
+                    </div>
+                    <div th:if="${roleKey} eq 'true'" class="tab-pane" id="home">
+                        <table id="bootstrap-table_task_one" data-mobile-responsive="true"></table>
+                    </div>
+                    <div th:if="${roleKey} eq 'true'" class="tab-pane" id="profile">
+                        <table id="bootstrap-table_task_two" data-mobile-responsive="true"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文档 公文中心 -->
+        <div class="box">
+            <div class="title">
+                <h5><i class="fa fa-archive"></i>知识管理</h5>
+            </div>
+            <div class="box_file">
+                <div class="title">
+                    <h5 style="margin-left: 24px">政策法规</h5>
+                </div>
+                <div class="tab-pane">
+                    <table id="bootstrap-table_knowledge_one" data-mobile-responsive="true"></table>
+                </div>
+            </div>
+            <div class="bumf">
+                <div class="title">
+                    <h5 style="margin-left: 24px">经验分享</h5>
+                </div>
+                <div class="tab-pane">
+                    <table id="bootstrap-table_knowledge_two" data-mobile-responsive="true"></table>
+                </div>
+            </div>
+            <div class="manages">
+                <div class="title">
+                    <h5 style="text-align: center">模板文档</h5>
+                </div>
+                <ul id="template">
+                    <li><a href="javascript:void(0)">表单模板</a></li>
+                    <li><a href="javascript:void(0)">实例文档</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script type="text/javascript" th:src="@{/js/slider.js}"></script>
+<!--轮播-->
+</body>
+<script th:inline="javascript">
+    $(function () {
+        //页面加载初始化年月
+        var mydate = new Date();
+        $(".f-year").html(mydate.getFullYear());
+        $(".f-month").html(mydate.getMonth() + 1);
+        showDate(mydate.getFullYear(), mydate.getMonth() + 1);
+        //日历上一月
+        $(".f-btn-jian ").click(function () {
+            var mm = parseInt($(".f-month").html());
+            var yy = parseInt($(".f-year").html());
+            if (mm == 1) { //返回12月
+                $(".f-year").html(yy - 1);
+                $(".f-month").html(12);
+                showDate(yy - 1, 12);
+            } else { //上一月
+                $(".f-month").html(mm - 1);
+                showDate(yy, mm - 1);
+            }
+        })
+        //日历下一月
+        $(".f-btn-jia").click(function () {
+            var mm = parseInt($(".f-month").html());
+            var yy = parseInt($(".f-year").html());
+            if (mm == 12) { //返回12月
+                $(".f-year").html(yy + 1);
+                $(".f-month").html(1);
+                showDate(yy + 1, 1);
+            } else { //上一月
+                $(".f-month").html(mm + 1);
+                showDate(yy, mm + 1);
+            }
+        })
+        //返回本月
+        $(".f-btn-fhby").click(function () {
+            $(".f-year").html(mydate.getFullYear());
+            $(".f-month").html(mydate.getMonth() + 1);
+            showDate(mydate.getFullYear(), mydate.getMonth() + 1);
+            var nowDate = new Date();
+            var day = nowDate.getDate();
+            var month = nowDate.getMonth() + 1;
+            var year = nowDate.getFullYear();
+            var date = year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day);
+            //var date = new Date().format("yyyy-MM-dd");
+            $.ajax({
+                url: ctx + 'module/memo/list',
+                type: "post",
+                dataType: "json",
+                data: {"memoDate": date},
+                success: function (result) {
+                    var doc = $("#memo_list");
+                    doc.empty()
+                    var str = '';
+                    if (result.length > 0) {
+                        $.each(result, function (i, data) {
+                            str += '<li><span class="glyphicon glyphicon-remove memoRemove" style="float: right;margin: 3px 20px 0 0" data-id="' + data.memoId + '" aria-hidden="true"></span><a href="javascript:void(0)" onclick="operateComponent.edit(\'' + data.memoId + '\',\'module/memo/edit/{id}\',\'备忘录\')" title="' + data.memoContent + '"><span>' + data.memoTime + '</span><p>' + data.memoContent + '</p></a></li>';
+                        })
+                        doc.append(str);
+                    } else {
+                        str += '<li><a href="javascript:void(0)" title="今日暂无"><span>00:00</span><p>今日暂无</p></a></li>';
+                        doc.append(str);
+                    }
+                }
+            });
+        })
+
+        //读取年月写入日历  重点算法!!!!!!!!!!!
+        function showDate(yyyy, mm) {
+            var dd = new Date(parseInt(yyyy), parseInt(mm), 0); //Wed Mar 31 00:00:00 UTC+0800 2010
+            var daysCount = dd.getDate(); //本月天数
+            var mystr = ""; //写入代码
+            var icon = ""; //图标代码
+            var today = new Date().getDate(); //今天几号  21
+            var monthstart = new Date(parseInt(yyyy) + "/" + parseInt(mm) + "/1").getDay() //本月1日周几
+            var lastMonth; //上一月天数
+            var nextMounth //下一月天数
+            if (parseInt(mm) == 1) {
+                lastMonth = new Date(parseInt(yyyy) - 1, parseInt(12), 0).getDate();
+            } else {
+                lastMonth = new Date(parseInt(yyyy), parseInt(mm) - 1, 0).getDate();
+            }
+            if (parseInt(mm) == 12) {
+                nextMounth = new Date(parseInt(yyyy) + 1, parseInt(1), 0).getDate();
+            } else {
+                nextMounth = new Date(parseInt(yyyy), parseInt(mm) + 1, 0).getDate();
+            }
+
+            $.ajax({
+                url: ctx + 'module/memo/list',
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    //计算上月空left格数
+                    for (j = monthstart; j > 0; j--) {
+                        mystr += "<div class='f-td f-null f-lastMonth' style='color:#ccc;'>" + (lastMonth - j + 1) +
+                            "</div>";
+                    }
+
+                    //本月单元格
+                    for (i = 0; i < daysCount; i++) {
+                        var isok = false;
+                        $.each(result, function (index, data) {
+                            var m = mm;
+                            var d = i + 1;
+                            if (Number(m) < 10) {
+                                m = "0" + m;
+                            }
+                            if (Number(d) < 10) {
+                                d = "0" + d;
+                            }
+                            var nowDate = yyyy + "-" + m + "-" + d;
+                            if (nowDate == data.memoDate) {
+                                isok = true;
+                                return false;
+                            } else {
+                                isok = false;
+                            }
+                        });
+                        if (isok == true) {
+                            // 这里为一个单元格，添加内容在此
+                            mystr += "<div class='f-td f-number'><span class='f-day f_bgc'>" + (i + 1) + "</span>" +
+                                "" //这里加判断
+                                +
+                                "</div>";
+                        } else {
+                            // 这里为一个单元格，添加内容在此
+                            mystr += "<div class='f-td f-number'><span class='f-day'>" + (i + 1) + "</span>" +
+                                "" //这里加判断
+                                +
+                                "</div>";
+                        }
+                    }
+
+                    //计算下月空格数
+                    for (k = 0; k < 42 - (daysCount + monthstart); k++) { //表格保持等高6行42个单元格
+                        mystr += "<div class='f-td f-null f-nextMounth' style='color:#ccc;'>" + (k + 1) + "</div>";
+                    }
+                    //写入日历
+                    $(".f-rili-table .f-tbody").html(mystr);
+                    //给今日加class
+                    if (mydate.getFullYear() == yyyy) {
+                        if ((mydate.getMonth() + 1) == mm) {
+                            var today = mydate.getDate();
+                            var lastNum = $(".f-lastMonth").length;
+                            $(".f-rili-table .f-td").eq(today + lastNum - 1).addClass("f-today");
+                        }
+                    }
+                    //绑定选择方法
+                    $(".f-rili-table .f-number").off("click");
+                    $(".f-rili-table .f-number").on("click", function () {
+                        $(".f-rili-table .f-number").removeClass("f-on");
+                        $(this).addClass("f-on");
+                    });
+
+                    //绑定查看方法
+                    // $(".f-yuan").off("mouseover");
+                    $(".f-yuan").on("mouseover", function () {
+                        // $(this).parent().find(".f-table-msg").show();
+                    });
+                    $(".f-table-msg").off("mouseover");
+                    $(".f-table-msg").on("mouseover", function () {
+                        $(this).show();
+                    });
+                    // $(".f-yuan").off("mouseleave");
+                    // $(".f-yuan").on("mouseleave", function () {
+                    //     $(this).parent().find(".f-table-msg").hide();
+                    // });
+                    $(".f-table-msg").off("mouseleave");
+                    $(".f-table-msg").on("mouseleave", function () {
+                        $(this).hide();
+                    });
+                }
+            });
+        }
+
+        function getweek(date) {
+            var week;
+            if (date.getDay() == 0) week = "周日"
+            if (date.getDay() == 1) week = "周一"
+            if (date.getDay() == 2) week = "周二"
+            if (date.getDay() == 3) week = "周三"
+            if (date.getDay() == 4) week = "周四"
+            if (date.getDay() == 5) week = "周五"
+            if (date.getDay() == 6) week = "周六"
+            return week;
+        }
+
+        function getmyday() {
+            var sss = new Date().getFullYear() + '-' + new Date().getMonth() + 1 + '-' + new Date().getDate()
+            var w1 = getweek(new Date(sss));
+            $('.c3').text(w1)
+        }
+
+        getmyday();
+        //    提醒自动滚动
+        var $this = $("#news");
+        var scrollTimer;
+        $this.hover(function () {
+                clearInterval(scrollTimer);
+            },
+            function () {
+                scrollTimer = setInterval(function () {
+                    scrollNews($this);
+                }, 2000);
+            }).trigger("mouseleave");
+
+
+        function scrollNews(obj) {
+            var $self = obj.find("ul");
+            var lineHeight = $self.find("li:first").height();
+            $self.animate({
+                "marginTop": -lineHeight + "px"
+            }, 600, function () {
+                $self.css({
+                    marginTop: 0
+                }).find("li:first").appendTo($self);
+            })
+        }
+
+        /********************** 首页数据填充 页面定义显示列 START *****************************************/
+        var notice_columns = [
+            {
+                field: 'noticeTitle', title: '标题', width: '60%',
+                formatter: function (value, row, index) {
+                    return "<a style='text-decoration:none' title='" + row.noticeTitle + "' onclick='noticeDetail(\"" + row.noticeId + "\")' >" +
+                        "<p color='blue'>" + row.noticeTitle + "</p></a>";
+                }
+            }, {field: 'username', title: '发布人', width: '20%'}, {field: 'createTime', title: '发布时间', width: '20%'}
+        ];
+        var backlog_columns = [
+            {
+                field: 'title', title: '标题', width: '49%',
+                formatter: function (value, row, index) {
+                    return "<a style='text-decoration:none' title='" + row.title + "' onclick='backlogDetail(\"" + row.procInstId + "\",\"" + row.type + "\",\"" + row.id + "\",\""+row.isok+"\")' >" +
+                        "<p color='blue'>" + row.title + "</p></a>";
+                }
+            }, {field: 'type', title: '任务类型', width: '15%', align: "center"},
+            {field: 'proposerName', title: '申请人', width: '12%', align: "center"},
+            {field: 'createDate', title: '开始时间', width: '12%', align: "center"}
+        ];
+        var complete_columns = [
+            {
+                field: 'title', title: '标题', width: '49%',
+                formatter: function (value, row, index) {
+                    return "<a style='text-decoration:none' title='" + row.title + "' onclick='completeDetail(\"" + row.id + "\")' >" +
+                        "<p color='blue'>" + row.title + "</p></a>";
+                }
+            }, {field: 'type', title: '任务类型', width: '15%', align: "center"},
+            {field: 'assignee', title: '申请人', width: '12%', align: "center"}, {
+                field: 'startTime',
+                title: '开始时间',
+                width: '12%',
+                align: "center"
+            },
+            {field: 'endTime', title: '结束时间', width: '12%', align: "center"}
+        ];
+
+
+        var address_columns = [
+
+            {field: 'name', title: '姓名', width: '20%'}, {field: 'dept', title: '部门', width: '20%'}, {
+                field: 'phone',
+                title: '联系方式',
+                width: '20%'
+            }
+        ];
+        var datas_6 = [[${@dict.getType('task_importance')}]];
+        var datas_7 = [[${@dict.getType('task_urgency')}]];
+        var datas_3 = [[${@dict.getType('task_status')}]];
+        var datas_regulations1 = [[${@dict.getType('knowledge_typeTwo_one')}]];
+        var datas_regulations2 = [[${@dict.getType('knowledge_typeTwo_two')}]];
+        var col = [
+            {
+                field: 'taskName',
+                title: '任务名称',
+                width: '40%',
+                formatter: function (value, row, index) {
+                    return "<a style='text-decoration:none' title='" + row.taskName + "' onclick='taskEdit(\"" + row.taskId + "\")' >" +
+                        "<p color='blue'>" + row.taskName + "</p></a>";
+                }
+            },
+            {
+                field: 'taskStatus',
+                title: '任务状态',
+                align: 'center',
+                width: '10%',
+                formatter: function (value, row, index) {
+                    return initSimpleTabl.selectDictLabel(datas_3, value);
+                }
+            },
+            {
+                field: 'taskImportance',
+                title: '重要度',
+                align: 'center',
+                width: '8%',
+                formatter: function (value, row, index) {
+                    return initSimpleTabl.selectDictLabel(datas_6, value);
+                }
+            },
+            {
+                field: 'taskUrgency',
+                title: '紧迫度',
+                align: 'center',
+                width: '8%',
+                formatter: function (value, row, index) {
+                    return initSimpleTabl.selectDictLabel(datas_7, value);
+                }
+            },
+            {
+                field: 'taskPlanStartdate',
+                title: '计划开始时间',
+                align: 'center',
+                width: '12%',
+            },
+            {
+                field: 'taskPlanEnddate',
+                title: '计划结束时间',
+                align: 'center',
+                width: '12%',
+            }, {
+                field: 'taskCreateName',
+                title: '创建人',
+                align: 'center',
+                width: '12%',
+            }];
+
+        var knowledgeCol = [{
+            field: 'knowledgeTitle',
+            title: '标题',
+            width: '70%',
+            formatter: function (value, row, index) {
+                return "<a style='text-decoration:none' title='" + row.knowledgeTitle + "' onclick='knowledgeDetail(\"" + row.knowledgeId + "\")' >" +
+                    "<p color='blue'>" + row.knowledgeTitle + "</p></a>";
+            }
+        },
+            {
+                field: 'typeTwo',
+                title: '类型',
+                formatter: function (value, row, index) {
+                    if (row.typeOne == '0') {
+                        return initSimpleTabl.selectDictLabel(datas_regulations1, value);
+                    } else if (row.typeOne == '1') {
+                        return initSimpleTabl.selectDictLabel(datas_regulations2, value);
+                    }
+
+                }
+            },
+        ];
+
+        var knowledgeExpShareCol = [{
+            field: 'knowledgeTitle',
+            title: '标题',
+            width: '60%',
+            formatter: function (value, row, index) {
+                return "<a style='text-decoration:none' title='" + row.knowledgeTitle + "' onclick='knowledgeDetail(\"" + row.knowledgeId + "\")' >" +
+                    "<p color='blue'>" + row.knowledgeTitle + "</p></a>";
+            }
+        },
+            {
+                field: 'knowledgeCreatetime',
+                title: '创建时间',
+                width: '40%',
+                align: "center",
+            },
+        ];
+
+        initTable(ctx + 'module/knowledge/main', "bootstrap-table_knowledge_one", function (params) {
+            return {
+                // 传递参数查询参数
+                pageSize: params.limit,
+                pageNum: params.offset / params.limit + 1,
+                searchValue: params.search,
+                orderByColumn: params.sort,
+                isAsc: params.order,
+                knowledgeType: "0"
+            };
+        }, knowledgeCol);
+
+        initTable(ctx + 'module/knowledge/main', "bootstrap-table_knowledge_two", function (params) {
+            return {
+                // 传递参数查询参数
+                pageSize: params.limit,
+                pageNum: params.offset / params.limit + 1,
+                searchValue: params.search,
+                orderByColumn: params.sort,
+                isAsc: params.order,
+                knowledgeType: "1"
+            };
+        }, knowledgeExpShareCol);
+
+        initTable(ctx + 'module/information/main', "bootstrap-table_task_three", function (params) {
+            return {
+                // 传递参数查询参数
+                pageSize: params.limit,
+                pageNum: params.offset / params.limit + 1,
+                searchValue: params.search,
+                orderByColumn: params.sort,
+                isAsc: params.order,
+                taskStatus: "0"
+            };
+        }, col);
+
+        /************ 首页数据填充 公告中心 START ************************************/
+        initTable(ctx + 'system/notice/main', "bootstrap-table_one", function (params) {
+            return {
+                // 传递参数查询参数
+                pageSize: params.limit,
+                pageNum: params.offset / params.limit + 1,
+                searchValue: params.search,
+                orderByColumn: params.sort,
+                isAsc: params.order,
+                noticeType: "2",
+                status: "0",
+                deleteFlag: "0",
+                processStatus: "0"
+            };
+        }, notice_columns);
+        initTable(ctx + 'system/notice/main', "bootstrap-table_two", function (params) {
+            return {
+                // 传递参数查询参数
+                pageSize: params.limit,
+                pageNum: params.offset / params.limit + 1,
+                searchValue: params.search,
+                orderByColumn: params.sort,
+                isAsc: params.order,
+                noticeType: "1",
+                status: "0",
+                deleteFlag: "0",
+                processStatus: "0"
+            };
+        }, notice_columns);
+        initTable(ctx + 'module/ruTask/main', "bootstrap-table_task_one", function (params) {
+            return {
+                // 传递参数查询参数
+                pageSize: params.limit,
+                pageNum: params.offset / params.limit + 1,
+                searchValue: params.search,
+                orderByColumn: params.sort,
+                isAsc: params.order,
+            };
+        }, backlog_columns);
+        initTable(ctx + 'module/hiTaskinst/main', "bootstrap-table_task_two", function (params) {
+            return {
+                // 传递参数查询参数
+                pageSize: params.limit,
+                pageNum: params.offset / params.limit + 1,
+                searchValue: params.search,
+                orderByColumn: params.sort,
+                isAsc: params.order,
+            };
+        }, complete_columns);
+
+
+        initTable(ctx + 'system/adress/allSecondList', "bootstrap-table_address", function (params) {
+            return {
+                // 传递参数查询参数
+                pageSize: params.limit,
+                pageNum: params.offset / params.limit + 1,
+                searchValue: params.search,
+                orderByColumn: params.sort,
+                isAsc: params.order,
+                pagination: false,
+            };
+        }, address_columns);
+
+
+        function initTable(url, eventId, queryParams, columns) {
+            //公告中心公告填充
+
+            $('#' + eventId).bootstrapTable({
+                url: url,                //请求后台的URL（*）
+                contentType: "application/x-www-form-urlencoded",   // 编码类型
+                method: 'post',                      //请求方式（*）
+                //toolbar: '#toolbar',              //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+                pageSize: 5,                     //每页的记录行数（*）
+                pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                search: false,                      //是否显示表格搜索
+                strictSearch: false,
+                showColumns: false,                  //是否显示所有的列（选择显示的列）
+                showRefresh: false,                  //是否显示刷新按钮
+                clickToSelect: true,                //是否启用点击选中行
+                // height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                  //是否显示父子表
+                //得到查询的参数
+                queryParams: queryParams,
+                columns: columns,
+            });
+        };
+        /************ 首页数据填充 公告中心 END ************************************/
+        $.ajax({
+            url: ctx + 'module/remind/remindList',
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.length > 0) {
+                    var doc = $("#news_ul");
+                    doc.empty()
+                    var str = '';
+                    $.each(result, function (i, data) {
+                        if (data.url != null && data.url != '') {
+                            str += '<li><a href="javascript:void(0)" onclick="remindListDetail(\'' + data.url + '\',\'' + data.modalName + '\')" title="' + data.title + '">' + data.title + '</a></li>';
+                        } else {
+                            str += '<li><a href="javascript:void(0)" title="' + data.title + '">' + data.title + '</a></li>';
+                        }
+                    })
+                    doc.append(str);
+                }
+            }
+        });
+        /*********** 备忘录 ******************/
+        $(document).on("click", ".task_add", function () {
+            var year = $(".f-year").text();
+            var month = $(".f-month").text();
+            if (Number(month) < 10) {
+                month = "0" + month;
+            }
+            var pa = "";
+            if (document.getElementsByClassName("f-on").length > 0) {
+                pa = $(".f-on").children()[0].innerHTML;
+                if (Number(pa) < 10) {
+                    pa = "0" + pa;
+                }
+                var str = year + "-" + month + "-" + pa;
+                modalComponent.open("添加备忘录", ctx + "module/memo/add?date=" + str);
+            } else {
+                var nowDate = new Date();
+                var day = nowDate.getDate();
+                var month = nowDate.getMonth() + 1;
+                var year = nowDate.getFullYear();
+                var date = year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day);
+                modalComponent.open("添加备忘录", ctx + "module/memo/add?date=" + date);
+            }
+
+        });
+
+        var col2 = [
+            {
+                field: 'taskName',
+                title: '任务名称',
+                width: '40%',
+                formatter: function (value, row, index) {
+                    return "<a style='text-decoration:none' title='" + row.taskName + "' onclick='taskDetail(\"" + row.taskId + "\")' >" +
+                        "<p color='blue'>" + row.taskName + "</p></a>";
+                }
+            },
+            {
+                field: 'taskStatus',
+                title: '任务状态',
+                align: 'center',
+                width: '8%',
+                formatter: function (value, row, index) {
+                    return initSimpleTabl.selectDictLabel(datas_3, value);
+                }
+            },
+            {
+                field: 'taskImportance',
+                title: '重要度',
+                align: 'center',
+                width: '8%',
+                formatter: function (value, row, index) {
+                    return initSimpleTabl.selectDictLabel(datas_6, value);
+                }
+            },
+            {
+                field: 'taskUrgency',
+                title: '紧迫度',
+                align: 'center',
+                width: '8%',
+                formatter: function (value, row, index) {
+                    return initSimpleTabl.selectDictLabel(datas_7, value);
+                }
+            },
+            {
+                field: 'taskPlanStartdate',
+                title: '规划开始时间',
+                width: '12%',
+            },
+            {
+                field: 'taskPlanEnddate',
+                title: '规划结束时间',
+                width: '12%',
+            }, {
+                field: 'taskCreateName',
+                title: '创建人',
+                width: '12%',
+            }];
+
+        $(document).on("click", "#task_two", function () {
+            initTable(ctx + 'module/information/main', "bootstrap-table_task_fourth", function (params) {
+                return {
+                    // 传递参数查询参数
+                    pageSize: params.limit,
+                    pageNum: params.offset / params.limit + 1,
+                    searchValue: params.search,
+                    orderByColumn: params.sort,
+                    isAsc: params.order,
+                    taskStatus: "2"
+                };
+            }, col2);
+            $.table.refreshEdit('bootstrap-table_task_fourth',ctx + 'module/information/main')
+        });
+
+        $(document).on("click","a[href='#messages']",function(){
+            $.table.refreshEdit('bootstrap-table_task_three',ctx + 'module/information/main')
+        });
+
+        var nowDate = new Date();
+        var day = nowDate.getDate();
+        var month = nowDate.getMonth() + 1;
+        var year = nowDate.getFullYear();
+        var date = year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day);
+        $.ajax({
+            url: ctx + 'module/memo/list',
+            type: "post",
+            dataType: "json",
+            data: {"memoDate": date},
+            success: function (result) {
+                var doc = $("#memo_list");
+                doc.empty()
+                var str = '';
+                if (result.length > 0) {
+                    $.each(result, function (i, data) {
+                        str += '<li><span class="glyphicon glyphicon-remove memoRemove" data-id="' + data.memoId + '" style="float: right;margin: 3px 20px 0 0" aria-hidden="true"></span><a href="javascript:void(0)" onclick="operateComponent.edit(\'' + data.memoId + '\',\'module/memo/edit/{id}\',\'备忘录\')" title="' + data.memoContent + '"><span>' + data.memoTime + '</span><p>' + data.memoContent + '</p></a></li>';
+                    })
+                    doc.append(str);
+                } else {
+                    str += '<li><a  href="javascript:void(0)" title="今日暂无"><span>00:00</span><p>今日暂无</p></a></li>';
+                    doc.append(str);
+                }
+            }
+        });
+
+        $.ajax({
+            url: ctx + 'module/template/main',
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                var doc = $("#template");
+                doc.empty();
+                var str = '';
+               if(result.code!=500){
+                   $.each(result, function (index, data) {
+                       str += '<li><a id="threeTree" data-id="' + data.templateId + '" href="javascript:void(0)">' + data.templateName + '</a></li>';
+                   });
+               }else{
+                   str += '<li><a href="javascript:void(0)">暂无数据</a></li>';
+                }
+                doc.append(str);
+            }
+        });
+    });
+
+    $(document).on("click", "#threeTree", function () {
+        var id = $(this).data("id");
+        operateComponent.check(id, "module/template/threeTree/{id}", "模板");
+    });
+
+    /************ 首页数据填充调用方法 START ************************************/
+    function noticeDetail(noticeId) {
+        operateComponent.check(noticeId, 'system/notice/check/{id}', '');
+    };
+
+    function taskDetail(taskId) {
+        operateComponent.detailFull('module/information/detail/{id}', taskId, '任务详情')
+    }
+
+    function taskEdit(taskId) {
+        operateComponent.editFull(taskId, 'module/information/edit/{id}', '任务');
+    }
+
+    function backlogDetail(procInstId, type, taskId,isok) {
+        modalComponent.openFull("审批", encodeURI(ctx + "module/ruTask/approval/" + procInstId + "?id=" + procInstId + "&type=" + type + "&taskId=" + taskId+"&isok="+isok));
+    }
+
+    function knowledgeDetail(id) {
+        operateComponent.detail("module/knowledge/check/{id}", id, '知识管理');
+    }
+
+    function completeDetail(id) {
+        operateComponent.detailFull('module/hiTaskinst/detail/{id}', id, '历史任务');
+    }
+
+    function remindListDetail(url, modalName) {
+        createMenuItem(ctx + url, modalName);
+    }
+
+    $(document).on("click", ".f-tbody div.f-td", function () {
+        var year = $(".f-year").text();
+        var month = $(".f-month").text();
+        if (Number(month) < 10) {
+            month = "0" + month;
+        }
+        var pa = $(this).children()[0].innerHTML;
+        if (Number(pa) < 10) {
+            pa = "0" + pa;
+        }
+        var str = year + "-" + month + "-" + pa;
+        $.ajax({
+            url: ctx + 'module/memo/list',
+            type: "post",
+            dataType: "json",
+            data: {"memoDate": str},
+            success: function (result) {
+                var doc = $("#memo_list");
+                doc.empty();
+                var str = '';
+                if (result.length > 0) {
+                    $.each(result, function (i, data) {
+                        str += '<li><span class="glyphicon glyphicon-remove memoRemove" data-id="' + data.memoId + '" style="float: right;margin: 3px 20px 0 0" aria-hidden="true"></span><a href="javascript:void(0)" onclick="operateComponent.edit(\'' + data.memoId + '\',\'module/memo/edit/{id}\',\'备忘录\')" title="' + data.memoContent + '"><span>' + data.memoTime + '</span><p>' + data.memoContent + '</p></a></li>';
+                    })
+                    doc.append(str);
+                } else {
+                    str += '<li><a href="javascript:void(0)" title="今日暂无"><span>00:00</span><p>今日暂无</p></a></li>';
+                    doc.append(str);
+                }
+            }
+        });
+    });
+
+    $(document).on("click", ".memoRemove", function () {
+        var id = $(this).data(id).id;
+        var event = $(this).parent();
+        modalComponent.confirm("确定删除该条备忘录信息吗？", function () {
+            modalComponent.loading("正在处理中，请稍后...");
+            var config = {
+                url: ctx + "module/memo/remove",
+                type: 'post',
+                dataType: 'json',
+                data: {ids: id},
+                success: function (result) {
+                    if (result.code == statusCode.web_status.SUCCESS) {
+                        modalComponent.msgSuccess(result.msg);
+                        event.remove();
+                    } else {
+                        modalComponent.alertError(result.msg);
+                    }
+                    modalComponent.closeLoading();
+                }
+            };
+            $.ajax(config);
+        });
+    });
+
+    /************ 首页数据填充调用 END ************************************/
+    function selectProcess() {
+        $.modal.open("查看更多通讯录", ctx + "system/adress");
+    }
+
+    $(document).on("click", ".addressName", function () {
+        findAddressName();
+    });
+
+    function findAddressName() {
+        var addressName = $("#addressName").val();
+        var tableStr = $("#bootstrap-table_address").html("");
+        var str =
+            +"<thead>"
+            + "<tr>"
+            + "<th style='width: 20%';data-field='name' tabindex='0'><div class='th-inner'>姓名</div><div class='fht-cell'></div></th>"
+            + "<th style='width: 20%';data-field='dept' tabindex='0'><div class='th-inner'>部门</div><div class='fht-cell'></div></th>"
+            + "<th style='width: 20%';data-field='phone' tabindex='0'><div class='th-inner'>联系方式</div><div class='fht-cell'></div></th>"
+            + "</tr>"
+            + "</thead>";
+        $.ajax({
+            url: ctx + 'system/adress/allSecondList',
+            type: "post",
+            dataType: "json",
+            data: {"name": addressName},
+            success: function (result) {
+                var len = result.rows.length;
+                for (var i = 0; i < len; i++) {
+                    str += "<tr >";
+                    str += "<td style='width: 20%'>" + result.rows[i].name + "</td>";
+                    str += "<td style='width: 20%'>" + result.rows[i].dept + "</td> ";
+                    str += "<td style='width: 20%'>" + result.rows[i].phone + "</td> ";
+                    str += "</tr>";
+                }
+                $("#bootstrap-table_address").append(str);
+            }
+
+        })
+    }
+
+
+</script>
+</html>

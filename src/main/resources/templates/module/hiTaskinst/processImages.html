@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+<body class="gray-bg">
+<div class="container-div">
+    <div class="clo-md-12 img-style">
+        <!-- 1.获取到规则流程图 -->
+        <img th:src="@{/module/hiTaskinst/lookProcessImg(deploymentId=${dId},resourceName=${dName},taskId=${taskId})}">
+    </div>
+    <div class="clo-md-12" style="margin-top: 30px">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>操作</th>
+                <th>处理人</th>
+                <th>批注</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="comment:${commentList}">
+                <td class="col-md-2" th:if="${comment.isok} eq 'true'">同意</td>
+                <td class="col-md-2" th:if="${comment.isok} eq 'false'">驳回</td>
+                <td class="col-md-2" th:if="${comment.isok} eq '处理中...'">处理中</td>
+                <td class="col-md-2" th:text="${comment.userName}">Bangalore</td>
+                <td  class="col-md-4"th:text="${comment.content}"></td>
+                <td class="col-md-2" th:text="${comment.startTime}">560001</td>
+                <td class="col-md-2" th:text="${comment.endTime}">560001</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+</body>
+</html>

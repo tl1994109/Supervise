@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.goingAbroad.mapper.GoingAbroadMapper">
+    
+    <resultMap type="GoingAbroad" id="GoingAbroadResult">
+        <result property="cgqkdjId"    column="cgqkdj_id"    />
+        <result property="cid"    column="cid"    />
+        <result property="cgqkdjCgzl"    column="cgqkdj_cgzl"    />
+        <result property="cgqkdjPzdw"    column="cgqkdj_pzdw"    />
+        <result property="cgqkdjMdd"    column="cgqkdj_mdd"    />
+        <result property="cgqkdjQssj"    column="cgqkdj_qssj"    />
+        <result property="cgqkdjZjly"    column="cgqkdj_zjly"    />
+        <result property="cgqkdjCgsy"    column="cgqkdj_cgsy"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+	
+	<sql id="selectGoingAbroadVo">
+        select cgqkdj_id, cid, cgqkdj_cgzl, cgqkdj_pzdw, cgqkdj_mdd, cgqkdj_qssj, cgqkdj_zjly, cgqkdj_cgsy, create_time, create_by, update_time, update_by from arch_going_abroad
+    </sql>
+	
+    <select id="selectGoingAbroadList" parameterType="GoingAbroad" resultMap="GoingAbroadResult">
+        <include refid="selectGoingAbroadVo"/>
+        <where>  
+            <if test="cgqkdjId != null and cgqkdjId != ''"> and cgqkdj_id like concat('%',#{cgqkdjId},'%')</if>
+             <if test="cid != null and cid != ''"> and cid like concat('%',#{cid},'%')</if>
+             <if test="cgqkdjCgzl != null and cgqkdjCgzl != ''"> and cgqkdj_cgzl like concat('%',#{cgqkdjCgzl},'%')</if>
+             <if test="cgqkdjPzdw != null and cgqkdjPzdw != ''"> and cgqkdj_pzdw like concat('%',#{cgqkdjPzdw},'%')</if>
+             <if test="cgqkdjMdd != null and cgqkdjMdd != ''"> and cgqkdj_mdd like concat('%',#{cgqkdjMdd},'%')</if>
+             <if test="cgqkdjQssj != null and cgqkdjQssj != ''"> and cgqkdj_qssj like concat('%',#{cgqkdjQssj},'%')</if>
+             <if test="cgqkdjZjly != null and cgqkdjZjly != ''"> and cgqkdj_zjly like concat('%',#{cgqkdjZjly},'%')</if>
+             <if test="cgqkdjCgsy != null and cgqkdjCgsy != ''"> and cgqkdj_cgsy like concat('%',#{cgqkdjCgsy},'%')</if>
+             <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+             <if test="createBy != null and createBy != ''"> and create_by like concat('%',#{createBy},'%')</if>
+             <if test="updateTime != null and updateTime != ''"> and update_time like concat('%',#{updateTime},'%')</if>
+             <if test="updateBy != null and updateBy != ''"> and update_by like concat('%',#{updateBy},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectGoingAbroadById" parameterType="String" resultMap="GoingAbroadResult">
+        <include refid="selectGoingAbroadVo"/>
+        where cgqkdj_id = #{cgqkdjId}
+    </select>
+        
+    <insert id="insertGoingAbroad" parameterType="GoingAbroad">
+        insert into arch_going_abroad
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="cgqkdjId != null  and cgqkdjId != ''  ">cgqkdj_id,</if>
+           <if test="cid != null  and cid != ''  ">cid,</if>
+           <if test="cgqkdjCgzl != null  and cgqkdjCgzl != ''  ">cgqkdj_cgzl,</if>
+           <if test="cgqkdjPzdw != null  and cgqkdjPzdw != ''  ">cgqkdj_pzdw,</if>
+           <if test="cgqkdjMdd != null  and cgqkdjMdd != ''  ">cgqkdj_mdd,</if>
+           <if test="cgqkdjQssj != null  and cgqkdjQssj != ''  ">cgqkdj_qssj,</if>
+           <if test="cgqkdjZjly != null  and cgqkdjZjly != ''  ">cgqkdj_zjly,</if>
+           <if test="cgqkdjCgsy != null  and cgqkdjCgsy != ''  ">cgqkdj_cgsy,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="createBy != null  and createBy != ''  ">create_by,</if>
+           <if test="updateTime != null  ">update_time,</if>
+           <if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="cgqkdjId != null  and cgqkdjId != ''  ">#{cgqkdjId},</if>
+        <if test="cid != null  and cid != ''  ">#{cid},</if>
+        <if test="cgqkdjCgzl != null  and cgqkdjCgzl != ''  ">#{cgqkdjCgzl},</if>
+        <if test="cgqkdjPzdw != null  and cgqkdjPzdw != ''  ">#{cgqkdjPzdw},</if>
+        <if test="cgqkdjMdd != null  and cgqkdjMdd != ''  ">#{cgqkdjMdd},</if>
+        <if test="cgqkdjQssj != null  and cgqkdjQssj != ''  ">#{cgqkdjQssj},</if>
+        <if test="cgqkdjZjly != null  and cgqkdjZjly != ''  ">#{cgqkdjZjly},</if>
+        <if test="cgqkdjCgsy != null  and cgqkdjCgsy != ''  ">#{cgqkdjCgsy},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+        <if test="updateTime != null  ">#{updateTime},</if>
+        <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateGoingAbroad" parameterType="GoingAbroad">
+        update arch_going_abroad
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cid != null    ">cid = #{cid},</if>
+            <if test="cgqkdjCgzl != null   ">cgqkdj_cgzl = #{cgqkdjCgzl},</if>
+            <if test="cgqkdjPzdw != null  ">cgqkdj_pzdw = #{cgqkdjPzdw},</if>
+            <if test="cgqkdjMdd != null  ">cgqkdj_mdd = #{cgqkdjMdd},</if>
+            <if test="cgqkdjQssj != null   ">cgqkdj_qssj = #{cgqkdjQssj},</if>
+            <if test="cgqkdjZjly != null  ">cgqkdj_zjly = #{cgqkdjZjly},</if>
+            <if test="cgqkdjCgsy != null   ">cgqkdj_cgsy = #{cgqkdjCgsy},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="createBy != null    ">create_by = #{createBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="updateBy != null  ">update_by = #{updateBy},</if>
+        </trim>
+        where cgqkdj_id = #{cgqkdjId}
+    </update>
+
+	<delete id="deleteGoingAbroadById" parameterType="String">
+        delete from arch_going_abroad where cgqkdj_id = #{cgqkdjId}
+    </delete>
+	
+    <delete id="deleteGoingAbroadByIds" parameterType="String">
+        delete from arch_going_abroad where cgqkdj_id in 
+        <foreach item="cgqkdjId" collection="array" open="(" separator="," close=")">
+            #{cgqkdjId}
+        </foreach>
+    </delete>
+    
+</mapper>

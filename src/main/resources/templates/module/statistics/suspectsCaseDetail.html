@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<style type="text/css">
+
+    /* Firefox 浏览器对 fieldset 元素设置了一些影响 width 属性的样式，导致响应式表格出现问题 */
+    @-moz-document url-prefix() {
+        fieldset { display: table-cell; }
+    }
+
+    .case-wrap{
+        width: 100%;
+        height: auto;
+        background-color: #fff;
+        /*overflow: hidden;*/
+    }
+    .case-list{
+        /*width: 100%; *!*/
+        margin: 0 auto;
+        height: auto;
+        /*float: left;*/
+        overflow: hidden;
+        padding: 0px;
+        /* background-color: #f3f3f3; */
+        /*position: absolute;*/
+        /*top: 0;*/
+        /*left: -75px;*/
+        /*z-index: 10;*/
+    }
+
+    .case-list ul {
+        overflow: hidden;
+        /*background-color: #f3f3f3;*/
+        /*width: 120px;*/
+        /*margin-left: 100px;*/
+        /*margin: 0 auto;*/
+        /*border-top: 2px solid #fff;*/
+    }
+    .case-list .active a {
+        background-color:rgba(0, 0, 0, 0.3);
+    }
+    .case-list li:hover a {
+        background: rgba(0, 0, 0, 0.3);
+    }
+    .case-list li{
+        /*float: left;*/
+        width: 120px;
+        height: 45px;
+        margin: 0 auto;
+        line-height: 45px;
+        text-align: center;
+        background: rgba(107, 166, 217, 0.91);
+        /*border-bottom: 1px solid #fff;*/
+    }
+    .case-list li a{
+        text-decoration: none;
+        /*background-color: #ecf0f1;*/
+        cursor: pointer;
+        font-size: 16px;
+        color: #fff;
+        display: block;
+        border-bottom: 1px solid #fff;
+        line-height: 44px;
+    }
+
+    .case-container{
+        /*overflow: hidden;*/
+        margin: 0 auto;
+    }
+
+    .case-container .wrap-color{
+        background-color: #f3f3f3;
+    }
+    .group-title{
+        background: #fff;
+        margin: 0 auto;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        font-weight: 300;
+        border-bottom: 2px solid #eaeef5;
+    }
+    .group-title h1{
+        margin: 0px;
+        padding: 0px 15px;
+        border-left: 6px solid #2196f3;
+        line-height: 50px;
+
+    }
+
+    .row-container th {
+        background-color: #f3f3f3;
+    }
+    .row-container table{
+        margin: 10px 0px;
+        width: 100%;
+        overflow: hidden;
+    }
+    .row-container table th{
+        /*background: #f1f1f1 !important;*/
+        text-align: center;
+    }
+    .row-container table thead th{
+        height: 40px;
+        color: #fff;
+        background-color: rgba(107,166,217,0.91);
+    }
+    .row-container table thead th a {
+        display: inline-block;
+        line-height: 40px;
+        color: inherit;
+    }
+    .row-container table tbody tr{
+        height: 40px;
+    }
+    .sss {
+        -ms-scroll-chaining: chained;
+        -ms-overflow-style: none;
+        -ms-content-zooming: zoom;
+        -ms-scroll-rails: none;
+        -ms-content-zoom-limit-min: 100%;
+        -ms-content-zoom-limit-max: 500%;
+        -ms-scroll-snap-type: proximity;
+        -ms-scroll-snap-points-x: snapList(100%, 200%, 300%, 400%, 500%);
+        -ms-overflow-style: none;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+
+</style>
+
+<div class="wrapper wrapper-content animated fadeInRight" style="height: 100%">
+    <form class="form-horizontal m" id="form-job-edit" style="height: 90%;" th:if="${dubvioEventDetail!=null}"  th:object="${dubvioEventDetail}">
+        <div class="group-title">
+            <div style="float: left">
+                <h1>案件详细信息</h1>
+            </div>
+        </div>
+        <div class="form-group col-sm-12 case-wrap" style="margin: 0px;padding-top: 10px;height: 100%;">
+
+            <div class="col-sm-12 case-container" style="float: none;height: 100%;">
+                <div class="case-list col-xs-2">
+                    <ul>
+                        <li class="">
+                            <a href="#one">基本信息</a>
+                        </li>
+                        <li id="2">
+                            <a href="#two">收案登记</a>
+                        </li>
+                        <li>
+                            <a href="#three">立案审查</a>
+                        </li>
+                        <li>
+                            <a href="#four">立案审批</a>
+                        </li>
+                        <li>
+                            <a href="#five">分案</a>
+                        </li>
+                        <li>
+                            <a href="#six">办理</a>
+                        </li>
+                        <li>
+                            <a href="#seven">结案</a>
+                        </li>
+                        <li>
+                            <a href="#eight">超期审限</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-xs-10 group-row sss" style="height: 100%;">
+                    <div class="row-container">
+                        <table border="1" cellpadding="0" cellspacing="0" style="margin-top: 0px">
+                            <thead>
+                            <th align="center" colspan="1"><a name="one">基本信息</a></th>
+                            </thead>
+                            <tbody>
+                            <tr align="center">
+                                <th class="col-xs-1">案件类别</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxAjlb}"></td>
+                                <th class="col-xs-1">当事人</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxDsr}"></td>
+                                <th class="col-xs-1">新案件类别</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxXajlb}"></td>
+
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">案号</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxAh}"></td>
+                                <th class="col-xs-1">经办法院</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxJbfy}"></td>
+                                <th class="col-xs-1">审判程序</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxSpcx}"></td>
+                            </tr>
+
+                            <tr align="center">
+                                <th class="col-xs-1">最后修改时间</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxZhxgsj}"></td>
+                                <th class="col-xs-1">适用程序</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxSycx}"></td>
+                                <th class="col-xs-1">收案意见</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxSayj}"></td>
+
+                            </tr>
+
+                            <tr align="center">
+                                <th class="col-xs-1">诉讼性质</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxSsxz}"></td>
+                                <th class="col-xs-1">一审诉讼性质</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxYsssxz}"></td>
+                                <th class="col-xs-1">案件名称</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxAjmc}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">案件进展阶段</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxAjjzjd}"></td>
+                                <th class="col-xs-1">是否有电子卷宗</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxSfydzjz}"></td>
+                                <th class="col-xs-1">是否职务犯罪</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxSfzwfz}"></td>
+                            </tr>
+
+                            <tr align="center">
+                                <th class="col-xs-1">审判流程公开</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jbxxSplcgk}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <table border="1" cellpadding="0" cellspacing="0">
+                            <thead>
+                            <th align="center" colspan="1"><a name="two">收案登记</a></th>
+                            </thead>
+                            <tbody>
+                            <tr align="center">
+                                <th class="col-xs-1">收案登记人</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sadjSadjr}"></td>
+                                <th class="col-xs-1">收案日期</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sadjSasj}"></td>
+                                <th class="col-xs-1">敏感案件</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sadjMgaj}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">地域涉及</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sadjDysj}"></td>
+                                <th class="col-xs-1">收到诉状日期</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sadjSdszsj}"></td>
+                                <th class="col-xs-1">立案案由</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sadjLaay}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">管辖依据</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sadjGxyj}"></td>
+                                <th class="col-xs-1">立案部门</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sadjLabm}"></td>
+                                <th class="col-xs-1">收案庭室</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sadjSats}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <table border="1" cellpadding="0" cellspacing="0">
+                            <thead>
+                            <th align="center" colspan="1"><a name="three">立案审查</a></th>
+                            </thead>
+                            <tbody>
+                            <tr align="center">
+                                <th class="col-xs-1">立案审查人</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.lascLascr}"></td>
+                                <th class="col-xs-1">立案审查日期</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.lascLascrq}"></td>
+                                <th class="col-xs-1">立案审查意见</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.lascLascyj}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <table border="1" cellpadding="0" cellspacing="0">
+                            <thead>
+                            <th align="center" colspan="1"><a name="four">立案审批</a></th>
+                            </thead>
+                            <tbody>
+                            <tr align="center">
+                                <th class="col-xs-1">立案审批人</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.laspLaspr}"></td>
+                                <th class="col-xs-1">立案审批日期</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.laspLasprq}"></td>
+                                <th class="col-xs-1">立案审批意见</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.laspLaspyj}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">立案日期</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.laspLarq}"></td>
+                                <th class="col-xs-1">立案庭室</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.laspLats}"></td>
+                                <th class="col-xs-1">立案人</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.laspLar}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                        <table border="1" cellpadding="0" cellspacing="0">
+                            <thead>
+                            <th align="center" colspan="1"><a name="five">分案</a></th>
+                            </thead>
+                            <tbody>
+                            <tr align="center">
+                                <th class="col-xs-1">分案日期</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.faFarq}"></td>
+                                <th class="col-xs-1">承办审判庭</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.faCbspt}"></td>
+                                <th class="col-xs-1">承办人</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.faCbr}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">分案确认人</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.faFaqrr}"></td>
+                                <th class="col-xs-1">分案确认日期</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.faFaqrrq}"></td>
+                                <th class="col-xs-1">移交状态</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.faYjzt}"></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+
+                        <table border="1" cellpadding="0" cellspacing="0">
+                            <thead>
+                            <th align="center" colspan="1"><a name="six">办理</a></th>
+                            </thead>
+                            <tbody>
+                            <tr align="center">
+                                <th class="col-xs-1">排期状态</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.blPqzt}"></td>
+                                <th class="col-xs-1">被告人同意认罪程序</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.blBgrtyrzcx}"></td>
+                                <th class="col-xs-1">是否庭前证据交换</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.blSftqzjjh}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">是否法院收集调取证据</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.blSffysjdqzj}"></td>
+                                <th class="col-xs-1">公开审理</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.blGksl}"></td>
+                                <th class="col-xs-1">开庭审理</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.blKysl}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">诉讼代理人数(辩护人数)</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.blSsdlrs}"></td>
+                                <th class="col-xs-1">律师人数</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.blLsrs}"></td>
+                                <th class="col-xs-1">法律援助律师人数</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.blFlyzlsrs}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">重新排期</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.blCxpq}"></td>
+                                <th class="col-xs-1">是否独任审判</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.blSfdrsp}"></td>
+                                <th class="col-xs-1">是否有人民陪审员</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.blSfyrmpsy}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">是否提起附带民事诉讼</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.fdmsssSftqfdmsss}"></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                        <table border="1" cellpadding="0" cellspacing="0">
+                            <thead>
+                            <th align="center" colspan="1"><a name="seven">结案</a></th>
+                            </thead>
+                            <tbody>
+                            <tr align="center">
+                                <th class="col-xs-1">移送状态</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jaYszt}"></td>
+                                <th class="col-xs-1">领导过问</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jaLdgw}"></td>
+                                <th class="col-xs-1">判决挽回损失</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jaPjwhss}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">是否提请院长提交审委会</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jaSftqyztjswh}"></td>
+                                <th class="col-xs-1">审判长或独任审判员审签日期</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jaSpzhdrspysqrq}"></td>
+                                <th class="col-xs-1">结案日期</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jaJarq}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">结案案由</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jaJaay}"></td>
+                                <th class="col-xs-1">新结案方式</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jaXjafs}"></td>
+                                <th class="col-xs-1">结案方式</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jaJafs}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">当庭宣判</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jaDtxp}"></td>
+                                <th class="col-xs-1">是否上诉</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jaSfss}"></td>
+                                <th class="col-xs-1">待审批结案日期</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jaDspjarq}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">有无结案文书</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jaYwjaws}"></td>
+                                <th class="col-xs-1">裁判文书是否具有可执行内容</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.jaCpwssfjykzxnr}"></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                        <table border="1" cellpadding="0" cellspacing="0">
+                            <thead>
+                            <th align="center" colspan="1"><a name="eight">超期审限</a></th>
+                            </thead>
+                            <tbody>
+                            <tr align="center">
+                                <th class="col-xs-1">审限总天数</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sxxxSxzts}"></td>
+                                <th class="col-xs-1">延长天数</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sxxxYcts}"></td>
+                                <th class="col-xs-1">扣除天数</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sxxxKcts}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">审限起始日期</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sxxxSxqsrq}"></td>
+                                <th class="col-xs-1">审限届满日期</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sxxxSxjmrq}"></td>
+                                <th class="col-xs-1">法定审限天数</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sxxxFdsxts}"></td>
+                            </tr>
+                            <tr align="center">
+                                <th class="col-xs-1">超审限天数</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sxxxCsxts}"></td>
+                                <th class="col-xs-1">超审限</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sxxxCsx}"></td>
+                                <th class="col-xs-1">审理天数</th>
+                                <td class="col-xs-2"  th:text="${dubvioEventDetail.sxxxSlts}"></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "monitor/job"
+
+    $("#form-job-edit").validate({
+        rules:{
+            jobName:{
+                required:true,
+            },
+            jobGroup:{
+                required:true,
+            },
+            cronExpression:{
+                required:true,
+            },
+        },
+        submitHandler:function(form){
+            $.operate.save(prefix + "/edit", $('#form-job-edit').serialize());
+        }
+    });
+    $('.case-list ul').on("click","li",function () {
+        $(this).addClass("active").siblings().removeClass("active")
+    })
+
+
+    function changeDetail() {
+        var dubvioId=$("#dubvioId").val();
+        operateComponent.change(dubvioId,"module/dubvioEvent/releaseDubvioEvent","可疑违纪事件 ");
+    }
+</script>
+</body>
+</html>

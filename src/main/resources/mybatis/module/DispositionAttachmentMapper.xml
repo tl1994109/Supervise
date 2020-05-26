@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.dispositionAttachment.mapper.DispositionAttachmentMapper">
+    
+    <resultMap type="DispositionAttachment" id="DispositionAttachmentResult">
+        <result property="clueId"    column="clue_id"    />
+        <result property="attachmentId"    column="attachment_id"    />
+        <result property="handleId"    column="handle_id"    />
+        <result property="attachmentName"    column="attachment_name"    />
+        <result property="nodeFlag"    column="node_flag"    />
+        <result property="attachmentUrl"    column="attachment_url"    />
+        <result property="fileOfNode"    column="file_of_node"    />
+        <result property="fileOfStatus"    column="file_of_status"    />
+        <result property="formContent"    column="form_content"    />
+        <result property="reportTime"    column="report_time"    />
+        <result property="reportBy"    column="report_by"    />
+        <result property="receiveBy"    column="receive_by"    />
+        <result property="receiveTime"    column="receive_time"    />
+        <result property="count"    column="count"    />
+    </resultMap>
+	
+	<sql id="selectDispositionAttachmentVo">
+        select clue_id, attachment_id, handle_id, attachment_name, node_flag, attachment_url, form_content, report_time, report_by, receive_by, receive_time,file_of_node,file_of_status,count
+        from busi_disposition_attachment
+    </sql>
+	
+    <select id="selectDispositionAttachmentList" parameterType="DispositionAttachment" resultMap="DispositionAttachmentResult">
+        <include refid="selectDispositionAttachmentVo"/>
+        <where>  
+            <if test="clueId != null and clueId != ''"> and clue_id like concat('%',#{clueId},'%')</if>
+             <if test="attachmentId != null and attachmentId != ''"> and attachment_id like concat('%',#{attachmentId},'%')</if>
+             <if test="handleId != null and handleId != ''"> and handle_id like concat('%',#{handleId},'%')</if>
+             <if test="attachmentName != null and attachmentName != ''"> and attachment_name like concat('%',#{attachmentName},'%')</if>
+             <if test="nodeFlag != null and nodeFlag != ''"> and node_flag like concat('%',#{nodeFlag},'%')</if>
+             <if test="attachmentUrl != null and attachmentUrl != ''"> and attachment_url like concat('%',#{attachmentUrl},'%')</if>
+             <if test="formContent != null and formContent != ''"> and form_content like concat('%',#{formContent},'%')</if>
+             <if test="reportTime != null and reportTime != ''"> and report_time like concat('%',#{reportTime},'%')</if>
+             <if test="reportBy != null and reportBy != ''"> and report_by like concat('%',#{reportBy},'%')</if>
+             <if test="receiveBy != null and receiveBy != ''"> and receive_by like concat('%',#{receiveBy},'%')</if>
+             <if test="receiveTime != null and receiveTime != ''"> and receive_time like concat('%',#{receiveTime},'%')</if>
+             <if test="count != null and count != ''"> and count = #{count}</if>
+         </where>
+
+    </select>
+
+    <select id="selectFile" parameterType="DispositionAttachment" resultMap="DispositionAttachmentResult">
+        <include refid="selectDispositionAttachmentVo"/>
+        <where>
+            <if test="clueId != null and clueId != ''"> and clue_id like concat('%',#{clueId},'%')</if>
+            <if test="attachmentId != null and attachmentId != ''"> and attachment_id like concat('%',#{attachmentId},'%')</if>
+            <if test="handleId != null and handleId != ''"> and handle_id like concat('%',#{handleId},'%')</if>
+            <if test="attachmentName != null and attachmentName != ''"> and attachment_name like concat('%',#{attachmentName},'%')</if>
+            <if test="nodeFlag != null and nodeFlag != ''"> and node_flag like concat('%',#{nodeFlag},'%')</if>
+            <if test="attachmentUrl != null and attachmentUrl != ''"> and attachment_url like concat('%',#{attachmentUrl},'%')</if>
+            <if test="formContent != null and formContent != ''"> and form_content like concat('%',#{formContent},'%')</if>
+            <if test="reportTime != null and reportTime != ''"> and report_time like concat('%',#{reportTime},'%')</if>
+            <if test="reportBy != null and reportBy != ''"> and report_by like concat('%',#{reportBy},'%')</if>
+            <if test="receiveBy != null and receiveBy != ''"> and receive_by like concat('%',#{receiveBy},'%')</if>
+            <if test="receiveTime != null and receiveTime != ''"> and receive_time like concat('%',#{receiveTime},'%')</if>
+            and attachment_url !=""
+        </where>
+    </select>
+    
+    <select id="selectDispositionAttachmentById" parameterType="String" resultMap="DispositionAttachmentResult">
+        <include refid="selectDispositionAttachmentVo"/>
+        where attachment_id = #{attachmentId}
+    </select>
+        
+    <insert id="insertDispositionAttachment" parameterType="DispositionAttachment">
+        insert into busi_disposition_attachment
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="clueId != null  and clueId != '' ">clue_id,</if>
+           <if test="attachmentId != null  and attachmentId != ''  ">attachment_id,</if>
+           <if test="handleId != null  and handleId != ''  ">handle_id,</if>
+           <if test="attachmentName != null  and attachmentName != ''  ">attachment_name,</if>
+           <if test="nodeFlag != null  and nodeFlag != ''  ">node_flag,</if>
+           <if test="attachmentUrl != null  and attachmentUrl != ''  ">attachment_url,</if>
+            <if test="fileOfNode != null  and fileOfNode != ''  ">file_of_node,</if>
+            <if test="fileOfStatus != null  and fileOfStatus != ''  ">file_of_status,</if>
+           <if test="formContent != null  and formContent != ''  ">form_content,</if>
+           <if test="reportTime != null  ">report_time,</if>
+           <if test="reportBy != null  and reportBy != ''  ">report_by,</if>
+            <if test="count != null  and count != ''  ">count,</if>
+           <if test="receiveBy != null  and receiveBy != ''  ">receive_by,</if>
+           <if test="receiveTime != null  ">receive_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="clueId != null  and clueId != ''  ">#{clueId},</if>
+            <if test="attachmentId != null  and attachmentId != ''  ">#{attachmentId},</if>
+            <if test="handleId != null  and handleId != ''  ">#{handleId},</if>
+            <if test="attachmentName != null  and attachmentName != ''  ">#{attachmentName},</if>
+            <if test="nodeFlag != null  and nodeFlag != ''  ">#{nodeFlag},</if>
+            <if test="attachmentUrl != null  and attachmentUrl != ''  ">#{attachmentUrl},</if>
+            <if test="fileOfNode != null  and fileOfNode != ''  ">#{fileOfNode},</if>
+            <if test="fileOfStatus != null  and fileOfStatus != ''  ">#{fileOfStatus},</if>
+            <if test="formContent != null  and formContent != ''  ">#{formContent},</if>
+            <if test="reportTime != null  ">#{reportTime},</if>
+            <if test="reportBy != null  and reportBy != ''  ">#{reportBy},</if>
+            <if test="count != null  and count != ''  ">#{count},</if>
+            <if test="receiveBy != null  and receiveBy != ''  ">#{receiveBy},</if>
+            <if test="receiveTime != null  ">#{receiveTime},</if>
+        </trim>
+    </insert>
+	 
+    <update id="updateDispositionAttachment" parameterType="DispositionAttachment">
+        update busi_disposition_attachment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="clueId != null  and clueId != ''  ">clue_id = #{clueId},</if>
+            <if test="handleId != null  and handleId != ''  ">handle_id = #{handleId},</if>
+            <if test="attachmentName != null  and attachmentName != ''  ">attachment_name = #{attachmentName},</if>
+            <if test="nodeFlag != null  and nodeFlag != ''  ">node_flag = #{nodeFlag},</if>
+            <if test="attachmentUrl != null  and attachmentUrl != ''  ">attachment_url = #{attachmentUrl},</if>
+            <if test="fileOfNode != null  and fileOfNode != ''  ">file_of_node = #{fileOfNode},</if>
+            <if test="fileOfStatus != null  and fileOfStatus != ''  ">file_of_status = #{fileOfStatus},</if>
+            <if test="formContent != null  and formContent != ''  ">form_content = #{formContent},</if>
+            <if test="reportTime != null  ">report_time = #{reportTime},</if>
+            <if test="reportBy != null  and reportBy != ''  ">report_by = #{reportBy},</if>
+            <if test="count != null  and count != ''  ">count = #{count},</if>
+            <if test="receiveBy != null  and receiveBy != ''  ">receive_by = #{receiveBy},</if>
+            <if test="receiveTime != null  ">receive_time = #{receiveTime},</if>
+        </trim>
+        where attachment_id = #{attachmentId}
+    </update>
+
+	<delete id="deleteDispositionAttachmentById" parameterType="String">
+        delete from busi_disposition_attachment where attachment_id = #{attachmentId}
+    </delete>
+	
+    <delete id="deleteDispositionAttachmentByIds" parameterType="String">
+        delete from busi_disposition_attachment where attachment_id in 
+        <foreach item="attachmentId" collection="array" open="(" separator="," close=")">
+            #{attachmentId}
+        </foreach>
+    </delete>
+</mapper>

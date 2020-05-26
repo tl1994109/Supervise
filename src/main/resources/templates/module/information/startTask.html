@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="col-sm-12 select-info search-collapse">
+        <form class="form-horizontal m" id="form-information-startTask" th:object="${information}">
+            <input type="hidden" name="taskId" th:field="*{taskId}">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">日程规划：</label>
+                <div class="col-sm-8 select-time select-info-container">
+                    <input type="text" class="time-input" id="taskPlanStartdate" placeholder="开始时间"
+                           name="taskPlanStartdate" th:field="*{taskPlanStartdate}"/>
+                    <span class="">~</span>
+                    <input type="text" class="time-input" id="taskPlanEnddate" placeholder="结束时间" name="taskPlanEnddate" th:field="*{taskPlanEnddate}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="hidden" id="taskStartContent" name="taskStartContent">
+                <label class="col-sm-3 control-label">备注：</label>
+                <div class="col-sm-8 select-info-container">
+                    <div class="summernote" id="editor"></div>
+                </div>
+            </div>
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">历史日志：</label>-->
+                <!--<div class="col-sm-8 select-info-container">-->
+                    <!--<table class="table table-form table-fixed">-->
+                        <!--<tbody>-->
+                        <!--<tr th:each="list,jourStat:${journalList}">-->
+                            <!--<td th:text="${jourStat.index+1}"></td>-->
+                            <!--<td th:text="${list.journalCreatedate}"></td>-->
+                            <!--<td th:text="${list.journalContent}"></td>-->
+                        <!--</tr>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="form-group">
+                <div class="form-control-static col-sm-offset-5">
+                    <button type="button" onclick="startTask()" class="btn btn-primary">开始</button>
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                </div>
+            </div>
+        </form>
+        </table>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+
+    $(function () {
+        $('.summernote').summernote({
+            height: '220px',
+            lang: 'zh-CN'
+        });
+    });
+
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({elem: '#taskPlanStartdate', theme: 'molv'});
+
+        laydate.render({elem: '#taskPlanEnddate', theme: 'molv'});
+
+    });
+
+    function startTask(){
+        var sHTML = $('.summernote').code();
+        $("#taskStartContent").val(sHTML);
+        $.operate.save(ctx + "module/information/startTaskUpdate", $('#form-information-startTask').serialize());
+    }
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.knowledge.mapper.KnowledgeMapper">
+
+    <resultMap type="Knowledge" id="KnowledgeResult">
+        <result property="knowledgeId" column="knowledge_id"/>
+        <result property="knowledgeTitle" column="knowledge_title"/>
+        <result property="knowledgeContent" column="knowledge_content"/>
+        <result property="knowledgeType" column="knowledge_type"/>
+        <result property="knowledgeCreatetime" column="knowledge_createTime"/>
+        <result property="knowledgeCreateby" column="knowledge_createBy"/>
+        <result property="userName" column="user_name"/>
+        <result property="remark" column="remark"/>
+        <result property="typeOne" column="type_one"/>
+        <result property="typeTwo" column="type_two"/>
+        <result property="fillWay" column="fillWay"/>
+    </resultMap>
+
+    <sql id="selectKnowledgeVo">
+        select k.*,u.user_name from sys_knowledge k
+        LEFT JOIN sys_user u on u.user_id = k.knowledge_createBy
+    </sql>
+
+    <select id="selectKnowledgeList" parameterType="Knowledge" resultMap="KnowledgeResult">
+        <include refid="selectKnowledgeVo"/>
+        <where>
+            <if test="knowledgeId != null and knowledgeId != ''">and k.knowledge_id = #{knowledgeId}</if>
+            <if test="knowledgeTitle != null and knowledgeTitle != ''">and k.knowledge_title like
+                concat('%',#{knowledgeTitle},'%')
+            </if>
+            <if test="knowledgeContent != null and knowledgeContent != ''">and k.knowledge_content like
+                concat('%',#{knowledgeContent},'%')
+            </if>
+            <if test="knowledgeType != null and knowledgeType != ''">and k.knowledge_type = #{knowledgeType}</if>
+            <if test="params.beginTime_5 != null and params.beginTime_5 != ''">
+                and date_format(k.knowledge_createTime,'%y%m%d') &gt;= date_format(#{params.beginTime5},'%y%m%d')
+            </if>
+            <if test="params.endTime_5 != null and params.endTime_5 != ''">
+                and date_format(k.knowledge_createTime,'%y%m%d') &lt;= date_format(#{params.endTime5},'%y%m%d')
+            </if>
+            <if test="knowledgeCreateby != null and knowledgeCreateby != ''">and k.knowledge_createBy like
+                concat('%',#{knowledgeCreateby},'%')
+            </if>
+            <if test="remark!=null and remark !=''">and k.remark like concat('%',#{remark},'%')</if>
+            <if test="typeOne!=null and typeOne !=''">and k.type_one = #{typeOne} </if>
+            <if test="typeTwo!=null and typeTwo !=''">and k.type_two = #{typeTwo} </if>
+            <if test="fillWay!=null and fillWay!=''">and k.fillWay = #{fillWay} </if>
+        </where>
+            ORDER BY k.type_one,k.type_two,k.knowledge_createTime desc
+    </select>
+
+    <select id="selectKnowledgeById" parameterType="String" resultMap="KnowledgeResult">
+        <include refid="selectKnowledgeVo"/>
+        where knowledge_id = #{knowledgeId}
+    </select>
+
+    <insert id="insertKnowledge" parameterType="Knowledge">
+        insert into sys_knowledge
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="knowledgeId != null  and knowledgeId != ''  ">knowledge_id,</if>
+            <if test="knowledgeTitle != null  and knowledgeTitle != ''  ">knowledge_title,</if>
+            <if test="knowledgeContent != null  and knowledgeContent != ''  ">knowledge_content,</if>
+            <if test="knowledgeType != null  and knowledgeType != ''  ">knowledge_type,</if>
+            <if test="knowledgeCreatetime != null  ">knowledge_createTime,</if>
+            <if test="knowledgeCreateby != null  and knowledgeCreateby != ''  ">knowledge_createBy,</if>
+            <if test="remark!=null and remark !=''">remark,</if>
+            <if test="typeOne!=null and typeOne !=''">type_one,</if>
+            <if test="typeTwo!=null and typeTwo !=''">type_two,</if>
+            <if test="fillWay!=null and fillWay!=''">fillWay,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="knowledgeId != null  and knowledgeId != ''  ">#{knowledgeId},</if>
+            <if test="knowledgeTitle != null  and knowledgeTitle != ''  ">#{knowledgeTitle},</if>
+            <if test="knowledgeContent != null  and knowledgeContent != ''  ">#{knowledgeContent},</if>
+            <if test="knowledgeType != null  and knowledgeType != ''  ">#{knowledgeType},</if>
+            <if test="knowledgeCreatetime != null  ">#{knowledgeCreatetime},</if>
+            <if test="knowledgeCreateby != null  and knowledgeCreateby != ''  ">#{knowledgeCreateby},</if>
+            <if test="remark!=null and remark !=''">#{remark},</if>
+            <if test="typeOne!=null and typeOne !=''">#{typeOne},</if>
+            <if test="typeTwo!=null and typeTwo !=''">#{typeTwo},</if>
+            <if test="fillWay!=null and fillWay!=''">#{fillWay},</if>
+        </trim>
+    </insert>
+
+    <update id="updateKnowledge" parameterType="Knowledge">
+        update sys_knowledge
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="knowledgeTitle != null  and knowledgeTitle != ''  ">knowledge_title = #{knowledgeTitle},</if>
+            <if test="knowledgeContent != null">knowledge_content = #{knowledgeContent},</if>
+            <if test="knowledgeType != null  and knowledgeType != ''  ">knowledge_type = #{knowledgeType},</if>
+            <if test="knowledgeCreatetime != null  ">knowledge_createTime = #{knowledgeCreatetime},</if>
+            <if test="knowledgeCreateby != null  and knowledgeCreateby != ''  ">knowledge_createBy =
+                #{knowledgeCreateby},
+            </if>
+            <if test="remark!=null">remark=#{remark},</if>
+            <if test="typeOne!=null and typeOne !=''">type_one=#{typeOne},</if>
+            <if test="typeTwo!=null and typeTwo !=''">type_two=#{typeTwo},</if>
+            <if test="fillWay!=null and fillWay!=''">fillWay=#{fillWay},</if>
+        </trim>
+        where knowledge_id = #{knowledgeId}
+    </update>
+
+    <delete id="deleteKnowledgeById" parameterType="String">
+        delete from sys_knowledge where knowledge_id = #{knowledgeId}
+    </delete>
+
+    <delete id="deleteKnowledgeByIds" parameterType="String">
+        delete from sys_knowledge where knowledge_id in
+        <foreach item="knowledgeId" collection="array" open="(" separator="," close=")">
+            #{knowledgeId}
+        </foreach>
+    </delete>
+
+</mapper>

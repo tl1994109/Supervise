@@ -1,0 +1,184 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+	<div class="col-sm-12 select-table table-striped">
+		<table id="bootstrap-table" data-mobile-responsive="true"></table>
+	</div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:clue:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:clue:remove')}]];
+    var releaseFlag = [[${@permission.hasPermi('module:processMatter:addDubvioEvent')}]];
+    var listFlag = [[${@permission.hasPermi('module:clue:list')}]];
+    var datas_18 = [[${@dict.getType('risks_grades')}]];
+    var prefix = ctx + "module/clue";
+    $(function() {
+
+
+        var options = {
+            url: prefix + "/getReflectedPeopleCount",
+            search: false,
+            queryParams: queryParams,
+            columns: [
+            //     {
+            //     checkbox: true
+            // },
+                {
+                    field : 'clue_fydx',
+                    title : '被反映人',
+                },
+                {
+                    field : 'fycs',
+                    title : '被反映次数',
+
+                },
+
+                {
+                    field : 'age',
+                    title : '年龄',
+
+                },
+
+                {
+                    field : 'dept',
+                    title : '所在部门',
+
+                },
+                {
+                    field : 'zcdc',
+                    title : '暂存待查',
+                    formatter:function(value,row,index){
+                                var zcdcs="1";
+                        if (row.zcdc==0){
+                            return "<font >"+row.zcdc+"</font>";
+                        }else {
+
+
+                                return "<a style='text-decoration:none' onclick='clueDetail("+row.jbxx_cbr_id+","+zcdcs+" )' ><font color='blue'>" + row.zcdc +"</font></a>";
+                            }
+                    }
+
+                },
+                {
+                    field : 'yylj',
+                    title : '予以了结',
+                    formatter:function(value,row,index){
+                        var yyljs="2";
+                        if (row.yylj==0){
+                            return "<font >"+row.yylj+"</font>";
+                        }else {
+
+                        return "<a style='text-decoration:none' onclick='clueDetail("+row.jbxx_cbr_id+","+yyljs+" )' ><font color='blue'>" + row.yylj +"</font></a>";
+                    }
+                    }
+                },
+                {
+                    field : 'thhx',
+                    title : '谈话函询',
+                    formatter:function(value,row,index){
+                        var thhxs="4";
+                        if (row.thhx==0){
+                            return "<font >"+row.thhx+"</font>";
+                        }else {
+
+                        return "<a style='text-decoration:none' onclick='clueDetail("+row.jbxx_cbr_id+","+thhxs+" )' ><font color='blue'>" + row.thhx +"</font></a>";
+                        }
+                        }
+
+                },
+                {
+                    field : 'cbhs',
+                    title : '初步核实',
+                    formatter:function(value,row,index){
+                        var cbhss="3";
+                        if (row.cbhs==0){
+                            return "<font >"+row.cbhs+"</font>";
+                        }else {
+
+
+                        return "<a style='text-decoration:none' onclick='clueDetail("+row.jbxx_cbr_id+","+cbhss+" )' ><font color='blue'>" + row.cbhs +"</font></a>";
+                        }
+                    }
+
+                },
+                {
+                    field : 'ladc',
+                    title : '立案调查',
+                    formatter:function(value,row,index){
+                        var ladcs="5";
+                        if (row.ladc==0){
+                            return "<font >"+row.ladc+"</font>";
+                        }else {
+
+
+                        return "<a style='text-decoration:none' onclick='clueDetail("+row.jbxx_cbr_id+","+ladcs+" )' ><font color='blue'>" + row.ladc +"</font></a>";
+                    }
+                    }
+                },
+                // {
+                //     field : 'ajsl',
+                //     title : '案件审理',
+                //     formatter:function(value,row,index){
+                //         var ajsls="6";
+                //         if (row.ajsl==0){
+                //             return "<font >"+row.ajsl+"</font>";
+                //         }else {
+                //         return "<a style='text-decoration:none' onclick='clueDetail("+row.jbxx_cbr_id+","+ajsls+" )' ><font color='blue'>" + row.ajsl +"</font></a>";
+                //     }
+                //     }
+                // },
+
+
+                ]
+        };
+        initSimpleTabl.init(options);
+    });
+
+    function queryParams(params) {
+        return {
+            pageSize:       params.limit,
+            pageNum:        params.offset / params.limit + 1,
+            searchValue:    params.search,
+            orderByColumn:  params.sort,
+            isAsc:          params.order
+        };
+    }
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime', theme: 'molv'});
+        laydate.render({elem: '#endTime_12', theme: 'molv'});
+        laydate.render({elem: '#startTime_13', theme: 'molv'});
+        laydate.render({elem: '#endTime_13', theme: 'molv'});
+        laydate.render({elem: '#startTime_14', theme: 'molv'});
+        laydate.render({elem: '#endTime_14', theme: 'molv'});
+        laydate.render({elem: '#startTime_15', theme: 'molv'});
+        laydate.render({elem: '#endTime_15', theme: 'molv'});
+        laydate.render({elem: '#startTime_16', theme: 'molv'});
+        laydate.render({elem: '#endTime_16', theme: 'molv'});
+        laydate.render({elem: '#startTime_17', theme: 'molv'});
+        laydate.render({elem: '#endTime_17', theme: 'molv'});
+    });
+
+
+
+    /*策略列表-详细*/
+    function detail(clueId) {
+        var url = prefix + '/detail/' + clueId;
+        createMenuItem(url, "策略详情");
+    }
+
+    function clueDetail(id,index){
+
+        var url = prefix + '/fyrTjDetail?id=' + id + "&index=" + index;
+
+        createMenuItem(url, "被反映人线索详情");
+    }
+
+</script>
+</body>
+</html>

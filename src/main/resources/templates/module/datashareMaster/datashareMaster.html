@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-info search-collapse">
+        <form id="case" class="form-horizontal">
+            <div class="form-group select-info-container">
+                <div class="select-info-container col-sm-4">
+                    <label class="">法院名称：</label>
+                    <select name="datashareCourtid" id="datashareCourtid">
+                        <option value="">请选择</option>
+                        <option th:each="deptList:${deptList}"
+                                th:value="${deptList.deptId}"
+                                th:text="${deptList.deptName}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <label>用户状态：</label>
+                    <select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-12 select-info-btn">
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i
+                            class="fa fa-search"></i>&nbsp;搜索</a>
+                    <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i
+                            class="fa fa-refresh"></i>&nbsp;重置</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+        <a class="btn btn-success" onclick="operateComponent.add('module/datashareMaster/add','各法院数据权限')">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+        <a class="btn btn-warning btn-edit disabled"
+           onclick="operateComponent.edit('','module/datashareMaster/edit/{id}','各法院数据权限')">
+            <i class="fa fa-plus"></i> 编辑
+        </a>
+    </div>-->
+
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var datas = [[${@dict.getType('sys_normal_disable')}]];
+    var prefix = ctx + "module/datashareMaster";
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            search: false,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'datashareId',
+                    title: 'ID',
+                    visible: false,
+                },
+                {
+                    field: 'courtName',
+                    title: '法院名称',
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return statusTools(row);
+                    },
+                    visible: false,
+                },
+                {
+                    field: 'number',
+                    title: '序号',
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                },
+                {
+                    field: 'createBy',
+                    title: '创建人',
+                },
+                {
+                    field: 'updateTime',
+                    title: '更新时间',
+                },
+                {
+                    field: 'updateBy',
+                    title: '更新人',
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-info btn-xs" href="#" onclick="detail(\'' + row.datashareCourtid + '\')"><i class="fa fa-list-ul"></i>数据共享</a> ');
+                        return actions.join('');
+                    }
+                }]
+        };
+        initSimpleTabl.init(options);
+    });
+
+    /*数据共享-查看该法院可查看的院数据*/
+    function detail(datashareCourtid) {
+        var url = ctx + "module/datashareFollow/" + datashareCourtid;
+        createMenuItem(url, "数据共享");
+    }
+
+    /* 状态显示 */
+    function statusTools(row) {
+        if (row.status == 1) {
+            return '<i class=\"fa fa-toggle-off text-info fa-2x\" onclick="enable(\'' + row.datashareId + '\')"></i> ';
+        } else {
+            return '<i class=\"fa fa-toggle-on text-info fa-2x\" onclick="disable(\'' + row.datashareId + '\')"></i> ';
+        }
+    }
+
+    /* 状态停用 */
+    function disable(datashareId) {
+        $.modal.confirm("确认要停用状态吗？", function() {
+            $.operate.post(prefix + "/edit", { "datashareId": datashareId, "status": 1 });
+        })
+    }
+
+    /* 状态启用 */
+    function enable(datashareId) {
+        $.modal.confirm("确认要启用状态吗？", function() {
+            $.operate.post(prefix + "/edit", { "datashareId": datashareId, "status": 0 });
+        })
+    }
+</script>
+</body>
+</html>

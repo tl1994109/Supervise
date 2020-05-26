@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.memberPractitioners.mapper.MemberPractitionersMapper">
+    
+    <resultMap type="MemberPractitioners" id="MemberPractitionersResult">
+        <result property="pozncyqkId"    column="pozncyqk_id"    />
+        <result property="cid"    column="cid"    />
+        <result property="pozncyqkXm"    column="pozncyqk_xm"    />
+        <result property="pozncyqkDw"    column="pozncyqk_dw"    />
+        <result property="pozncyqkZw"    column="pozncyqk_zw"    />
+        <result property="pozncyqkBrfgywfw"    column="pozncyqk_brfgywfw"    />
+        <result property="pozncyqkJzdw"    column="pozncyqk_jzdw"    />
+        <result property="pozncyqkJzzw"    column="pozncyqk_jzzw"    />
+        <result property="jsbqyqkYtbrgx"    column="jsbqyqk_ytbrgx"    />
+        <result property="jsbqyqkXm"    column="jsbqyqk_xm"    />
+        <result property="jsbqyqkQymcjdz"    column="jsbqyqk_qymcjdz"    />
+        <result property="jsbqyqkJsbqyxs"    column="jsbqyqk_jsbqyxs"    />
+        <result property="jsbqyqkQydjzcjg"    column="jsbqyqk_qydjzcjg"    />
+        <result property="jsbqyqkJyfw"    column="jsbqyqk_jyfw"    />
+        <result property="zwqyrzqkYtbrgx"    column="zwqyrzqk_ytbrgx"    />
+        <result property="zwqyrzqkXm"    column="zwqyrzqk_xm"    />
+        <result property="zwqyrzqkQymcjdz"    column="zwqyrzqk_qymcjdz"    />
+        <result property="zwqyrzqkQyzzxs"    column="zwqyrzqk_qyzzxs"    />
+        <result property="zwqyrzqkShfwppr"    column="zwqyrzqk_shfwppr"    />
+        <result property="zwqyrzqkJyfw"    column="zwqyrzqk_jyfw"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+	
+	<sql id="selectMemberPractitionersVo">
+        select pozncyqk_id, cid, pozncyqk_xm, pozncyqk_dw, pozncyqk_zw, pozncyqk_brfgywfw, pozncyqk_jzdw, pozncyqk_jzzw, jsbqyqk_ytbrgx, jsbqyqk_xm, jsbqyqk_qymcjdz, jsbqyqk_jsbqyxs, jsbqyqk_qydjzcjg, jsbqyqk_jyfw, zwqyrzqk_ytbrgx, zwqyrzqk_xm, zwqyrzqk_qymcjdz, zwqyrzqk_qyzzxs, zwqyrzqk_shfwppr, zwqyrzqk_jyfw, remarks, create_time, create_by, update_time, update_by from arch_member_practitioners
+    </sql>
+	
+    <select id="selectMemberPractitionersList" parameterType="MemberPractitioners" resultMap="MemberPractitionersResult">
+        <include refid="selectMemberPractitionersVo"/>
+        <where>  
+            <if test="pozncyqkId != null and pozncyqkId != ''"> and pozncyqk_id like concat('%',#{pozncyqkId},'%')</if>
+             <if test="cid != null and cid != ''"> and cid like concat('%',#{cid},'%')</if>
+             <if test="pozncyqkXm != null and pozncyqkXm != ''"> and pozncyqk_xm like concat('%',#{pozncyqkXm},'%')</if>
+             <if test="pozncyqkDw != null and pozncyqkDw != ''"> and pozncyqk_dw like concat('%',#{pozncyqkDw},'%')</if>
+             <if test="pozncyqkZw != null and pozncyqkZw != ''"> and pozncyqk_zw like concat('%',#{pozncyqkZw},'%')</if>
+             <if test="pozncyqkBrfgywfw != null and pozncyqkBrfgywfw != ''"> and pozncyqk_brfgywfw like concat('%',#{pozncyqkBrfgywfw},'%')</if>
+             <if test="pozncyqkJzdw != null and pozncyqkJzdw != ''"> and pozncyqk_jzdw like concat('%',#{pozncyqkJzdw},'%')</if>
+             <if test="pozncyqkJzzw != null and pozncyqkJzzw != ''"> and pozncyqk_jzzw like concat('%',#{pozncyqkJzzw},'%')</if>
+             <if test="jsbqyqkYtbrgx != null and jsbqyqkYtbrgx != ''"> and jsbqyqk_ytbrgx like concat('%',#{jsbqyqkYtbrgx},'%')</if>
+             <if test="jsbqyqkXm != null and jsbqyqkXm != ''"> and jsbqyqk_xm like concat('%',#{jsbqyqkXm},'%')</if>
+             <if test="jsbqyqkQymcjdz != null and jsbqyqkQymcjdz != ''"> and jsbqyqk_qymcjdz like concat('%',#{jsbqyqkQymcjdz},'%')</if>
+             <if test="jsbqyqkJsbqyxs != null and jsbqyqkJsbqyxs != ''"> and jsbqyqk_jsbqyxs like concat('%',#{jsbqyqkJsbqyxs},'%')</if>
+             <if test="jsbqyqkQydjzcjg != null and jsbqyqkQydjzcjg != ''"> and jsbqyqk_qydjzcjg like concat('%',#{jsbqyqkQydjzcjg},'%')</if>
+             <if test="jsbqyqkJyfw != null and jsbqyqkJyfw != ''"> and jsbqyqk_jyfw like concat('%',#{jsbqyqkJyfw},'%')</if>
+             <if test="zwqyrzqkYtbrgx != null and zwqyrzqkYtbrgx != ''"> and zwqyrzqk_ytbrgx like concat('%',#{zwqyrzqkYtbrgx},'%')</if>
+             <if test="zwqyrzqkXm != null and zwqyrzqkXm != ''"> and zwqyrzqk_xm like concat('%',#{zwqyrzqkXm},'%')</if>
+             <if test="zwqyrzqkQymcjdz != null and zwqyrzqkQymcjdz != ''"> and zwqyrzqk_qymcjdz like concat('%',#{zwqyrzqkQymcjdz},'%')</if>
+             <if test="zwqyrzqkQyzzxs != null and zwqyrzqkQyzzxs != ''"> and zwqyrzqk_qyzzxs like concat('%',#{zwqyrzqkQyzzxs},'%')</if>
+             <if test="zwqyrzqkShfwppr != null and zwqyrzqkShfwppr != ''"> and zwqyrzqk_shfwppr like concat('%',#{zwqyrzqkShfwppr},'%')</if>
+             <if test="zwqyrzqkJyfw != null and zwqyrzqkJyfw != ''"> and zwqyrzqk_jyfw like concat('%',#{zwqyrzqkJyfw},'%')</if>
+             <if test="remarks != null and remarks != ''"> and remarks like concat('%',#{remarks},'%')</if>
+             <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+             <if test="createBy != null and createBy != ''"> and create_by like concat('%',#{createBy},'%')</if>
+             <if test="updateTime != null and updateTime != ''"> and update_time like concat('%',#{updateTime},'%')</if>
+             <if test="updateBy != null and updateBy != ''"> and update_by like concat('%',#{updateBy},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectMemberPractitionersById" parameterType="String" resultMap="MemberPractitionersResult">
+        <include refid="selectMemberPractitionersVo"/>
+        where pozncyqk_id = #{pozncyqkId}
+    </select>
+        
+    <insert id="insertMemberPractitioners" parameterType="MemberPractitioners">
+        insert into arch_member_practitioners
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="pozncyqkId != null  and pozncyqkId != ''  ">pozncyqk_id,</if>
+           <if test="cid != null  and cid != ''  ">cid,</if>
+           <if test="pozncyqkXm != null  and pozncyqkXm != ''  ">pozncyqk_xm,</if>
+           <if test="pozncyqkDw != null  and pozncyqkDw != ''  ">pozncyqk_dw,</if>
+           <if test="pozncyqkZw != null  and pozncyqkZw != ''  ">pozncyqk_zw,</if>
+           <if test="pozncyqkBrfgywfw != null  and pozncyqkBrfgywfw != ''  ">pozncyqk_brfgywfw,</if>
+           <if test="pozncyqkJzdw != null  and pozncyqkJzdw != ''  ">pozncyqk_jzdw,</if>
+           <if test="pozncyqkJzzw != null  and pozncyqkJzzw != ''  ">pozncyqk_jzzw,</if>
+           <if test="jsbqyqkYtbrgx != null  and jsbqyqkYtbrgx != ''  ">jsbqyqk_ytbrgx,</if>
+           <if test="jsbqyqkXm != null  and jsbqyqkXm != ''  ">jsbqyqk_xm,</if>
+           <if test="jsbqyqkQymcjdz != null  and jsbqyqkQymcjdz != ''  ">jsbqyqk_qymcjdz,</if>
+           <if test="jsbqyqkJsbqyxs != null  and jsbqyqkJsbqyxs != ''  ">jsbqyqk_jsbqyxs,</if>
+           <if test="jsbqyqkQydjzcjg != null  and jsbqyqkQydjzcjg != ''  ">jsbqyqk_qydjzcjg,</if>
+           <if test="jsbqyqkJyfw != null  and jsbqyqkJyfw != ''  ">jsbqyqk_jyfw,</if>
+           <if test="zwqyrzqkYtbrgx != null  and zwqyrzqkYtbrgx != ''  ">zwqyrzqk_ytbrgx,</if>
+           <if test="zwqyrzqkXm != null  and zwqyrzqkXm != ''  ">zwqyrzqk_xm,</if>
+           <if test="zwqyrzqkQymcjdz != null  and zwqyrzqkQymcjdz != ''  ">zwqyrzqk_qymcjdz,</if>
+           <if test="zwqyrzqkQyzzxs != null  and zwqyrzqkQyzzxs != ''  ">zwqyrzqk_qyzzxs,</if>
+           <if test="zwqyrzqkShfwppr != null  and zwqyrzqkShfwppr != ''  ">zwqyrzqk_shfwppr,</if>
+           <if test="zwqyrzqkJyfw != null  and zwqyrzqkJyfw != ''  ">zwqyrzqk_jyfw,</if>
+           <if test="remarks != null  and remarks != ''  ">remarks,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="createBy != null  and createBy != ''  ">create_by,</if>
+           <if test="updateTime != null  ">update_time,</if>
+           <if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="pozncyqkId != null  and pozncyqkId != ''  ">#{pozncyqkId},</if>
+        <if test="cid != null  and cid != ''  ">#{cid},</if>
+        <if test="pozncyqkXm != null  and pozncyqkXm != ''  ">#{pozncyqkXm},</if>
+        <if test="pozncyqkDw != null  and pozncyqkDw != ''  ">#{pozncyqkDw},</if>
+        <if test="pozncyqkZw != null  and pozncyqkZw != ''  ">#{pozncyqkZw},</if>
+        <if test="pozncyqkBrfgywfw != null  and pozncyqkBrfgywfw != ''  ">#{pozncyqkBrfgywfw},</if>
+        <if test="pozncyqkJzdw != null  and pozncyqkJzdw != ''  ">#{pozncyqkJzdw},</if>
+        <if test="pozncyqkJzzw != null  and pozncyqkJzzw != ''  ">#{pozncyqkJzzw},</if>
+        <if test="jsbqyqkYtbrgx != null  and jsbqyqkYtbrgx != ''  ">#{jsbqyqkYtbrgx},</if>
+        <if test="jsbqyqkXm != null  and jsbqyqkXm != ''  ">#{jsbqyqkXm},</if>
+        <if test="jsbqyqkQymcjdz != null  and jsbqyqkQymcjdz != ''  ">#{jsbqyqkQymcjdz},</if>
+        <if test="jsbqyqkJsbqyxs != null  and jsbqyqkJsbqyxs != ''  ">#{jsbqyqkJsbqyxs},</if>
+        <if test="jsbqyqkQydjzcjg != null  and jsbqyqkQydjzcjg != ''  ">#{jsbqyqkQydjzcjg},</if>
+        <if test="jsbqyqkJyfw != null  and jsbqyqkJyfw != ''  ">#{jsbqyqkJyfw},</if>
+        <if test="zwqyrzqkYtbrgx != null  and zwqyrzqkYtbrgx != ''  ">#{zwqyrzqkYtbrgx},</if>
+        <if test="zwqyrzqkXm != null  and zwqyrzqkXm != ''  ">#{zwqyrzqkXm},</if>
+        <if test="zwqyrzqkQymcjdz != null  and zwqyrzqkQymcjdz != ''  ">#{zwqyrzqkQymcjdz},</if>
+        <if test="zwqyrzqkQyzzxs != null  and zwqyrzqkQyzzxs != ''  ">#{zwqyrzqkQyzzxs},</if>
+        <if test="zwqyrzqkShfwppr != null  and zwqyrzqkShfwppr != ''  ">#{zwqyrzqkShfwppr},</if>
+        <if test="zwqyrzqkJyfw != null  and zwqyrzqkJyfw != ''  ">#{zwqyrzqkJyfw},</if>
+        <if test="remarks != null  and remarks != ''  ">#{remarks},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+        <if test="updateTime != null  ">#{updateTime},</if>
+        <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateMemberPractitioners" parameterType="MemberPractitioners">
+        update arch_member_practitioners
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cid != null    ">cid = #{cid},</if>
+            <if test="pozncyqkXm != null    ">pozncyqk_xm = #{pozncyqkXm},</if>
+            <if test="pozncyqkDw != null    ">pozncyqk_dw = #{pozncyqkDw},</if>
+            <if test="pozncyqkZw != null    ">pozncyqk_zw = #{pozncyqkZw},</if>
+            <if test="pozncyqkBrfgywfw != null    ">pozncyqk_brfgywfw = #{pozncyqkBrfgywfw},</if>
+            <if test="pozncyqkJzdw != null   ">pozncyqk_jzdw = #{pozncyqkJzdw},</if>
+            <if test="pozncyqkJzzw != null    ">pozncyqk_jzzw = #{pozncyqkJzzw},</if>
+            <if test="jsbqyqkYtbrgx != null    ">jsbqyqk_ytbrgx = #{jsbqyqkYtbrgx},</if>
+            <if test="jsbqyqkXm != null ">jsbqyqk_xm = #{jsbqyqkXm},</if>
+            <if test="jsbqyqkQymcjdz != null    ">jsbqyqk_qymcjdz = #{jsbqyqkQymcjdz},</if>
+            <if test="jsbqyqkJsbqyxs != null    ">jsbqyqk_jsbqyxs = #{jsbqyqkJsbqyxs},</if>
+            <if test="jsbqyqkQydjzcjg != null    ">jsbqyqk_qydjzcjg = #{jsbqyqkQydjzcjg},</if>
+            <if test="jsbqyqkJyfw != null   ">jsbqyqk_jyfw = #{jsbqyqkJyfw},</if>
+            <if test="zwqyrzqkYtbrgx != null    ">zwqyrzqk_ytbrgx = #{zwqyrzqkYtbrgx},</if>
+            <if test="zwqyrzqkXm != null   ">zwqyrzqk_xm = #{zwqyrzqkXm},</if>
+            <if test="zwqyrzqkQymcjdz != null    ">zwqyrzqk_qymcjdz = #{zwqyrzqkQymcjdz},</if>
+            <if test="zwqyrzqkQyzzxs != null    ">zwqyrzqk_qyzzxs = #{zwqyrzqkQyzzxs},</if>
+            <if test="zwqyrzqkShfwppr != null    ">zwqyrzqk_shfwppr = #{zwqyrzqkShfwppr},</if>
+            <if test="zwqyrzqkJyfw != null    ">zwqyrzqk_jyfw = #{zwqyrzqkJyfw},</if>
+            <if test="remarks != null    ">remarks = #{remarks},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="createBy != null    ">create_by = #{createBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="updateBy != null   ">update_by = #{updateBy},</if>
+        </trim>
+        where pozncyqk_id = #{pozncyqkId}
+    </update>
+
+	<delete id="deleteMemberPractitionersById" parameterType="String">
+        delete from arch_member_practitioners where pozncyqk_id = #{pozncyqkId}
+    </delete>
+	
+    <delete id="deleteMemberPractitionersByIds" parameterType="String">
+        delete from arch_member_practitioners where pozncyqk_id in 
+        <foreach item="pozncyqkId" collection="array" open="(" separator="," close=")">
+            #{pozncyqkId}
+        </foreach>
+    </delete>
+    
+</mapper>

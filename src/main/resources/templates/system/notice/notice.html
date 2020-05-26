@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    
+    <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 select-info search-collapse">
+				<form id="notice-form" class="form-horizontal">
+					<div class="form-group select-info-container">
+						<div class="col-sm-4">
+							<label>标题：</label>
+							<input type="text" name="noticeTitle"/>
+						</div>
+						<div class="col-sm-4">
+							<label>类型：</label>
+							<select name="noticeType" th:with="type=${@dict.getType('sys_notice_type')}">
+								<option value="">请选择</option>
+								<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+							</select>
+						</div>
+						<div class="col-sm-4 select-info-btn">
+							<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+							<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+						</div>
+					</div>
+
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+		        <a class="btn btn-success" onclick="$.operate.addFull()" shiro:hasPermission="system:notice:add">
+		            <i class="fa fa-plus"></i> 新增
+		        </a>
+				<a class="btn btn-primary btn-detail disabled" onclick="lookFun()" shiro:hasPermission="module:notice:detail">
+				<i class="fa fa-plus"></i> 详细
+				</a>
+		        <!--<a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:notice:remove">-->
+		            <!--<i class="fa fa-trash-o"></i> 批量删除-->
+		        <!--</a>-->
+				<a class="btn btn-select">
+					<span id="exportToolbar" class="btn-group" style="width: 110px; display: inline-block">
+						<select id="sel_exportoption" class="">
+							<option value="">导出当页数据</option>
+							<option value="all">导出全部数据</option>
+							<option value="selected">导出选中数据</option>
+						</select>
+					</span>
+				</a>
+	        </div>
+	        
+	        <div class="col-sm-12 select-table table-striped">
+	            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+	        </div>
+    	</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:notice:edit')}]];
+        var releaseFlag = [[${@permission.hasPermi('module:processMatter:addNotice')}]];
+        var removeFlag = [[${@permission.hasPermi('system:notice:remove')}]];
+        var topFlag = [[${@permission.hasPermi('system:notice:top')}]];
+        var types = [[${@dict.getType('sys_notice_type')}]];
+        var datas = [[${@dict.getType('sys_notice_status')}]];
+        var detailFlag = [[${@dict.getType('sys_notice_detail')}]];
+        var prefix = ctx + "system/notice"
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                detailUrl: prefix + "/detail/{id}",
+                modalName: "公告",
+                search: false,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'noticeId', 
+					title : '序号' ,
+					visible:false,
+				},
+				{
+					field : 'noticeTitle', 
+					title : '标题'
+				},
+				{
+		            field: 'noticeType',
+		            title: '类型',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	return $.table.selectDictLabel(types, value);
+		            }
+		        },
+				{
+					field : 'username',
+					title : '发布人'
+				},
+				{
+		            field: 'createTime',
+		            title: '发布时间',
+		            sortable: true
+		        },
+		        {
+		            title: '操作',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	if(row.processStatus=="2"){
+		            		actions.push('<a class="btn btn-warning btn-xs ' + releaseFlag + '" href="#" onclick="release(\'' + row.noticeId + '\');"><i class="fa fa-plus"></i>发布</a> ');
+		            	}else if(row.processStatus=="0"){
+                            if(row.pid!=null && row.pid!=''){
+                                actions.push('<a href="#" onclick="selectProcess(\'' + row.noticeId + '\');" class="btn btn-primary btn-rounded btn-xs"  title="点击可查看流程执行过程">已通过</a> ');
+							}else{
+                                actions.push('<a href="#" class="btn btn-primary btn-rounded btn-xs"  title="点击可查看流程执行过程">已通过</a> ');
+							}
+                            actions.push('<a class="btn btn-success btn-xs ' + topFlag + '" href="#" onclick="noticeTop(\'' + row.noticeId + '\')"><i class="fa fa-edit"></i>置顶</a> ');
+		            	}else if(row.processStatus=="3"){
+		            		actions.push('<a href="#" onclick="selectProcess(\'' + row.noticeId + '\');" class="btn btn-primary btn-rounded btn-xs" title="点击可查看流程执行过程">待审核</a> ');
+		            	}else if(row.processStatus == '1'){
+                            actions.push('<a href="#" class="btn btn-primary btn-rounded btn-xs" onclick="selectProcess(\'' + row.noticeId + '\');" title="点击可查看流程执行过程">未通过</a> ');
+                            actions.push('<a class="btn btn-warning btn-xs ' + releaseFlag + '" href="#" onclick="release(\'' + row.noticeId + '\');"><i class="fa fa-plus"></i>重新发布</a> ');
+						}
+		            	if(row.processStatus === '2' || row.processStatus == '1'){
+                            actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.editFull(\'' + row.noticeId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                            actions.push('<a class="btn btn-danger btn-xs' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.noticeId + '\')"><i class="fa fa-remove"></i>删除</a>');
+						}else{
+                            actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled"><i class="fa fa-edit"></i>编辑</a> ');
+                            actions.push('<a class="btn btn-danger btn-xs' + removeFlag + '" href="#" disabled="disabled"><i class="fa fa-remove"></i>删除</a>');
+						}
+
+
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+        
+        function release(noticeId){
+        	$.modal.openFull("发布", prefix+"/release/" + noticeId);
+        }
+        function selectProcess(noticeId){
+        	$.modal.open("查看流程履历", prefix + "/hisTaskList?matterId=" + noticeId);
+        }
+
+        function noticeTop(id){
+            var nowDate = new Date();
+            var day = nowDate.getDate();
+            var month = nowDate.getMonth() + 1;
+            var year = nowDate.getFullYear();
+            var hour = nowDate.getHours();
+            var min = nowDate.getMinutes();
+            var se = nowDate.getSeconds();
+            var date = year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day)+" "
+			+(hour<10?"0"+hour:hour)+":"+(min<10?"0"+min:min)+":"+(se<10?"0"+se:se);
+            operateComponent.post( "system/notice/edit",{"topDate":date,noticeId:id});
+        }
+
+        function lookFun(){
+            var noticeId = $.table.selectFirstColumns()[0];
+            var index = layer.open({
+                type: 2,
+                area: [800+"px",$(window).height() - 50+"px"],
+                fix: false,
+                //不固定
+                maxmin: true,
+                shade: 0.3,
+                title:'详情',
+                content: prefix+'/detail/'+noticeId,
+                // 弹层外区域关闭
+                shadeClose: true,
+                success: function(layero, index){
+                    $.ajax({
+                        url:ctx+'module/noticeClick/add',
+                        type:'post',
+                        data:{"noticeId":noticeId},
+                        success:function(result){
+                        },
+                        error:function(data){
+                            modalComponent.msgWarning(data)
+                        }
+                    });
+                },
+            });
+            layer.full(index);
+        }
+    </script>
+	<!--bootstrap-table-export数据导出-->
+	<script type="text/javascript">
+        $("#sel_exportoption").change(function () {
+            //刷新参数设置
+            $('#bootstrap-table').bootstrapTable('refreshOptions', {
+                exportDataType: $(this).val()
+            });
+        });
+	</script>
+</body>
+</html>

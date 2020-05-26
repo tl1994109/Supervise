@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+
+<body class="white-bg">
+
+<style>
+    input::-ms-input-placeholder{
+        text-align: center;
+    }
+    input::-webkit-input-placeholder{
+        text-align: center;
+    }
+
+    table{
+        border-collapse: collapse;
+    }
+    .document{
+        width: 100%;
+        height: 100%;
+        font-family: "microsoft yahei";
+    }
+    .document-container{
+        width: 800px;
+        height: auto;
+        margin: 20px auto;
+        border: 1px solid #2f4050;
+        padding: 20px;
+    }
+    .title-1 h2{
+        font-weight: bold;
+    }
+    .title-2, .title-3{
+        margin: 0 auto;
+        text-align: center;
+    }
+    .title-3 input{
+        width: 100px;
+    }
+    .title-2 input{
+        width: 100px;
+    }
+    .title-2 p{
+        font-size: 24px;
+        font-weight: 400;
+    }
+    .title-3 h1{
+        font-weight: bold;
+    }
+
+    .report-content input{
+        width: 80px;
+    }
+    .report-content p{
+        text-indent: 40px;
+        font-size: 16px;
+        font-weight: 300;
+        padding: 10px 0px;
+        text-align: left;
+    }
+    .report-content h2{
+        font-weight: bold;
+    }
+    .report-content input{
+        border: none;
+        outline: 0;
+        border-bottom: 1px solid  #2f4050;
+    }
+    .report-content textarea{
+        width: 100%;
+        height: 80px;
+        /*禁止拉伸*/
+        resize: none;
+    }
+    .report-content .fr{
+        float: right;
+    }
+
+    .report-line{
+        height: 40px;
+
+    }
+    .report-line .line{
+        border-bottom: 1px solid #2f4050;
+        text-align: right;
+        width: 100%;
+    }
+
+    .report-line input{
+        width: 40px;
+        border: none;
+        outline: none;
+    }
+
+
+
+</style>
+
+<div class="document">
+    <div class="document-container">
+        <div class="title-2">
+            <p><input type="text" placeholder="X X X" onfocus="this.placeholder=''" onblur="this.placeholder='X X X'"/>监察委员会</p>
+        </div>
+        <div class="title-3">
+            <h1>询问笔录</h1>
+        </div>
+
+        <div class="report-line">
+            <div class="line">第<input type="text"/>次</div>
+        </div>
+
+        <div class="report-content">
+            <p><strong>询问时间：</strong><input type="text">年<input type="text">月<input type="text">日<input type="text">时<input type="text">分至<input type="text">年<input type="text">月<input type="text">日<input type="text">时<input type="text">秒</strong></p>
+        </div>
+        <div class="report-content">
+            <p><strong>询问地点：</strong><input type="text" style="width: 600px;"></p>
+        </div>
+        <div class="report-content">
+            <p><strong>询问人：</strong><input type="text" style="width: 278px;"><strong>记录人：</strong><input type="text" style="width: 274px;"></p>
+        </div>
+
+        <div class="report-content">
+            <p><strong>询问对象：</strong><input type="text" style="width: 155px;"><strong>性别：</strong><input type="text" style="width: 155px;"><strong>出生年月：</strong><input type="text" style="width: 163px;"></p>
+        </div>
+        <div class="report-content">
+            <p><strong>政治面貌：</strong><input type="text" style="width: 155px;"><strong>民族：</strong><input type="text" style="width: 155px;"><strong>文化程度：</strong><input type="text" style="width: 163px;"></p>
+        </div>
+        <div class="report-content">
+            <p><strong>工作单位：</strong><input type="text" style="width: 248px;"><strong>职务（职级）：</strong><input type="text" style="width: 242px;"></p>
+        </div>
+        <div class="report-content">
+            <p><strong>是否人大代表、政协委员：</strong><input type="text" style="width: 491px;"></p>
+        </div>
+        <div class="report-content">
+            <p><strong>身份证号码：</strong><input type="text" style="width: 586px;"></p>
+        </div>
+        <div class="report-content">
+            <p><strong>现住址：</strong><input type="text" style="width: 619px;"></p>
+        </div>
+        <div class="report-content">
+            <p><strong>办公室电话：</strong><input type="text" style="width: 155px;"><strong>住宅电话：</strong><input type="text" style="width: 155px;"><strong>手机：</strong><input type="text" style="width: 150px;"></p>
+        </div>
+        <div class="report-content">
+            <p><strong>标题：</strong><input type="text" style="width: 630px;"></p>
+        </div>
+        <!--<div class="report-content">-->
+            <!--<p>问：我们是×××监委工作人员（出示工作证），现依纪依法对你询问，请你如实回答，配合调查，不得隐瞒事实，否则，要追究相应的纪律和法律责任；对与本案无关的问题，你有拒绝回答的权利。（如被询问人系证人，首次询问时告知“下面依照相关规定我们向你宣读并送达《证人权利义务告知书》，你应当如实地提供证言，故意作伪证或者隐匿证据要负法律责任。”）你听明白了吗？     </p>-->
+            <!--<p>答：我听明白了。</p>-->
+            <!--<p>问：请讲一下你的基本情况？</p>-->
+            <!--<p>答：×××××××××××××××××××××××××××××××××。</p>-->
+            <!--<p>问：×××××××××××××××××××××。</p>-->
+            <!--<p>答：×××××××××××××××××××××。 </p>-->
+            <!--<p>问：你还有什么需要补充和说明的吗?</p>-->
+            <!--<p>答：×××××××××××××××××××××。</p>-->
+            <!--<p>问：你以上所讲是否属实？</p>-->
+            <!--<p>答：×××××××××××××××××××××。</p>-->
+            <!--<p>问：今天监委的工作人员对你询问过程中是否有非法羁押、打骂体罚、虐待、威胁、引诱、欺骗或者以其他非法方法获取言词或者其他证据的情况？</p>-->
+            <!--<p>答：×××××××××××××××××××××。</p>-->
+            <!--<p>问：请你认真核对以上笔录，如有与你所说不一致的地方，可以补充或改正；如无误，请逐页签名并捺指印确认。</p>-->
+            <!--<p>答：×××××××××××××××××××××。</p>-->
+            <!--<p>被询问人亲笔书写“以上笔录我看过（向我宣读过），和我说的一致”，并逐页签名、捺指印。</p>-->
+            <!--<p></p>-->
+        <!--</div>-->
+        <div class="form-group">
+            <div class="form-control-static col-sm-offset-5">
+                <button type="reset" class="btn btn-warning">重置</button>
+                <button type="submit" class="btn btn-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:include="include::footer"></div>
+
+
+</body>
+</html>

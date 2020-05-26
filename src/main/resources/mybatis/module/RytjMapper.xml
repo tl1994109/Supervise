@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.rytj.mapper.RytjMapper">
+    
+    <resultMap type="Rytj" id="RytjResult">
+        <result property="id"    column="id"    />
+        <result property="ryId"    column="ry_id"    />
+        <result property="ryName"    column="ry_name"    />
+        <result property="cbtId"    column="cbt_id"    />
+        <result property="cbtName"    column="cbt_name"    />
+        <result property="jbfyId"    column="jbfy_id"    />
+        <result property="jbfyName"    column="jbfy_name"    />
+        <result property="jc"    column="jc"    />
+        <result property="xs"    column="xs"    />
+        <result property="wj"    column="wj"    />
+        <result property="yj"    column="yj"    />
+        <result property="count"    column="count"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="countTime"    column="count_time"    />
+    </resultMap>
+	
+	<sql id="selectRytjVo">
+        select id, ry_id, ry_name, cbt_id, cbt_name, jbfy_id, jbfy_name, jc, xs, wj, yj, count, create_time, count_time from sys_rytj
+    </sql>
+	
+    <select id="selectRytjList" parameterType="Rytj" resultMap="RytjResult">
+        <include refid="selectRytjVo"/>
+        <where>  
+            <if test="id != null and id != ''"> and id like concat('%',#{id},'%')</if>
+             <if test="ryId != null and ryId != ''"> and ry_id like concat('%',#{ryId},'%')</if>
+             <if test="ryName != null and ryName != ''"> and ry_name like concat('%',#{ryName},'%')</if>
+             <if test="cbtId != null and cbtId != ''"> and cbt_id like concat('%',#{cbtId},'%')</if>
+             <if test="cbtName != null and cbtName != ''"> and cbt_name like concat('%',#{cbtName},'%')</if>
+             <if test="jbfyId != null and jbfyId != ''"> and jbfy_id like concat('%',#{jbfyId},'%')</if>
+             <if test="jbfyName != null and jbfyName != ''"> and jbfy_name like concat('%',#{jbfyName},'%')</if>
+             <if test="jc != null and jc != ''"> and jc like concat('%',#{jc},'%')</if>
+             <if test="xs != null and xs != ''"> and xs like concat('%',#{xs},'%')</if>
+             <if test="wj != null and wj != ''"> and wj like concat('%',#{wj},'%')</if>
+             <if test="yj != null and yj != ''"> and yj like concat('%',#{yj},'%')</if>
+             <if test="count != null and count != ''"> and count like concat('%',#{count},'%')</if>
+             <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+             <if test="countTime != null and countTime != ''"> and count_time like concat('%',#{countTime},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectRytjById" parameterType="Integer" resultMap="RytjResult">
+        <include refid="selectRytjVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRytj" parameterType="Rytj">
+        insert into sys_rytj
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="id != null  ">id,</if>
+           <if test="ryId != null  and ryId != ''  ">ry_id,</if>
+           <if test="ryName != null  and ryName != ''  ">ry_name,</if>
+           <if test="cbtId != null  and cbtId != ''  ">cbt_id,</if>
+           <if test="cbtName != null  and cbtName != ''  ">cbt_name,</if>
+           <if test="jbfyId != null  and jbfyId != ''  ">jbfy_id,</if>
+           <if test="jbfyName != null  and jbfyName != ''  ">jbfy_name,</if>
+           <if test="jc != null  and jc != ''  ">jc,</if>
+           <if test="xs != null  and xs != ''  ">xs,</if>
+           <if test="wj != null  and wj != ''  ">wj,</if>
+           <if test="yj != null  and yj != ''  ">yj,</if>
+           <if test="count != null  and count != ''  ">count,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="countTime != null  and countTime != ''  ">count_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="id != null  ">#{id},</if>
+        <if test="ryId != null  and ryId != ''  ">#{ryId},</if>
+        <if test="ryName != null  and ryName != ''  ">#{ryName},</if>
+        <if test="cbtId != null  and cbtId != ''  ">#{cbtId},</if>
+        <if test="cbtName != null  and cbtName != ''  ">#{cbtName},</if>
+        <if test="jbfyId != null  and jbfyId != ''  ">#{jbfyId},</if>
+        <if test="jbfyName != null  and jbfyName != ''  ">#{jbfyName},</if>
+        <if test="jc != null  and jc != ''  ">#{jc},</if>
+        <if test="xs != null  and xs != ''  ">#{xs},</if>
+        <if test="wj != null  and wj != ''  ">#{wj},</if>
+        <if test="yj != null  and yj != ''  ">#{yj},</if>
+        <if test="count != null  and count != ''  ">#{count},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="countTime != null  and countTime != ''  ">#{countTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateRytj" parameterType="Rytj">
+        update sys_rytj
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ryId != null  and ryId != ''  ">ry_id = #{ryId},</if>
+            <if test="ryName != null  and ryName != ''  ">ry_name = #{ryName},</if>
+            <if test="cbtId != null  and cbtId != ''  ">cbt_id = #{cbtId},</if>
+            <if test="cbtName != null  and cbtName != ''  ">cbt_name = #{cbtName},</if>
+            <if test="jbfyId != null  and jbfyId != ''  ">jbfy_id = #{jbfyId},</if>
+            <if test="jbfyName != null  and jbfyName != ''  ">jbfy_name = #{jbfyName},</if>
+            <if test="jc != null  and jc != ''  ">jc = #{jc},</if>
+            <if test="xs != null  and xs != ''  ">xs = #{xs},</if>
+            <if test="wj != null  and wj != ''  ">wj = #{wj},</if>
+            <if test="yj != null  and yj != ''  ">yj = #{yj},</if>
+            <if test="count != null  and count != ''  ">count = #{count},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="countTime != null  and countTime != ''  ">count_time = #{countTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteRytjById" parameterType="Integer">
+        delete from sys_rytj where id = #{id}
+    </delete>
+	
+    <delete id="deleteRytjByIds" parameterType="String">
+        delete from sys_rytj where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="queryJcByFyAndMonth"  resultType="java.lang.String"  >
+        SELECT  jc  from sys_rytj   where  jbfy_id=#{fyId} and cbt_id=#{cbtId}  and  ry_id=#{ryId} and  count_time=#{time}
+    </select>
+    <select id="queryXsByFyAndMonth"  resultType="java.lang.String"  >
+      SELECT  xs  from sys_rytj   where jbfy_id=#{fyId} and cbt_id=#{cbtId}  and  ry_id=#{ryId} and  count_time=#{time}
+    </select>
+    <select id="queryWjByFyAndMonth"  resultType="java.lang.String"  >
+         SELECT  wj  from sys_rytj   where  jbfy_id=#{fyId} and cbt_id=#{cbtId}  and  ry_id=#{ryId} and  count_time=#{time}
+    </select>
+    <select id="queryYjByFyAndMonth"  resultType="java.lang.String"  >
+        SELECT  yj  from sys_rytj   where  jbfy_id=#{fyId} and cbt_id=#{cbtId}  and  ry_id=#{ryId} and  count_time=#{time}
+    </select>
+    
+</mapper>

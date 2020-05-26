@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-info search-collapse">
+        <form id="case" class="form-horizontal">
+            <input type="hidden" name="jobId" id="jobId" th:value="${jobId}">
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>采集接口方法名：</label>
+                    <input type="text"  name="colleinterfaceMethed">
+                </div>
+                <div class="col-sm-4">
+                    <label>创建人：</label>
+                    <input type="text"  name="createBy">
+                </div>
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-4 select-time">
+                    <label>创建时间：</label>
+                    <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+                    <span class="time-span">-</span>
+                    <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+                </div>
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-12 select-info-btn">
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                    <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+    <div class="form-group">
+        <div class="form-control-static col-sm-offset-5">
+            <button onclick="submitform()" class="btn btn-primary">提交</button>
+            <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:colleinterface:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:colleinterface:remove')}]];
+    var prefix = ctx + "module/colleinterface";
+    $(function() {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            queryParams: queryParams,
+            sortName: "createTime",
+            sortOrder: "desc",
+            modalName: "数据",
+            showExport: false,
+            search: false,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field : 'colleinterfaceId',
+                    title : '采集接口Id',
+                    visible:false
+                },
+                {
+                    field : 'colleinterfaceName',
+                    title : '采集接口名',
+                },
+                {
+                    field : 'colleinterfaceMethed',
+                    title : '采集接口方法名',
+                },
+                {
+                    field : 'remarks',
+                    title : '接口描述',
+                },
+                {
+                    field : 'createBy',
+                    title : '创建人',
+                },
+                {
+                    field : 'createTime',
+                    title : '创建时间',
+                },
+                /*
+            {
+                title: '操作',
+                align: 'center',
+                formatter: function(value, row, index) {
+                    var actions = [];
+                    actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="operateComponent.edit(\'' + row.colleinterfaceId + '\'\,\'module/colleinterface/edit/{id}\'\,\'采集接口\')"><i class="fa fa-edit"></i>编辑</a> ');
+                    actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="operateComponent.remove(\'' + row.colleinterfaceId + '\'\,\'module/colleinterface/remove\'\,\'采集接口\')"><i class="fa fa-remove"></i>删除</a>');
+                    return actions.join('');
+                }
+            }*/
+            ]
+        };
+        $.table.init(options);
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+    });
+
+    function queryParams(params) {
+        return {
+            pageSize:       params.limit,
+            pageNum:        params.offset / params.limit + 1,
+            searchValue:    params.search,
+            orderByColumn:  params.sort,
+            isAsc:          params.order
+        };
+    }
+    
+    function submitform() {
+        var jobId=$("#jobId").val();
+        var rows=$("#bootstrap-table").bootstrapTable('getSelections');
+        var methodParams="";
+        for (var i = 0; i <rows.length ; i++) {
+            var colleinterfaceId=rows[i].colleinterfaceId;
+            methodParams+=colleinterfaceId+","
+        }
+        methodParams=methodParams.substr(0,methodParams.length-1);
+        $.ajax({
+            url: ctx + "monitor/job/addcol",
+            type: "post",
+            dataType: "json",
+            data:{"methodParams":methodParams,"jobId":jobId},
+            async: true,
+            error: function (request) {
+                $.modal.alertError("系统错误");
+            },
+            success: function (data) {
+                if (data.code === 0) {
+                    modalComponent.msgWarning(data.msg);
+                    window.parent.location.reload();
+                    modalComponent.close();
+                } else {
+                    modalComponent.msgWarning(data.msg)
+                }
+            }
+        })
+        layer.close(index);
+
+    }
+</script>
+</body>
+</html>

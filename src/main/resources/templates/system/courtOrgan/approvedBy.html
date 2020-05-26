@@ -1,0 +1,215 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <div class="container-div">
+        <div class="col-sm-12 select-info search-collapse">
+            <form id="case" class="form-horizontal">
+              <div class="form-group select-info-container">
+                  <!--<div class="col-sm-4">-->
+                      <!--<label>主键：</label>-->
+                      <!--<input type="text"  name="id">-->
+                  <!--</div>-->
+                  <div class="col-sm-4">
+                      <label>姓名：</label>
+                      <input type="text"  name="deptName">
+                  </div>
+                  <!--<div class="col-sm-4">-->
+                      <!--<label>所属部门：</label>-->
+                      <!--&lt;!&ndash;//<input type="text"  name="dept">&ndash;&gt;-->
+                      <!--<select  name="dept" id="dept">-->
+                          <!--<option value ="">请选择</option>-->
+                          <!--<option  th:each="cbtList:${cbtList}" th:value="${cbtList.cbtName}" th:text="${cbtList.cbtName}"></option>-->
+                      <!--</select>-->
+                  <!--</div>-->
+                  <div class="col-sm-4">
+                      <label>身份证：</label>
+                      <input type="text"  name="idcard">
+                  </div>
+               </div>
+             <!-- <div class="form-group select-info-container">
+
+                  &lt;!&ndash;<div class="col-sm-4">&ndash;&gt;
+                      &lt;!&ndash;<label>类别：</label>&ndash;&gt;
+                      &lt;!&ndash;<input type="text"  name="type">&ndash;&gt;
+                  &lt;!&ndash;</div>&ndash;&gt;
+                  &lt;!&ndash;<div class="col-sm-4">&ndash;&gt;
+                      &lt;!&ndash;<label>创建时间：</label>&ndash;&gt;
+                      &lt;!&ndash;<input type="text"  class="time-input" id="startTime" placeholder="请选择" name="params[createTime]">&ndash;&gt;
+                  &lt;!&ndash;</div>&ndash;&gt;
+               </div>
+              <div class="form-group select-info-container">
+                  &lt;!&ndash;<div class="col-sm-4">&ndash;&gt;
+                      &lt;!&ndash;<label>更新时间：</label>&ndash;&gt;
+                      &lt;!&ndash;<input type="text"  name="updateTime">&ndash;&gt;
+                  &lt;!&ndash;</div>&ndash;&gt;
+                  &lt;!&ndash;<div class="col-sm-4">&ndash;&gt;
+                      &lt;!&ndash;<label>删除状态(0 正常 1 已删除)：</label>&ndash;&gt;
+                      &lt;!&ndash;<input type="text"  name="deleteFlag">&ndash;&gt;
+                  &lt;!&ndash;</div>&ndash;&gt;
+              </div>-->
+                <div class="form-group select-info-container">
+                    <div class="col-sm-12 select-info-btn">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+            <a class="btn btn-success" onclick=" selectProcess()" shiro:hasPermission="system:courtOrgan:approveAdd">
+                <i class="fa fa-plus"></i> 新增
+            </a>
+            <!--&lt;!&ndash;<a class="btn btn-primary btn-detail disabled" onclick="$.operate.detail()" shiro:hasPermission="system:adress:detail">&ndash;&gt;-->
+                <!--&lt;!&ndash;<i class="fa fa-plus"></i> 详细&ndash;&gt;-->
+            <!--&lt;!&ndash;</a>&ndash;&gt;-->
+            <!--<a class="btn btn-warning btn-edit disabled" onclick="operateComponent.edit('','system/adress/edit/{id}','通讯录')" shiro:hasPermission="system:adress:edit">-->
+                <!--<i class="fa fa-plus"></i> 编辑-->
+            <!--</a>-->
+			<!--<a class="btn btn-danger btn-del disabled" onclick="operateComponent.removeAll('system/adress/remove')" shiro:hasPermission="system:adress:remove">-->
+				<!--<i class="fa fa-trash-o"></i> 批量删除-->
+			<!--</a>-->
+            <a class="btn btn-select">
+				<span id="exportToolbar" class="btn-group" style="width: 110px; display: inline-block">
+					<select id="sel_exportoption" class="">
+						<option value="">导出当页数据</option>
+						<option value="all">导出全部数据</option>
+						<option value="selected">导出选中数据</option>
+					</select>
+				</span>
+            </a>
+		</div>
+
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:courtOrgan:edits')}]];
+
+        var removeFlag = [[${@permission.hasPermi('system:courtOrgan:removes')}]];
+
+        var prefix = ctx + "system/courtOrgan";
+
+        function selectProcess() {
+            $.modal.open("新增", ctx + "system/courtOrgan/approveAdd");
+        }
+        $(function() {
+            var options = {
+                id: "deptId",
+                url: prefix + "/approvedByList",
+
+				search: false,
+                columns: [{
+		            checkbox: true
+		        },
+                {
+                    field : 'order_num',
+                    title : '序号',
+
+                                    },
+                {
+                    field : 'ryName',
+                    title : '姓名',
+                                    },
+                {
+                    field : 'idCard',
+                    title : '身份证',
+                                    },
+                {
+                    field : 'deptName',
+                    title : '部门',
+                                    },
+                {
+                    field : 'fyName',
+                    title : '所属法院',
+
+                                    },
+                //
+                // {
+                //     field : 'createTimes',
+                //     title : '创建时间',
+                //                     },
+                // {
+                //     field : 'updateTimes',
+                //     title : '更新时间',
+                //     visible: false
+                //                     },
+                // {
+                //     field : 'deleteFlag',
+                //     title : '删除状态(0 正常 1 已删除)',
+                //     visible: false
+                //                     },
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="approveEdit(\'' + row.deptId + '\')")><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-primary btn-xs ' + removeFlag + '" href="#" onclick="setLeaderState(\'' + row.deptId + '\',\'' + row.ryName + '\',\'0\')"><i class="fa fa-plug">取消审批权</i></a> ');
+						return actions.join('');
+		            }
+		        }
+		        ]
+            };
+            initSimpleTabl.init(options);
+        });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime', theme: 'molv'});
+    });
+
+
+        function setLeaderState(deptId, ryName,status) {
+            var str = '';
+            if(status === '0'){
+                str = '确定取消<b style="color:red;">' + ryName + '</b>，拥有的领导审核权限吗？';
+            }else{
+                str = '确定设置<b style="color:red;">' + ryName + '</b>，拥有领导审核权限吗？';
+            }
+            $.modal.confirm(str, function () {
+                var config = {
+                    url: prefix + "/editLeaderStatusss",
+                    type: 'post',
+                    data: {"deptId": deptId, "leaderStatus": status},
+                    success: function (result) {
+                        if (result.code == web_status.SUCCESS) {
+                            $.modal.msgSuccess(result.msg);
+                            window.location.reload();
+                        } else {
+                            $.modal.msgError(result.msg)
+                        }
+                    },
+                    error: function (data) {
+                        $.modal.msgError(data)
+                    }
+                };
+                $.ajax(config)
+            })
+        }
+        function approveEdit(deptId){
+
+
+            $.modal.open("修改" ,prefix + "/approveEdit?deptId="+deptId);
+
+
+        }
+
+
+
+
+    </script>
+    <!--bootstrap-table-export数据导出-->
+    <script type="text/javascript">
+        $("#sel_exportoption").change(function () {
+            //刷新参数设置
+            $('#bootstrap-table').bootstrapTable('refreshOptions', {
+                exportDataType: $(this).val()
+            });
+        });
+    </script>
+</body>
+</html>

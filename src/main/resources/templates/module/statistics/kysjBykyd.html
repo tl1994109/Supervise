@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-info search-collapse">
+        <form id="config-form" class="form-horizontal">
+            <div class="form-group select-info-container">
+                <div class="col-sm-5">
+                    <label>经办法院：</label>
+                    <select name="jbfyId" id="jbfyId">
+                        <option value="">请选择</option>
+                        <option th:each="deptList:${deptList}" th:value="${deptList.cid}"
+                                th:text="${deptList.deptName}"></option>
+                    </select>
+                </div>
+                <div class="col-sm-5 select-info-btn">
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var prefix = ctx + "module/statistics";
+        $(function () {
+            var options = {
+                url: prefix + "/kysjBykydList",
+                search: false,
+                showFooter: true,
+                queryParams: queryParams,
+                columns: [
+                    {
+                        field: 'id',
+                        title: '可疑点编号',
+                        align: 'center',
+                        width: '10%'
+                    },
+                    {
+                        field: 'name',
+                        title: '可疑点',
+                    },
+                    {
+                        field: 'ms',
+                        title: '民事',
+                        align: 'center',
+                        formatter: function (value, row, index) {
+                            var ms = "1";
+                            if (row.ms == 0) {
+                                return "<font >" + row.ms + "</font>";
+                            } else {
+                                return "<a style='text-decoration:none' onclick='clueDetail(\"民事\",\""+row.name+"\")' ><font color='blue'>" + row.ms + "</font></a>";
+                            }
+                        },
+                        footerFormatter:function (value) {
+                            var sumBalance = 0;
+                            for (var i in value) {
+                                sumBalance += parseFloat(value[i].ms);
+                            }
+                            return "民事：" + sumBalance;
+                        }
+                    },
+                    {
+                        field: 'xs',
+                        title: '刑事',
+                        align: 'center',
+                        formatter: function (value, row, index) {
+                            var xs = "2";
+                            if (row.xs == 0) {
+                                return "<font >" + row.xs + "</font>";
+                            } else {
+                                return "<a style='text-decoration:none' onclick='clueDetail(\"刑事\",\""+row.name+"\")' ><font color='blue'>" + row.xs + "</font></a>";
+                            }
+                        },
+                        footerFormatter:function (value) {
+                            var sumBalance = 0;
+                            for (var i in value) {
+                                sumBalance += parseFloat(value[i].xs);
+                            }
+                            return "刑事：" + sumBalance;
+                        }
+                    },
+                    {
+                        field: 'xz',
+                        title: '行政',
+                        align: 'center',
+                        formatter: function (value, row, index) {
+                            var xz = "3";
+
+                            if (row.xz == 0) {
+                                return "<font >" + row.xz + "</font>";
+                            } else {
+                                return "<a style='text-decoration:none' onclick='clueDetail(\"行政\",\""+row.name+"\")'><font color='blue'>" + row.xz + "</font></a>";
+                            }
+                        },
+                        footerFormatter:function (value) {
+                            var sumBalance = 0;
+                            for (var i in value) {
+                                sumBalance += parseFloat(value[i].xz);
+                            }
+                            return "行政：" + sumBalance;
+                        }
+                    },
+                    {
+                        field: 'zx',
+                        title: '执行',
+                        align: 'center',
+                        formatter: function (value, row, index) {
+                            var zx = "4";
+                            if (row.zx == 0) {
+                                return "<font >" + row.zx + "</font>";
+                            } else {
+
+                                return "<a style='text-decoration:none' onclick='clueDetail(\"执行\",\""+row.name+"\")'><font color='blue'>" + row.zx + "</font></a>";
+                            }
+                        },
+                        footerFormatter:function (value) {
+                            var sumBalance = 0;
+                            for (var i in value) {
+                                sumBalance += parseFloat(value[i].zx);
+                            }
+                            return "执行：" + sumBalance;
+                        }
+                    },
+                    {
+                        field: 'total',
+                        title: '总数',
+                        align: 'center',
+                        formatter: function (value, row, index) {
+                            var total = "5";
+                            if (row.total == 0) {
+                                return "<font >" + row.total + "</font>";
+                            } else {
+                                return "<a style='text-decoration:none' onclick='clueDetail(\"\",\""+row.name+"\")'><font color='blue'>" + row.total + "</font></a>";
+                            }
+                        },
+                        footerFormatter:function (value) {
+                            var sumBalance = 0;
+                            for (var i in value) {
+                                sumBalance += parseFloat(value[i].total);
+                            }
+                            return "总数：" + sumBalance;
+                        }
+                    },
+                ]
+            };
+            initSimpleTabl.init(options);
+        });
+        function queryParams(params) {
+            return {
+                pageSize: params.limit,
+                pageNum: params.offset / params.limit + 1,
+                searchValue: params.search,
+            };
+        }
+        function clueDetail(jbxxAjlb, dubvioStrategyName) {
+            var url = prefix + '/getDimListPage?jbxxAjlb=' + jbxxAjlb + "&dubvioStrategyName=" + dubvioStrategyName;
+            createMenuItem(url, "线索详情");
+        }
+
+    </script>
+</body>
+</html>

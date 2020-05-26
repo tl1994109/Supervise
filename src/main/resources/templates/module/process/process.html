@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-info search-collapse">
+        <form id="form-process" class="form-horizontal">
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>流程名称：</label>
+                    <input type="text" id="processName" name="processName">
+                </div>
+                <div class="col-sm-4 select-info-btn">
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                            class="fa fa-search"></i>&nbsp;查询</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+        <a class="btn btn-success" onclick="$.operate.addFull()"
+           shiro:hasPermission="module:process:add">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+        <a class="btn btn-info btn-edit" onclick="edit()"
+           shiro:hasPermission="module:process:edit">
+            <i class="fa fa-edit"></i> 修改
+        </a>
+        <a class="btn btn-primary btn-enable" onclick="enable()"
+           shiro:hasPermission="module:process:enable">
+            <i class="fa fa-tint"></i> 启用
+        </a>
+        <a class="btn btn-warning btn-disable" onclick="disable()"
+           shiro:hasPermission="module:process:disable">
+            <i class="fa fa-info"></i> 禁用
+        </a>
+        <a class="btn btn-danger btn-del" onclick="remove()"
+           shiro:hasPermission="module:process:remove">
+            <i class="fa fa-trash-o"></i> 删除
+        </a>
+    </div>
+
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var datas = [[${@dict.getType('sys_normal_disable')}]];
+    var prefix = ctx + "module/process";
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            modalName: "流程",
+            search: false,
+            columns: [{
+                checkbox: true
+            }, {
+                title: '序号',
+                formatter: function (value, row, index) {
+                    return index + 1;
+                }
+            },
+                {
+                    field: 'processId',
+                    title: '流程ID',
+                    visible: false
+                },
+                {
+                    field: 'processName',
+                    title: '流程名称'
+                },
+                {
+                    field: 'remarks',
+                    title: '备注'
+                },
+                {
+                    field: 'createBy',
+                    title: '创建者'
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                }, {
+                    field: 'updateBy',
+                    title: '修改者'
+                },
+                {
+                    field: 'updateTime',
+                    title: '修改时间'
+                }, {
+                    field: 'status',
+                    title: '状态',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(datas, value);
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    });
+
+    //修改操作
+    function edit() {
+        var rows = $("#bootstrap-table").bootstrapTable('getSelections');
+        if (rows.length == 0) {
+            $.modal.alertWarning("请选择需要修改的数据！");
+            return;
+        }
+        $.operate.editFull(rows[0].processId);
+    }
+
+    //启用操作
+    function enable() {
+        updateStatus("启用", 0);
+    }
+
+    //禁用操作
+    function disable() {
+        updateStatus("禁用", 1);
+    }
+
+    //删除操作
+    function remove() {
+        updateStatus("删除", 2);
+    }
+
+    //修改状态操作
+    function updateStatus(msg, status) {
+        var rows = $("#bootstrap-table").bootstrapTable('getSelections');
+        if (rows.length == 0) {
+            $.modal.alertWarning("请选择需要【" + msg + "】的数据！");
+            return;
+        }
+        if (rows[0].status == status) {
+            $.modal.alertWarning("该数据已经处于【" + msg + "】状态！");
+            return;
+        }
+        $.modal.confirm("确定【" + msg + "】" + rows.length + "条数据吗？", function () {
+            if (rows[0].processId == 'e0de0f0f28314cc0b7d0e9365738c0e9' || rows[0].processId == '773927aa8dd34f5abbc7c6ad814bba4d') {
+                $.modal.alertWarning("数据不允许操作！");
+                return;
+            }
+            var data = {
+                processId: rows[0].processId,
+                status: status
+            };
+            $.operate.submit(prefix + "/updateProcessStatus", "post", "json", data);
+        });
+    }
+</script>
+</body>
+</html>

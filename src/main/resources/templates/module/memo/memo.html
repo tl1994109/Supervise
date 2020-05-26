@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <div class="container-div">
+        <div class="col-sm-12 select-info search-collapse">
+            <form id="case" class="form-horizontal">
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>编号：</label>
+                      <input type="text"  name="memoId">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>日期：</label>
+                      <input type="text"  name="memoDate">
+                  </div>
+              </div>
+                <div class="form-group select-info-container">
+                    <div class="col-sm-12 select-info-btn">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+			<a class="btn btn-success" onclick="operateComponent.add('module/memo/add','备忘录')" shiro:hasPermission="module:memo:add">
+				<i class="fa fa-plus"></i> 新增
+			</a>
+            <a class="btn btn-primary btn-detail disabled" onclick="$.operate.detail()" shiro:hasPermission="module:memo:detail">
+                <i class="fa fa-plus"></i> 详细
+            </a>
+            <a class="btn btn-warning btn-edit disabled" onclick="operateComponent.edit('','module/memo/edit/{id}','备忘录')" shiro:hasPermission="module:memo:edit">
+                <i class="fa fa-plus"></i> 编辑
+            </a>
+			<a class="btn btn-danger btn-del disabled" onclick="operateComponent.removeAll('module/memo/remove')" shiro:hasPermission="module:memo:remove">
+				<i class="fa fa-trash-o"></i> 批量删除
+			</a>
+		</div>
+			
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('module:memo:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('module:memo:remove')}]];
+        var prefix = ctx + "module/memo";
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+				search: false,
+                columns: [{
+		            checkbox: true
+		        },
+                {
+                    field : 'memoId',
+                    title : '编号',
+                                    },
+                {
+                    field : 'memoDate',
+                    title : '日期',
+                                    },
+                {
+                    field : 'memoTime',
+                    title : '${column.columnComment}',
+                                    },
+                {
+                    field : 'memoContent',
+                    title : '内容',
+                                    },
+                {
+                    field : 'memoCreateby',
+                    title : '创建人',
+                                    },
+                {
+                    field : 'memoCreatedate',
+                    title : '创建时间',
+                                    },
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="operateComponent.edit(\'' + row.memoId + '\'\,\'module/memo/edit/{id}\'\,\'备忘录\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="operateComponent.remove(\'' + row.memoId + '\'\,\'module/memo/remove\'\,\'备忘录\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            initSimpleTabl.init(options);
+        });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+    });
+    </script>
+</body>
+</html>

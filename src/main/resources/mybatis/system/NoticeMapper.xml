@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.system.notice.mapper.NoticeMapper">
+    
+    <resultMap type="Notice" id="NoticeResult">
+        <result property="noticeId"       column="notice_id"       />
+        <result property="noticeTitle"    column="notice_title"    />
+        <result property="noticeType"     column="notice_type"     />
+        <result property="noticeContent"  column="notice_content"  />
+        <result property="status"         column="status"          />
+        <result property="processStatus"  column="process_status"  />
+        <result property="createBy"       column="create_by"       />
+        <result property="createTime"     column="create_time"     />
+        <result property="updateBy"       column="update_by"       />
+        <result property="updateTime"     column="update_time"     />
+        <result property="launchTime"     column="launchTime"     />
+        <result property="noticeCycle"    column="notice_cycle"     />
+        <result property="releaseBy"      column="release_by"     />
+        <result property="deleteFlag"     column="delete_flag"     />
+        <result property="deleteBy"       column="delete_by"       />
+        <result property="deleteTime"     column="delete_time"     />
+        <result property="remark"         column="remark"          />
+        <result property="noticeClickId"  column="noticeClickId"   />
+        <result property="loginName"  column="login_name"   />
+        <result property="pid"  column="processInstand"   />
+        <result property="topDate"  column="topDate"   />
+        <result property="noticePhoto"  column="notice_photo"   />
+        <result property="fillWay"  column="fillWay"   />
+    </resultMap>
+    
+    <sql id="selectNoticeVo">
+        select a.*,p.person_name username from (
+        SELECT n.*,u.login_name login_name,u.person_id FROM sys_notice n
+        LEFT JOIN sys_user u ON u.user_id = n.create_by) a
+        LEFT JOIN sys_person p ON p.person_id = a.person_id
+		where 1=1
+    </sql>
+    <!--#{createBy} 为借用字段  -->
+    <select id="selectNoReadNotice" parameterType="Notice" resultMap="NoticeResult">
+        SELECT n.* FROM sys_notice n WHERE n.notice_id 
+        NOT IN (SELECT nc.notice_id FROM sys_notice_click nc WHERE nc.user_id=#{createBy}) AND n.process_status=0
+        <if test="noticeType != null and noticeType != ''">
+			AND notice_type = #{noticeType}
+		</if>
+    </select>
+    
+    <select id="selectNoticeById" parameterType="String" resultMap="NoticeResult">
+         select a.*,p.person_name username from (
+        SELECT n.*,u.login_name login_name,u.person_id FROM sys_notice n
+        LEFT JOIN sys_user u ON u.user_id = n.create_by) a
+        LEFT JOIN sys_person p ON p.person_id = a.person_id
+        where a.notice_id = #{noticeId}
+    </select>
+    
+    <select id="selectNoticeList" parameterType="Notice" resultMap="NoticeResult">
+        <include refid="selectNoticeVo"/>
+		<if test="noticeTitle != null and noticeTitle != ''">
+			AND a.notice_title like concat('%', #{noticeTitle}, '%')
+		</if>
+		<if test="noticeType != null and noticeType != ''">
+			AND a.notice_type = #{noticeType}
+		</if>
+		<if test="createBy != null and createBy != ''">
+			AND a.create_by = #{createBy}
+		</if>
+		<if test="processStatus != null and processStatus != ''">
+			AND  a.process_status = #{processStatus}
+		</if>
+        <if test="status != null and status != ''">
+            AND  a.status = #{status}
+        </if>
+        <if test="deleteFlag != null and deleteFlag != ''">
+            AND  a.delete_flag = #{processStatus}
+        </if>
+        ORDER BY a.topDate desc
+    </select>
+
+    <select id="selectNoticeListOrderByprocessStatus" parameterType="Notice" resultMap="NoticeResult">
+        <include refid="selectNoticeVo"/>
+        <if test="noticeTitle != null and noticeTitle != ''">
+            AND a.notice_title like concat('%', #{noticeTitle}, '%')
+        </if>
+        <if test="noticeType != null and noticeType != ''">
+            AND a.notice_type = #{noticeType}
+        </if>
+        <if test="createBy != null and createBy != ''">
+            AND a.create_by = #{createBy}
+        </if>
+        <if test="processStatus != null and processStatus != ''">
+            AND  a.process_status = #{processStatus}
+        </if>
+        <if test="status != null and status != ''">
+            AND  a.status = #{status}
+        </if>
+        <if test="deleteFlag != null and deleteFlag != ''">
+            AND  a.delete_flag = #{processStatus}
+        </if>
+        ORDER BY a.process_status desc
+    </select>
+    
+    <select id="selectNoticeMain" parameterType="Notice" resultMap="NoticeResult">
+        SELECT  n.*,p.launch_time as launchTime
+		FROM sys_notice n
+		LEFT JOIN oa_process_matter p ON p.matter_id=n.notice_id
+		WHERE n.process_status="0" AND p.status="1" AND n.notice_type="2" 
+		ORDER BY p.launch_time desc
+    </select>
+    
+    <insert id="insertNotice" parameterType="Notice">
+        insert into sys_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="noticeId != null  and noticeId != ''  ">notice_id,</if>
+            <if test="noticeTitle != null  and noticeTitle != ''  ">notice_title,</if>
+            <if test="noticeType != null  and noticeType != ''  ">notice_type,</if>
+            <if test="noticeCycle != null  and noticeCycle != ''  ">notice_cycle,</if>
+            <if test="noticeContent != null  and noticeContent != ''  ">notice_content,</if>
+            <if test="releaseBy != null  and releaseBy != ''  ">release_by,</if>
+            <if test="processStatus != null  and processStatus != ''  ">process_status,</if>
+            <if test="status != null  and status != ''  ">status,</if>
+            <if test="createBy != null  and createBy != ''  ">create_by,</if>
+            <if test="createTime != null  ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="deleteFlag != null  and deleteFlag != ''  ">delete_flag,</if>
+            <if test="deleteBy != null  and deleteBy != ''  ">delete_by,</if>
+            <if test="deleteTime != null  ">delete_time,</if>
+            <if test="pid != null  and pid != ''  ">processInstand,</if>
+            <if test="remark != null  and remark != ''  ">remark,</if>
+            <if test="topDate != null and topDate!='' ">topDate,</if>
+            <if test="noticePhoto != null and noticePhoto!='' ">notice_photo,</if>
+            <if test="fillWay != null and fillWay!='' ">fillWay,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="noticeId != null  and noticeId != ''  ">#{noticeId},</if>
+            <if test="noticeTitle != null  and noticeTitle != ''  ">#{noticeTitle},</if>
+            <if test="noticeType != null  and noticeType != ''  ">#{noticeType},</if>
+            <if test="noticeCycle != null  and noticeCycle != ''  ">#{noticeCycle},</if>
+            <if test="noticeContent != null  and noticeContent != ''  ">#{noticeContent},</if>
+            <if test="releaseBy != null  and releaseBy != ''  ">#{releaseBy},</if>
+            <if test="processStatus != null  and processStatus != ''  ">#{processStatus},</if>
+            <if test="status != null  and status != ''  ">#{status},</if>
+            <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+            <if test="createTime != null  ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="deleteFlag != null  and deleteFlag != ''  ">#{deleteFlag},</if>
+            <if test="deleteBy != null  and deleteBy != ''  ">#{deleteBy},</if>
+            <if test="deleteTime != null  ">#{deleteTime},</if>
+            <if test="pid != null  and pid != ''  ">#{pid},</if>
+            <if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="topDate != null and topDate!='' ">#{topDate},</if>
+            <if test="noticePhoto != null and noticePhoto!='' ">#{noticePhoto},</if>
+            <if test="fillWay != null and fillWay!='' ">#{fillWay},</if>
+        </trim>
+    </insert>
+	 
+    <update id="updateNotice" parameterType="Notice">
+        update sys_notice 
+        <set>
+            <if test="noticeTitle != null">notice_title = #{noticeTitle}, </if>
+            <if test="noticeType != null">notice_type = #{noticeType}, </if>
+            <if test="noticeContent != null">notice_content = #{noticeContent}, </if>
+            <if test="status != null">status = #{status}, </if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="processStatus != null">process_status = #{processStatus},</if>
+            <if test="pid != null">processInstand = #{pid},</if>
+            <if test="updateTime!=null">update_time=#{updateTime},</if>
+            <if test="topDate!=null">topDate=#{topDate},</if>
+            <if test="noticePhoto!=null">notice_photo=#{noticePhoto},</if>
+            <if test="fillWay != null and fillWay!='' ">fillWay = #{fillWay},</if>
+        </set>
+        where notice_id = #{noticeId}
+    </update>
+	
+    <delete id="deleteNoticeByIds" parameterType="String">
+        delete from sys_notice where notice_id in 
+        <foreach item="noticeId" collection="array" open="(" separator="," close=")">
+            #{noticeId}
+        </foreach>
+    </delete>
+
+    <select id="selectNoticePhoto" resultMap="NoticeResult">
+      select * from sys_notice n where n.notice_photo is NOT null and n.status='0' and n.delete_flag='0'
+      and n.process_status = '0' ORDER BY n.topDate desc limit 0,5
+    </select>
+
+    <select id="selectNoticeByPid" parameterType="String" resultMap="NoticeResult">
+        select * from sys_notice where processInstand = #{processInstand}
+    </select>
+</mapper>

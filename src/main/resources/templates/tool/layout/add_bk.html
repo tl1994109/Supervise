@@ -1,0 +1,260 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-layout-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">布局名称：</label>
+            <div class="col-sm-8">
+                <input id="layoutName" name="layoutName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注：</label>
+            <div class="col-sm-8">
+                <input id="remark" name="remark" class="form-control" type="text">
+            </div>
+        </div>
+
+        <!--handsontable主体-->
+        <div class="form-group">
+            <a id="addRow">新增行</a> | <a id="removeRow">删除行</a> | <a id="saveRow">保存</a>
+            <div id="example1"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-control-static col-sm-offset-5">
+                <button type="submit" class="btn btn-primary">提交</button>
+                <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "tool/layout"
+    $("#form-layout-add").validate({
+        rules: {
+            xxxx: {
+                required: true,
+            },
+        },
+        submitHandler: function () {
+            $.operate.save(prefix + "/add", getMergeCells());
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    /* var data = [
+                     ["1", "", "", "", "", "", "", "", "", "", "", "", ""],
+                     ["2", "", "", "", "", "", "", "", "", "", "", "", ""],
+                     ["3", "", "", "", "", "", "", "", "", "", "", "", ""],
+                     ["4", "", "", "", "", "", "", "", "", "", "", "", ""],
+                     ["5", "", "", "", "", "", "", "", "", "", "", "", ""],
+                     ["6", "", "", "", "", "", "", "", "", "", "", "", ""],
+                     ["7", "", "", "", "", "", "", "", "", "", "", "", ""],
+                     ["8", "", "", "", "", "", "", "", "", "", "", "", ""],
+                     ["9", "", "", "", "", "", "", "", "", "", "", "", ""],
+                     ["10", "", "", "", "", "", "", "", "", "", "", "", ""],
+                     ["11", "", "", "", "", "", "", "", "", "", "", "", ""],
+                     ["12", "", "", "", "", "", "", "", "", "", "", "", ""]
+                 ];*/
+
+    var selection = [0,0,0,0];
+    var hot;
+
+    $(document).ready(function(){
+        var container = document.getElementById("example1");
+        hot = new Handsontable(container, {
+            startRows: 12,
+            startCols: 12,
+            minCols: 12,  // 最小列数
+            minRows: 1, // 最小行数
+            fixedRowsTop: 12,
+            fixedColumnsLeft: 12,
+            data: getMergeCells(),
+            rowHeaders: true,
+            colHeaders: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+            columnSorting: true, // 列排序
+            /*sortIndicator: true, // 排序指标*/
+            autoWrapCol: true, // 自动包裹列
+            autoWrapRow: true, // 自动包裹行
+            manualColumnResize: true, // 手动调整列的大小
+            manualRowResize: true, // 手动调整行的大小
+            mergeCells: true, // 合并单元格
+            // 右键菜单栏显示
+            contextMenu: {
+                items: {
+                    "row_above": {name: '向上插入一行'},
+                    "row_below": {name: '向下插入一行'},
+                    /*"col-left": {name: '左侧插入行'},
+                    "col-right": {name: '右侧插入行'},*/
+                    "remove_row": {name: '删除行'},
+                    /*"remove_col": {name: '删除列'},*/
+                    "mergeCells": {name: '合并单元格'},
+                    "hsep1": "-------",
+                    "undo": {name: '撤销'},
+                    "redo": {name: '重置'},
+                    "cut": {name: '剪切'},
+                    "copy": {name: '复制'},
+                    "make_read_only": {name: '只读'},
+                }
+            },
+            comments: false,
+            colWidths: [80,80,80,80,80,80,80,80,80,80,80,80], // 定义列宽
+            manualColumnResize: true, // 列，允许拖动
+            manualRowResize: true, // 行，允许拖动
+            autoColumnSize: true, // 列宽未设置时，只适应大小
+            stretchH: "all", // 延伸到所有列
+
+
+            /* cells: function(row, col, prop) {
+                this.render = myRenderer;
+            },*/
+
+            afterSelectionEnd: function(x1, y1, x2, y2){
+                selection = [x1,y1,x2,y2];
+            },
+
+        })
+    });
+
+    // 新增行
+    $('#addRow').click(function(){
+        hot.alter('insert_row',hot.countRows());
+    });
+
+    // 新增列
+    $('#removeRow').click(function(){
+        var ridx = selection[0];
+        var eidx = selection[2];
+        hot.alter('remove_row',ridx,eidx-ridx+1);
+        selection = [0,0,0,0];
+    });
+
+
+    // 保存操作
+    var saveOperate = document.getElementById("saveRow");
+    Handsontable.dom.addEvent(saveOperate, 'click', function() {
+        // save all cell's data
+        $.ajax('scripts/json/save.json', 'GET', JSON.stringify({data: hot.getData()}), function (res) {
+            var response = JSON.parse(res.response);
+
+            if (response.result === 'ok') {
+                alert("Data saved");
+                /*exampleConsole.innerText = 'Data saved';*/
+            }
+            else {
+                alert("Save error");
+                /*exampleConsole.innerText = 'Save error';*/
+            }
+        });
+    });
+
+    // 合并单元格
+     /*function getMergeCells(key) {
+         if(key === "merge") {
+             if (hot.mergeCells.mergedCellInfoCollection.length > 0) {
+                 for (var k = 0; k < hot.mergeCells.mergedCellInfoCollection.length; k++) {
+                     if (hot.mergeCells.mergedCellInfoCollection[k].row == row &&
+                         hot.mergeCells.mergedCellInfoCollection[k].col == col) {
+                         hot.mergeCells.mergedCellInfoCollection.splice(k, 1);
+                     } else {
+                         hot.mergeCells.mergedCellInfoCollection.push({
+                             "row": row,
+                             "col": col,
+                             "rowspan": rowspan,
+                             "colspan": colspan
+                         });
+                         break;
+                     }
+                 }
+             } else {
+                 hot.mergeCells.mergedCellInfoCollection.push({
+                     "row": row,
+                     "col": col,
+                     "rowspan": rowspan,
+                     "colspan": colspan
+                 });
+             }
+             console.log(hot.mergeCells.mergedCellInfoCollection);
+         }
+     }*/
+
+     // 获取合并单元格数据
+
+    var cells = this.layoutMergeCells;
+    function getMergeCells(recordId) {
+
+        if (recordId == null) {
+            this.layoutMergeCells = cells;
+            return cells;
+            console.log(cells)
+        }
+        for (var i = 0; i < res.length; i++) {
+            var cell = new Object();
+            cell.col = res[i].HORPOS;
+            cell.row = res[i].VERPOS;
+            cell.colspan = res[i].COLSPAN;
+            cell.rowspan = res[i].ROWSPAN;
+            cells[i] = cell;
+            var key = cell.row + '' + cell.col + '' + cell.rowspan + ''
+                + cell.colspan;
+            /*this.cssSet.add(key, res[i].CSS);*/
+        }
+        this.layoutMergeCells = cells;
+        return cells;
+
+    }
+
+
+
+
+
+    /*   var count_col = hot.countCols(); // 获取列数
+       var count_row = hot.countRows(); // 获取行数
+       // 获取每行的高度和每列的宽度
+       var row_h = '';
+       var col_w = '';
+       for (var i = 0; i < count_col; i++ ){
+           col_w = col_w + hot.getColWidth(i) + ',';
+       }
+       for (var i = 0; i < count_row; i++ ){
+           row_h = row_h + hot.getRowHeight(i) + ',';
+       }
+
+       col_w = col_w.substr(0,col_w.length-1); //列宽
+       row_h = row_h.substr(0,row_h.length-1); //行高*/
+
+
+
+
+    /*// 注册afterChange事件
+    hot.addHook('afterChange', function (changeData, source) {
+        if(!changeData) return;
+
+        var params = [];
+        if (changeData != null) {
+            var index = changes[0][0]; // 行号码
+            var rowdata = hot.getDataAtRow(index);
+            params.push(rowdata[0])
+        }
+    })*/
+
+    /*function getCarData() {
+        var data={
+            "layoutName":$("#layoutName").val(),
+            "remark":$("#remark").val(),
+            "romanceTable":$("#example1").val(),
+        };
+        return data;
+    }*/
+
+</script>
+
+
+</body>
+</html>

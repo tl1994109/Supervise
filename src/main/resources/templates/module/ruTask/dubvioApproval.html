@@ -1,0 +1,429 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<style type="text/css">
+    .nav-tabs{
+        border-bottom: none;
+    }
+
+    .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+        color: #555;
+        cursor: default;
+        background-color: #fff;
+        border-bottom: 2px solid #2196f3;
+        border-bottom-color: none;
+    }
+    .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+        border-top: none;
+        border-right: none;
+        border-left: none;
+    }
+    .nav-tabs>li>a{
+        padding: 14px 20px 14px 25px;
+    }
+
+    .row-container th {
+        background-color: #f3f3f3;
+    }
+    .row-container table{
+        margin: 10px 0px;
+        width: 95%;
+        overflow: hidden;
+    }
+    .row-container table th{
+        /*background: #f1f1f1 !important;*/
+        text-align: center;
+    }
+    .row-container table thead th{
+        height: 40px;
+        color: #fff;
+        background-color: rgba(107,166,217,0.91);
+    }
+    .row-container table thead th a {
+        display: inline-block;
+        line-height: 40px;
+        color: inherit;
+    }
+    .row-container table tbody tr{
+        height: 40px;
+    }
+    /* 重写bootstrap tab样式  */
+
+    .tab-title {
+        width: 99px;
+        margin-bottom: 20px;
+        cursor: default;
+        background-color: #fff;
+        border-bottom: 2px solid #2196f3;
+        border-bottom-color: none;
+    }
+    .tab-title a{
+        color: #555;
+        display: block;
+        padding: 14px 20px 14px 25px;
+        font-weight: 600;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+    }
+</style>
+<body class="gray-bg">
+
+<div class="wrapper animated fadeInRight">
+<div class="col-sm-12 select-info search-collapse">
+<form class="form-horizontal m" id="form-dubvioEvent-edit" th:object="${dubvioEvent}">
+
+    <input type="hidden" id="dubvioId"  name="dubvioId"  th:field="*{dubvioId}" >
+    <input type="hidden" name="taskId" th:value="${taskId}" id="taskId">
+    <input type="hidden" name="pid" th:value="${pid}" id="pid">
+    <div th:if="${dubvioEvent.dubvioSource == '1' }">
+        <!--<div class="tab-title">-->
+            <!--<a>基本信息</a>-->
+        <!--</div>-->
+        <div class="form-group ">
+            <label class="col-sm-3 control-label">可疑点：</label>
+            <div class="col-sm-8" >
+                <input type="text" class="form-control" name="dubvioStrategyName" th:field="*{dubvioStrategyName}" readonly="readonly">
+            </div>
+            <!--<div class="col-sm-4">-->
+            <!--<label>立案日期：</label>-->
+            <input type="hidden"  name="jbxxLarq" th:field="*{jbxxLarq}" readonly="readonly">
+            <!--</div>-->
+
+            <!--<div class="col-sm-4">-->
+            <!--&lt;!&ndash;<label>策略ID：</label>&ndash;&gt;-->
+            <!--<input type="hidden"  name="dubvioStrategyId" th:field="*{dubvioStrategyId}">-->
+            <!--</div>-->
+
+            <!--<div class="col-sm-4">-->
+            <!--&lt;!&ndash;<label>案件编号：</label>&ndash;&gt;-->
+            <!--<input type="hidden"  name="jbxxAjbh" th:field="*{jbxxAjbh}">-->
+            <!--</div>-->
+        </div>
+        <div class="form-group ">
+
+            <label class="col-sm-3 control-label">案号：</label>
+            <div class="col-sm-8" >
+                <input type="text"  class="form-control" name="jbxxAh" th:field="*{jbxxAh}" readonly="readonly">
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">被反映人：</label>
+            <div class="col-sm-8" >
+                <input type="text"  class="form-control" name="jbxxCbrName" th:field="*{jbxxCbrName}" readonly="readonly">
+            </div>
+        </div>
+        <div class="form-group ">
+            <label class="col-sm-3 control-label">创建时间：</label>
+            <div class="col-sm-8" >
+                <input type="text" class="form-control"  name="createTime" th:field="*{createTime}" readonly="readonly">
+            </div>
+
+        </div>
+        <div class="form-group select-info-container">
+
+
+
+
+            <!--<label>被告人：</label>-->
+            <input type="hidden"  name="jbxxBgr" th:field="*{jbxxBgr}" readonly="readonly">
+
+            <!--<label>案件类别：</label>-->
+            <input type="hidden"  name="jbxxAjlb" th:field="*{jbxxAjlb}" readonly="readonly">
+
+            <!--<label>法官ID：</label>-->
+            <input type="hidden"  name="jbxxCbrId" th:field="*{jbxxCbrId}">
+
+
+            <!--<label>法官姓名：</label>-->
+
+
+
+
+            <!--<label>收案日期：</label>-->
+            <input type="hidden"  name="jbxxSarq" th:field="*{jbxxSarq}" readonly="readonly">
+
+
+            <!--<label>分案日期：</label>-->
+            <input type="hidden"  name="jbxxFarq" th:field="*{jbxxFarq}" readonly="readonly">
+
+
+
+            <!--<label>承办庭ID：</label>-->
+            <input type="hidden"  name="jbxxCbtId" th:field="*{jbxxCbtId}">
+
+
+            <!--<label>承办庭名称：</label>-->
+            <input type="hidden"  name="jbxxCbtName" th:field="*{jbxxCbtName}">
+
+
+
+
+
+            <!--<label>开庭日期：</label>-->
+            <input type="hidden"  name="jbxxKtrq" th:field="*{jbxxKtrq}" readonly="readonly">
+
+
+            <!--<label>结案日期：</label>-->
+            <input type="hidden"  name="jbxxJarq" th:field="*{jbxxJarq}" readonly="readonly">
+
+
+            <!--<label>归档日期：</label>-->
+            <input type="hidden"  name="jbxxGdrq" th:field="*{jbxxGdrq}" readonly="readonly">
+            <!--<div class="col-sm-4">-->
+            <!--<label>风险等级</label>-->
+            <!--<select id="risksLevel" name="risksLevel" th:with="type=${@dict.getType('risks_grades')}" disabled="true">-->
+            <!--<option value="">请选择</option>-->
+            <!--<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{risksLevel}"></option>-->
+            <!--</select>-->
+            <!--</div>-->
+
+
+
+            <!--<div class="col-sm-4">-->
+            <!--<label>审批人</label>-->
+            <!--<select id="approver" name="approver" >-->
+            <!--<option value="">请选择</option>-->
+            <!--<option th:each="userList : ${userList}" th:text="${userList.userName}" th:value="${userList.userId}"></option>-->
+            <!--</select>-->
+            <!--</div>-->
+
+            <!--<label class="col-sm-3 control-label">审批人：</label>-->
+            <!--<div class="col-sm-8">-->
+            <!--<select id="approver" name="approver" class="form-control m-b">-->
+            <!--<option th:each="userList : ${userList}" th:text="${userList.userName}" th:value="${userList.userId}"></option>-->
+            <!--</select>-->
+            <!--</div>-->
+        </div>
+        <div class="form-group" th:if="${cause} ne null">
+            <label class="col-sm-3 control-label">删除原因：</label>
+            <div class="col-sm-8">
+                <textarea rows="8" style="width: 100%;" th:text="${cause}"></textarea>
+            </div>
+        </div>
+    </div>
+    <div th:if="${dubvioEvent.dubvioSource == '2' }">
+        <div class="tab-title">
+            <a>基本信息</a>
+        </div>
+        <div class="row-container">
+            <table border="1" cellpadding="0" cellspacing="0" style="margin-top: 0px;">
+                <tbody>
+                <tr align="center">
+                    <th class="col-xs-1">信访序号：</th>
+                    <td class="col-xs-2"><a style="text-decoration: underline;color: #23527c;" th:text="*{jbxxXfxh}"></a></td>
+                    <th class="col-xs-1">信访反映时间：</th>
+                    <td class="col-xs-2" th:text="*{jbxxXffysj}"></td>
+                    <th class="col-xs-1">反映人：</th>
+                    <td class="col-xs-2" th:text="*{dubvioFyr}"></td>
+                </tr>
+                <tr align="center">
+                    <th class="col-xs-1">联系方式：</th>
+                    <td class="col-xs-2" th:text="*{dubvioFyrdh}"></td>
+                    <th class="col-xs-1">反映对象：</th>
+                    <td class="col-xs-2" th:text="*{dubvioFydx}"></td>
+                    <th class="col-xs-1">信访来源：</th>
+                    <td class="col-xs-2" th:text="*{jbxxXfly}" ></td>
+                </tr>
+                <tr rowspan="2">
+                    <th class="col-xs-1">经办法院：</th>
+                    <td colspan="5" class="col-xs-2" th:text="*{jbfyName}" style="text-align: left"></td>
+                </tr>
+                <tr rowspan="2">
+                    <th class="col-xs-1">反映问题：</th>
+                    <td colspan="5" class="col-xs-2" th:text="*{dubvioStrategyName}" style="text-align: left"></td>
+                </tr>
+                <tr rowspan="2">
+                    <th class="col-xs-1">信访处置情况：</th>
+                    <td colspan="5" class="col-xs-2" th:text="*{jbxxXfczqk}" style="text-align: left"></td>
+                </tr>
+                <tr rowspan="2">
+                    <th class="col-xs-1">信访承办人：</th>
+                    <td colspan="5" class="col-xs-2" th:text="*{jbxxXfcbr}" style="text-align: left"></td>
+                </tr>
+                <tr rowspan="2">
+                    <th class="col-xs-1">信访处置结果：</th>
+                    <td colspan="5" class="col-xs-2" th:text="*{jbxxXfczjg}" style="text-align: left"></td>
+                </tr>
+                <tr rowspan="2">
+                    <th class="col-xs-1">信访备注：</th>
+                    <td colspan="5" class="col-xs-2" th:text="*{jbxxXfbz}" style="text-align: left"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-title">
+            <a>审批操作</a>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">审批操作：</label>
+        <div class="col-sm-4">
+            <label class="radio-inline">
+                <input type="radio" name="isok" value="true" checked> 同意
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="isok" value="false"> 不同意
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">审批批注：</label>
+        <div class="col-sm-8">
+            <textarea rows="8" style="width: 100%;" id="opinion" name="opinion"></textarea>
+        </div>
+    </div>
+
+    <!--<div class="form-group" th:if="${proIsok == 1}">-->
+        <!--<label class="col-sm-3 control-label">承办人：</label>-->
+        <!--<div class="col-sm-8">-->
+            <!--&lt;!&ndash;<select id="approver" name="approver" class="form-control m-b">&ndash;&gt;-->
+                <!--&lt;!&ndash;<option th:each="userList : ${userList}" th:text="${userList.userName}" th:value="${userList.userId}"></option>&ndash;&gt;-->
+            <!--&lt;!&ndash;</select>&ndash;&gt;-->
+            <!--<label class="radio-inline">-->
+                <!--<input type="radio" name="isok" value="true" checked> 同意-->
+            <!--</label>-->
+
+            <!--th:field="*{jbxxAh}"-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="form-group">
+        <label class="col-sm-3 control-label">历史轨迹：</label>
+        <div class="col-md-8">
+            <table class="table table-striped table-hover">
+                <thead>
+                <th class="col-md-2">活动名称</th>
+                <th class="col-md-2">审批人</th>
+                <th class="col-md-2">代理人</th>
+                <th class="col-md-2">开始时间</th>
+                <th class="col-md-2">结束时间</th>
+                <th class="col-md-2">耗时</th>
+                </thead>
+                <tbody id="tbody" th:each="task:${hisAct}">
+                <td th:text="${task.actName}"></td>
+                <td th:text="${task.assignee}"></td>
+                <td th:text="${task.owner}"></td>
+                <td th:text="${task.startTime}"></td>
+                <td th:text="${task.endTime}"></td>
+                <td th:text="${task.durationInMillis}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="form-control-static col-sm-offset-5">
+            <button type="button" class="btn btn-primary" id="submitFrm">提交</button>
+            <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+            <button onclick="release()" class="btn btn-primary" type="button">案件详细</button>
+        </div>
+    </div>
+    </form>
+</div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+    $(function() {
+    $('.summernote').summernote({
+        height : '220px',
+        lang : 'zh-CN'
+    });
+
+
+
+    });
+
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+    });
+
+    var prefix = ctx + "module/dubvioEvent"
+    $("#form-dubvioEvent-edit").validate({
+        rules:{
+                dubvioId:{
+                required:true,
+            },
+                dubvioStrategyId:{
+                required:true,
+            },
+                jbxxAjbh:{
+                required:true,
+            },
+                jbxxAh:{
+                required:true,
+            },
+        },
+        // submitHandler: function(form) {
+        //
+        //     // var row=0;
+        //     //
+        //     // $.operate.save(prefix + "/edit", $('#form-dubvioEvent-edit').serialize());
+        //     add();
+        // }
+    });
+
+
+
+    $(document).on("click","#submitFrm",function(){
+        var isok=$("input[name=isok]:checked").val()
+        var opinion = $("#opinion").val();
+        var taskId = $("#taskId").val();
+        var pid = $("#pid").val();
+        var approver='';
+        if(document.getElementById("approver")){
+            approver = $("#approver").val();
+        }
+        $.ajax({
+            url:ctx+'module/ruTask/compleTask',
+            type:'post',
+            data:{isok:isok,opinion:opinion,taskId:taskId,pid:pid,approver:approver},
+            success:function(result){
+                if(result.code===0){
+                    modalComponent.msgWarning(result.msg)
+                }else{
+                    modalComponent.msgWarning(result.msg)
+                }
+                modalComponent.close();
+                window.parent.location.reload();
+            },
+            error:function(data){
+                modalComponent.msgWarning(data)
+            }
+        });
+
+    });
+
+    // $(document).on("click","#submitCase",function(){
+    //     debugger
+    //     var dubvioId = $("#dubvioId").val();
+    //
+    //     $.ajax({
+    //         url:prefix+'/edit',
+    //         type:'post',
+    //         data:{dubvioId:dubvioId}
+    //
+    //
+    //     })
+    //
+    // });
+
+    function release(){
+        var dubvioId=$("#dubvioId").val();
+
+        $.modal.open("案件详细", prefix+"/edit/" + dubvioId);
+    }
+
+
+</script>
+</body>
+</html>

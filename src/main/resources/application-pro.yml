@@ -1,0 +1,110 @@
+
+# 项目相关配置
+datcent:
+    # 名称
+    name: datcent
+    # 版本
+    version: 1.0.1
+    # 版权年份
+    copyrightYear: 2019
+    # 文件上传路径
+    profile: E:/tool/opt/profile/
+    # 获取ip地址开关
+    addressEnabled: true
+# 开发环境配置
+server:
+    # 服务端口
+    port: 80
+    servlet:
+        # 项目contextPath
+        context-path: /
+    tomcat:
+        # tomcat的URI编码
+        uri-encoding: UTF-8
+        # tomcat最大线程数，默认为200
+        max-threads: 800
+        # Tomcat启动初始化的线程数，默认值25
+        min-spare-threads: 30
+
+
+# 数据源配置
+spring:
+    security:
+        basic:
+            enabled: false
+    activiti:
+        database-schema-update: true
+        job-executor-activate: true
+        history-level: full
+        check-process-definitions: false
+        ext:
+            database-schema-update: true
+        #不生成identity 相关表
+        #db-identity-used: false
+
+    datasource:
+
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        druid:
+            # 主库数据源
+            master:
+                url: jdbc:mysql://143.64.3.4:3306/datcent?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true
+                username: root
+                password: datcent123
+            # 从库数据源
+            slave:
+                # 从数据源开关/默认关闭
+                enabled: false
+                url:
+                username:
+                password:
+            # 初始连接数
+            initial-size: 10
+            # 最大连接池数量
+            max-active: 100
+            # 最小连接池数量
+            min-idle: 10
+            # 配置获取连接等待超时的时间
+            max-wait: 60000
+            # 打开PSCache，并且指定每个连接上PSCache的大小
+            pool-prepared-statements: true
+            max-pool-prepared-statement-per-connection-size: 20
+            # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+            timeBetweenEvictionRunsMillis: 60000
+            # 配置一个连接在池中最小生存的时间，单位是毫秒
+            min-evictable-idle-time-millis: 300000
+            validation-query: SELECT 1 FROM DUAL
+            test-while-idle: true
+            test-on-borrow: false
+            test-on-return: false
+            stat-view-servlet:
+                enabled: true
+                url-pattern: /monitor/druid/*
+                allow: ""
+                deny: ""
+            filter:
+                stat:
+                    log-slow-sql: true
+                    slow-sql-millis: 1000
+                    merge-sql: false
+                wall:
+                    config:
+                        multi-statement-allow: true
+
+
+    #redis 连接配置
+    redis:
+        database: 0
+        host: 143.64.3.4
+        port: 6379
+        password:
+        jedis:
+            pool:
+                max-active: 200
+                max-wait: -1ms
+                max-idle: 10
+                min-idle: 0
+        timeout:
+
+

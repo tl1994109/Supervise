@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="include :: header"></head>
+<style type="text/css">
+    .modal-border {
+        border: #CCCCCC 1px solid;
+    }
+
+    .model-container {
+        padding: 10px 0px;
+    }
+
+    .model-content {
+        width: 100%;
+        height: 58px;
+        line-height: 58px;
+        border: 1px solid #ddd;
+        padding: 0px 5px;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .model-title {
+        width: 67%;
+        float: left;
+        color: inherit;
+        text-align: left;
+    }
+
+    .model-default {
+        text-align: center;
+    }
+
+    .model-btn {
+        width: 30%;
+        float: left;
+        display: flex;
+    }
+
+    .model-btn a {
+        color: #676a6c;
+    }
+
+    .model-btn button {
+        border: none;
+        background-color: #fff;
+    }
+
+    .modal-div-margin {
+        margin: 5px 0px;
+    }
+
+    .ele {
+        /*设置元素绝对定位*/
+        position: absolute;
+        /*top 50%*/
+        top: 50%;
+        /*left 50%*/
+        left: 7%;
+        /*css3   transform 实现*/
+        transform: translate(-50%, -50%);
+    }
+
+    .ele-re {
+        position: relative;
+        padding-left: 150px;
+    }
+
+    .modal-col-sm-12 {
+        width: 97%;
+    }
+
+    #tbody input, #tbody select {
+        width: 100%;
+    }
+
+    #SecondCenterArea {
+        display: none;
+    }
+</style>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 select-info search-collapse">
+            <div class="col-sm-10 col-sm-offset-1">
+                <div class="subgroup-head">
+                    <form class="form-horizontal" role="form" id="subgroupFrm">
+                        <div class="form-group select-info-container">
+                            <div class="col-sm-4">
+                                <label>组件名称：</label>
+                                <input id="subgroupName" name="subgroupName" class="form-control"
+                                       type="text">
+                            </div>
+                            <div class="col-sm-4">
+                                <label>组件代码：</label>
+                                <input id="subgroupCode" name="subgroupCode" class="form-control" type="text">
+                            </div>
+                            <div class="col-sm-4">
+                                <label>显示方式：</label>
+                                <select id="subgroupStyle" name="subgroupStyle">
+                                    <option value="0">数据表格</option>
+                                    <option value="1">Form表单</option>
+                                    <option value="2">查询条件</option>
+                                    <option value="3">柱状图</option>
+                                    <option value="4">饼状图</option>
+                                    <option value="5">报表</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group select-info-container" id="tHead">
+                            <div class="col-sm-4">
+                                <label>数据模型：</label>
+                                <select id="tableName" name="tableName">
+                                    <option value="">请选择</option>
+                                    <option th:each="table:${tableInfoList}" th:text="${table.tableName}"
+                                            th:value="${table.tableName}"></option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>主键：</label>
+                                <select id="primaryKey" name="primaryKey" class="primaryKey">
+                                    <option value="">请选择</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>主键生成规则：</label>
+                                <select id="isKey" name="isKey">
+                                    <option value="">请选择</option>
+                                    <option value="0" selected="0">无</option>
+                                    <option value="1" selected="1">自增长</option>
+                                    <option value="2" selected="2'">UUID</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4" style="margin-top: 15px">
+                            <label>排序字段：</label>
+                            <select id="sortField" name="sortField" class="sortField">
+                                <option value="">请选择</option>
+                            </select>
+                        </div>
+                            <div class="col-sm-4" style="margin-top: 15px">
+                                <label>排序规则：</label>
+                                <select id="isSortable" name="isSortable">
+                                    <option value="">请选择</option>
+                                    <option value="0" selected="0">无</option>
+                                    <option value="desc" selected="desc">desc</option>
+                                    <option value="asc" selected="asc">asc</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4" style="margin-top: 15px">
+                                <label>显示列数：</label>
+                                <select id="visibleCols" name="visibleCols">
+                                    <option value="">请选择</option>
+                                    <option value="3" selected="3">3</option>
+                                    <option value="2" selected="2">2</option>
+                                    <option value="1" selected="1">1</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="subgroup-container" id="centerArea">
+                    <form id="subgroupFrm_container">
+                        <div class="modal-border model-container" id="centerArea">
+                            <div class="row model-row model-container ele-re ">
+                                <div class="col-sm-1  ele">
+                                    <label style="text-align: center;">操作事件：</label>
+                                </div>
+                                <div class="col-sm-12 modal-col-sm-12">
+                                    <div class="col-sm-3 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-default">
+                                                <a href="#" title="新增" onclick="event_click()"
+                                                   shiro:hasPermission="system:layout:add">
+                                                    <img th:src="@{/img/add.png}">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="event"></div>
+                                </div>
+                            </div>
+                            <div class="row model-row model-container ele-re ">
+                                <div class="col-sm-1  ele">
+                                    <label style="text-align: center;">初始条件：</label>
+                                </div>
+                                <div class="col-sm-12 modal-col-sm-12">
+                                    <div class="col-sm-4 modal-div-margin">
+                                        <div class="model-content">
+                                            <div class="model-default">
+                                                <a href="#" title="新增" onclick="incodition_click()"
+                                                   shiro:hasPermission="system:layout:add">
+                                                    <img th:src="@{/img/add.png}">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="incodition"></div>
+                                </div>
+                            </div>
+                            <div class="select-info-container modal-div-margin row model-row model-container">
+                                <div class="col-sm-4">
+                                    <label>是否分页：</label>
+                                    <select id="isPaging" name="isPaging">
+                                        <option value="0">是</option>
+                                        <option value="1">否</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>分页条数：</label>
+                                    <select id="pageSize" name="pageSize">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>分页风格：</label>
+                                    <select id="pageStyle" name="pageStyle">
+                                        <option value="0">普通分页</option>
+                                        <option value="1">高级分页</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-border modal-contaniner">
+                            <div class="row model-row model-container">
+                                <div class="col-sm-12 select-info-container">
+                                    <div class="col-sm-12">
+                                        <label style="width: 10%;padding-left: 5px">字段配置：</label>
+                                        <div class="col-sm-10 modal-border">
+                                            <table class="table table-striped table-hover">
+                                                <thead>
+                                                <th class="col-md-1">字段ID</th>
+                                                <th class="col-md-1">字段名称</th>
+                                                <th class="col-md-1">字段类型</th>
+                                                <th class="col-md-1">显示状态</th>
+                                                <th class="col-md-1">数据字典</th>
+                                                </thead>
+                                                <tbody id="tbody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="SecondCenterArea">
+                    <form id="secondSubgroupFrm_container">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr align="center">
+                                <th class="col-md-1" style="width: 100px;">字段ID</th>
+                                <th class="col-md-1" style="width: 100px;">字段名称</th>
+                                <th class="col-md-1" style="width: 80px;">字段类型</th>
+                                <th class="col-md-1" style="width: 80px;">查询条件</th>
+                                <th class="col-md-1" style="width: 80px;">显示状态</th>
+                                <th class="col-md-1" style="width: 80px;">显示方式</th>
+                                <th class="col-md-1" style="width: 80px;">数据字典</th>
+                            </tr>
+                            </thead>
+                        </table>
+                        <div class="pre-scrollable">
+                            <table id="subgroup" class="table table-striped table-hover">
+                                <tbody id="dataBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+                <div class="subgroup-foot" style="margin: 20px 0px">
+                    <div class="select-info-container row model-row">
+                        <div class="col-sm-2 col-sm-offset-4">
+                            <button type="button" class="btn btn-primary" id="formSubmit">提交</button>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-danger" id="colseModal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script type="text/javascript">
+
+    $("#subgroupStyle").on("change", function () {
+        if ($(this).val() == '0') {
+            $('#SecondCenterArea').css('display', 'none')
+            $('#centerArea').css('display', 'block')
+        }
+        else if ($(this).val() == '2') {
+            $('#centerArea').css('display', 'none')
+            $('#SecondCenterArea').css('display', 'block')
+
+        }
+    });
+
+    var strdata;
+
+
+    function myfun() {
+        $('#SecondCenterArea').css('display', 'none')
+        $('#centerArea').css('display', 'block')
+    }
+
+    /*用window.onload调用myfun()*/
+
+    // 不要括号
+    window.onload = myfun;
+
+    function incodition_click() {
+        var table_name = $("#tableName").val();
+        if (table_name == null || table_name == '') {
+            modalComponent.alertWarning("请先选择数据模型！");
+            return;
+        }
+        operateComponent.add('module/subgroupInicondit/add?tableName=' + table_name, '初始条件')
+    }
+
+    function event_click() {
+        var table_name = $("#tableName").val();
+        if (table_name == null || table_name == '') {
+            modalComponent.alertWarning("请先选择数据模型！");
+            return;
+        }
+        operateComponent.add('module/subgroupEvent/add?tableName=' + table_name, '操作事件')
+    }
+
+
+    $("#tableName").on("change", function () {
+
+        var tablename = $(this).val();
+
+        $("#sortField").empty()
+        $("#primaryKey").empty()
+
+        if (toolUtil.isNotEmpty(tablename)) {
+            var selectValue = $('#subgroupStyle option:selected').val()
+
+            if (selectValue == 0) {
+                data_tableColmun(tablename);
+            }
+            else if (selectValue == 2) {
+                secondData_tableColmun(tablename);
+            }
+
+
+        }
+
+    });
+
+
+    $(document).on("change", "#subgroupStyle", function () {
+        var selectValue = $(this).val();
+
+        $("#sortField").empty()
+        $("#primaryKey").empty()
+
+        if (toolUtil.isNotEmpty(selectValue)) {
+            var tablename = $('#tableName option:selected').val()
+
+            if (selectValue == 0) {
+                data_tableColmun(tablename);
+            }
+            else if (selectValue == 2) {
+                secondData_tableColmun(tablename);
+            }
+
+        }
+
+    });
+
+    //操作事件修改事件
+    $(document).on("click", ".editBtn", function () {
+        var id = $(this).attr("data-id");
+        if (id != 'undefined' || id!='null') {
+            operateComponent.edit(id, "module/subgroupEvent/edit/{id}", "操作事件")
+        } else {
+            var jsonStr = $(this).attr("data-json");
+            var json = jQuery.parseJSON(jsonStr);
+            var str = '?eventId=' + json.eventId + '&eventName=' + json.eventName
+                + '&eventType=' + json.eventType + '&eventMethod=' + json.eventMethod
+                + "&diagramId=" + json.diagramId + '&btnColor=' + json.btnColor;
+            layer.open({
+                type: 2,
+                area: ['800px', $(window).height() - 50 + 'px'],
+                fix: false,
+                //不固定
+                maxmin: true,
+                shade: 0.3,
+                title: "修改操作事件",
+                content: ctx + "module/subgroupEvent/editEvent" + str,
+                // 弹层外区域关闭
+                shadeClose: true,
+                success: function (layero, index) {
+                    var body = layer.getChildFrame('body', index);
+                    body.find("#fasteventName").val(json.eventName);
+                }
+            });
+        }
+    });
+    //初始化条件修改事件
+    $(document).on("click", ".condition_edit", function () {
+        var id = $(this).attr("data-id");
+        if (id != 'undefined'  || id!='null') {
+            operateComponent.edit(id, "module/subgroupInicondit/edit/{id}", "初始条件")
+        } else {
+            var jsonStr = $(this).attr("data-json");
+            var json = jQuery.parseJSON(jsonStr);
+            var str = '?iniconditId=' + json.iniconditId + '&columnName=' + json.columnName
+                + '&conditionMark=' + json.conditionMark + '&conditionOperator=' + json.conditionOperator
+                + "&tableName=" + json.tableName + '&conditionValue=' + json.conditionValue + "&guId=" + json.guId;
+            modalComponent.open("修改初始条件", ctx + "module/subgroupInicondit/edit_condition" + str)
+        }
+    });
+    //操作事件删除事件
+    $(document).on("click", ".removeBtn", function () {
+        var id = $(this).attr("data-id");
+        var jsonStr = $(this).attr("data-json");
+        if (id != 'undefined'  || id!='null') {
+            operateComponent.remove(id, "module/subgroupEvent/remove", "操作事件");
+        } else {
+            modalComponent.confirm("确定删除该条操作事件信息吗？", function () {
+                var json = jQuery.parseJSON(jsonStr);
+                $("div[data-event=" + json.eventName + "]").remove();
+            });
+        }
+    });
+
+    //初始化条件删除事件
+    $(document).on("click", ".condition_remove", function () {
+        var id = $(this).attr("data-id");
+        var jsonStr = $(this).attr("data-json");
+        if (id != 'undefined'  || id!='null') {
+            operateComponent.remove(id, "module/subgroupInicondit/remove", "操作事件");
+        } else {
+            modalComponent.confirm("确定删除该条操作事件信息吗？", function () {
+                var json = jQuery.parseJSON(jsonStr);
+                $("div[data-incodition=" + json.guId + "]").remove();
+            });
+        }
+    });
+
+    function data_tableColmun(tableName) {
+        var event = $("#tbody");
+        var str = '';
+
+        $.ajax({
+            url: ctx + "module/subgroup/selectTableColumns",
+            type: "post",
+            dataType: "json",
+            data: {"tableName": tableName},
+            success: function (result) {
+                var option = '<select class="select" id="dictType" name="tableColumn[][dictType]"><option value="">请选择</option>';
+                $.each(result.dictList, function (i, data) {
+                    option += '<option value="' + data.dictType + '">' + data.dictName + '</option>';
+                });
+                option += '</select>';
+                $.each(result.columnInfoList, function (i, data) {
+                    str += '<tr>'
+                        + '<td>'
+                        + '       <input type="text" value="' + data.columnName + '" name="tableColumn[][columnName]" readonly="readonly">'
+                        + '  </td>'
+                        + '  <td>'
+                        + '        <input class="select" type="text" name="tableColumn[][columnComment]" value="' + data.columnComment + '">'
+                        + '  </td>'
+                        + ' <td>'
+                        + '      <select class="select" id="dataType" name="tableColumn[][dataType]">'
+                        + '          <option value="varchar">varchar</option>'
+                        + '          <option value="char">char</option>'
+                        + '         <option value="datetime">datetime</option>'
+                        + '         <option value="int">int</option>'
+                        + '      </select>'
+                        + ' </td>'
+                        + ' <td>'
+                        + '      <select class="select" id="isVisible" name="tableColumn[][isVisible]">'
+                        + '          <option value="0">显示</option>'
+                        + '          <option value="1">隐藏</option>'
+                        + '      </select>'
+                        + ' </td>'
+                        + ' <td>' + option + '</td>'
+                        + '</tr>';
+                });
+                for (var i = 0; i < result.columnInfoList.length; i++) {
+                    var newOption = document.createElement("option");
+                    newOption.text = result.columnInfoList[i].columnName;
+                    newOption.value = result.columnInfoList[i].columnName;
+                    $("#tHead").find('.primaryKey').append(newOption);
+                }
+                for (var i = 0; i < result.columnInfoList.length; i++) {
+                    var newOption = document.createElement("option");
+                    newOption.text = result.columnInfoList[i].columnName;
+                    newOption.value = result.columnInfoList[i].columnName;
+                    $("#tHead").find('.sortField').append(newOption);
+                }
+                event.empty();
+                event.append(str);
+            }
+        });
+    }
+
+
+    function secondData_tableColmun(tableName) {
+        $.ajax({
+            url: ctx + "module/subgroup/queryCondition",
+            type: "post",
+            dataType: "json",
+            data: {"tableName": tableName},
+            success: function (result) {
+                var data = '';
+                $("#dataBody").empty();
+                $.each(result.rows[1], function (index, item) {
+                    data += dataStr = '<tr>\n' +
+                        '\t\t\t\t<td style="width: 144px">\n' +
+                        '\t\t\t\t\t<input style="width: 100px;" class="form-control" type="text" name="tableColumn[][columnName]"\n' +
+                        '\t\t\t\t\t\t   value="' + item.columnName + '" onchange="changeContent()" \n' +
+                        '\t\t\t\t\t\t   　readOnly="true"/>\n' +
+                        '\t\t\t\t\t<input type="hidden" value="' + item.tableName + '"/>\n' +
+                        '\t\t\t\t</td>\n' +
+                        '\t\t\t\t<td style="width: 144px">\n' +
+                        '\t\t\t\t\t<input style="width: 100px;" class="form-control" type="text" name="tableColumn[][columnComment]"\n' +
+                        '\t\t\t\t\t\t   value="' + item.columnComment + '"  onchange="changeContent()"/>\n' +
+                        '\t\t\t\t\t<input type="hidden" value="' + item.columnId + '"/>\n' +
+                        '\t\t\t\t</td>\n' +
+                        '\t\t\t\t<td style="width: 115px">\n' +
+                        '\t\t\t\t\t<select class="select2" onchange="changeContent()" name="tableColumn[][dataType]"\n' +
+                        '\t\t\t\t\t\t\t value="' + item.dataType + '\n' +
+                        '\t\t\t\t\t\t\tplaceholder="请选择" style="width: 80px;">\n' +
+                        '\t\t\t\t\t\t<option value="">请选择</option>\n' +
+                        '\t\t\t\t\t\t<option value="varchar" selected="' + item.dataType + ' == \'varchar\'">varchar</option>\n' +
+                        '\t\t\t\t\t\t<option value="char" selected=" ' + item.dataType + '== \'char\'">char</option>\n' +
+                        '\t\t\t\t\t\t<option value="datetime" selected="' + item.dataType + ' == \'datetime\'">datetime</option>\n' +
+                        '\t\t\t\t\t\t<option value="int" selected="' + item.dataType + ' == \'int\'">int</option>\n' +
+                        '\t\t\t\t\t</select>\n' +
+                        '\t\t\t\t</td>\n' +
+                        '\t\t\t\t<td style="width: 115px">\n' +
+                        '\t\t\t\t\t<select class="select2" onchange="changeContent()" name="tableColumn[][isSearch]"\n' +
+                        '\t\t\t\t\t\t\t value="' + item.isSearch + '"\n' +
+                        '\t\t\t\t\t\t\t placeholder="请选择" style="width: 60px;">\n' +
+                        '\t\t\t\t\t\t<option value="">请选择</option>\n' +
+                        '\t\t\t\t\t\t<option value="0" selected="' + item.isSearch + ' == \'0\'">是</option>\n' +
+                        '\t\t\t\t\t\t<option value="1" selected="' + item.isSearch + ' == \'1\'">否</option>\n' +
+                        '\t\t\t\t\t</select>\n' +
+                        '\t\t\t\t</td>\n' +
+                        '\t\t\t\t<td style="width: 115px">\n' +
+                        '\t\t\t\t\t<select class="select2" onchange="changeContent()" name="tableColumn[][isVisible]"\n' +
+                        '\t\t\t\t\t\t\t  value="' + item.isVisible + '"\n' +
+                        '\t\t\t\t\t\t\tplaceholder="请选择" style="width: 80px;">\n' +
+                        '\t\t\t\t\t\t<option value="">请选择</option>\n' +
+                        '\t\t\t\t\t\t<option value="0"  selected="' + item.isVisible + ' == \'0\'">显示</option>\n' +
+                        '\t\t\t\t\t\t<option value="1"  selected="' + item.isVisible + ' == \'1\'">隐藏</option>\n' +
+                        '\t\t\t\t\t</select>\n' +
+                        '\t\t\t\t</td>\n' +
+                        '\t\t\t\t<td style="width: 116px">\n' +
+                        '\t\t\t\t\t<select class="select2" onchange="changeContent()" name="tableColumn[][isVisibleType]"\n' +
+                        '\t\t\t\t\t\t\t value="' + item.isVisibleType + '"\n' +
+                        '\t\t\t\t\t\t\tplaceholder="请选择" style="width: 80px;">\n' +
+                        '\t\t\t\t\t\t<option value="">请选择</option>\n' +
+                        '\t\t\t\t\t\t<option value="0"  selected="' + item.isVisibleType + ' == \'0\'">输入框</option>\n' +
+                        '\t\t\t\t\t\t<option value="1"  selected="' + item.isVisibleType + ' == \'1\'">下拉框</option>\n' +
+                        '\t\t\t\t\t\t<option value="2"  selected="' + item.isVisibleType + ' == \'2\'">文本域</option>\n' +
+                        '\t\t\t\t\t\t<option value="3"  selected="' + item.isVisibleType + ' == \'3\'">日期</option>\n' +
+                        '\t\t\t\t\t\t<option value="4"  selected="' + item.isVisibleType + ' == \'4\'">密码框</option>\n' +
+                        '\t\t\t\t\t\t<option value="5"  selected="' + item.isVisibleType + ' == \'5\'">隐藏框</option>\n' +
+                        '\t\t\t\t\t\t<option value="6"  selected="' + item.isVisibleType + ' == \'6\'">富文本框</option>\n' +
+                        '\t\t\t\t\t\t<option value="7"  selected="' + item.isVisibleType + ' == \'7\'">单选框</option>\n' +
+                        '\t\t\t\t\t\t<option value="8"  selected="' + item.isVisibleType + ' == \'8\'">复选框</option>\n' +
+                        '\t\t\t\t\t</select>\n' +
+                        '\t\t\t\t</td>\n' +
+                        '\t\t\t\t<td style="width: 116px">\n' +
+                        '\t\t\t\t\t<select class="select2 value"    onchange="changeContent()" name="tableColumn[][dictType]" placeholder="请选择"\n' +
+                        '\t\t\t\t\t\t\t style="width: 80px;">\n' +
+                        '\t\t\t\t\t\t<option value="">请选择</option>\n' +
+                        '\t\t\t\t\t</select>\n' +
+                        '\t\t\t\t</td>\n' +
+                        '\t\t\t</tr>';
+                });
+                $("#dataBody").html(data);
+
+                var sss = result.rows[0];
+
+                for (var i = 0; i < sss.length; i++) {
+                    var newOption = document.createElement("option");
+                    newOption.text = sss[i].dictName;
+                    newOption.value = sss[i].dictType;
+                    $("#dataBody").find('.value').append(newOption);
+                }
+                for (var i = 0; i < result.rows[1].length; i++) {
+                    var newOption = document.createElement("option");
+                    newOption.text = result.rows[1][i].columnName;
+                    newOption.value = result.rows[1][i].columnName;
+                    $("#tHead").find('.primaryKey').append(newOption);
+                }
+                for (var i = 0; i < result.rows[1].length; i++) {
+                    var newOption = document.createElement("option");
+                    newOption.text = result.rows[1][i].columnName;
+                    newOption.value = result.rows[1][i].columnName;
+                    $("#tHead").find('.sortField').append(newOption);
+                }
+            }
+        })
+    }
+
+
+    $(document).on("click", "#colseModal", function () {
+        modalComponent.close();
+    });
+
+    document.getElementById("formSubmit").onclick = function () {
+        var data_modal = $("#tableName").val();
+        if(data_modal==null || data_modal==''){
+            modalComponent.msgWarning("请选择数据模型！");
+            return ;
+        }
+        modalComponent.loading("正在处理中，请稍后...");
+        //头部所有参数
+        var head_json = toolUtil.serializeObject("#subgroupFrm");
+        var style = $("#subgroupStyle").val();
+        if (style === '0') {
+            var contaniner_json = $('#subgroupFrm_container').serializeJSON();
+            if (contaniner_json.eventJson != null && contaniner_json.eventJson != '') {
+                head_json.eventJson = (JSON.stringify(contaniner_json.eventJson)).replace(/\\/g, "").replace(/"{/g, "{").replace(/}"/g, "}");
+            }
+            if (contaniner_json.iniconditJson != null && contaniner_json.iniconditJson != '') {
+                head_json.iniconditJson = (JSON.stringify(contaniner_json.iniconditJson)).replace(/\\/g, "").replace(/"{/g, "{").replace(/}"/g, "}");
+            }
+            head_json.isPaging = contaniner_json.isPaging;
+            head_json.pageSize = contaniner_json.pageSize;
+            head_json.pageStyle = contaniner_json.pageStyle;
+            head_json.tableColumn = JSON.stringify(contaniner_json.tableColumn);
+            $.ajax({
+                url: ctx + "module/subgroup/addTableColumn",
+                type: "post",
+                dataType: "json",
+                data:{"head_json":JSON.stringify(head_json),"contaniner_json":JSON.stringify(contaniner_json)} ,
+                success: function (result) {
+                    if (result.code === 0) {
+                        modalComponent.msgReload("保存成功,正在刷新数据请稍后……", modal_status.SUCCESS)
+                    } else {
+                        modalComponent.msgError(result.msg);
+                    }
+                    modalComponent.closeLoading();
+                }
+            });
+        } else if (style === '2') {
+            //头部所有参数
+            var contaniner_json = $('#secondSubgroupFrm_container').serializeJSON();
+            head_json.tableColumn = JSON.stringify(contaniner_json.tableColumn);
+            var json_str = JSON.stringify(head_json)
+            $.ajax({
+                url: ctx + "module/subgroup/addTableColumn",
+                type: "post",
+                dataType: "json",
+                data:{"head_json":JSON.stringify(head_json),"contaniner_json":JSON.stringify(contaniner_json)} ,
+                success: function (result) {
+                    if (result.code === 0) {
+                        modalComponent.msgReload("保存成功,正在刷新数据请稍后……", modal_status.SUCCESS)
+                    } else {
+                        modalComponent.msgError(result.msg);
+                    }
+                    modalComponent.closeLoading();
+                }
+            });
+        }else{
+            modalComponent.closeLoading();
+            modalComponent.msgError("尚未开放！")
+        }
+    }
+</script>
+</body>
+</html>

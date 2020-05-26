@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.process.mapper.ProcessResumeMapper">
+    
+    <resultMap type="ProcessResume" id="ProcessResumeResult">
+        <result property="id"    column="id"    />
+        <result property="processId"    column="process_id"    />
+        <result property="nodeId"    column="node_id"    />
+        <result property="matterId"    column="matter_id"    />
+        <result property="nodeName"    column="node_name"    />
+        <result property="operationContent"    column="operation_content"    />
+        <result property="operationBy"    column="operation_by"    />
+        <result property="operationTime"    column="operation_time"    />
+        <result property="personName"    column="person_name"    />
+        <result property="nextNodeName"    column="next_node_name"    />
+        <result property="nextAllowBy"    column="next_allow_by"    />
+    </resultMap>
+	
+	<sql id="selectProcessResumeVo">
+        SELECT s.*,p.person_name,n.node_name as next_node_name,n.allow_by as next_allow_by
+		FROM oa_process_resume s
+		LEFT JOIN sys_user u ON u.user_id=s.operation_by
+		LEFT JOIN sys_person p ON p.person_id=u.person_id
+		LEFT JOIN oa_process_line_detail l ON l.process_id=s.process_id AND l.from_node_id=s.node_id
+		LEFT JOIN oa_process_node_detail n ON n.node_id=l.to_node_id
+    </sql>
+	
+    <select id="selectProcessResumeList" parameterType="ProcessResume" resultMap="ProcessResumeResult">
+        <include refid="selectProcessResumeVo"/>
+        <where>  
+            <if test="id != null and id != ''"> and s.id = #{id}</if>
+             <if test="processId != null and processId != ''"> and s.process_id = #{processId}</if>
+             <if test="nodeId != null and nodeId != ''"> and s.node_id = #{nodeId}</if>
+             <if test="matterId != null and matterId != ''"> and s.matter_id = #{matterId}</if>
+             <if test="nodeName != null and nodeName != ''"> and s.node_name = #{nodeName}</if>
+             <if test="operationContent != null and operationContent != ''"> and s.operation_content = #{operationContent}</if>
+             <if test="operationBy != null and operationBy != ''"> and s.operation_by = #{operationBy}</if>
+             <if test="operationTime != null and operationTime != ''"> and s.operation_time = #{operationTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectProcessResumeById" parameterType="String" resultMap="ProcessResumeResult">
+        <include refid="selectProcessResumeVo"/>
+        where s.id = #{id}
+    </select>
+        
+    <insert id="insertProcessResume" parameterType="ProcessResume">
+        insert into oa_process_resume
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null and id != '' ">id,</if>
+			<if test="processId != null and processId != '' ">process_id,</if>
+			<if test="nodeId != null and nodeId != '' ">node_id,</if>
+			<if test="matterId != null and matterId != '' ">matter_id,</if>
+			<if test="nodeName != null and nodeName != '' ">node_name,</if>
+			<if test="operationContent != null and operationContent != '' ">operation_content,</if>
+			<if test="operationBy != null and operationBy != '' ">operation_by,</if>
+			<if test="operationTime != null">operation_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null and id != ''">#{id},</if>
+			<if test="processId != null and processId != ''">#{processId},</if>
+			<if test="nodeId != null and nodeId != ''">#{nodeId},</if>
+			<if test="matterId != null and matterId != '' ">#{matterId},</if>
+			<if test="nodeName != null and nodeName != ''">#{nodeName},</if>
+			<if test="operationContent != null and operationContent != ''">#{operationContent},</if>
+			<if test="operationBy != null and operationBy != ''">#{operationBy},</if>
+			<if test="operationTime != null">#{operationTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateProcessResume" parameterType="ProcessResume">
+        update oa_process_resume
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="processId != null  and processId != ''  ">process_id = #{processId},</if>
+            <if test="nodeId != null  and nodeId != ''  ">node_id = #{nodeId},</if>
+            <if test="matterId != null  and matterId != ''  ">matter_id = #{matterId},</if>
+            <if test="nodeName != null  and nodeName != ''  ">node_name = #{nodeName},</if>
+            <if test="operationContent != null  and operationContent != ''  ">operation_content = #{operationContent},</if>
+            <if test="operationBy != null  and operationBy != ''  ">operation_by = #{operationBy},</if>
+            <if test="operationTime != null  ">operation_time = #{operationTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteProcessResumeById" parameterType="String">
+        delete from oa_process_resume where id = #{id}
+    </delete>
+	
+    <delete id="deleteProcessResumeByIds" parameterType="String">
+        delete from oa_process_resume where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

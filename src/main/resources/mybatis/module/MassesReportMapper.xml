@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.massesReport.mapper.MassesReportMapper">
+    
+    <resultMap type="MassesReport" id="MassesReportResult">
+        <result property="xfjbqkId"    column="xfjbqk_id"    />
+        <result property="cid"    column="cid"    />
+        <result property="xfjbqkXm"    column="xfjbqk_xm"    />
+        <result property="xfjbqkDw"    column="xfjbqk_dw"    />
+        <result property="xfjbqkZw"    column="xfjbqk_zw"    />
+        <result property="xfjbqkJbrxm"    column="xfjbqk_jbrxm"    />
+        <result property="xfjbqkJbsj"    column="xfjbqk_jbsj"    />
+        <result property="xfjbqkJbfs"    column="xfjbqk_jbfs"    />
+        <result property="xfjbqkSltjjslr"    column="xfjbqk_sltjjslr"    />
+        <result property="xfjbqkJbnr"    column="xfjbqk_jbnr"    />
+        <result property="xfjbqkClqk"    column="xfjbqk_clqk"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+	
+	<sql id="selectMassesReportVo">
+        select xfjbqk_id, cid, xfjbqk_xm, xfjbqk_dw, xfjbqk_zw, xfjbqk_jbrxm, xfjbqk_jbsj, xfjbqk_jbfs, xfjbqk_sltjjslr, xfjbqk_jbnr, xfjbqk_clqk, create_time, create_by, update_time, update_by from arch_masses_report
+    </sql>
+	
+    <select id="selectMassesReportList" parameterType="MassesReport" resultMap="MassesReportResult">
+        <include refid="selectMassesReportVo"/>
+        <where>  
+            <if test="xfjbqkId != null and xfjbqkId != ''"> and xfjbqk_id like concat('%',#{xfjbqkId},'%')</if>
+             <if test="cid != null and cid != ''"> and cid like concat('%',#{cid},'%')</if>
+             <if test="xfjbqkXm != null and xfjbqkXm != ''"> and xfjbqk_xm like concat('%',#{xfjbqkXm},'%')</if>
+             <if test="xfjbqkDw != null and xfjbqkDw != ''"> and xfjbqk_dw like concat('%',#{xfjbqkDw},'%')</if>
+             <if test="xfjbqkZw != null and xfjbqkZw != ''"> and xfjbqk_zw like concat('%',#{xfjbqkZw},'%')</if>
+             <if test="xfjbqkJbrxm != null and xfjbqkJbrxm != ''"> and xfjbqk_jbrxm like concat('%',#{xfjbqkJbrxm},'%')</if>
+             <if test="xfjbqkJbsj != null and xfjbqkJbsj != ''"> and xfjbqk_jbsj like concat('%',#{xfjbqkJbsj},'%')</if>
+             <if test="xfjbqkJbfs != null and xfjbqkJbfs != ''"> and xfjbqk_jbfs like concat('%',#{xfjbqkJbfs},'%')</if>
+             <if test="xfjbqkSltjjslr != null and xfjbqkSltjjslr != ''"> and xfjbqk_sltjjslr like concat('%',#{xfjbqkSltjjslr},'%')</if>
+             <if test="xfjbqkJbnr != null and xfjbqkJbnr != ''"> and xfjbqk_jbnr like concat('%',#{xfjbqkJbnr},'%')</if>
+             <if test="xfjbqkClqk != null and xfjbqkClqk != ''"> and xfjbqk_clqk like concat('%',#{xfjbqkClqk},'%')</if>
+             <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+             <if test="createBy != null and createBy != ''"> and create_by like concat('%',#{createBy},'%')</if>
+             <if test="updateTime != null and updateTime != ''"> and update_time like concat('%',#{updateTime},'%')</if>
+             <if test="updateBy != null and updateBy != ''"> and update_by like concat('%',#{updateBy},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectMassesReportById" parameterType="String" resultMap="MassesReportResult">
+        <include refid="selectMassesReportVo"/>
+        where xfjbqk_id = #{xfjbqkId}
+    </select>
+        
+    <insert id="insertMassesReport" parameterType="MassesReport">
+        insert into arch_masses_report
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="xfjbqkId != null  and xfjbqkId != ''  ">xfjbqk_id,</if>
+           <if test="cid != null  and cid != ''  ">cid,</if>
+           <if test="xfjbqkXm != null  and xfjbqkXm != ''  ">xfjbqk_xm,</if>
+           <if test="xfjbqkDw != null  and xfjbqkDw != ''  ">xfjbqk_dw,</if>
+           <if test="xfjbqkZw != null  and xfjbqkZw != ''  ">xfjbqk_zw,</if>
+           <if test="xfjbqkJbrxm != null  and xfjbqkJbrxm != ''  ">xfjbqk_jbrxm,</if>
+           <if test="xfjbqkJbsj != null  and xfjbqkJbsj != ''  ">xfjbqk_jbsj,</if>
+           <if test="xfjbqkJbfs != null  and xfjbqkJbfs != ''  ">xfjbqk_jbfs,</if>
+           <if test="xfjbqkSltjjslr != null  and xfjbqkSltjjslr != ''  ">xfjbqk_sltjjslr,</if>
+           <if test="xfjbqkJbnr != null  and xfjbqkJbnr != ''  ">xfjbqk_jbnr,</if>
+           <if test="xfjbqkClqk != null  and xfjbqkClqk != ''  ">xfjbqk_clqk,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="createBy != null  and createBy != ''  ">create_by,</if>
+           <if test="updateTime != null  ">update_time,</if>
+           <if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="xfjbqkId != null  and xfjbqkId != ''  ">#{xfjbqkId},</if>
+        <if test="cid != null  and cid != ''  ">#{cid},</if>
+        <if test="xfjbqkXm != null  and xfjbqkXm != ''  ">#{xfjbqkXm},</if>
+        <if test="xfjbqkDw != null  and xfjbqkDw != ''  ">#{xfjbqkDw},</if>
+        <if test="xfjbqkZw != null  and xfjbqkZw != ''  ">#{xfjbqkZw},</if>
+        <if test="xfjbqkJbrxm != null  and xfjbqkJbrxm != ''  ">#{xfjbqkJbrxm},</if>
+        <if test="xfjbqkJbsj != null  and xfjbqkJbsj != ''  ">#{xfjbqkJbsj},</if>
+        <if test="xfjbqkJbfs != null  and xfjbqkJbfs != ''  ">#{xfjbqkJbfs},</if>
+        <if test="xfjbqkSltjjslr != null  and xfjbqkSltjjslr != ''  ">#{xfjbqkSltjjslr},</if>
+        <if test="xfjbqkJbnr != null  and xfjbqkJbnr != ''  ">#{xfjbqkJbnr},</if>
+        <if test="xfjbqkClqk != null  and xfjbqkClqk != ''  ">#{xfjbqkClqk},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+        <if test="updateTime != null  ">#{updateTime},</if>
+        <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateMassesReport" parameterType="MassesReport">
+        update arch_masses_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cid != null    ">cid = #{cid},</if>
+            <if test="xfjbqkXm != null    ">xfjbqk_xm = #{xfjbqkXm},</if>
+            <if test="xfjbqkDw != null    ">xfjbqk_dw = #{xfjbqkDw},</if>
+            <if test="xfjbqkZw != null    ">xfjbqk_zw = #{xfjbqkZw},</if>
+            <if test="xfjbqkJbrxm != null    ">xfjbqk_jbrxm = #{xfjbqkJbrxm},</if>
+            <if test="xfjbqkJbsj != null    ">xfjbqk_jbsj = #{xfjbqkJbsj},</if>
+            <if test="xfjbqkJbfs != null    ">xfjbqk_jbfs = #{xfjbqkJbfs},</if>
+            <if test="xfjbqkSltjjslr != null    ">xfjbqk_sltjjslr = #{xfjbqkSltjjslr},</if>
+            <if test="xfjbqkJbnr != null    ">xfjbqk_jbnr = #{xfjbqkJbnr},</if>
+            <if test="xfjbqkClqk != null   ">xfjbqk_clqk = #{xfjbqkClqk},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="createBy != null    ">create_by = #{createBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="updateBy != null    ">update_by = #{updateBy},</if>
+        </trim>
+        where xfjbqk_id = #{xfjbqkId}
+    </update>
+
+	<delete id="deleteMassesReportById" parameterType="String">
+        delete from arch_masses_report where xfjbqk_id = #{xfjbqkId}
+    </delete>
+	
+    <delete id="deleteMassesReportByIds" parameterType="String">
+        delete from arch_masses_report where xfjbqk_id in 
+        <foreach item="xfjbqkId" collection="array" open="(" separator="," close=")">
+            #{xfjbqkId}
+        </foreach>
+    </delete>
+    
+</mapper>

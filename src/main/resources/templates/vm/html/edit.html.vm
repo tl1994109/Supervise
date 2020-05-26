@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+<div class="col-sm-12 select-info search-collapse">
+<form class="form-horizontal m" id="form-${classname}-edit" th:object="${${classname}}">
+
+#if($columns)
+#set($foo=0)
+#set($sumCol=12)
+#set($col=$sumCol/$queryColmun)
+#foreach($list in $columns)
+#if($list.columnName == $primaryKey.columnName)
+    <input type="hidden" id="$list.attrname"  name="$list.attrname"  th:field="*{$list.attrname}" >
+#end
+#if($list.columnName == "updateTime"||$list.columnName == "createTime")
+        <input type="hidden"  name="$list.attrname" th:field="*{$list.attrname}">
+#end
+#if($list.columnName != $primaryKey.columnName)
+#set($foo=$foo+1)
+#if($foo == 1 || ($foo - 1) % $queryColmun == 0)
+                <div class="form-group select-info-container">
+#end
+
+#if($list.isVisibleType == "0" )
+
+                    <div class="col-sm-$col">
+                        <label>$list.columnComment：</label>
+                        <input type="text"  name="$list.attrname" th:field="*{$list.attrname}">
+                    </div>
+#end
+#if($list.isVisibleType == "1")
+                    <div class="col-sm-$col">
+                        <label>$list.columnComment：</label>
+
+                            <select id="$list.attrname" name="$list.attrname" th:with="type=${@dict.getType('$list.dictType')}" >
+                                <option value="">请选择</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{$list.attrname}" ></option>
+                            </select>
+
+                    </div>
+#end
+
+    #if($list.isVisibleType == "2" )
+            <div class="col-sm-$col">
+                <label>$list.columnComment：</label>
+                <div  class="col-sm-8">
+                    <textarea type="text"  name="$list.attrname" rows="3" cols="15"  th:field="*{$list.attrname}" > </textarea>
+                </div>
+            </div>
+    #end
+
+#if($list.isVisibleType == "3")
+                    <div class="col-sm-$col select-time">
+                        <label>$list.columnComment：</label>
+                        <input type="text" class="$list.attrname" id="$list.attrname"  name="$list.attrname"
+                               placeholder="请选择"  th:field="*{$list.attrname}" />
+                    </div>
+#end
+#if($list.isVisibleType == "4" )
+                    <div class="col-sm-$col">
+                        <label>$list.columnComment：</label>
+                        <input type="password"  name="$list.attrname" th:field="*{$list.attrname}">
+                    </div>
+#end
+#if($list.isVisibleType == "5" )
+                    <div class="col-sm-$col">
+                        <label>$list.columnComment：</label>
+                        <input type="hidden"  name="$list.attrname" th:field="*{$list.attrname}">
+                    </div>
+#end
+
+#if($list.isVisibleType == "7")
+                    <div class="col-sm-$col">
+                        <label>$list.columnComment：</label>
+                        <div class="radio-box" th:each="dict : ${@dict.getType('$list.dictType')}">
+                            <input type="radio" th:id="${dict.dictCode}" name="${dict.dictCode}" th:value="${dict.dictValue}" th:checked="${(dict.isDefault)=='Y'? 'true' : 'false'}" th:field="*{$list.attrname}">
+                            <label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                        </div>
+                    </div>
+#end
+#if($list.isVisibleType == "8")
+                    <div class="col-sm-$col">
+                        <label>$list.columnComment：</label>
+                        <div  class="col-sm-8">
+                            <select id="$list.attrname" name="$list.attrname" class="form-control select2-hidden-accessible" th:with="type=${@dict.getType('$list.dictType')}" multiple="" >
+                                <option value="">请选择</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{$list.attrname}"></option>
+                            </select>
+                        </div>
+                    </div>
+#end
+#if($foo % $queryColmun == 0)
+                </div>
+
+#if($list.isVisibleType == "6")
+        <div class="form-group select-info-container">
+            <div class="col-sm-$col">
+                <label >$list.columnComment：</label>
+            </div>
+            <div class="col-sm-12">
+                <input id="$list.attrname" name="$list.attrname"  th:field="*{$list.attrname}" type="hidden">
+                <div id="editor" class="summernote"></div>
+            </div>
+        </div>
+#end
+#end
+#if(${velocityCount} == ${columns.size()} && $foo % $queryColmun != 0)
+                </div>
+#end
+#end
+#end
+#end
+    <div class="form-group">
+        <div class="form-control-static col-sm-offset-5">
+            <button type="submit" class="btn btn-primary">提交</button>
+            <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+        </div>
+    </div>
+    </form>
+</div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+    $(function() {
+    $('.summernote').summernote({
+        height : '220px',
+        lang : 'zh-CN'
+    });
+
+
+#foreach($list in $columns)
+#if($list.isVisibleType == "6")
+                ## var sHTML= $('.summernote').code();
+                ## $("#${list.attrname}").val(sHTML);
+    var ${list.attrname} = $("#${list.attrname}").val();
+    $("#editor").code(${list.attrname});
+
+#end
+#end
+
+    });
+
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+#foreach($list in $columns)
+#if($list.isVisibleType == "3")
+                laydate.render({elem: '#${list.attrname}', theme: 'molv'});
+
+#end
+#end
+    });
+
+    var prefix = ctx + "${moduleName}/${classname}"
+    $("#form-${classname}-edit").validate({
+        rules:{
+#foreach($list in $columns)
+#if($list.isNullable == "0")
+                ${list.attrname}:{
+                required:true,
+            },
+#end
+#end
+        },
+        submitHandler: function(form) {
+
+            var row=0;
+#foreach($list in $columns)
+#if($list.isVisibleType == "6")
+         var sHTML= $('.summernote').code();
+         $("#${list.attrname}").val(sHTML);
+
+#end
+#end
+
+            $.operate.save(prefix + "/edit", $('#form-${classname}-edit').serialize());
+        }
+    });
+</script>
+</body>
+</html>

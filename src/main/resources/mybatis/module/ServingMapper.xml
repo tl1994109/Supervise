@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.serving.mapper.ServingMapper">
+    
+    <resultMap type="Serving" id="ServingResult">
+        <result property="id"    column="id"    />
+        <result property="basicinforId"    column="basicinfor_id"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="toUnit"    column="to_unit"    />
+        <result property="assumeOffice"    column="assume_office"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+	
+	<sql id="selectServingVo">
+        select id, basicinfor_id, start_time, end_time, to_unit, assume_office, create_time, create_by, update_time, update_by from arch_serving
+    </sql>
+	
+    <select id="selectServingList" parameterType="Serving" resultMap="ServingResult">
+        <include refid="selectServingVo"/>
+        <where>  
+            <if test="id != null and id != ''"> and id like concat('%',#{id},'%')</if>
+             <if test="basicinforId != null and basicinforId != ''"> and basicinfor_id like concat('%',#{basicinforId},'%')</if>
+             <if test="startTime != null and startTime != ''"> and start_time like concat('%',#{startTime},'%')</if>
+             <if test="endTime != null and endTime != ''"> and end_time like concat('%',#{endTime},'%')</if>
+             <if test="toUnit != null and toUnit != ''"> and to_unit like concat('%',#{toUnit},'%')</if>
+             <if test="assumeOffice != null and assumeOffice != ''"> and assume_office like concat('%',#{assumeOffice},'%')</if>
+             <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+             <if test="createBy != null and createBy != ''"> and create_by like concat('%',#{createBy},'%')</if>
+             <if test="updateTime != null and updateTime != ''"> and update_time like concat('%',#{updateTime},'%')</if>
+             <if test="updateBy != null and updateBy != ''"> and update_by like concat('%',#{updateBy},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectServingById" parameterType="String" resultMap="ServingResult">
+        <include refid="selectServingVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertServing" parameterType="Serving">
+        insert into arch_serving
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="id != null  and id != ''  ">id,</if>
+           <if test="basicinforId != null  and basicinforId != ''  ">basicinfor_id,</if>
+           <if test="startTime != null  and startTime != ''  ">start_time,</if>
+           <if test="endTime != null  and endTime != ''  ">end_time,</if>
+           <if test="toUnit != null  and toUnit != ''  ">to_unit,</if>
+           <if test="assumeOffice != null  and assumeOffice != ''  ">assume_office,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="createBy != null  and createBy != ''  ">create_by,</if>
+           <if test="updateTime != null  ">update_time,</if>
+           <if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="id != null  and id != ''  ">#{id},</if>
+        <if test="basicinforId != null  and basicinforId != ''  ">#{basicinforId},</if>
+        <if test="startTime != null  and startTime != ''  ">#{startTime},</if>
+        <if test="endTime != null  and endTime != ''  ">#{endTime},</if>
+        <if test="toUnit != null  and toUnit != ''  ">#{toUnit},</if>
+        <if test="assumeOffice != null  and assumeOffice != ''  ">#{assumeOffice},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+        <if test="updateTime != null  ">#{updateTime},</if>
+        <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateServing" parameterType="Serving">
+        update arch_serving
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="basicinforId != null    ">basicinfor_id = #{basicinforId},</if>
+            <if test="startTime != null    ">start_time = #{startTime},</if>
+            <if test="endTime != null   ">end_time = #{endTime},</if>
+            <if test="toUnit != null    ">to_unit = #{toUnit},</if>
+            <if test="assumeOffice != null    ">assume_office = #{assumeOffice},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="createBy != null    ">create_by = #{createBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="updateBy != null   ">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteServingById" parameterType="String">
+        delete from arch_serving where id = #{id}
+    </delete>
+	
+    <delete id="deleteServingByIds" parameterType="String">
+        delete from arch_serving where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

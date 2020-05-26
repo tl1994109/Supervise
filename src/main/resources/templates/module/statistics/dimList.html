@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<style type="text/css">
+	.colStyle {
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+</style>
+<body class="gray-bg">
+<div class="container-div">
+		<input type="hidden"  name="jbxxAjlb" id="jbxxAjlb" th:value="${dubvioEvent.jbxxAjlb}">
+		<input type="hidden"  name="dubvioStrategyName" id="dubvioStrategyName" th:value="${dubvioEvent.dubvioStrategyName}">
+	    <input type="hidden"  name="jbxxCbrId" id="jbxxCbrId" th:value="${dubvioEvent.jbxxCbrId}">
+	<div class="col-sm-12 select-table table-striped">
+		<table id="bootstrap-table" data-mobile-responsive="true"></table>
+	</div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var prefix = ctx + "module/statistics";
+	var datas_19= [[${@dict.getType('clue_source')}]];
+    $(function() {
+        var options = {
+            url: prefix + "/getDimList",
+            search: false,
+            queryParams: queryParams,
+            columns: [
+				{
+					field : 'dubvioId',
+					title : '违纪事件ID',
+					visible: false
+				},
+				{
+					field : 'jbxxAjbh',
+					title : '案件编号',
+					visible: false,
+				},
+				{
+					field : 'jbxxAh',
+					title : '案号',
+					width:180,
+					formatter:function(value,row,index){
+						var id= '"' +  row.dubvioId + '"';
+						return "<a style='text-decoration:none' onclick='clueDetail("+id+")' ><font color='blue'>" + row.jbxxAh +"</font></a>";
+					}
+				},
+				{
+					field : 'ajmc',
+					title : '案件名称',
+					class:'colStyle',
+					width:60,
+					formatter: paramsMatter,
+				},
+				{
+					field : 'jbxxCbrName',
+					title : '承办人',
+				},
+				{
+					field : 'jbfyName',
+					title : '经办法院',
+					align: 'center',
+				},
+				{
+					field : 'jbxxCbtName',
+					title : '承办庭',
+				},
+				{
+					field : 'jbxxAjlb',
+					title : '案件类别',
+				},
+				{
+					field : 'dubvioStrategyName',
+					title : '可疑点',
+				},
+				{
+					field : 'jbxxSarq',
+					title : '收案日期',
+				},
+				{
+					field : 'jbxxLarq',
+					title : '立案日期',
+				},
+				{
+					field : 'jbxxFarq',
+					title : '分案日期',
+					visible: false
+				},
+				{
+					field : 'jbxxKtrq',
+					title : '开庭日期',
+					visible: false
+				},
+				{
+					field : 'jbxxJarq',
+					title : '结案日期',
+					visible: false
+				},
+				{
+					field : 'jbxxGdrq',
+					title : '归档日期',
+					visible: false
+				},
+				{
+					field : 'createTime',
+					title : '创建时间',
+				},
+                ]
+        };
+        initSimpleTabl.init(options);
+    });
+    function queryParams(params) {
+        return {
+            pageSize:params.limit,
+            pageNum:params.offset / params.limit + 1,
+            searchValue:params.search,
+            orderByColumn:params.sort,
+            isAsc:params.order,
+			jbxxAjlb:$("#jbxxAjlb").val(),
+			dubvioStrategyName:$("#dubvioStrategyName").val(),
+			jbxxCbrId:$("#jbxxCbrId").val()
+        };
+    }
+    function clueDetail(clueId){
+        var url = ctx + 'module/dubvioEvent/edits?dubvioId='+clueId ;
+        createMenuItem(url, "案件详情");
+    }
+    function paramsMatter(value, row, index) {
+        if(value !=null && value!=""){
+			value = value.replace(/\s+/g,'');
+            return "<p style='text-overflow:ellipsis;overflow: hidden;white-space:nowrap;width: 120px;margin: 0px' title="+value+">"+value+"</p>";
+        }
+        return "";
+    }
+</script>
+</body>
+</html>

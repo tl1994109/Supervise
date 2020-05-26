@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.printLog.mapper.PrintLogMapper">
+    
+    <resultMap type="PrintLog" id="PrintLogResult">
+        <result property="printLogId"    column="print_log_id"    />
+        <result property="clueId"    column="clue_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="formName"    column="form_name"    />
+        <result property="clickTime"    column="click_time"    />
+        <result property="userName"    column="userName"    />
+        <result property="clueAh"    column="clueAh"    />
+
+    </resultMap>
+	
+	<sql id="selectPrintLogVo">
+        SELECT p.*,c.jbxx_ah AS clueAh,per.person_name AS userName
+        FROM busi_print_log p
+        LEFT JOIN sys_user u ON u.user_id=p.user_id
+        LEFT JOIN sys_person per ON per.person_id=u.person_id
+        LEFT JOIN busi_clue c ON c.clue_id=p.clue_id
+    </sql>
+	
+    <select id="selectPrintLogList" parameterType="PrintLog" resultMap="PrintLogResult">
+        <include refid="selectPrintLogVo"/>
+        <where>  
+            <if test="printLogId != null and printLogId != ''"> and p.print_log_id like concat('%',#{printLogId},'%')</if>
+             <if test="clueId != null and clueId != ''"> and p.clue_id like concat('%',#{clueId},'%')</if>
+             <if test="userId != null and userId != ''"> and p.user_id like concat('%',#{userId},'%')</if>
+             <if test="formName != null and formName != ''"> and p.form_name like concat('%',#{formName},'%')</if>
+             <if test="clickTime != null "> and p.click_time like concat('%',#{clickTime},'%')</if>
+             <if test="userName != null and userName != ''"> and per.person_name like concat('%',#{userName},'%')</if>
+             <if test="clueAh != null and clueAh != ''"> and c.jbxx_ah like concat('%',#{clueAh},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectPrintLogById" parameterType="Integer" resultMap="PrintLogResult">
+        <include refid="selectPrintLogVo"/>
+        where p.print_log_id = #{printLogId}
+    </select>
+        
+    <insert id="insertPrintLog" parameterType="PrintLog">
+        insert into busi_print_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="printLogId != null  ">print_log_id,</if>
+           <if test="clueId != null  and clueId != ''  ">clue_id,</if>
+           <if test="userId != null  ">user_id,</if>
+           <if test="formName != null  ">form_name,</if>
+           <if test="clickTime != null  ">click_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="printLogId != null  ">#{printLogId},</if>
+        <if test="clueId != null  and clueId != ''  ">#{clueId},</if>
+        <if test="userId != null  ">#{userId},</if>
+        <if test="formName != null  ">#{formName},</if>
+        <if test="clickTime != null  ">#{clickTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updatePrintLog" parameterType="PrintLog">
+        update busi_print_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="clueId != null  and clueId != ''  ">clue_id = #{clueId},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="formName != null  ">form_name = #{formName},</if>
+            <if test="clickTime != null  ">click_time = #{clickTime},</if>
+        </trim>
+        where print_log_id = #{printLogId}
+    </update>
+
+	<delete id="deletePrintLogById" parameterType="Integer">
+        delete from busi_print_log where print_log_id = #{printLogId}
+    </delete>
+	
+    <delete id="deletePrintLogByIds" parameterType="String">
+        delete from busi_print_log where print_log_id in 
+        <foreach item="printLogId" collection="array" open="(" separator="," close=")">
+            #{printLogId}
+        </foreach>
+    </delete>
+    
+</mapper>

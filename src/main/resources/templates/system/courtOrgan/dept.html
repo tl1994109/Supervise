@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 select-info search-collapse">
+            <form id="dept-form" class="form-horizontal">
+                <div class="form-group select-info-container">
+                    <div class="col-sm-4">
+                        <label>部门/人员名称：</label>
+                        <input id="deptName" name="deptName" class="form-control" type="text">
+                    </div>
+                    <div class="col-sm-4">
+                        <label>部门/人员状态：</label>
+                        <select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
+                            <option value="">请选择</option>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                    th:value="${dict.dictValue}"></option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4 select-info-btn">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.treeTable.search()"><i
+                                class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add(100)" shiro:hasPermission="system:courtOrgan:add">
+                <i class="fa fa-plus"></i> 新增
+            </a>
+            <!--<a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="system:user:import">
+                <i class="fa fa-upload"></i> 导入
+            </a>-->
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-tree-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var addFlag = [[${@permission.hasPermi('system:courtOrgan:add')}]];
+    var editFlag = [[${@permission.hasPermi('system:courtOrgan:edit')}]];
+    var leaderStatus =[[${@permission.hasPermi('system:courtOrgan:editLeaderStatuss')}]];
+    var removeFlag = [[${@permission.hasPermi('system:courtOrgan:remove')}]];
+    var datas = [[${@dict.getType('sys_normal_disable')}]];
+    var prefix = ctx + "system/courtOrgan"
+    $(function () {
+        var options = {
+            id: "deptId",
+            parentId: "parentId",
+            url: prefix + "/list",
+            createUrl: prefix + "/add/{id}",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove/{id}",
+            expandAll: false,
+            importUrl: prefix + "/importData",
+            expandAll: false,
+            importTemplateUrl: prefix + "/importTemplate",
+            modalName: "部门/人员",
+            columns: [{
+                field: 'deptName',
+                title: '部门/人员名称',
+            },
+                {
+                    field: 'orderNum',
+                    title: '排序',
+                    align: "center"
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    align: "center",
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(datas, item.status);
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                    align: "center"
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        if (row.parentId != 0) {
+                            var actions = [];
+                            actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.deptId + '\')"><i class="fa fa-edit">编辑</i></a> ');
+                            if (row.deptType != 3) {
+                                actions.push('<a class="btn btn-info  btn-xs ' + addFlag + '" href="#" onclick="$.operate.add(\'' + row.deptId + '\')"><i class="fa fa-plus">新增</i></a> ');
+                            }
+                            if (row.deptType == 3) {
+                                if(row.leaderStatus === '0'){
+                                    actions.push('<a class="btn btn-primary btn-xs ' + leaderStatus + '" href="#" onclick="setLeaderState(\'' + row.deptId + '\',\'' + row.deptName + '\',\'1\')"><i class="fa fa-plug">设置审批权</i></a> ');
+                                }else{
+                                    actions.push('<a class="btn btn-primary btn-xs ' + leaderStatus + '" href="#" onclick="setLeaderState(\'' + row.deptId + '\',\'' + row.deptName + '\',\'0\')"><i class="fa fa-plug">取消审批权</i></a> ');
+                                }
+                            }
+                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="remove(\'' + row.deptId + '\')"><i class="fa fa-remove">删除</i></a>');
+                            return actions.join('');
+                        } else {
+                            return "";
+                        }
+                    }
+                }]
+        };
+        $.treeTable.init(options);
+    });
+
+    function remove(id) {
+        $.modal.confirm("确定删除该条" + $.table._option.modalName + "信息吗？", function () {
+            $.ajax({
+                type: 'post',
+                url: prefix + "/remove/" + id,
+                success: function (result) {
+                    if (result.code == web_status.SUCCESS) {
+                        $.modal.msgSuccess(result.msg);
+                        $.treeTable.refresh();
+                    } else {
+                        $.modal.msgError(result.msg);
+                    }
+                }
+            });
+        });
+    }
+
+    function syn() {
+        $.modal.confirm("确定要同步法院管理信息吗？", function () {
+            $.ajax({
+                type: 'post',
+                url: prefix + "/syn",
+                success: function (result) {
+                    if (result.code == web_status.SUCCESS) {
+                        $.modal.msgSuccess(result.msg);
+                        $.treeTable.refresh();
+                    } else {
+                        $.modal.msgError(result.msg);
+                    }
+                }
+            });
+        });
+    }
+
+    function setLeaderState(deptId, deptName,status) {
+        var str = '';
+        if(status === '0'){
+            str = '确定取消<b style="color:red;">' + deptName + '</b>，拥有的领导审核权限吗？';
+        }else{
+            str = '确定设置<b style="color:red;">' + deptName + '</b>，拥有领导审核权限吗？';
+        }
+        $.modal.confirm(str, function () {
+            var config = {
+                url: prefix + "/editLeaderStatuss",
+                type: 'post',
+                data: {"deptId": deptId, "leaderStatus": status},
+                success: function (result) {
+                    if (result.code == web_status.SUCCESS) {
+                        $.modal.msgSuccess(result.msg);
+                        $.treeTable.refresh();
+                    } else {
+                        $.modal.msgError(result.msg)
+                    }
+                },
+                error: function (data) {
+                    $.modal.msgError(data)
+                }
+            };
+            $.ajax(config)
+        })
+    }
+</script>
+</body>
+
+<form id="importForm" enctype="multipart/form-data" class="mt20 mb10" style="display: none;">
+    <div class="col-xs-offset-1">
+        <input type="file" id="file" name="file"/>
+        <div class="mt10 pt5">
+            <input type="checkbox" id="updateSupport" name="updateSupport" title="如果登录账户已经存在，更新这条数据。"> 是否更新已经存在的用户数据
+            &nbsp; <a onclick="$.table.importTemplate()" class="btn btn-default btn-xs"><i
+                class="fa fa-file-excel-o"></i> 下载模板</a>
+        </div>
+        <font color="red" class="pull-left mt10">
+            提示：仅允许导入“xls”或“xlsx”格式文件！
+        </font>
+    </div>
+</form>
+</html>

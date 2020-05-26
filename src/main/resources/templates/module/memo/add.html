@@ -1,0 +1,210 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<link th:href="@{/jquery-timepicker/css/timePicker.css}" rel="stylesheet"/>
+<style type="text/css">
+    .operation {
+        float: left;
+        cursor: pointer;
+        height: 25px;
+        width: 25px;
+        line-height: 30px;
+        text-align: center;
+    }
+</style>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="col-sm-12 select-info search-collapse">
+        <input type="hidden" name="date" id="date" th:value="${date}">
+        <form class="form-horizontal m" id="form-memo-add">
+            <div class="form-group">
+                <table class="table table-form table-fixed">
+                    <thead>
+                    <tr>
+                        <td class="col-sm-2">日期</td>
+                        <td class="col-sm-2">时间</td>
+                        <td class="col-sm-6">内容</td>
+                        <td class="col-sm-2">操作</td>
+                    </tr>
+                    </thead>
+                    <tbody id="memoBody">
+                    <!--<tr>-->
+                        <!--<td class="col-sm-2"><input readonly type="text" th:value="${date}" class="form-control"-->
+                                                    <!--id="memoDate0" placeholder="日期" name="memo[][memoDate]"></td>-->
+                        <!--<td class="col-sm-2"><input readonly type="text" value="06:00" class="form-control"-->
+                                                    <!--id="memoTime0" placeholder="时间"-->
+                                                    <!--name="memo[][memoTime]"/></td>-->
+                        <!--<td class="col-sm-6"><input type="text" name="memo[][memoContent]" class="form-control">-->
+                        <!--</td>-->
+                        <!--<td class="col-sm-2">-->
+                            <!--<div class="remove operation"><span class="glyphicon glyphicon glyphicon-remove"></span>-->
+                            <!--</div>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <div class="form-control-static col-sm-offset-5">
+                    <button type="button" id="addMemo" class="btn btn-primary">提交</button>
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:include="include::footer"></div>
+<script th:src="@{/jquery-timepicker/js/jquery-timepicker.js}"></script>
+<script type="text/javascript">
+    var prefix = ctx + "module/memo"
+
+    $(function(){
+        var json ='[[${list}]]';
+        var date = '[[${date}]]';
+        var reg = /\&quot\;/g;
+        json = json.replace(reg,"\"");
+        var json_obj = JSON.parse(json);
+        //计算小时
+        var h = 6;
+        //计算分
+        var m = 0;
+        var  count = 36;
+        var hh="";
+        var mm="";
+        var time="";
+        var str = "";
+        var isok = false;
+        var content = "";
+        var id="";
+        var memoBody = $("#memoBody");
+        memoBody.empty();
+        for(var i = 0;i<=count;i++) {
+            isok = false;
+            content = "";
+            id="";
+            if (i != 0) {
+                m += 30;
+                if (m >= 60) {
+                    h++;
+                    m = 0;
+                }
+            }
+            if (h <= 9) {
+                hh = "0" + h;
+            }else{
+                hh = ""+h;
+            }
+            if (m == 0) {
+                mm = "0" + m;
+            } else {
+                mm = "" + 30;
+            }
+            time = hh + ":" + mm;
+            for (var j = 0; j < json_obj.length; j++) {
+                if (json_obj[j].memoTime == time) {
+                    isok = true;
+                    content = json_obj[j].memoContent;
+                    id = json_obj[j].memoId;
+                    break;
+                }
+            }
+            if (isok == true) {
+                str += '<tr>' +
+                    '                        <td class="col-sm-2"><input readonly="readonly" unselectable="on" type="text" value="' + date + '" class="form-control"' +
+                    '                                                    id="memoDate0" placeholder="日期" name="memo[][memoDate]"></td>' +
+                    '                        <td class="col-sm-2"><input readonly="readonly" unselectable="on" type="text" value="' + time + '" class="form-control"' +
+                    '                                                    id="memoTime0" placeholder="时间"' +
+                    '                                                    name="memo[][memoTime]"/></td>' +
+                    '                        <td class="col-sm-7"><input type="text" name="memo[][memoContent]" value="' + content + '"  class="form-control">' +
+                    '                        </td>' +
+                    '                        <td class="col-sm-1">' +
+                    '                            <input type="hidden" name="memo[][memoId]" value = "'+id+'" /><div class="remove operation" data-id="' + id + '"><span class="glyphicon glyphicon glyphicon-remove"></span>' +
+                    '                            </div>' +
+                    '                        </td>' +
+                    '                    </tr>';
+            } else {
+                str += '<tr>' +
+                    '                        <td class="col-sm-2"><input readonly="readonly" unselectable="on" type="text" value="' + date + '" class="form-control"' +
+                    '                                                    id="memoDate0" placeholder="日期" name="memo[][memoDate]"></td>' +
+                    '                        <td class="col-sm-2"><input readonly="readonly" unselectable="on" type="text" value="' + time + '" class="form-control"' +
+                    '                                                    id="memoTime0" placeholder="时间"' +
+                    '                                                    name="memo[][memoTime]"/></td>' +
+                    '                        <td class="col-sm-7"><input type="text" name="memo[][memoContent]"  class="form-control">' +
+                    '                        </td>' +
+                    '                        <td class="col-sm-1">' +
+                    '                            <div class="remove operation" data-id=""><span class="glyphicon glyphicon glyphicon-remove"></span>' +
+                    '                            </div>' +
+                    '                        </td>' +
+                    '                    </tr>';
+            }
+        }
+            memoBody.append(str);
+    });
+
+    $(document).on("click", "#addMemo", function () {
+        var data = $("#form-memo-add").serializeJSON().memo;
+        var count = 0;
+        for (var i = 0; i < data.length; i++) {
+            if (toolUtil.isNotEmpty(data[i].memoContent)) {
+                count++;
+            }
+        }
+        if (count === 0) {
+            modalComponent.alertWarning("备忘录，不能为空！");
+        } else {
+            $.operate.save(prefix + "/add", {"json_str": JSON.stringify(data)});
+        }
+    });
+
+
+    $("#form-memo-add").validate({
+        rules: {
+
+            memoId: {
+                required: true,
+            },
+            memoDate: {
+                required: true,
+            },
+        },
+        submitHandler: function (form) {
+            var row = 0;
+            $.operate.save(prefix + "/add", $('#form-memo-add').serialize());
+        }
+    });
+
+    $(document).on("click", ".remove", function () {
+        var id = $(this).data(id).id;
+        var event = $(this).parent().parent();
+        if(id!=''){
+            modalComponent.confirm("确定删除该条备忘录信息吗？", function () {
+            modalComponent.loading("正在处理中，请稍后...");
+            var config = {
+                url: prefix+"/remove",
+                type: 'post',
+                dataType: 'json',
+                data: {ids:id},
+                success: function (result) {
+                    if (result.code == statusCode.web_status.SUCCESS) {
+                        modalComponent.msgSuccess(result.msg);
+                        event.remove();
+                    } else {
+                        modalComponent.alertError(result.msg);
+                    }
+                    modalComponent.closeLoading();
+                }
+            };
+            $.ajax(config);
+        });
+        }else{
+            event.remove();
+        }
+    });
+
+</script>
+</body>
+</html>

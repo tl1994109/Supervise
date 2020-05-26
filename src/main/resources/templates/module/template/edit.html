@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="col-sm-12 select-info search-collapse">
+        <form class="form-horizontal m" enctype="multipart/form-data" id="form-template-edit">
+            <input id="templateId" name="templateId" type="hidden" th:value="${temp.templateId}"/>
+            <input id="treeId" name="parentId" type="hidden" th:value="${temp.parentId}"/>
+            <input type="hidden" name="oldlevel" id="oldlevel" th:value="${temp.level}">
+            <input type="hidden" name="level" id="level">
+            <input id="grandparent" name="grandparent" type="hidden" th:value="${grandparent}"/>
+            <input type="hidden" name="templateDocUrl" id="templateDocUrl" th:value="${temp.templateDocUrl}">
+            <div class="form-group">
+                <label class="col-sm-3 control-label ">模板标题：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" name="templateName" th:value="${temp.templateName}"/>
+                </div>
+            </div>
+            <div class="form-group" th:if="${temp.parentName ne ''}">
+                <label class="col-sm-3 control-label ">模板类型：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" onclick="selectDeptTree()" name="treeName" id="treeName"
+                           readonly="true" th:value="${temp.parentName}"/>
+                </div>
+            </div>
+            <div class="form-group" th:if="${temp.templateDocUrl} ne null">
+                <label class="col-sm-3 control-label">文档预览：</label>
+                <div class="col-sm-8">
+                    <p><span th:text="${temp.oldName}"></span><a style="margin-left: 10px"
+                                                                        href="javascript:void(0)"
+                                                                        th:onclick="|javascript:preview('${temp.templateId}')|">查看</a>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group" th:if="${temp.templateDocUrl} ne null">
+                <input type="hidden" name="templateUrl" id="templateUrl">
+                <label class="col-sm-3 control-label ">文件：</label>
+                <div class="col-sm-9">
+                    <input type="file" name="file" id="file"><span style="color: red">目前支持*.doc,*.docx,单个最大限制为50M</span>
+                </div>
+            </div>
+            <div class="form-group" th:if="${temp.remark} ne null">
+                <label class="col-sm-3 control-label">说明：</label>
+                <div class="col-sm-8">
+                    <textarea rows="8" class="form-control" name="remark" th:field="${temp.remark}"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-control-static col-sm-offset-5">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript">
+    var prefix = ctx + "module/template";
+    /*部门管理-新增-选择父部门树*/
+    function selectDeptTree() {
+        var options = {
+            title: '部门选择',
+            width: "380",
+            height: "380",
+            url: prefix + "/selectTempTree/" + $("#treeId").val(),
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var sNodes = tree.getSelectedNodes();
+        if (sNodes.length > 0) {
+            var level = sNodes[0].level;
+            $("#level").val(level);
+            if(level>=2){
+                $.modal.msgError("当节点前不支持选择")
+                return false;
+            }
+        }
+        $("#treeId").val(body.find('#treeId').val());
+        $("#treeName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    function preview(url) {
+        var fileUrl = prefix + "/showview/" + url
+        modalComponent.openFull("预览", '/ajax/libs/pdfjs-2.0.943/web/viewer.html?file=' + fileUrl);
+    }
+
+    $("#form-template-edit").submit(function(){
+        var isok = check();
+        if(isok == false){
+            return false;
+        }
+        $.modal.loading("正在处理中，请稍后...");
+        $('#form-template-edit').ajaxSubmit({
+            forceSync: false,
+            url: prefix +'/edit',
+            type: 'post',
+            success: function(result){
+                if (result.code == statusCode.web_status.SUCCESS) {
+                    $.modal.close();
+                    window.parent.$.modal.msgSuccess("保存成功,正在刷新数据请稍后……");
+                    window.parent.$.treeTable.refresh();
+
+                } else {
+                    modalComponent.alertError(result.msg);
+                }
+                modalComponent.closeLoading();
+            },
+            error: function(response){
+                modalComponent.alertError('系统错误');
+                modalComponent.closeLoading();
+            }
+        });
+        return false;
+    });
+
+    function check() {
+        var templateName = $("input[name='templateName']").val();
+        if (templateName == '' || templateName == null) {
+            $.modal.msgError("标题不能为空")
+            return false;
+        }
+        var treeId = $("#treeId").val();
+        var templateId = $("#templateId").val();
+        var grandparent = $("#grandparent").val();
+        var oldlevel = $("#oldlevel").val();
+        var level = $("#level").val();
+        if(treeId === templateId ){
+            $.modal.msgError("模板无法选择")
+            return false;
+        }
+        if(level!=undefined && level!=null && level !=''){
+            if(oldlevel=='2'){
+                if(level=='0'){
+                    $.modal.msgError("模板无法移送至选中节点")
+                    return false;
+                }
+            }
+        }
+        if(document.getElementById("file")){
+            return imgTypeSize("file", 50)
+        }
+        return true;
+    }
+
+    /**
+     * 判断上传的文件是类型与大小
+     * @param {string}  FileId  文件按钮id
+     * @param {number}  maxsize  文件大小（单位/M）
+     */
+    function imgTypeSize(FileId, maxsize) {
+        /*获取图片内容对象*/
+        var imgFile = document.getElementById(FileId).files[0];
+        if (imgFile == undefined || imgFile.name == "") {
+        } else {
+            /*文件类型正则验证*/
+            var imgStr = /\.(doc|docx)$/;
+            if (!imgStr.test(imgFile.name)) {
+                $.modal.msgError("文件不是*.doc,*.docx类型");
+                return false;
+            } else {
+                /*w文件大小*/
+                var imagSize = imgFile.size;
+                if (imagSize < (1024 * 1024 * maxsize)) {
+                    return true;
+                } else {
+                    $.modal.msgError(imgFile.name + "大小不能超过" + maxsize + "M");
+                    return false;
+                }
+            }
+        }
+    }
+
+</script>
+</body>
+</html>

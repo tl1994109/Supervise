@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.version.mapper.VersionMapper">
+    
+    <resultMap type="Version" id="VersionResult">
+        <result property="versionId"    column="version_id"    />
+        <result property="versionName"    column="version_name"    />
+        <result property="versionType"    column="version_type"    />
+        <result property="versionNumber"    column="version_number"    />
+        <result property="versionCreattime"    column="version_creattime"    />
+        <result property="versionUploadtime"    column="version_uploadtime"    />
+        <result property="versionPath"    column="version_path"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="versionInfo"    column="version_info"    />
+    </resultMap>
+	
+	<sql id="selectVersionVo">
+        select version_id, version_name, version_type, version_number, version_creattime, version_uploadtime, version_path, del_flag, create_by, create_time, update_by, update_time, remark, version_info from sys_version
+    </sql>
+	
+    <select id="selectVersionList" parameterType="Version" resultMap="VersionResult">
+        <include refid="selectVersionVo"/>
+        <where>  
+            <if test="versionId != null and versionId != ''"> and version_id like concat('%',#{versionId},'%')</if>
+             <if test="versionName != null and versionName != ''"> and version_name like concat('%',#{versionName},'%')</if>
+             <if test="versionType != null and versionType != ''"> and version_type like concat('%',#{versionType},'%')</if>
+             <if test="versionNumber != null and versionNumber != ''"> and version_number like concat('%',#{versionNumber},'%')</if>
+             <if test="versionCreattime != null and versionCreattime != ''"> and version_creattime like concat('%',#{versionCreattime},'%')</if>
+             <if test="versionUploadtime != null and versionUploadtime != ''"> and version_uploadtime like concat('%',#{versionUploadtime},'%')</if>
+             <if test="versionPath != null and versionPath != ''"> and version_path like concat('%',#{versionPath},'%')</if>
+             <if test="delFlag != null and delFlag != ''"> and del_flag like concat('%',#{delFlag},'%')</if>
+             <if test="createBy != null and createBy != ''"> and create_by like concat('%',#{createBy},'%')</if>
+             <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+             <if test="updateBy != null and updateBy != ''"> and update_by like concat('%',#{updateBy},'%')</if>
+             <if test="updateTime != null and updateTime != ''"> and update_time like concat('%',#{updateTime},'%')</if>
+             <if test="remark != null and remark != ''"> and remark like concat('%',#{remark},'%')</if>
+             <if test="versionInfo != null and versionInfo != ''"> and version_info like concat('%',#{versionInfo},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectVersionById" parameterType="Integer" resultMap="VersionResult">
+        <include refid="selectVersionVo"/>
+        where version_id = #{versionId}
+    </select>
+        
+    <insert id="insertVersion" parameterType="Version">
+        insert into sys_version
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="versionId != null  ">version_id,</if>
+           <if test="versionName != null  and versionName != ''  ">version_name,</if>
+           <if test="versionType != null  ">version_type,</if>
+           <if test="versionNumber != null  and versionNumber != ''  ">version_number,</if>
+           <if test="versionCreattime != null  ">version_creattime,</if>
+           <if test="versionUploadtime != null  ">version_uploadtime,</if>
+           <if test="versionPath != null  and versionPath != ''  ">version_path,</if>
+           <if test="delFlag != null  and delFlag != ''  ">del_flag,</if>
+           <if test="createBy != null  and createBy != ''  ">create_by,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+           <if test="updateTime != null  ">update_time,</if>
+           <if test="remark != null  and remark != ''  ">remark,</if>
+           <if test="versionInfo != null  and versionInfo != ''  ">version_info,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="versionId != null  ">#{versionId},</if>
+        <if test="versionName != null  and versionName != ''  ">#{versionName},</if>
+        <if test="versionType != null  ">#{versionType},</if>
+        <if test="versionNumber != null  and versionNumber != ''  ">#{versionNumber},</if>
+        <if test="versionCreattime != null  ">#{versionCreattime},</if>
+        <if test="versionUploadtime != null  ">#{versionUploadtime},</if>
+        <if test="versionPath != null  and versionPath != ''  ">#{versionPath},</if>
+        <if test="delFlag != null  and delFlag != ''  ">#{delFlag},</if>
+        <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+        <if test="updateTime != null  ">#{updateTime},</if>
+        <if test="remark != null  and remark != ''  ">#{remark},</if>
+        <if test="versionInfo != null  and versionInfo != ''  ">#{versionInfo},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateVersion" parameterType="Version">
+        update sys_version
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="versionName != null  and versionName != ''  ">version_name = #{versionName},</if>
+            <if test="versionType != null  ">version_type = #{versionType},</if>
+            <if test="versionNumber != null  and versionNumber != ''  ">version_number = #{versionNumber},</if>
+            <if test="versionCreattime != null  ">version_creattime = #{versionCreattime},</if>
+            <if test="versionUploadtime != null  ">version_uploadtime = #{versionUploadtime},</if>
+            <if test="versionPath != null  and versionPath != ''  ">version_path = #{versionPath},</if>
+            <if test="delFlag != null  and delFlag != ''  ">del_flag = #{delFlag},</if>
+            <if test="createBy != null  and createBy != ''  ">create_by = #{createBy},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="versionInfo != null  and versionInfo != ''  ">version_info = #{versionInfo},</if>
+        </trim>
+        where version_id = #{versionId}
+    </update>
+
+	<delete id="deleteVersionById" parameterType="Integer">
+        delete from sys_version where version_id = #{versionId}
+    </delete>
+	
+    <delete id="deleteVersionByIds" parameterType="String">
+        delete from sys_version where version_id in 
+        <foreach item="versionId" collection="array" open="(" separator="," close=")">
+            #{versionId}
+        </foreach>
+    </delete>
+    
+</mapper>

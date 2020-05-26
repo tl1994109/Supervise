@@ -1,0 +1,101 @@
+17:59:20.221 [restartedMain] INFO  c.d.Application - [logStarting,50] - Starting Application on WQ-20180902UAPD with PID 7316 (G:\nanyang\Supervise\target\classes started by Administrator in G:\nanyang\Supervise)
+17:59:20.230 [restartedMain] INFO  c.d.Application - [logStartupProfileInfo,666] - The following profiles are active: test
+17:59:27.716 [restartedMain] INFO  o.a.s.c.e.EhCacheManager - [getCache,158] - Cache with name 'com.datcent.framework.shiro.realm.UserRealm.authorizationCache' does not yet exist.  Creating now.
+17:59:27.718 [restartedMain] INFO  o.a.s.c.e.EhCacheManager - [getCache,165] - Added EhCache named [com.datcent.framework.shiro.realm.UserRealm.authorizationCache]
+17:59:30.105 [restartedMain] INFO  o.a.s.c.e.EhCacheManager - [getCache,169] - Using existing EHCache named [loginRecordCache]
+17:59:31.981 [restartedMain] INFO  o.a.c.h.Http11NioProtocol - [log,180] - Initializing ProtocolHandler ["http-nio-8081"]
+17:59:32.014 [restartedMain] INFO  o.a.c.c.StandardService - [log,180] - Starting service [Tomcat]
+17:59:32.015 [restartedMain] INFO  o.a.c.c.StandardEngine - [log,180] - Starting Servlet Engine: Apache Tomcat/8.5.32
+17:59:32.024 [localhost-startStop-1] INFO  o.a.c.c.AprLifecycleListener - [log,180] - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\Program Files\Java\jdk1.8.0_101\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;G:\apache-maven-3.5.4\bin;D:\Program Files\Java\jdk1.8.0_101/bin;D:\Program Files\Java\jdk1.8.0_101/jre/bin;G:\svn\bin;G:\TortoiseSVN\bin;G:\apache-tomcat-8.5.35\bin;G:\apache-tomcat-8.5.35\lib;C:\Program Files (x86)\OpenVPN\bin;.]
+17:59:32.421 [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,180] - Initializing Spring embedded WebApplicationContext
+17:59:33.465 [restartedMain] INFO  c.a.d.p.DruidDataSource - [init,1002] - {dataSource-1} inited
+17:59:35.287 [restartedMain] INFO  o.a.e.i.ProcessEngineImpl - [<init>,85] - ProcessEngine default created
+17:59:35.288 [restartedMain] INFO  o.a.e.i.a.AbstractAsyncJobExecutor - [start,119] - Starting up the default async job executor [org.activiti.spring.SpringAsyncExecutor].
+17:59:35.290 [Thread-40] INFO  o.a.e.i.a.AcquireTimerJobsRunnable - [run,45] - starting to acquire async jobs due
+17:59:35.292 [Thread-41] INFO  o.a.e.i.a.AcquireAsyncJobsDueRunnable - [run,45] - starting to acquire async jobs due
+17:59:38.377 [restartedMain] INFO  o.q.i.StdSchedulerFactory - [instantiate,1208] - Using default implementation for ThreadExecutor
+17:59:38.403 [restartedMain] INFO  o.q.c.SchedulerSignalerImpl - [<init>,61] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+17:59:38.403 [restartedMain] INFO  o.q.c.QuartzScheduler - [<init>,229] - Quartz Scheduler v.2.3.0 created.
+17:59:38.417 [restartedMain] INFO  o.q.c.QuartzScheduler - [initialize,294] - Scheduler meta-data: Quartz Scheduler (v2.3.0) 'DatcentScheduler' with instanceId 'WQ-20180902UAPD1562666378380'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 20 threads.
+  Using job-store 'org.springframework.scheduling.quartz.LocalDataSourceJobStore' - which supports persistence. and is clustered.
+
+17:59:38.418 [restartedMain] INFO  o.q.i.StdSchedulerFactory - [instantiate,1362] - Quartz scheduler 'DatcentScheduler' initialized from an externally provided properties instance.
+17:59:38.418 [restartedMain] INFO  o.q.i.StdSchedulerFactory - [instantiate,1366] - Quartz scheduler version: 2.3.0
+17:59:38.421 [restartedMain] INFO  o.q.c.QuartzScheduler - [setJobFactory,2287] - JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@2ac4696e
+17:59:50.356 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - [initHandlerMethods,69] - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+17:59:54.433 [restartedMain] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - [start,147] - Context refreshed
+17:59:54.470 [restartedMain] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - [start,150] - Found 1 custom documentation plugin(s)
+17:59:55.396 [restartedMain] INFO  s.d.s.w.s.ApiListingReferenceScanner - [scan,41] - Scanning for api listing references
+17:59:55.786 [restartedMain] INFO  o.a.c.h.Http11NioProtocol - [log,180] - Starting ProtocolHandler ["http-nio-8081"]
+17:59:55.809 [restartedMain] INFO  o.a.c.h.Http11NioProtocol - [log,180] - Pausing ProtocolHandler ["http-nio-8081"]
+17:59:55.810 [restartedMain] INFO  o.a.c.c.StandardService - [log,180] - Stopping service [Tomcat]
+17:59:55.834 [restartedMain] INFO  o.a.c.u.LifecycleBase - [log,180] - The stop() method was called on component [StandardServer[-1]] after stop() had already been called. The second call will be ignored.
+17:59:55.835 [restartedMain] INFO  o.a.c.h.Http11NioProtocol - [log,180] - Stopping ProtocolHandler ["http-nio-8081"]
+17:59:55.835 [restartedMain] INFO  o.a.c.h.Http11NioProtocol - [log,180] - Destroying ProtocolHandler ["http-nio-8081"]
+17:59:55.861 [restartedMain] INFO  o.q.c.QuartzScheduler - [shutdown,666] - Scheduler DatcentScheduler_$_WQ-20180902UAPD1562666378380 shutting down.
+17:59:55.861 [restartedMain] INFO  o.q.c.QuartzScheduler - [standby,585] - Scheduler DatcentScheduler_$_WQ-20180902UAPD1562666378380 paused.
+17:59:55.862 [restartedMain] INFO  o.q.c.QuartzScheduler - [shutdown,740] - Scheduler DatcentScheduler_$_WQ-20180902UAPD1562666378380 shutdown complete.
+17:59:55.899 [restartedMain] INFO  o.a.e.i.a.AbstractAsyncJobExecutor - [shutdown,149] - Shutting down the default async job executor [org.activiti.spring.SpringAsyncExecutor].
+17:59:55.900 [Thread-41] INFO  o.a.e.i.a.AcquireAsyncJobsDueRunnable - [run,114] - stopped async job due acquisition
+17:59:56.145 [Thread-40] INFO  o.a.e.i.a.AcquireTimerJobsRunnable - [run,114] - stopped async job due acquisition
+17:59:56.153 [restartedMain] INFO  c.a.d.p.DruidDataSource - [close,1885] - {dataSource-1} closing ...
+17:59:56.170 [restartedMain] INFO  c.a.d.p.DruidDataSource - [close,1955] - {dataSource-1} closed
+18:04:34.832 [restartedMain] INFO  c.d.Application - [logStarting,50] - Starting Application on WQ-20180902UAPD with PID 984 (G:\nanyang\Supervise\target\classes started by Administrator in G:\nanyang\Supervise)
+18:04:34.847 [restartedMain] INFO  c.d.Application - [logStartupProfileInfo,666] - The following profiles are active: test
+18:04:47.468 [restartedMain] INFO  o.a.s.c.e.EhCacheManager - [getCache,158] - Cache with name 'com.datcent.framework.shiro.realm.UserRealm.authorizationCache' does not yet exist.  Creating now.
+18:04:47.468 [restartedMain] INFO  o.a.s.c.e.EhCacheManager - [getCache,165] - Added EhCache named [com.datcent.framework.shiro.realm.UserRealm.authorizationCache]
+18:04:50.588 [restartedMain] INFO  o.a.s.c.e.EhCacheManager - [getCache,169] - Using existing EHCache named [loginRecordCache]
+18:04:52.803 [restartedMain] INFO  o.a.c.h.Http11NioProtocol - [log,180] - Initializing ProtocolHandler ["http-nio-8081"]
+18:04:52.850 [restartedMain] INFO  o.a.c.c.StandardService - [log,180] - Starting service [Tomcat]
+18:04:52.850 [restartedMain] INFO  o.a.c.c.StandardEngine - [log,180] - Starting Servlet Engine: Apache Tomcat/8.5.32
+18:04:52.850 [localhost-startStop-1] INFO  o.a.c.c.AprLifecycleListener - [log,180] - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\Program Files\Java\jdk1.8.0_101\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;G:\apache-maven-3.5.4\bin;D:\Program Files\Java\jdk1.8.0_101/bin;D:\Program Files\Java\jdk1.8.0_101/jre/bin;G:\svn\bin;G:\TortoiseSVN\bin;G:\apache-tomcat-8.5.35\bin;G:\apache-tomcat-8.5.35\lib;C:\Program Files (x86)\OpenVPN\bin;.]
+18:04:53.162 [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,180] - Initializing Spring embedded WebApplicationContext
+18:04:54.472 [restartedMain] INFO  c.a.d.p.DruidDataSource - [init,1002] - {dataSource-1} inited
+18:07:19.187 [restartedMain] INFO  c.d.Application - [logStarting,50] - Starting Application on WQ-20180902UAPD with PID 2956 (G:\nanyang\Supervise\target\classes started by Administrator in G:\nanyang\Supervise)
+18:07:19.195 [restartedMain] INFO  c.d.Application - [logStartupProfileInfo,666] - The following profiles are active: test
+18:07:25.386 [restartedMain] INFO  o.a.s.c.e.EhCacheManager - [getCache,158] - Cache with name 'com.datcent.framework.shiro.realm.UserRealm.authorizationCache' does not yet exist.  Creating now.
+18:07:25.388 [restartedMain] INFO  o.a.s.c.e.EhCacheManager - [getCache,165] - Added EhCache named [com.datcent.framework.shiro.realm.UserRealm.authorizationCache]
+18:07:27.275 [restartedMain] INFO  o.a.s.c.e.EhCacheManager - [getCache,169] - Using existing EHCache named [loginRecordCache]
+18:07:28.855 [restartedMain] INFO  o.a.c.h.Http11NioProtocol - [log,180] - Initializing ProtocolHandler ["http-nio-8081"]
+18:07:28.881 [restartedMain] INFO  o.a.c.c.StandardService - [log,180] - Starting service [Tomcat]
+18:07:28.882 [restartedMain] INFO  o.a.c.c.StandardEngine - [log,180] - Starting Servlet Engine: Apache Tomcat/8.5.32
+18:07:28.890 [localhost-startStop-1] INFO  o.a.c.c.AprLifecycleListener - [log,180] - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\Program Files\Java\jdk1.8.0_101\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;G:\apache-maven-3.5.4\bin;D:\Program Files\Java\jdk1.8.0_101/bin;D:\Program Files\Java\jdk1.8.0_101/jre/bin;G:\svn\bin;G:\TortoiseSVN\bin;G:\apache-tomcat-8.5.35\bin;G:\apache-tomcat-8.5.35\lib;C:\Program Files (x86)\OpenVPN\bin;.]
+18:07:29.128 [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,180] - Initializing Spring embedded WebApplicationContext
+18:07:29.972 [restartedMain] INFO  c.a.d.p.DruidDataSource - [init,1002] - {dataSource-1} inited
+18:07:32.063 [restartedMain] INFO  o.a.e.i.ProcessEngineImpl - [<init>,85] - ProcessEngine default created
+18:07:32.065 [restartedMain] INFO  o.a.e.i.a.AbstractAsyncJobExecutor - [start,119] - Starting up the default async job executor [org.activiti.spring.SpringAsyncExecutor].
+18:07:32.067 [Thread-35] INFO  o.a.e.i.a.AcquireTimerJobsRunnable - [run,45] - starting to acquire async jobs due
+18:07:32.069 [Thread-36] INFO  o.a.e.i.a.AcquireAsyncJobsDueRunnable - [run,45] - starting to acquire async jobs due
+18:07:35.518 [restartedMain] INFO  o.q.i.StdSchedulerFactory - [instantiate,1208] - Using default implementation for ThreadExecutor
+18:07:35.542 [restartedMain] INFO  o.q.c.SchedulerSignalerImpl - [<init>,61] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+18:07:35.542 [restartedMain] INFO  o.q.c.QuartzScheduler - [<init>,229] - Quartz Scheduler v.2.3.0 created.
+18:07:35.555 [restartedMain] INFO  o.q.c.QuartzScheduler - [initialize,294] - Scheduler meta-data: Quartz Scheduler (v2.3.0) 'DatcentScheduler' with instanceId 'WQ-20180902UAPD1562666855522'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 20 threads.
+  Using job-store 'org.springframework.scheduling.quartz.LocalDataSourceJobStore' - which supports persistence. and is clustered.
+
+18:07:35.556 [restartedMain] INFO  o.q.i.StdSchedulerFactory - [instantiate,1362] - Quartz scheduler 'DatcentScheduler' initialized from an externally provided properties instance.
+18:07:35.556 [restartedMain] INFO  o.q.i.StdSchedulerFactory - [instantiate,1366] - Quartz scheduler version: 2.3.0
+18:07:35.559 [restartedMain] INFO  o.q.c.QuartzScheduler - [setJobFactory,2287] - JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@4a7be254
+18:07:46.904 [restartedMain] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - [initHandlerMethods,69] - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+18:07:52.312 [restartedMain] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - [start,147] - Context refreshed
+18:07:52.380 [restartedMain] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - [start,150] - Found 1 custom documentation plugin(s)
+18:07:53.185 [restartedMain] INFO  s.d.s.w.s.ApiListingReferenceScanner - [scan,41] - Scanning for api listing references
+18:07:53.611 [restartedMain] INFO  o.a.c.h.Http11NioProtocol - [log,180] - Starting ProtocolHandler ["http-nio-8081"]
+18:07:53.630 [restartedMain] INFO  o.a.t.u.n.NioSelectorPool - [log,180] - Using a shared selector for servlet write/read
+18:07:53.689 [restartedMain] INFO  c.d.Application - [logStarted,59] - Started Application in 35.189 seconds (JVM running for 38.714)
+18:07:55.382 [Quartz Scheduler [DatcentScheduler]] INFO  o.q.c.QuartzScheduler - [start,547] - Scheduler DatcentScheduler_$_WQ-20180902UAPD1562666855522 started.
+18:07:59.975 [http-nio-8081-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,180] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+18:08:00.093 [http-nio-8081-exec-1] INFO  o.a.s.s.m.AbstractValidatingSessionManager - [enableSessionValidation,233] - Enabling session validation scheduler...
+18:08:00.129 [http-nio-8081-exec-1] INFO  o.a.s.c.e.EhCacheManager - [getCache,158] - Cache with name 'shiro-activeSessionCache' does not yet exist.  Creating now.
+18:08:00.131 [http-nio-8081-exec-1] INFO  o.a.s.c.e.EhCacheManager - [getCache,165] - Added EhCache named [shiro-activeSessionCache]
+18:08:01.098 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,88] - invalidation sessions...
+18:08:01.247 [pool-1-thread-1] INFO  c.d.f.s.w.s.OnlineWebSessionManager - [validateSessions,147] - Finished invalidation session. No sessions were stopped.

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.datashareFollow.mapper.DatashareFollowMapper">
+    
+    <resultMap type="DatashareFollow" id="DatashareFollowResult">
+        <result property="iD"    column="ID"    />
+        <result property="datashareCourtid"    column="datashare_courtid"    />
+        <result property="sharecourtId"    column="sharecourt_id"    />
+        <result property="status"    column="status"    />
+        <result property="number"    column="number"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="sharecourtName"    column="sharecourtName"/>
+        <result property="datashareName"    column="datashareName"/>
+    </resultMap>
+	
+	<sql id="selectDatashareFollowVo">
+        SELECT f.*,d.dept_name AS datashareName,dp.dept_name AS sharecourtName
+        FROM sys_datashare_follow f
+        LEFT JOIN sys_datashare_master m ON m.datashare_courtid=f.datashare_courtid
+        LEFT JOIN sys_dept d ON d.dept_id=m.datashare_courtid
+        LEFT JOIN sys_dept dp ON dp.dept_id=f.sharecourt_id
+    </sql>
+	
+    <select id="selectDatashareFollowList" parameterType="DatashareFollow" resultMap="DatashareFollowResult">
+        <include refid="selectDatashareFollowVo"/>
+        <where>  
+            <if test="iD != null and iD != ''"> and f.ID like concat('%',#{iD},'%')</if>
+             <if test="datashareCourtid != null and datashareCourtid != ''"> and f.datashare_courtid like concat('%',#{datashareCourtid},'%')</if>
+             <if test="sharecourtId != null and sharecourtId != ''"> and f.sharecourt_id like concat('%',#{sharecourtId},'%')</if>
+             <if test="status != null and status != ''"> and f.status like concat('%',#{status},'%')</if>
+             <if test="number != null and number != ''"> and f.number like concat('%',#{number},'%')</if>
+             <if test="createTime != null and createTime != ''"> and f.create_time like concat('%',#{createTime},'%')</if>
+             <if test="createBy != null and createBy != ''"> and f.create_by like concat('%',#{createBy},'%')</if>
+             <if test="updateTime != null and updateTime != ''"> and f.update_time like concat('%',#{updateTime},'%')</if>
+             <if test="updateBy != null and updateBy != ''"> and f.update_by like concat('%',#{updateBy},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectDatashareFollowById" parameterType="Integer" resultMap="DatashareFollowResult">
+        <include refid="selectDatashareFollowVo"/>
+        where f.ID = #{iD}
+    </select>
+        
+    <insert id="insertDatashareFollow" parameterType="DatashareFollow">
+        insert into sys_datashare_follow
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="iD != null  ">ID,</if>
+           <if test="datashareCourtid != null">datashare_courtid,</if>
+           <if test="sharecourtId != null">sharecourt_id,</if>
+           <if test="status != null">status,</if>
+           <if test="number != null">number,</if>
+           <if test="createBy != null">create_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="iD != null  ">#{iD},</if>
+        <if test="datashareCourtid != null">#{datashareCourtid},</if>
+        <if test="sharecourtId != null">#{sharecourtId},</if>
+        <if test="status != null">#{status},</if>
+        <if test="number != null">#{number},</if>
+        <if test="createBy != null">#{createBy},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateDatashareFollow" parameterType="DatashareFollow">
+        update sys_datashare_follow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="datashareCourtid != null">datashare_courtid = #{datashareCourtid},</if>
+            <if test="sharecourtId != null">sharecourt_id = #{sharecourtId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where ID = #{iD}
+    </update>
+
+	<delete id="deleteDatashareFollowById" parameterType="Integer">
+        delete from sys_datashare_follow where ID = #{iD}
+    </delete>
+	
+    <delete id="deleteDatashareFollowByIds" parameterType="String">
+        delete from sys_datashare_follow where ID in 
+        <foreach item="iD" collection="array" open="(" separator="," close=")">
+            #{iD}
+        </foreach>
+    </delete>
+    
+</mapper>

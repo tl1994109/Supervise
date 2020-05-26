@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.colleinterface.mapper.ColleinterfaceMapper">
+    
+    <resultMap type="Colleinterface" id="ColleinterfaceResult">
+        <result property="colleinterfaceId"    column="colleinterface_id"    />
+        <result property="colleinterfaceJob"    column="colleinterface_job"    />
+        <result property="colleinterfaceName"    column="colleinterface_name"    />
+        <result property="colleinterfaceMethed"    column="colleinterface_methed"    />
+        <result property="colleinterfaceParam"    column="colleinterface_param"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+        <result property="deleteTime"    column="delete_time"    />
+        <result property="deleteBy"    column="delete_by"    />
+        <result property="remarks"    column="remarks"    />
+    </resultMap>
+	
+	<sql id="selectColleinterfaceVo">
+        select colleinterface_id, colleinterface_job,colleinterface_name, colleinterface_methed, colleinterface_param, create_time, create_by, update_time, update_by, delete_flag, delete_time, delete_by, remarks from busi_colleinterface
+    </sql>
+    <select id="selectColleinterfaceList" parameterType="Colleinterface" resultMap="ColleinterfaceResult">
+        <include refid="selectColleinterfaceVo"/>
+        <where>  
+            <if test="colleinterfaceId != null and colleinterfaceId != ''"> and colleinterface_id like concat('%',#{colleinterfaceId},'%')</if>
+            <if test="colleinterfaceJob != null and colleinterfaceJob != ''"> and colleinterface_job like concat('%',#{colleinterfaceJob},'%')</if>
+             <if test="colleinterfaceName != null and colleinterfaceName != ''"> and colleinterface_name like concat('%',#{colleinterfaceName},'%')</if>
+             <if test="colleinterfaceMethed != null and colleinterfaceMethed != ''"> and colleinterface_methed like concat('%',#{colleinterfaceMethed},'%')</if>
+             <if test="colleinterfaceParam != null and colleinterfaceParam != ''"> and colleinterface_param like concat('%',#{colleinterfaceParam},'%')</if>
+             <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+             <if test="createBy != null and createBy != ''"> and create_by like concat('%',#{createBy},'%')</if>
+             <if test="updateTime != null and updateTime != ''"> and update_time like concat('%',#{updateTime},'%')</if>
+             <if test="updateBy != null and updateBy != ''"> and update_by like concat('%',#{updateBy},'%')</if>
+             <if test="deleteFlag != null and deleteFlag != ''"> and delete_flag like concat('%',#{deleteFlag},'%')</if>
+             <if test="deleteTime != null and deleteTime != ''"> and delete_time like concat('%',#{deleteTime},'%')</if>
+             <if test="deleteBy != null and deleteBy != ''"> and delete_by like concat('%',#{deleteBy},'%')</if>
+             <if test="remarks != null and remarks != ''"> and remarks like concat('%',#{remarks},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectColleinterfaceById" parameterType="String" resultMap="ColleinterfaceResult">
+        <include refid="selectColleinterfaceVo"/>
+        where colleinterface_id = #{colleinterfaceId}
+    </select>
+        
+    <insert id="insertColleinterface" parameterType="Colleinterface">
+        insert into busi_colleinterface
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="colleinterfaceId != null  and colleinterfaceId != ''  ">colleinterface_id,</if>
+           <if test="colleinterfaceJob != null  and colleinterfaceJob != ''  ">colleinterface_job,</if>
+           <if test="colleinterfaceName != null  and colleinterfaceName != ''  ">colleinterface_name,</if>
+           <if test="colleinterfaceMethed != null  and colleinterfaceMethed != ''  ">colleinterface_methed,</if>
+           <if test="colleinterfaceParam != null  ">colleinterface_param,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="createBy != null  and createBy != ''  ">create_by,</if>
+           <if test="updateTime != null  ">update_time,</if>
+           <if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+           <if test="deleteFlag != null  and deleteFlag != ''  ">delete_flag,</if>
+           <if test="deleteTime != null  ">delete_time,</if>
+           <if test="deleteBy != null  and deleteBy != ''  ">delete_by,</if>
+           <if test="remarks != null  and remarks != ''  ">remarks,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="colleinterfaceId != null  and colleinterfaceId != ''  ">#{colleinterfaceId},</if>
+        <if test="colleinterfaceJob != null  and colleinterfaceJob != ''  ">#{colleinterfaceJob},</if>
+        <if test="colleinterfaceName != null  and colleinterfaceName != ''  ">#{colleinterfaceName},</if>
+        <if test="colleinterfaceMethed != null  and colleinterfaceMethed != ''  ">#{colleinterfaceMethed},</if>
+        <if test="colleinterfaceParam != null  ">#{colleinterfaceParam},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+        <if test="updateTime != null  ">#{updateTime},</if>
+        <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+        <if test="deleteFlag != null  and deleteFlag != ''  ">#{deleteFlag},</if>
+        <if test="deleteTime != null  ">#{deleteTime},</if>
+        <if test="deleteBy != null  and deleteBy != ''  ">#{deleteBy},</if>
+        <if test="remarks != null  and remarks != ''  ">#{remarks},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateColleinterface" parameterType="Colleinterface">
+        update busi_colleinterface
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="colleinterfaceJob != null  and colleinterfaceJob != ''  ">colleinterface_job = #{colleinterfaceJob},</if>
+            <if test="colleinterfaceName != null  and colleinterfaceName != ''  ">colleinterface_name = #{colleinterfaceName},</if>
+            <if test="colleinterfaceMethed != null  and colleinterfaceMethed != ''  ">colleinterface_methed = #{colleinterfaceMethed},</if>
+            <if test="colleinterfaceParam != null  ">colleinterface_param = #{colleinterfaceParam},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="createBy != null  and createBy != ''  ">create_by = #{createBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            <if test="deleteFlag != null  and deleteFlag != ''  ">delete_flag = #{deleteFlag},</if>
+            <if test="deleteTime != null  ">delete_time = #{deleteTime},</if>
+            <if test="deleteBy != null  and deleteBy != ''  ">delete_by = #{deleteBy},</if>
+            <if test="remarks != null  and remarks != ''  ">remarks = #{remarks},</if>
+        </trim>
+        where colleinterface_id = #{colleinterfaceId}
+    </update>
+
+	<delete id="deleteColleinterfaceById" parameterType="String">
+        delete from busi_colleinterface where colleinterface_id = #{colleinterfaceId}
+    </delete>
+	
+    <delete id="deleteColleinterfaceByIds" parameterType="String">
+        delete from busi_colleinterface where colleinterface_id in 
+        <foreach item="colleinterfaceId" collection="array" open="(" separator="," close=")">
+            #{colleinterfaceId}
+        </foreach>
+    </delete>
+    
+</mapper>

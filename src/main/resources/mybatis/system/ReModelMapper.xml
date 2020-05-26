@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.system.reModel.mapper.ReModelMapper">
+    
+    <resultMap type="ReModel" id="ReModelResult">
+        <result property="id"    column="ID_"    />
+        <result property="rev"    column="REV_"    />
+        <result property="name"    column="NAME_"    />
+        <result property="key"    column="KEY_"    />
+        <result property="category"    column="CATEGORY_"    />
+        <result property="createTime"    column="CREATE_TIME_"    />
+        <result property="lastUpdateTime"    column="LAST_UPDATE_TIME_"    />
+        <result property="version"    column="VERSION_"    />
+        <result property="metaInfo"    column="META_INFO_"    />
+        <result property="deploymentId"    column="DEPLOYMENT_ID_"    />
+        <result property="editorSourceValueId"    column="EDITOR_SOURCE_VALUE_ID_"    />
+        <result property="editorSourceExtraValueId"    column="EDITOR_SOURCE_EXTRA_VALUE_ID_"    />
+        <result property="tenantId"    column="TENANT_ID_"    />
+    </resultMap>
+	
+	<sql id="selectReModelVo">
+        select ID_, REV_, NAME_, KEY_, CATEGORY_, CREATE_TIME_, LAST_UPDATE_TIME_, VERSION_, META_INFO_, DEPLOYMENT_ID_, EDITOR_SOURCE_VALUE_ID_, EDITOR_SOURCE_EXTRA_VALUE_ID_, TENANT_ID_ from act_re_model
+    </sql>
+	
+    <select id="selectReModelList" parameterType="ReModel" resultMap="ReModelResult">
+        <include refid="selectReModelVo"/>
+        <where>  
+            <if test="id != null and id != ''"> and ID_ like concat('%',#{id},'%')</if>
+             <if test="rev != null and rev != ''"> and REV_ like concat('%',#{rev},'%')</if>
+             <if test="name != null and name != ''"> and NAME_ like concat('%',#{name},'%')</if>
+             <if test="key != null and key != ''"> and KEY_ like concat('%',#{key},'%')</if>
+             <if test="category != null and category != ''"> and CATEGORY_ like concat('%',#{category},'%')</if>
+             <if test="createTime != null and createTime != ''"> and CREATE_TIME_ like concat('%',#{createTime},'%')</if>
+             <if test="lastUpdateTime != null and lastUpdateTime != ''"> and LAST_UPDATE_TIME_ like concat('%',#{lastUpdateTime},'%')</if>
+             <if test="version != null and version != ''"> and VERSION_ like concat('%',#{version},'%')</if>
+             <if test="metaInfo != null and metaInfo != ''"> and META_INFO_ like concat('%',#{metaInfo},'%')</if>
+             <if test="deploymentId != null and deploymentId != ''"> and DEPLOYMENT_ID_ like concat('%',#{deploymentId},'%')</if>
+             <if test="editorSourceValueId != null and editorSourceValueId != ''"> and EDITOR_SOURCE_VALUE_ID_ like concat('%',#{editorSourceValueId},'%')</if>
+             <if test="editorSourceExtraValueId != null and editorSourceExtraValueId != ''"> and EDITOR_SOURCE_EXTRA_VALUE_ID_ like concat('%',#{editorSourceExtraValueId},'%')</if>
+             <if test="tenantId != null and tenantId != ''"> and TENANT_ID_ like concat('%',#{tenantId},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectReModelById" parameterType="String" resultMap="ReModelResult">
+        <include refid="selectReModelVo"/>
+        where ID_ = #{id}
+    </select>
+        
+    <insert id="insertReModel" parameterType="ReModel">
+        insert into act_re_model
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="id != null  and id != ''  ">ID_,</if>
+           <if test="rev != null  ">REV_,</if>
+           <if test="name != null  and name != ''  ">NAME_,</if>
+           <if test="key != null  and key != ''  ">KEY_,</if>
+           <if test="category != null  and category != ''  ">CATEGORY_,</if>
+           <if test="createTime != null  ">CREATE_TIME_,</if>
+           <if test="lastUpdateTime != null  ">LAST_UPDATE_TIME_,</if>
+           <if test="version != null  ">VERSION_,</if>
+           <if test="metaInfo != null  and metaInfo != ''  ">META_INFO_,</if>
+           <if test="deploymentId != null  and deploymentId != ''  ">DEPLOYMENT_ID_,</if>
+           <if test="editorSourceValueId != null  and editorSourceValueId != ''  ">EDITOR_SOURCE_VALUE_ID_,</if>
+           <if test="editorSourceExtraValueId != null  and editorSourceExtraValueId != ''  ">EDITOR_SOURCE_EXTRA_VALUE_ID_,</if>
+           <if test="tenantId != null  and tenantId != ''  ">TENANT_ID_,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="id != null  and id != ''  ">#{id},</if>
+        <if test="rev != null  ">#{rev},</if>
+        <if test="name != null  and name != ''  ">#{name},</if>
+        <if test="key != null  and key != ''  ">#{key},</if>
+        <if test="category != null  and category != ''  ">#{category},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="lastUpdateTime != null  ">#{lastUpdateTime},</if>
+        <if test="version != null  ">#{version},</if>
+        <if test="metaInfo != null  and metaInfo != ''  ">#{metaInfo},</if>
+        <if test="deploymentId != null  and deploymentId != ''  ">#{deploymentId},</if>
+        <if test="editorSourceValueId != null  and editorSourceValueId != ''  ">#{editorSourceValueId},</if>
+        <if test="editorSourceExtraValueId != null  and editorSourceExtraValueId != ''  ">#{editorSourceExtraValueId},</if>
+        <if test="tenantId != null  and tenantId != ''  ">#{tenantId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateReModel" parameterType="ReModel">
+        update act_re_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="rev != null  ">REV_ = #{rev},</if>
+            <if test="name != null  and name != ''  ">NAME_ = #{name},</if>
+            <if test="key != null  and key != ''  ">KEY_ = #{key},</if>
+            <if test="category != null  and category != ''  ">CATEGORY_ = #{category},</if>
+            <if test="createTime != null  ">CREATE_TIME_ = #{createTime},</if>
+            <if test="lastUpdateTime != null  ">LAST_UPDATE_TIME_ = #{lastUpdateTime},</if>
+            <if test="version != null  ">VERSION_ = #{version},</if>
+            <if test="metaInfo != null  and metaInfo != ''  ">META_INFO_ = #{metaInfo},</if>
+            <if test="deploymentId != null  and deploymentId != ''  ">DEPLOYMENT_ID_ = #{deploymentId},</if>
+            <if test="editorSourceValueId != null  and editorSourceValueId != ''  ">EDITOR_SOURCE_VALUE_ID_ = #{editorSourceValueId},</if>
+            <if test="editorSourceExtraValueId != null  and editorSourceExtraValueId != ''  ">EDITOR_SOURCE_EXTRA_VALUE_ID_ = #{editorSourceExtraValueId},</if>
+            <if test="tenantId != null  and tenantId != ''  ">TENANT_ID_ = #{tenantId},</if>
+        </trim>
+        where ID_ = #{id}
+    </update>
+
+	<delete id="deleteReModelById" parameterType="String">
+        delete from act_re_model where ID_ = #{id}
+    </delete>
+	
+    <delete id="deleteReModelByIds" parameterType="String">
+        delete from act_re_model where ID_ in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

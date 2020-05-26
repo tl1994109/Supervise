@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<style type="text/css">
+    @page {
+        size: auto;
+        margin: 0mm;
+    }
+    .form-container{
+        background-color: #fff;
+        padding-top: 20px;
+    }
+    .div-middle{
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .div-title{
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        border-bottom: 1px solid #eaeef3;
+    }
+    .div-title h2{
+        margin: 0;
+        padding: 0;
+    }
+    /* select下拉框 */
+    .select2-container--default .select2-selection--single{
+        background-color: #fff;
+        border: 1px solid #e5e6e7;
+        border-radius: 5px;
+    }
+    textarea{
+        border-color: #e5e6e7;
+    }
+</style>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-md-12 div-middle">
+        <form class="form-horizontal m form-container" id="form-notice-edit">
+            <input id="clueId" name="clueId" type="hidden" th:value="${clueId}">
+            <input type="hidden" name="taskId" th:value="${taskId}" id="taskId">
+            <input type="hidden" name="pid" th:value="${pid}" id="pid">
+            <input type="hidden" name="nodeFlag" th:value="${nodeFlag}" id="nodeFlag">
+            <input type="hidden" name="count" th:value="${count}" id="count">
+            <input type="hidden" name="clueClassify" th:value="${clueClassify}" id="clueClassify">
+            <input type="hidden" name="isEdit" value="false">
+            <div class="form-group">
+                <div class="col-sm-12 div-title">
+                    <h2>创建初步核实情况报告</h2>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">表单标题：</label>
+                <div class="col-sm-8">
+                    <input id="attachmentName" name="attachmentName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">表单内容：</label>
+                <div class="col-sm-8">
+                    <input id="formContent" name="formContent" type="hidden">
+                    <div id="editor" class="summernote"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">处理方式：</label>
+                <div class="col-sm-8">
+                    <label class="radio-inline">
+                        <input type="radio" name="resultType" value="1" checked> 予以了结
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="resultType" value="2"> 移送有关单位处理
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="resultType" value="10"> 立案调查
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="resultType" value="4"> 谈话提醒批评
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="resultType" value="5"> 暂存待查
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">处理意见：</label>
+                <div class="col-sm-8">
+                    <textarea rows="8" style="width: 100%;resize: none;" name="content" id="content"></textarea>
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="col-sm-3 control-label">审批人：</label>
+                <div class="col-sm-6 select-info-container">
+                    <select id="approver" name="approver">
+                        <option th:each="userList : ${userList}" th:text="${userList.userName}"
+                                th:value="${userList.userId}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-control-static col-sm-offset-5">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                    <button type="button" onclick="doPrint();" class="btn btn-success">打印</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+    $(function() {
+        $('.summernote').summernote({
+            height : '220px',
+            lang : 'zh-CN'
+        });
+        var content = $("#noticeContent").val();
+        $('#editor').code(content);
+
+        var  formId="fd38ceb16bd745d8b77274d41e8ceb26";
+        $.get(ctx+"module/dispositionForm/select/"+formId,function(data){
+            $("#formContent").val(data.formContent);
+            var content = $("#formContent").val();
+            $('#editor').code(content);
+        });
+    });
+    function doPrint() {
+        if($("#attachmentName").val()!=""){
+            $.modal.confirm("该操作将被记录，确认打印吗？", function () {
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: ctx + "module/printLog/add",
+                    data: {
+                        "formName":$("#attachmentName").val(),
+                        "clueId":$("#clueId").val(),
+                    },
+                    async: true,
+                    error: function (request) {},
+                    success: function (data) {
+                        var ylbdhtml=window.document.body.innerHTML;
+                        var bdhtml=$('.summernote').code();
+                        window.document.body.innerHTML=bdhtml;
+                        window.print();
+                        window.document.body.innerHTML=ylbdhtml;
+                    }
+                });
+            });
+        }else{
+            $.modal.alertWarning("无打印内容或表单标题为空！");
+        }
+    }
+    var prefix = ctx + "module/initcheck";
+    $("#form-notice-edit").validate({
+        rules:{
+            attachmentName:{
+                required:true,
+            },
+            formContent:{
+                required:true,
+            },
+            formType:{
+                required:true,
+            },
+        },
+        submitHandler: function(form) {
+            var sHTML = $('.summernote').code();
+            $("#formContent").val(sHTML);
+            $(".formType").val($("#formType option:selected").text());
+            $.operate.save(prefix + "/cbhsqkbgcompleTask", $('#form-notice-edit').serialize());
+        }
+    });
+</script>
+</body>
+</html>

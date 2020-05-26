@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.lists.mapper.ListsMapper">
+    
+    <resultMap type="Lists" id="ListsResult">
+        <result property="zhcxlistOrganlarid"    column="zhcxlist_OrganLARID"    />
+        <result property="zhcxlistStringajbh"    column="zhcxlist_StringAJBH"    />
+        <result property="zhcxlistStringgdr"    column="zhcxlist_StringGDR"    />
+        <result property="zhcxlistOrganncbrid"    column="zhcxlist_OrganNCBRID"    />
+        <result property="zhcxlistStringcah"    column="zhcxlist_StringCAH"    />
+        <result property="zhcxlistDatedjarq"    column="zhcxlist_DateDJARQ"    />
+        <result property="zhcxlistStringktdd"    column="zhcxlist_StringKtdd"    />
+        <result property="zhcxlistCodenajlbid"    column="zhcxlist_CodeNAjlbID"    />
+        <result property="zhcxlistOrganlar"    column="zhcxlist_OrganLAR"    />
+        <result property="zhcxlistStringcdsr"    column="zhcxlist_StringCDSR"    />
+        <result property="zhcxlistCodenspcxid"    column="zhcxlist_CodeNSPCXID"    />
+        <result property="zhcxlistCodesfszmq"    column="zhcxlist_CodeSFSZMQ"    />
+        <result property="zhcxlistStringsxqk"    column="zhcxlist_StringSXQK"    />
+        <result property="zhcxlistOrgancbsptid"    column="zhcxlist_OrganCBSPTID"    />
+        <result property="zhcxlistDategdrq"    column="zhcxlist_DateGDRQ"    />
+        <result property="zhcxlistNumericnjfzje"    column="zhcxlist_NumericNJfzje"    />
+        <result property="zhcxlistCodenspcx"    column="zhcxlist_CodeNSPCX"    />
+        <result property="zhcxlistOrgan6aaceid"    column="zhcxlist_Organ6aaceID"    />
+        <result property="zhcxlistCodenajlb"    column="zhcxlist_CodeNAjlb"    />
+        <result property="zhcxlistStringcay"    column="zhcxlist_StringCAY"    />
+        <result property="zhcxlistOrgancbspt"    column="zhcxlist_OrganCBSPT"    />
+        <result property="zhcxlistDatedlarq"    column="zhcxlist_DateDLARQ"    />
+        <result property="zhcxlistCodenpczt"    column="zhcxlist_CodeNPczt"    />
+        <result property="zhcxlistStringlaay"    column="zhcxlist_StringLAAY"    />
+        <result property="zhcxlistDatedtqbjrq"    column="zhcxlist_DateDTqbjrq"    />
+        <result property="zhcxlistOrgan6aace"    column="zhcxlist_Organ6aace"    />
+        <result property="zhcxlistDatedsarq"    column="zhcxlist_DateDSARQ"    />
+        <result property="zhcxlistNumericcsxts"    column="zhcxlist_NumericCSXTS"    />
+        <result property="zhcxlistOrganncbr"    column="zhcxlist_OrganNCBR"    />
+        <result property="zhcxlistStringjafs"    column="zhcxlist_StringJAFS"    />
+        <result property="zhcxlistStringlaayid"    column="zhcxlist_StringLAAYID"    />
+        <result property="zhcxlistCodesfcsx"    column="zhcxlist_CodeSFCSX"    />
+    </resultMap>
+	
+	<sql id="selectListsVo">
+        select zhcxlist_OrganLARID, zhcxlist_StringAJBH, zhcxlist_StringGDR, zhcxlist_OrganNCBRID, zhcxlist_StringCAH, zhcxlist_DateDJARQ, zhcxlist_StringKtdd, zhcxlist_CodeNAjlbID, zhcxlist_OrganLAR, zhcxlist_StringCDSR, zhcxlist_CodeNSPCXID, zhcxlist_CodeSFSZMQ, zhcxlist_StringSXQK, zhcxlist_OrganCBSPTID, zhcxlist_DateGDRQ, zhcxlist_NumericNJfzje, zhcxlist_CodeNSPCX, zhcxlist_Organ6aaceID, zhcxlist_CodeNAjlb, zhcxlist_StringCAY, zhcxlist_OrganCBSPT, zhcxlist_DateDLARQ, zhcxlist_CodeNPczt, zhcxlist_StringLAAY, zhcxlist_DateDTqbjrq, zhcxlist_Organ6aace, zhcxlist_DateDSARQ, zhcxlist_NumericCSXTS, zhcxlist_OrganNCBR, zhcxlist_StringJAFS, zhcxlist_StringLAAYID, zhcxlist_CodeSFCSX from case_lists
+    </sql>
+	
+    <select id="selectListsList" parameterType="Lists" resultMap="ListsResult">
+        <include refid="selectListsVo"/>
+        <where>  
+            <if test="zhcxlistOrganlarid != null and zhcxlistOrganlarid != ''"> and zhcxlist_OrganLARID like concat('%',#{zhcxlistOrganlarid},'%')</if>
+             <if test="zhcxlistStringajbh != null and zhcxlistStringajbh != ''"> and zhcxlist_StringAJBH like concat('%',#{zhcxlistStringajbh},'%')</if>
+             <if test="zhcxlistStringgdr != null and zhcxlistStringgdr != ''"> and zhcxlist_StringGDR like concat('%',#{zhcxlistStringgdr},'%')</if>
+             <if test="zhcxlistOrganncbrid != null and zhcxlistOrganncbrid != ''"> and zhcxlist_OrganNCBRID like concat('%',#{zhcxlistOrganncbrid},'%')</if>
+             <if test="zhcxlistStringcah != null and zhcxlistStringcah != ''"> and zhcxlist_StringCAH like concat('%',#{zhcxlistStringcah},'%')</if>
+             <if test="zhcxlistDatedjarq != null and zhcxlistDatedjarq != ''"> and zhcxlist_DateDJARQ like concat('%',#{zhcxlistDatedjarq},'%')</if>
+             <if test="zhcxlistStringktdd != null and zhcxlistStringktdd != ''"> and zhcxlist_StringKtdd like concat('%',#{zhcxlistStringktdd},'%')</if>
+             <if test="zhcxlistCodenajlbid != null and zhcxlistCodenajlbid != ''"> and zhcxlist_CodeNAjlbID like concat('%',#{zhcxlistCodenajlbid},'%')</if>
+             <if test="zhcxlistOrganlar != null and zhcxlistOrganlar != ''"> and zhcxlist_OrganLAR like concat('%',#{zhcxlistOrganlar},'%')</if>
+             <if test="zhcxlistStringcdsr != null and zhcxlistStringcdsr != ''"> and zhcxlist_StringCDSR like concat('%',#{zhcxlistStringcdsr},'%')</if>
+             <if test="zhcxlistCodenspcxid != null and zhcxlistCodenspcxid != ''"> and zhcxlist_CodeNSPCXID like concat('%',#{zhcxlistCodenspcxid},'%')</if>
+             <if test="zhcxlistCodesfszmq != null and zhcxlistCodesfszmq != ''"> and zhcxlist_CodeSFSZMQ like concat('%',#{zhcxlistCodesfszmq},'%')</if>
+             <if test="zhcxlistStringsxqk != null and zhcxlistStringsxqk != ''"> and zhcxlist_StringSXQK like concat('%',#{zhcxlistStringsxqk},'%')</if>
+             <if test="zhcxlistOrgancbsptid != null and zhcxlistOrgancbsptid != ''"> and zhcxlist_OrganCBSPTID like concat('%',#{zhcxlistOrgancbsptid},'%')</if>
+             <if test="zhcxlistDategdrq != null and zhcxlistDategdrq != ''"> and zhcxlist_DateGDRQ like concat('%',#{zhcxlistDategdrq},'%')</if>
+             <if test="zhcxlistNumericnjfzje != null and zhcxlistNumericnjfzje != ''"> and zhcxlist_NumericNJfzje like concat('%',#{zhcxlistNumericnjfzje},'%')</if>
+             <if test="zhcxlistCodenspcx != null and zhcxlistCodenspcx != ''"> and zhcxlist_CodeNSPCX like concat('%',#{zhcxlistCodenspcx},'%')</if>
+             <if test="zhcxlistOrgan6aaceid != null and zhcxlistOrgan6aaceid != ''"> and zhcxlist_Organ6aaceID like concat('%',#{zhcxlistOrgan6aaceid},'%')</if>
+             <if test="zhcxlistCodenajlb != null and zhcxlistCodenajlb != ''"> and zhcxlist_CodeNAjlb like concat('%',#{zhcxlistCodenajlb},'%')</if>
+             <if test="zhcxlistStringcay != null and zhcxlistStringcay != ''"> and zhcxlist_StringCAY like concat('%',#{zhcxlistStringcay},'%')</if>
+             <if test="zhcxlistOrgancbspt != null and zhcxlistOrgancbspt != ''"> and zhcxlist_OrganCBSPT like concat('%',#{zhcxlistOrgancbspt},'%')</if>
+             <if test="zhcxlistDatedlarq != null and zhcxlistDatedlarq != ''"> and zhcxlist_DateDLARQ like concat('%',#{zhcxlistDatedlarq},'%')</if>
+             <if test="zhcxlistCodenpczt != null and zhcxlistCodenpczt != ''"> and zhcxlist_CodeNPczt like concat('%',#{zhcxlistCodenpczt},'%')</if>
+             <if test="zhcxlistStringlaay != null and zhcxlistStringlaay != ''"> and zhcxlist_StringLAAY like concat('%',#{zhcxlistStringlaay},'%')</if>
+             <if test="zhcxlistDatedtqbjrq != null and zhcxlistDatedtqbjrq != ''"> and zhcxlist_DateDTqbjrq like concat('%',#{zhcxlistDatedtqbjrq},'%')</if>
+             <if test="zhcxlistOrgan6aace != null and zhcxlistOrgan6aace != ''"> and zhcxlist_Organ6aace like concat('%',#{zhcxlistOrgan6aace},'%')</if>
+             <if test="zhcxlistDatedsarq != null and zhcxlistDatedsarq != ''"> and zhcxlist_DateDSARQ like concat('%',#{zhcxlistDatedsarq},'%')</if>
+             <if test="zhcxlistNumericcsxts != null and zhcxlistNumericcsxts != ''"> and zhcxlist_NumericCSXTS like concat('%',#{zhcxlistNumericcsxts},'%')</if>
+             <if test="zhcxlistOrganncbr != null and zhcxlistOrganncbr != ''"> and zhcxlist_OrganNCBR like concat('%',#{zhcxlistOrganncbr},'%')</if>
+             <if test="zhcxlistStringjafs != null and zhcxlistStringjafs != ''"> and zhcxlist_StringJAFS like concat('%',#{zhcxlistStringjafs},'%')</if>
+             <if test="zhcxlistStringlaayid != null and zhcxlistStringlaayid != ''"> and zhcxlist_StringLAAYID like concat('%',#{zhcxlistStringlaayid},'%')</if>
+             <if test="zhcxlistCodesfcsx != null and zhcxlistCodesfcsx != ''"> and zhcxlist_CodeSFCSX like concat('%',#{zhcxlistCodesfcsx},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectListsById" parameterType="String" resultMap="ListsResult">
+        <include refid="selectListsVo"/>
+        where zhcxlist_StringAJBH = #{zhcxlistStringajbh}
+    </select>
+        
+    <insert id="insertLists" parameterType="Lists">
+        insert into case_lists
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="zhcxlistOrganlarid != null  and zhcxlistOrganlarid != ''  ">zhcxlist_OrganLARID,</if>
+           <if test="zhcxlistStringajbh != null  and zhcxlistStringajbh != ''  ">zhcxlist_StringAJBH,</if>
+           <if test="zhcxlistStringgdr != null  and zhcxlistStringgdr != ''  ">zhcxlist_StringGDR,</if>
+           <if test="zhcxlistOrganncbrid != null  and zhcxlistOrganncbrid != ''  ">zhcxlist_OrganNCBRID,</if>
+           <if test="zhcxlistStringcah != null  and zhcxlistStringcah != ''  ">zhcxlist_StringCAH,</if>
+           <if test="zhcxlistDatedjarq != null  and zhcxlistDatedjarq != ''  ">zhcxlist_DateDJARQ,</if>
+           <if test="zhcxlistStringktdd != null  and zhcxlistStringktdd != ''  ">zhcxlist_StringKtdd,</if>
+           <if test="zhcxlistCodenajlbid != null  and zhcxlistCodenajlbid != ''  ">zhcxlist_CodeNAjlbID,</if>
+           <if test="zhcxlistOrganlar != null  and zhcxlistOrganlar != ''  ">zhcxlist_OrganLAR,</if>
+           <if test="zhcxlistStringcdsr != null  and zhcxlistStringcdsr != ''  ">zhcxlist_StringCDSR,</if>
+           <if test="zhcxlistCodenspcxid != null  and zhcxlistCodenspcxid != ''  ">zhcxlist_CodeNSPCXID,</if>
+           <if test="zhcxlistCodesfszmq != null  and zhcxlistCodesfszmq != ''  ">zhcxlist_CodeSFSZMQ,</if>
+           <if test="zhcxlistStringsxqk != null  and zhcxlistStringsxqk != ''  ">zhcxlist_StringSXQK,</if>
+           <if test="zhcxlistOrgancbsptid != null  and zhcxlistOrgancbsptid != ''  ">zhcxlist_OrganCBSPTID,</if>
+           <if test="zhcxlistDategdrq != null  and zhcxlistDategdrq != ''  ">zhcxlist_DateGDRQ,</if>
+           <if test="zhcxlistNumericnjfzje != null  and zhcxlistNumericnjfzje != ''  ">zhcxlist_NumericNJfzje,</if>
+           <if test="zhcxlistCodenspcx != null  and zhcxlistCodenspcx != ''  ">zhcxlist_CodeNSPCX,</if>
+           <if test="zhcxlistOrgan6aaceid != null  and zhcxlistOrgan6aaceid != ''  ">zhcxlist_Organ6aaceID,</if>
+           <if test="zhcxlistCodenajlb != null  and zhcxlistCodenajlb != ''  ">zhcxlist_CodeNAjlb,</if>
+           <if test="zhcxlistStringcay != null  and zhcxlistStringcay != ''  ">zhcxlist_StringCAY,</if>
+           <if test="zhcxlistOrgancbspt != null  and zhcxlistOrgancbspt != ''  ">zhcxlist_OrganCBSPT,</if>
+           <if test="zhcxlistDatedlarq != null  and zhcxlistDatedlarq != ''  ">zhcxlist_DateDLARQ,</if>
+           <if test="zhcxlistCodenpczt != null  and zhcxlistCodenpczt != ''  ">zhcxlist_CodeNPczt,</if>
+           <if test="zhcxlistStringlaay != null  and zhcxlistStringlaay != ''  ">zhcxlist_StringLAAY,</if>
+           <if test="zhcxlistDatedtqbjrq != null  and zhcxlistDatedtqbjrq != ''  ">zhcxlist_DateDTqbjrq,</if>
+           <if test="zhcxlistOrgan6aace != null  and zhcxlistOrgan6aace != ''  ">zhcxlist_Organ6aace,</if>
+           <if test="zhcxlistDatedsarq != null  and zhcxlistDatedsarq != ''  ">zhcxlist_DateDSARQ,</if>
+           <if test="zhcxlistNumericcsxts != null  and zhcxlistNumericcsxts != ''  ">zhcxlist_NumericCSXTS,</if>
+           <if test="zhcxlistOrganncbr != null  and zhcxlistOrganncbr != ''  ">zhcxlist_OrganNCBR,</if>
+           <if test="zhcxlistStringjafs != null  and zhcxlistStringjafs != ''  ">zhcxlist_StringJAFS,</if>
+           <if test="zhcxlistStringlaayid != null  and zhcxlistStringlaayid != ''  ">zhcxlist_StringLAAYID,</if>
+           <if test="zhcxlistCodesfcsx != null  and zhcxlistCodesfcsx != ''  ">zhcxlist_CodeSFCSX,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="zhcxlistOrganlarid != null  and zhcxlistOrganlarid != ''  ">#{zhcxlistOrganlarid},</if>
+        <if test="zhcxlistStringajbh != null  and zhcxlistStringajbh != ''  ">#{zhcxlistStringajbh},</if>
+        <if test="zhcxlistStringgdr != null  and zhcxlistStringgdr != ''  ">#{zhcxlistStringgdr},</if>
+        <if test="zhcxlistOrganncbrid != null  and zhcxlistOrganncbrid != ''  ">#{zhcxlistOrganncbrid},</if>
+        <if test="zhcxlistStringcah != null  and zhcxlistStringcah != ''  ">#{zhcxlistStringcah},</if>
+        <if test="zhcxlistDatedjarq != null  and zhcxlistDatedjarq != ''  ">#{zhcxlistDatedjarq},</if>
+        <if test="zhcxlistStringktdd != null  and zhcxlistStringktdd != ''  ">#{zhcxlistStringktdd},</if>
+        <if test="zhcxlistCodenajlbid != null  and zhcxlistCodenajlbid != ''  ">#{zhcxlistCodenajlbid},</if>
+        <if test="zhcxlistOrganlar != null  and zhcxlistOrganlar != ''  ">#{zhcxlistOrganlar},</if>
+        <if test="zhcxlistStringcdsr != null  and zhcxlistStringcdsr != ''  ">#{zhcxlistStringcdsr},</if>
+        <if test="zhcxlistCodenspcxid != null  and zhcxlistCodenspcxid != ''  ">#{zhcxlistCodenspcxid},</if>
+        <if test="zhcxlistCodesfszmq != null  and zhcxlistCodesfszmq != ''  ">#{zhcxlistCodesfszmq},</if>
+        <if test="zhcxlistStringsxqk != null  and zhcxlistStringsxqk != ''  ">#{zhcxlistStringsxqk},</if>
+        <if test="zhcxlistOrgancbsptid != null  and zhcxlistOrgancbsptid != ''  ">#{zhcxlistOrgancbsptid},</if>
+        <if test="zhcxlistDategdrq != null  and zhcxlistDategdrq != ''  ">#{zhcxlistDategdrq},</if>
+        <if test="zhcxlistNumericnjfzje != null  and zhcxlistNumericnjfzje != ''  ">#{zhcxlistNumericnjfzje},</if>
+        <if test="zhcxlistCodenspcx != null  and zhcxlistCodenspcx != ''  ">#{zhcxlistCodenspcx},</if>
+        <if test="zhcxlistOrgan6aaceid != null  and zhcxlistOrgan6aaceid != ''  ">#{zhcxlistOrgan6aaceid},</if>
+        <if test="zhcxlistCodenajlb != null  and zhcxlistCodenajlb != ''  ">#{zhcxlistCodenajlb},</if>
+        <if test="zhcxlistStringcay != null  and zhcxlistStringcay != ''  ">#{zhcxlistStringcay},</if>
+        <if test="zhcxlistOrgancbspt != null  and zhcxlistOrgancbspt != ''  ">#{zhcxlistOrgancbspt},</if>
+        <if test="zhcxlistDatedlarq != null  and zhcxlistDatedlarq != ''  ">#{zhcxlistDatedlarq},</if>
+        <if test="zhcxlistCodenpczt != null  and zhcxlistCodenpczt != ''  ">#{zhcxlistCodenpczt},</if>
+        <if test="zhcxlistStringlaay != null  and zhcxlistStringlaay != ''  ">#{zhcxlistStringlaay},</if>
+        <if test="zhcxlistDatedtqbjrq != null  and zhcxlistDatedtqbjrq != ''  ">#{zhcxlistDatedtqbjrq},</if>
+        <if test="zhcxlistOrgan6aace != null  and zhcxlistOrgan6aace != ''  ">#{zhcxlistOrgan6aace},</if>
+        <if test="zhcxlistDatedsarq != null  and zhcxlistDatedsarq != ''  ">#{zhcxlistDatedsarq},</if>
+        <if test="zhcxlistNumericcsxts != null  and zhcxlistNumericcsxts != ''  ">#{zhcxlistNumericcsxts},</if>
+        <if test="zhcxlistOrganncbr != null  and zhcxlistOrganncbr != ''  ">#{zhcxlistOrganncbr},</if>
+        <if test="zhcxlistStringjafs != null  and zhcxlistStringjafs != ''  ">#{zhcxlistStringjafs},</if>
+        <if test="zhcxlistStringlaayid != null  and zhcxlistStringlaayid != ''  ">#{zhcxlistStringlaayid},</if>
+        <if test="zhcxlistCodesfcsx != null  and zhcxlistCodesfcsx != ''  ">#{zhcxlistCodesfcsx},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateLists" parameterType="Lists">
+        update case_lists
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhcxlistOrganlarid != null  and zhcxlistOrganlarid != ''  ">zhcxlist_OrganLARID = #{zhcxlistOrganlarid},</if>
+            <if test="zhcxlistStringgdr != null  and zhcxlistStringgdr != ''  ">zhcxlist_StringGDR = #{zhcxlistStringgdr},</if>
+            <if test="zhcxlistOrganncbrid != null  and zhcxlistOrganncbrid != ''  ">zhcxlist_OrganNCBRID = #{zhcxlistOrganncbrid},</if>
+            <if test="zhcxlistStringcah != null  and zhcxlistStringcah != ''  ">zhcxlist_StringCAH = #{zhcxlistStringcah},</if>
+            <if test="zhcxlistDatedjarq != null  and zhcxlistDatedjarq != ''  ">zhcxlist_DateDJARQ = #{zhcxlistDatedjarq},</if>
+            <if test="zhcxlistStringktdd != null  and zhcxlistStringktdd != ''  ">zhcxlist_StringKtdd = #{zhcxlistStringktdd},</if>
+            <if test="zhcxlistCodenajlbid != null  and zhcxlistCodenajlbid != ''  ">zhcxlist_CodeNAjlbID = #{zhcxlistCodenajlbid},</if>
+            <if test="zhcxlistOrganlar != null  and zhcxlistOrganlar != ''  ">zhcxlist_OrganLAR = #{zhcxlistOrganlar},</if>
+            <if test="zhcxlistStringcdsr != null  and zhcxlistStringcdsr != ''  ">zhcxlist_StringCDSR = #{zhcxlistStringcdsr},</if>
+            <if test="zhcxlistCodenspcxid != null  and zhcxlistCodenspcxid != ''  ">zhcxlist_CodeNSPCXID = #{zhcxlistCodenspcxid},</if>
+            <if test="zhcxlistCodesfszmq != null  and zhcxlistCodesfszmq != ''  ">zhcxlist_CodeSFSZMQ = #{zhcxlistCodesfszmq},</if>
+            <if test="zhcxlistStringsxqk != null  and zhcxlistStringsxqk != ''  ">zhcxlist_StringSXQK = #{zhcxlistStringsxqk},</if>
+            <if test="zhcxlistOrgancbsptid != null  and zhcxlistOrgancbsptid != ''  ">zhcxlist_OrganCBSPTID = #{zhcxlistOrgancbsptid},</if>
+            <if test="zhcxlistDategdrq != null  and zhcxlistDategdrq != ''  ">zhcxlist_DateGDRQ = #{zhcxlistDategdrq},</if>
+            <if test="zhcxlistNumericnjfzje != null  and zhcxlistNumericnjfzje != ''  ">zhcxlist_NumericNJfzje = #{zhcxlistNumericnjfzje},</if>
+            <if test="zhcxlistCodenspcx != null  and zhcxlistCodenspcx != ''  ">zhcxlist_CodeNSPCX = #{zhcxlistCodenspcx},</if>
+            <if test="zhcxlistOrgan6aaceid != null  and zhcxlistOrgan6aaceid != ''  ">zhcxlist_Organ6aaceID = #{zhcxlistOrgan6aaceid},</if>
+            <if test="zhcxlistCodenajlb != null  and zhcxlistCodenajlb != ''  ">zhcxlist_CodeNAjlb = #{zhcxlistCodenajlb},</if>
+            <if test="zhcxlistStringcay != null  and zhcxlistStringcay != ''  ">zhcxlist_StringCAY = #{zhcxlistStringcay},</if>
+            <if test="zhcxlistOrgancbspt != null  and zhcxlistOrgancbspt != ''  ">zhcxlist_OrganCBSPT = #{zhcxlistOrgancbspt},</if>
+            <if test="zhcxlistDatedlarq != null  and zhcxlistDatedlarq != ''  ">zhcxlist_DateDLARQ = #{zhcxlistDatedlarq},</if>
+            <if test="zhcxlistCodenpczt != null  and zhcxlistCodenpczt != ''  ">zhcxlist_CodeNPczt = #{zhcxlistCodenpczt},</if>
+            <if test="zhcxlistStringlaay != null  and zhcxlistStringlaay != ''  ">zhcxlist_StringLAAY = #{zhcxlistStringlaay},</if>
+            <if test="zhcxlistDatedtqbjrq != null  and zhcxlistDatedtqbjrq != ''  ">zhcxlist_DateDTqbjrq = #{zhcxlistDatedtqbjrq},</if>
+            <if test="zhcxlistOrgan6aace != null  and zhcxlistOrgan6aace != ''  ">zhcxlist_Organ6aace = #{zhcxlistOrgan6aace},</if>
+            <if test="zhcxlistDatedsarq != null  and zhcxlistDatedsarq != ''  ">zhcxlist_DateDSARQ = #{zhcxlistDatedsarq},</if>
+            <if test="zhcxlistNumericcsxts != null  and zhcxlistNumericcsxts != ''  ">zhcxlist_NumericCSXTS = #{zhcxlistNumericcsxts},</if>
+            <if test="zhcxlistOrganncbr != null  and zhcxlistOrganncbr != ''  ">zhcxlist_OrganNCBR = #{zhcxlistOrganncbr},</if>
+            <if test="zhcxlistStringjafs != null  and zhcxlistStringjafs != ''  ">zhcxlist_StringJAFS = #{zhcxlistStringjafs},</if>
+            <if test="zhcxlistStringlaayid != null  and zhcxlistStringlaayid != ''  ">zhcxlist_StringLAAYID = #{zhcxlistStringlaayid},</if>
+            <if test="zhcxlistCodesfcsx != null  and zhcxlistCodesfcsx != ''  ">zhcxlist_CodeSFCSX = #{zhcxlistCodesfcsx},</if>
+        </trim>
+        where zhcxlist_StringAJBH = #{zhcxlistStringajbh}
+    </update>
+
+	<delete id="deleteListsById" parameterType="String">
+        delete from case_lists where zhcxlist_StringAJBH = #{zhcxlistStringajbh}
+    </delete>
+	
+    <delete id="deleteListsByIds" parameterType="String">
+        delete from case_lists where zhcxlist_StringAJBH in 
+        <foreach item="zhcxlistStringajbh" collection="array" open="(" separator="," close=")">
+            #{zhcxlistStringajbh}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.handlingSituation.mapper.HandlingSituationMapper">
+    
+    <resultMap type="HandlingSituation" id="HandlingSituationResult">
+        <result property="cljsjqkId"    column="cljsjqk_id"    />
+        <result property="cid"    column="cid"    />
+        <result property="cljsjqkXm"    column="cljsjqk_xm"    />
+        <result property="cljsjqkDw"    column="cljsjqk_dw"    />
+        <result property="cljsjqkZw"    column="cljsjqk_zw"    />
+        <result property="dzjclWjwfss"    column="dzjcl_wjwfss"    />
+        <result property="dzjclClqk"    column="dzjcl_clqk"    />
+        <result property="fdzjclWjwfss"    column="fdzjcl_wjwfss"    />
+        <result property="fdzjclClqk"    column="fdzjcl_clqk"    />
+        <result property="sjqkdjSjlpljqk"    column="sjqkdj_sjlpljqk"    />
+        <result property="sjqkdjCzjg"    column="sjqkdj_czjg"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+	
+	<sql id="selectHandlingSituationVo">
+        select cljsjqk_id, cid, cljsjqk_xm, cljsjqk_dw, cljsjqk_zw, dzjcl_wjwfss, dzjcl_clqk, fdzjcl_wjwfss, fdzjcl_clqk, sjqkdj_sjlpljqk, sjqkdj_czjg, create_time, create_by, update_time, update_by from arch_handling_situation
+    </sql>
+	
+    <select id="selectHandlingSituationList" parameterType="HandlingSituation" resultMap="HandlingSituationResult">
+        <include refid="selectHandlingSituationVo"/>
+        <where>  
+            <if test="cljsjqkId != null and cljsjqkId != ''"> and cljsjqk_id like concat('%',#{cljsjqkId},'%')</if>
+             <if test="cid != null and cid != ''"> and cid like concat('%',#{cid},'%')</if>
+             <if test="cljsjqkXm != null and cljsjqkXm != ''"> and cljsjqk_xm like concat('%',#{cljsjqkXm},'%')</if>
+             <if test="cljsjqkDw != null and cljsjqkDw != ''"> and cljsjqk_dw like concat('%',#{cljsjqkDw},'%')</if>
+             <if test="cljsjqkZw != null and cljsjqkZw != ''"> and cljsjqk_zw like concat('%',#{cljsjqkZw},'%')</if>
+             <if test="dzjclWjwfss != null and dzjclWjwfss != ''"> and dzjcl_wjwfss like concat('%',#{dzjclWjwfss},'%')</if>
+             <if test="dzjclClqk != null and dzjclClqk != ''"> and dzjcl_clqk like concat('%',#{dzjclClqk},'%')</if>
+             <if test="fdzjclWjwfss != null and fdzjclWjwfss != ''"> and fdzjcl_wjwfss like concat('%',#{fdzjclWjwfss},'%')</if>
+             <if test="fdzjclClqk != null and fdzjclClqk != ''"> and fdzjcl_clqk like concat('%',#{fdzjclClqk},'%')</if>
+             <if test="sjqkdjSjlpljqk != null and sjqkdjSjlpljqk != ''"> and sjqkdj_sjlpljqk like concat('%',#{sjqkdjSjlpljqk},'%')</if>
+             <if test="sjqkdjCzjg != null and sjqkdjCzjg != ''"> and sjqkdj_czjg like concat('%',#{sjqkdjCzjg},'%')</if>
+             <if test="createTime != null and createTime != ''"> and create_time like concat('%',#{createTime},'%')</if>
+             <if test="createBy != null and createBy != ''"> and create_by like concat('%',#{createBy},'%')</if>
+             <if test="updateTime != null and updateTime != ''"> and update_time like concat('%',#{updateTime},'%')</if>
+             <if test="updateBy != null and updateBy != ''"> and update_by like concat('%',#{updateBy},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectHandlingSituationById" parameterType="String" resultMap="HandlingSituationResult">
+        <include refid="selectHandlingSituationVo"/>
+        where cljsjqk_id = #{cljsjqkId}
+    </select>
+        
+    <insert id="insertHandlingSituation" parameterType="HandlingSituation">
+        insert into arch_handling_situation
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="cljsjqkId != null  and cljsjqkId != ''  ">cljsjqk_id,</if>
+           <if test="cid != null  and cid != ''  ">cid,</if>
+           <if test="cljsjqkXm != null  and cljsjqkXm != ''  ">cljsjqk_xm,</if>
+           <if test="cljsjqkDw != null  and cljsjqkDw != ''  ">cljsjqk_dw,</if>
+           <if test="cljsjqkZw != null  and cljsjqkZw != ''  ">cljsjqk_zw,</if>
+           <if test="dzjclWjwfss != null  and dzjclWjwfss != ''  ">dzjcl_wjwfss,</if>
+           <if test="dzjclClqk != null  and dzjclClqk != ''  ">dzjcl_clqk,</if>
+           <if test="fdzjclWjwfss != null  and fdzjclWjwfss != ''  ">fdzjcl_wjwfss,</if>
+           <if test="fdzjclClqk != null  and fdzjclClqk != ''  ">fdzjcl_clqk,</if>
+           <if test="sjqkdjSjlpljqk != null  and sjqkdjSjlpljqk != ''  ">sjqkdj_sjlpljqk,</if>
+           <if test="sjqkdjCzjg != null  and sjqkdjCzjg != ''  ">sjqkdj_czjg,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="createBy != null  and createBy != ''  ">create_by,</if>
+           <if test="updateTime != null  ">update_time,</if>
+           <if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="cljsjqkId != null  and cljsjqkId != ''  ">#{cljsjqkId},</if>
+        <if test="cid != null  and cid != ''  ">#{cid},</if>
+        <if test="cljsjqkXm != null  and cljsjqkXm != ''  ">#{cljsjqkXm},</if>
+        <if test="cljsjqkDw != null  and cljsjqkDw != ''  ">#{cljsjqkDw},</if>
+        <if test="cljsjqkZw != null  and cljsjqkZw != ''  ">#{cljsjqkZw},</if>
+        <if test="dzjclWjwfss != null  and dzjclWjwfss != ''  ">#{dzjclWjwfss},</if>
+        <if test="dzjclClqk != null  and dzjclClqk != ''  ">#{dzjclClqk},</if>
+        <if test="fdzjclWjwfss != null  and fdzjclWjwfss != ''  ">#{fdzjclWjwfss},</if>
+        <if test="fdzjclClqk != null  and fdzjclClqk != ''  ">#{fdzjclClqk},</if>
+        <if test="sjqkdjSjlpljqk != null  and sjqkdjSjlpljqk != ''  ">#{sjqkdjSjlpljqk},</if>
+        <if test="sjqkdjCzjg != null  and sjqkdjCzjg != ''  ">#{sjqkdjCzjg},</if>
+        <if test="createTime != null  ">#{createTime},</if>
+        <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+        <if test="updateTime != null  ">#{updateTime},</if>
+        <if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateHandlingSituation" parameterType="HandlingSituation">
+        update arch_handling_situation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cid != null  and cid != ''  ">cid = #{cid},</if>
+            <if test="cljsjqkXm != null    ">cljsjqk_xm = #{cljsjqkXm},</if>
+            <if test="cljsjqkDw != null    ">cljsjqk_dw = #{cljsjqkDw},</if>
+            <if test="cljsjqkZw != null    ">cljsjqk_zw = #{cljsjqkZw},</if>
+            <if test="dzjclWjwfss != null    ">dzjcl_wjwfss = #{dzjclWjwfss},</if>
+            <if test="dzjclClqk != null    ">dzjcl_clqk = #{dzjclClqk},</if>
+            <if test="fdzjclWjwfss != null    ">fdzjcl_wjwfss = #{fdzjclWjwfss},</if>
+            <if test="fdzjclClqk != null    ">fdzjcl_clqk = #{fdzjclClqk},</if>
+            <if test="sjqkdjSjlpljqk != null   ">sjqkdj_sjlpljqk = #{sjqkdjSjlpljqk},</if>
+            <if test="sjqkdjCzjg != null    ">sjqkdj_czjg = #{sjqkdjCzjg},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="createBy != null   ">create_by = #{createBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="updateBy != null   ">update_by = #{updateBy},</if>
+        </trim>
+        where cljsjqk_id = #{cljsjqkId}
+    </update>
+
+	<delete id="deleteHandlingSituationById" parameterType="String">
+        delete from arch_handling_situation where cljsjqk_id = #{cljsjqkId}
+    </delete>
+	
+    <delete id="deleteHandlingSituationByIds" parameterType="String">
+        delete from arch_handling_situation where cljsjqk_id in 
+        <foreach item="cljsjqkId" collection="array" open="(" separator="," close=")">
+            #{cljsjqkId}
+        </foreach>
+    </delete>
+    
+</mapper>

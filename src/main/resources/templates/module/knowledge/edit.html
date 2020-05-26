@@ -1,0 +1,369 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+<style>
+    .input{
+        background: #FFFFFF none;
+        border: 1px solid #e5e6e7;
+        border-radius: 5px;
+        color: inherit;
+        display: block;
+        padding: 6px 12px;
+        -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        width: 49%;
+        font-size: 14px;
+        box-shadow: none;
+        float: left;
+    }
+    .input2{
+        background: #FFFFFF none;
+        border: 1px solid #e5e6e7;
+        border-radius: 5px;
+        color: inherit;
+        display: block;
+        padding: 6px 12px;
+        -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        width: 49%;
+        font-size: 14px;
+        box-shadow: none;
+        float: right;
+    }
+    /* 新增样式20190419 */
+    .select2-container .select2-selection--single{height: 34px;}
+    .select2-container--default .select2-selection--single{border: 1px solid #ddd;}
+    .select2-container--default .select2-selection--single .select2-selection__rendered{line-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {padding: 0px 5px;}
+    .select-info-container input, .select-info-container select{width: 100%}
+    .select2-container{height: 34px;line-height: 34px}
+    .select2-container--default .select2-selection--multiple{height: 34px;width: 100%;border: 1px solid #ddd;}
+    .select2-container .select2-selection--multiple{min-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__rendered{height: 34px; }
+    .select2-container--default.select2-container--focus .select2-selection--multiple{border: 1px solid #ddd;}
+    /* 20190506 */
+    .form-control-nowidth {
+        height: 33.99px;
+        background: #FFFFFF none;
+        border: 1px solid #e5e6e7;
+        border-radius: 5px;
+        color: inherit;
+        display: block;
+        padding: 6px 12px;
+        -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        font-size: 14px;
+    }
+</style>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="col-sm-12 select-info search-collapse">
+        <form class="form-horizontal m" id="form-knowledge-edit" th:object="${knowledge}">
+            <input type="hidden" th:field="*{knowledgeId}">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">标题：</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" th:field="*{knowledgeTitle}" name="knowledgeTitle" id="knowledgeTitle">
+                </div>
+            </div>
+            <div class="form-group" style="display: none;">
+                <label class="col-sm-3 control-label">类型：</label>
+                <input type="hidden" name="knowledgeType" th:field="*{knowledgeType}">
+                <div class="col-sm-8">
+                    <select disabled id="knowledgeType"  class="form-control m-b" name="knowledgeType" th:with="type=${@dict.getType('knowledge_type')}">
+                        <option th:field="*{knowledgeType}" th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" th:if="${knowledge.knowledgeType} eq '0'">
+                <label class="col-sm-3 control-label">法规分类：</label>
+                <div class="col-sm-8">
+                    <select id="typeOne"  class="input m-b form-control-nowidth" name="typeOne" th:with="type=${@dict.getType('knowledge_typeOne')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}" th:selected="${knowledge.typeOne} eq ${dict.dictValue}"></option>
+                    </select>
+                    <select id="typeTwo"  class="input2 m-b form-control-nowidth" name="typeTwo">
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">填写类型：</label>
+                <div class="col-sm-8 radio" style="padding-top: 0;" th:with="willWay=${@dict.getType('notice_willWay')}">
+                    <label th:each="role:${willWay}" style="display: inline-block;box-sizing: border-box;position: relative;padding-right: 15px;padding-top: 8px">
+                        <input name="fillWay" type="radio" th:value="${role.dictValue}" th:text="${role.dictLabel}" style="margin-top: 2px;"
+                               th:checked="${knowledge.fillWay} eq ${role.dictValue}">
+                    </label>
+                </div>
+            </div>
+            <div id="one">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">内容：</label>
+                    <div class="col-sm-8">
+                        <input id="knowledgeContent" name="knowledgeContent" type="hidden" th:field="*{knowledgeContent}">
+                        <div class="summernote" name="summernote" id="summernote"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="two">
+                <div class="form-group" th:if="${knowledge.fillWay} eq '1'">
+                    <label class="col-sm-3 control-label">原扫描件：</label>
+                    <div class="col-sm-8">
+                        <img th:src="@{/img/pdf.jpg}" id="pdf_old" style="width: 70px;height: 80px;">
+                        <a style="margin-left: 20px" th:attr="data-url=${knowledge.knowledgeContent}"
+                           onclick="showPdf(this)" href="javascript:void(0)">预览</a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">扫描件：</label>
+                    <div class="col-sm-8">
+                        <input type="file" name="file_pdf" id="file_pdf"><span style="color: red">目前支持*.pdf,单个最大限制为50M</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">说明：</label>
+                <div class="col-sm-8">
+                    <textarea rows="8" name="remark" class="form-control" id="remark" th:field="*{remark}"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-control-static col-sm-offset-5">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script th:inline="javascript">
+    $(function () {
+        var fillWay = $("input[name='fillWay']:checked").val();
+        $('.summernote').summernote({
+            height: '250px',
+            lang: 'zh-CN'
+        });
+
+        if(fillWay == '0'){
+            var knowledgeContent = $("#knowledgeContent").val();
+            $(".summernote").code(knowledgeContent);
+        };
+        var fillWay  = $("input[name='fillWay']:checked").val();
+        if(fillWay == '0'){
+            $("#one").css("display","block");
+            $("#two").css("display","none");
+        }else{
+            $("#one").css("display","none");
+            $("#two").css("display","block");
+        }
+
+        $('#summernote').parent().find('.note-editable').on('blur',function () {
+            var content = $(".summernote").code();
+            $("#knowledgeContent").val(content);
+            if($("#knowledgeContent").val()!="" && $("#knowledgeContent").val()!="<p><br></p>"){
+                $("#knowledgeContent-error").remove();
+                $("#knowledgeContent").removeClass("error");
+                $('.summernote').parent().find('.note-editable').removeClass("error_div");
+            }
+        })
+    });
+
+    var knowledge =[[${knowledge}]];
+
+    var type_one = $("#typeOne").val();
+    var type_event = $("#typeTwo");
+    type_event.empty();
+    var str = '';
+    if(type_one =='0'){
+        var datas = [[${@dict.getType('knowledge_typeTwo_one')}]];
+        $.each(datas,function(i,data){
+            if(data.dictValue == knowledge.typeTwo ){
+                str+='<option selected value=\"'+data.dictValue+'\">'+data.dictLabel+'</option>'
+            }else{
+                str+='<option value=\"'+data.dictValue+'\">'+data.dictLabel+'</option>'
+            }
+        });
+        type_event.html(str)
+    }else{
+        var datas = [[${@dict.getType('knowledge_typeTwo_two')}]];
+        $.each(datas,function(i,data){
+            if(data.dictValue == knowledge.typeTwo ){
+                str+='<option selected value=\"'+data.dictValue+'\">'+data.dictLabel+'</option>'
+            }else{
+                str+='<option value=\"'+data.dictValue+'\">'+data.dictLabel+'</option>'
+            }
+        });
+        type_event.html(str)
+    }
+
+    $("#typeOne").change(function(){
+        var one = $(this).val();
+        var type_event = $("#typeTwo");
+        type_event.empty();
+        var str = '';
+        if(one =='0'){
+            var datas = [[${@dict.getType('knowledge_typeTwo_one')}]];
+            $.each(datas,function(i,data){
+                str+='<option value=\"'+data.dictValue+'\">'+data.dictLabel+'</option>'
+            });
+        }else{
+            var datas = [[${@dict.getType('knowledge_typeTwo_two')}]];
+            $.each(datas,function(i,data){
+                str+='<option value=\"'+data.dictValue+'\">'+data.dictLabel+'</option>'
+            });
+        }
+        type_event.html(str)
+    });
+
+    var prefix = ctx + "module/knowledge"
+    //自定义检测文件方法
+    jQuery.validator.addMethod("checkFile", function (value, element, param) {
+        var fileSize = element.files[0];
+        var fillWay  = $("input[name='fillWay']:checked").val();
+        if(fillWay == '0'){
+            return true;
+        }else{
+            if(document.getElementById("pdf_old")){
+                return true;
+            }else{
+                if(fileSize == undefined){
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+        }
+    }, "<i class='fa fa-times-circle'>扫描件不能为空</i>");
+
+    //自定义检测文件类型方法
+    jQuery.validator.addMethod("checkFileType", function (value, element, param) {
+        var fillWay  = $("input[name='fillWay']:checked").val();
+        if(fillWay == '0'){
+            return true;
+        }else{
+           if(element.files[0] == undefined && document.getElementById("pdf_old")){
+               return true;
+           }else{
+               var fileName = element.files[0].name;
+               var imgStr = /\.(pdf)$/;
+               if (!imgStr.test(fileName)) {
+                   return false;
+               } else {
+                   return true;
+               }
+           }
+        }
+    }, "<i class='fa fa-times-circle'>请上传类型为.pdf的扫描件</i>");
+
+    //自定义检测文件大小方法
+    jQuery.validator.addMethod("checkFileSize", function (value, element, param) {
+        var fillWay  = $("input[name='fillWay']:checked").val();
+        if(fillWay == '0'){
+            return true;
+        }else{
+            if(element.files[0] == undefined && document.getElementById("pdf_old")){
+                return true;
+            }else{
+                var fileSize = element.files[0].size;
+                if (fileSize > param) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+    }, "<i class='fa fa-times-circle'>请上传扫描件大小在50M以下的文件</i>");
+
+    //自定义验证内容是否为空
+    jQuery.validator.addMethod("checkContent", function (value, element, param) {
+        var content = element.value;
+        var fillWay  = $("input[name='fillWay']:checked").val();
+        if(fillWay == '0'){
+            if(content == "" || content == '<p><br></p>'){
+                $('.summernote').parent().find('.note-editable').addClass("error_div");
+                return false;
+            }else{
+                return true;
+            }
+        }else{
+            return true;
+        }
+    }, "<i class='fa fa-times-circle'>内容不能为空</i>");
+    $("#form-knowledge-edit").validate({
+        ignore: [],
+        rules: {
+            knowledgeTitle:{
+                required: true,
+            },
+            knowledgeContent:{
+                checkContent:""
+            },
+            file_pdf:{
+                checkFile:"",
+                checkFileType:"",
+                checkFileSize:50*1024*1024
+            }
+        },
+        submitHandler: function (form) {
+            // var content =  $(".summernote").code();
+            // $("#knowledgeContent").val(content);
+            // $.operate.save(prefix + "/edit", $('#form-knowledge-edit').serialize());
+            frm_submit();
+        }
+    });
+
+    function frm_submit(){
+        var fillWay  = $("input[name='fillWay']:checked").val();
+        if(fillWay == '0'){
+            var content = $(".summernote").code();
+            $("#knowledgeContent").val(content);
+        }else{
+            $("#knowledgeContent").val("");
+        }
+        $('#form-knowledge-edit').ajaxSubmit({
+            forceSync: false,
+            url: prefix + '/edit',
+            type: 'post',
+            success: function (result) {
+                if (result.code == statusCode.web_status.SUCCESS) {
+                    $.modal.close();
+                    window.parent.$.modal.msgSuccess("保存成功,正在刷新数据请稍后……");
+                    window.parent.$.table.refresh();
+                } else {
+                    modalComponent.alertError(result.msg);
+                }
+                modalComponent.closeLoading();
+            },
+            error: function (response) {
+                modalComponent.alertError('系统错误');
+                modalComponent.closeLoading();
+            }
+        });
+    }
+
+    function showPdf(e) {
+        var url = e.getAttribute("data-url");
+        $.modal.open("预览", ctx + 'ajax/libs/pdfjs-2.0.943/web/viewer.html?file=' + url);
+    }
+
+    $('.radio').on('click','input',function () {
+        var fillWay  = $("input[name='fillWay']:checked").val();
+        if(fillWay == '0'){
+            $("#one").css("display","block");
+            $("#two").css("display","none");
+        }else{
+            $("#one").css("display","none");
+            $("#two").css("display","block");
+        }
+    })
+
+
+</script>
+</body>
+</html>

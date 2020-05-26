@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <div class="container-div">
+        <div class="col-sm-12 select-info search-collapse">
+            <form id="case" class="form-horizontal">
+                <input type="hidden" name="jobId" id="jobId" th:value="${jobId}">
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>采集接口方法名：</label>
+                      <input type="text"  name="colleinterfaceMethed">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>创建人：</label>
+                      <input type="text"  name="createBy">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                      <div class="col-sm-4 select-time">
+                          <label>创建时间：</label>
+                          <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+                          <span class="time-span">-</span>
+                          <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+                      </div>
+               </div>
+                <div class="form-group select-info-container">
+                    <div class="col-sm-12 select-info-btn">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="addcols()" shiro:hasPermission="monitor:job:addcol">
+                <i class="fa fa-plus"></i> 新增
+            </a>
+			<a class="btn btn-danger btn-del disabled" onclick="removeAllCol()" shiro:hasPermission="monitor:job:removecol">
+				<i class="fa fa-trash-o"></i> 批量删除
+			</a>
+		</div>
+			
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var prefix = ctx + "monitor/job";
+        $(function() {
+            var options = {
+                url: prefix + "/collist",
+                removeUrl: prefix + "/removecol",
+                queryParams: queryParams,
+                sortName: "createTime",
+                sortOrder: "desc",
+                modalName: "数据",
+                showExport: false,
+				search: false,
+                columns: [{
+		            checkbox: true
+		        },
+                    {
+                        field : 'colleinterfaceId',
+                        title : '采集接口Id',
+                        visible:false
+                    },
+                    {
+                        field : 'colleinterfaceName',
+                        title : '采集接口名',
+                    },
+                {
+                    field : 'colleinterfaceMethed',
+                    title : '采集接口方法名',
+                                    },
+                    {
+                        field : 'remarks',
+                        title : '接口描述',
+                    },
+                {
+                        field : 'createBy',
+                        title : '创建人',
+                },
+                {
+                    field : 'createTime',
+                    title : '创建时间',
+                                    },
+		        ]
+            };
+            $.table.init(options);
+        });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+    });
+
+        function queryParams(params) {
+            return {
+                jobId: $("#jobId").val(),
+                pageSize:       params.limit,
+                pageNum:        params.offset / params.limit + 1,
+                searchValue:    params.search,
+                orderByColumn:  params.sort,
+                isAsc:          params.order
+            };
+        }
+
+        function addcols() {
+            var jobId=$("#jobId").val();
+            var url = prefix + '/addcol/' + jobId;
+            $.modal.open("新增接口",url);
+        }
+        function removeAllCol() {
+            var jobId=$("#jobId").val();
+            var rows=$("#bootstrap-table").bootstrapTable('getSelections');
+            var url = prefix + '/removecol';
+            if (rows.length == 0) {
+                $.modal.alertWarning("请至少选择一条记录");
+                return;
+            }
+            $.modal.confirm("确认要删除选中的" + rows.length + "条数据吗?", function () {
+                var methodParams="";
+                for (var i = 0; i <rows.length ; i++) {
+                    var colleinterfaceId=rows[i].colleinterfaceId;
+                    methodParams+=colleinterfaceId+","
+                }
+                methodParams=methodParams.substr(0,methodParams.length-1);
+                $.ajax({
+                    url: url,
+                    type: "post",
+                    dataType: "json",
+                    data:{"rows":methodParams,"jobId":jobId},
+                    async: true,
+                    error: function (request) {
+                        $.modal.alertError("系统错误");
+                    },
+                    success: function (data) {
+                        if (data.code === 0) {
+                            modalComponent.msgWarning(data.msg);
+                            window.parent.location.reload();
+                            modalComponent.close();
+                        } else {
+                            modalComponent.msgWarning(data.msg)
+                        }
+                    }
+                })
+            });
+
+
+        }
+    </script>
+</body>
+</html>

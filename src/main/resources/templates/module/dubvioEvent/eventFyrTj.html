@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+	<div class="col-sm-12 select-table table-striped">
+		<table id="bootstrap-table" data-mobile-responsive="true"></table>
+	</div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:dubvioEvent:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:dubvioEvent:remove')}]];
+    var releaseFlag = [[${@permission.hasPermi('module:processMatter:addDubvioEvent')}]];
+    var listFlag = [[${@permission.hasPermi('module:dubvioEvent:list')}]];
+    var datas_18 = [[${@dict.getType('risks_grades')}]];
+    var prefix = ctx + "module/dubvioEvent";
+    $(function() {
+
+
+        var options = {
+            url: prefix + "/queryEventFyrInfo",
+            search: false,
+            queryParams: queryParams,
+            columns: [
+            //     {
+            //     checkbox: true
+            // },
+                {
+                    field : 'dubvio_fydx',
+                    title : '被反映人',
+                },
+                {
+                    field : 'fycs',
+                    title : '被反映次数',
+
+                },
+
+                {
+                    field : 'age',
+                    title : '年龄',
+
+                },
+
+                {
+                    field : 'dept',
+                    title : '所在部门',
+
+                },
+                {
+                    field : 'ms',
+                    title : '民事',
+                    formatter:function(value,row,index){
+                                var zcdcs="1";
+                        if (row.zcdc==0){
+                            return "<font >"+row.ms+"</font>";
+                        }else {
+
+
+                                return "<a style='text-decoration:none' onclick='clueDetail("+row.jbxx_cbr_id+","+zcdcs+" )' ><font color='blue'>" + row.ms +"</font></a>";
+                            }
+                    }
+
+                },
+                {
+                    field : 'xs',
+                    title : '刑事',
+                    formatter:function(value,row,index){
+                        var yyljs="2";
+                        if (row.yylj==0){
+                            return "<font >"+row.xs+"</font>";
+                        }else {
+
+                        return "<a style='text-decoration:none' onclick='clueDetail("+row.jbxx_cbr_id+","+yyljs+" )' ><font color='blue'>" + row.xs +"</font></a>";
+                    }
+                    }
+                },
+                {
+                    field : 'xz',
+                    title : '行政',
+                    formatter:function(value,row,index){
+                        var thhxs="4";
+                        if (row.thhx==0){
+                            return "<font >"+row.xz+"</font>";
+                        }else {
+
+                        return "<a style='text-decoration:none' onclick='clueDetail("+row.jbxx_cbr_id+","+thhxs+" )' ><font color='blue'>" + row.xz +"</font></a>";
+                        }
+                        }
+
+                },
+                {
+                    field : 'zx',
+                    title : '执行',
+                    formatter:function(value,row,index){
+                        var cbhss="3";
+                        if (row.cbhs==0){
+                            return "<font >"+row.zx+"</font>";
+                        }else {
+
+
+                        return "<a style='text-decoration:none' onclick='clueDetail("+row.jbxx_cbr_id+","+cbhss+" )' ><font color='blue'>" + row.zx +"</font></a>";
+                        }
+                    }
+
+                },
+
+                // {
+                //     field : 'ajsl',
+                //     title : '案件审理',
+                //     formatter:function(value,row,index){
+                //         var ajsls="6";
+                //         if (row.ajsl==0){
+                //             return "<font >"+row.ajsl+"</font>";
+                //         }else {
+                //         return "<a style='text-decoration:none' onclick='clueDetail("+row.jbxx_cbr_id+","+ajsls+" )' ><font color='blue'>" + row.ajsl +"</font></a>";
+                //     }
+                //     }
+                // },
+
+
+                ]
+        };
+        initSimpleTabl.init(options);
+    });
+
+    function queryParams(params) {
+        return {
+            pageSize:       params.limit,
+            pageNum:        params.offset / params.limit + 1,
+            searchValue:    params.search,
+            orderByColumn:  params.sort,
+            isAsc:          params.order
+        };
+    }
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime', theme: 'molv'});
+        laydate.render({elem: '#endTime_12', theme: 'molv'});
+        laydate.render({elem: '#startTime_13', theme: 'molv'});
+        laydate.render({elem: '#endTime_13', theme: 'molv'});
+        laydate.render({elem: '#startTime_14', theme: 'molv'});
+        laydate.render({elem: '#endTime_14', theme: 'molv'});
+        laydate.render({elem: '#startTime_15', theme: 'molv'});
+        laydate.render({elem: '#endTime_15', theme: 'molv'});
+        laydate.render({elem: '#startTime_16', theme: 'molv'});
+        laydate.render({elem: '#endTime_16', theme: 'molv'});
+        laydate.render({elem: '#startTime_17', theme: 'molv'});
+        laydate.render({elem: '#endTime_17', theme: 'molv'});
+    });
+
+
+
+    /*策略列表-详细*/
+    function detail(clueId) {
+        var url = prefix + '/detail/' + clueId;
+        createMenuItem(url, "策略详情");
+    }
+
+    function clueDetail(id,index){
+
+        var url = prefix + '/eventFyrTjDetail?id=' + id + "&index=" + index;
+
+        createMenuItem(url, "可疑点被反映人线索详情");
+    }
+
+</script>
+</body>
+</html>

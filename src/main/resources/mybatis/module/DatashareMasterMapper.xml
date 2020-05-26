@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.datashareMaster.mapper.DatashareMasterMapper">
+    
+    <resultMap type="DatashareMaster" id="DatashareMasterResult">
+        <result property="datashareId"    column="datashare_id"    />
+        <result property="datashareCourtid"    column="datashare_courtid"    />
+        <result property="status"    column="status"    />
+        <result property="number"    column="number"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="courtName"    column="courtName"    />
+    </resultMap>
+	
+	<sql id="selectDatashareMasterVo">
+        SELECT m.*,d.dept_name as courtName
+        FROM sys_datashare_master m
+        LEFT JOIN sys_dept d ON d.dept_id=m.datashare_courtid
+    </sql>
+
+    <select id="selectDatashareMasterList" parameterType="DatashareMaster" resultMap="DatashareMasterResult">
+        <include refid="selectDatashareMasterVo"/>
+        <where>  
+            <if test="datashareId != null"> and m.datashare_id like concat('%',#{datashareId},'%')</if>
+             <if test="datashareCourtid != null"> and m.datashare_courtid like concat('%',#{datashareCourtid},'%')</if>
+             <if test="status != null "> and m.status like concat('%',#{status},'%')</if>
+             <if test="number != null"> and m.number like concat('%',#{number},'%')</if>
+             <if test="createTime != null "> and m.create_time like concat('%',#{createTime},'%')</if>
+             <if test="createBy != null "> and m.create_by like concat('%',#{createBy},'%')</if>
+             <if test="updateTime != null "> and m.update_time like concat('%',#{updateTime},'%')</if>
+             <if test="updateBy != null "> and m.update_by like concat('%',#{updateBy},'%')</if>
+         </where>
+    </select>
+    
+    <select id="selectDatashareMasterById" parameterType="Integer" resultMap="DatashareMasterResult">
+        <include refid="selectDatashareMasterVo"/>
+        where datashare_id = #{datashareId}
+    </select>
+        
+    <insert id="insertDatashareMaster" parameterType="DatashareMaster">
+        insert into sys_datashare_master
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="datashareId != null  ">datashare_id,</if>
+           <if test="datashareCourtid != null">datashare_courtid,</if>
+           <if test="status != null">status,</if>
+           <if test="number != null">number,</if>
+           <if test="createTime != null  ">create_time,</if>
+           <if test="createBy != null">create_by,</if>
+           <if test="updateTime != null  ">update_time,</if>
+           <if test="updateBy != null">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="datashareId != null  ">#{datashareId},</if>
+        <if test="datashareCourtid != null">#{datashareCourtid},</if>
+        <if test="status != null">#{status},</if>
+        <if test="number != null">#{number},</if>
+        <if test="createTime != null">sysdate(),</if>
+        <if test="createBy != null">#{createBy},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateDatashareMaster" parameterType="DatashareMaster">
+        update sys_datashare_master
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="datashareCourtid != null">datashare_courtid = #{datashareCourtid},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where datashare_id = #{datashareId}
+    </update>
+
+	<delete id="deleteDatashareMasterById" parameterType="Integer">
+        delete from sys_datashare_master where datashare_id = #{datashareId}
+    </delete>
+	
+    <delete id="deleteDatashareMasterByIds" parameterType="String">
+        delete from sys_datashare_master where datashare_id in 
+        <foreach item="datashareId" collection="array" open="(" separator="," close=")">
+            #{datashareId}
+        </foreach>
+    </delete>
+    
+</mapper>

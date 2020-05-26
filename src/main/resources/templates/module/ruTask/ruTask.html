@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <div class="container-div">
+        <div class="col-sm-12 select-info search-collapse">
+            <form id="case" class="form-horizontal">
+                <div class="form-group select-info-container">
+                    <div class="col-sm-4">
+                        <label>流程类型：</label>
+                        <select id="type" name="type" th:with="type=${@dict.getType('oa_type')}">
+                            <option value="">请选择</option>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                    th:value="${dict.dictValue}" th:selected="${dict.isDefault eq 'Y'}"></option>
+                        </select>
+                    </div>
+                    <!--hua-->
+                    <div class="col-sm-4 select-time">
+                        <label>任务创建时间：</label>
+                        <input type="text" class="time-input" id="startTime" placeholder="开始时间"
+                               name="params[startTime]"/>
+                        <span class="time-span">-</span>
+                        <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+                    </div>
+                    <div class="col-sm-4 select-info-btn">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+			<!--<a class="btn btn-success" onclick="operateComponent.add('module/ruTask/add','任务列')" shiro:hasPermission="module:ruTask:add">-->
+				<!--<i class="fa fa-plus"></i> 新增-->
+			<!--</a>-->
+            <!--<a class="btn btn-primary btn-detail disabled" onclick="$.operate.detail()" shiro:hasPermission="module:ruTask:detail">-->
+                <!--<i class="fa fa-plus"></i> 详细-->
+            <!--</a>-->
+            <!--<a class="btn btn-warning btn-edit disabled" onclick="operateComponent.edit('','module/ruTask/edit/{id}','任务列')" shiro:hasPermission="module:ruTask:edit">-->
+                <!--<i class="fa fa-plus"></i> 编辑-->
+            <!--</a>-->
+			<!--<a class="btn btn-danger btn-del disabled" onclick="operateComponent.removeAll('module/ruTask/remove')" shiro:hasPermission="module:ruTask:remove">-->
+				<!--<i class="fa fa-trash-o"></i> 删除-->
+			<!--</a>-->
+            <a class="btn btn-select">
+				<span id="exportToolbar" class="btn-group" style="width: 110px; display: inline-block">
+					<select id="sel_exportoption" class="">
+						<option value="">导出当页数据</option>
+						<option value="all">导出全部数据</option>
+						<option value="selected">导出选中数据</option>
+					</select>
+				</span>
+            </a>
+		</div>
+			
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            laydate.render({elem: '#startTime', theme: 'molv'});
+            laydate.render({elem: '#endTime', theme: 'molv'});
+        });
+        var histaskListFlag = [[${@permission.hasPermi('module:ruTask:histaskList')}]];
+        var examineFlag = [[${@permission.hasPermi('module:ruTask:examine')}]];
+        var prefix = ctx + "module/ruTask";
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+				search: false,
+                columns: [{
+		            checkbox: true
+		        },
+                {
+                    field : 'id',
+                    title : '任务编号',
+                                    },
+                {
+                    field : 'type',
+                    title : '任务类型'
+                                    },
+                    {
+                        field : 'title',
+                        title : '标题'
+                    },
+                {
+                    field : 'proposerName',
+                    title : '申请人'
+                                    },
+                {
+                    field : 'assignee',
+                    title : '处理人'
+                                    },
+                    {
+                        field : 'description',
+                        title : '备注',
+                    },
+                    {
+                        field : 'createDate',
+                        title : '创建时间',
+                    },
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		                console.log(row.type)
+		            	var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + histaskListFlag + '" href="#" onclick="hisList(\''+row.procInstId+'\',\''+row.id+'\')"><i class="fa fa-edit"></i>流程</a> ');
+		            	if(row.isok == 'true'){
+                            actions.push('<a class="btn btn-success btn-xs ' + examineFlag + '" href="#" onclick="approval(\''+row.procInstId+'\',\''+row.type+'\',\''+row.id+'\',\''+row.isok+'\')"><i class="fa fa-edit"></i>审批</a> ');
+                        }else if(row.isok == 'false' && (row.type == '线索处置分类' || row.type == '初步核实呈批' || row.type=='初步核实工作方案提交' || row.type=='初步核实情况报告提交'|| row.type == '初步核实呈批' || row.type == '立案调查决定书' ||
+                        row.type=='谈话呈批' || row.type=='谈话笔录' || row.type=='谈话情况报告'||row.type=='函询呈批'||row.type=='函询笔录' || row.type=='函询情况报告及处置意见'|| row.type == '立案调查呈批表'|| row.type == '立案调查呈批报告')){
+                            actions.push('<a class="btn btn-success btn-xs ' + examineFlag + '" href="#" onclick="approval(\''+row.procInstId+'\',\''+row.type+'\',\''+row.id+'\',\''+row.isok+'\')"><i class="fa fa-edit"></i>重新申报</a> ');
+                            // actions.push('<a class="btn btn-success btn-xs ' + examineFlag + '" href="#" onclick="endProc(\''+row.procInstId+'\',\''+row.type+'\',\''+row.id+'\')"><i class="fa fa-edit"></i>中止申报</a> ');
+                        }
+						return actions.join('');
+		            }
+		        }]
+            };
+            initSimpleTabl.init(options);
+        });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+    });
+
+    function approval(procInstId,type,taskid,isok){
+        modalComponent.openFull("审批", encodeURI(prefix + "/approval/"+procInstId+"?id="+procInstId+"&type="+type+"&taskId="+taskid+"&isok="+isok));
+    }
+
+    function hisList(procInstId,taskid){
+        modalComponent.open("历史流程",prefix+"/histList?proInstId="+procInstId+"&taskId="+taskid);
+    }
+
+    function endProc (pid,type,id){
+        var config = {
+            url:prefix+"/endProc",
+            type:'post',
+            data:{"pid":pid,"type":type,"id":id},
+            success:function(result){
+                if(result.code == web_status.SUCCESS){
+                    $.modal.msgSuccess(result.msg)
+                    $.table.refresh()
+                }else{
+                    $.modal.msgError(result.msg)
+                }
+            },
+            error:function(data){
+                $.modal.msgError(data)
+            }
+        };
+        $.ajax(config);
+    }
+    </script>
+    <!--bootstrap-table-export数据导出-->
+    <script type="text/javascript">
+        $("#sel_exportoption").change(function () {
+            //刷新参数设置
+            $('#bootstrap-table').bootstrapTable('refreshOptions', {
+                exportDataType: $(this).val()
+            });
+        });
+    </script>
+</body>
+</html>

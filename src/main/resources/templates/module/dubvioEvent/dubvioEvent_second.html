@@ -1,0 +1,873 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+
+<style type="text/css">
+    .btn-icon {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 50%;
+        border: 1px solid #36a2f5;
+        text-align: center;
+    }
+
+    .btn-icon i {
+        font-size: 18px;
+        color: #36a2f5;
+    }
+
+    .btn-icon-up {
+        display: block;
+    }
+
+    .btn-icon-down {
+        display: none;
+    }
+
+    .colStyle {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .dropdown-menu {
+        border: medium none;
+        display: none;
+        float: left;
+        font-size: 12px;
+        left: 0;
+        list-style: none outside none;
+        padding: 0;
+        position: absolute;
+        text-shadow: none;
+        top: 100%;
+        z-index: 1000;
+        border-radius: 0;
+        box-shadow: 0 0 3px rgba(86, 96, 117, 0.3);
+    }
+
+    .btn-danger {
+        margin: 0 8px;
+    }
+
+    #dorps {
+        border: medium none;
+        background-color: #fff;
+        display: none;
+        font-size: 12px;
+        margin: 0px;
+        list-style: none outside none;
+        padding: 0;
+        position: absolute;
+        text-shadow: none;
+        z-index: 1000;
+        border-radius: 0;
+        box-shadow: 0 0 3px rgba(86, 96, 117, 0.3);
+    }
+
+    #dorps ul > li > a {
+        border-radius: 3px;
+        color: inherit;
+        line-height: 25px;
+        margin: 4px;
+        text-align: left;
+        font-weight: normal;
+    }
+
+    #dorps ul > li:hover {
+        background-color: #ccc;
+    }
+
+    #dorps ul > li > a.font-bold {
+        font-weight: 600;
+    }
+</style>
+
+
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-info search-collapse">
+        <form id="case" class="form-horizontal">
+            <div class="form-group select-info-container">
+
+                <input type="hidden" name="dubvioId" id="dubvioId">
+
+                <!--<div class="col-sm-4">-->
+                <!--<label>策略ID：</label>-->
+                <!--<input type="text"  name="dubvioStrategyId">-->
+                <!--</div>-->
+                <!--                <div class="col-sm-4">-->
+                <!--                <label>可疑点：</label>-->
+                <!--                <input type="text"  name="dubvioStrategyName">-->
+                <!--            </div>-->
+
+                <!--<div class="col-sm-4">-->
+                <!--<label>线索状态：</label>-->
+                <!--<select id="status" name="status" >-->
+                <!--<option value ="">请选择</option>-->
+                <!--<option value ="0">已通过</option>-->
+                <!--<option value ="1">待审核</option>-->
+                <!--<option value="2">转入线索</option>-->
+                <!--</select>-->
+                <!--</div>-->
+
+                <!--<div class="col-sm-4">-->
+                <!--<label>案号：</label>-->
+                <!--<input type="text"  name="jbxxAh">-->
+                <!--</div>-->
+
+                <div class="col-sm-4">
+                    <label>反映对象：</label>
+                    <input type="text" name="dubvioFydx">
+                </div>
+
+                <div class="col-sm-4">
+                    <label>经办法院：</label>
+                    <select name="jbfyId" id="jbfyId">
+                        <option value="">请选择</option>
+                        <option th:each="deptList:${deptList}" th:value="${deptList.cid}"
+                                th:text="${deptList.deptName}"></option>
+                    </select>
+                </div>
+
+                <div class="col-sm-4">
+                    <label>反映人：</label>
+                    <input type="text" name="dubvioFyr">
+                </div>
+
+                <!--                <div class="col-sm-4">-->
+                <!--                    <label>风险等级：</label>-->
+                <!--                    <select id="risksLevel" name="risksLevel" th:with="type=${@dict.getType('risks_grades')}">-->
+                <!--                        <option value="">请选择</option>-->
+                <!--                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+                <!--                    </select>-->
+                <!--                </div>-->
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>反映电话：</label>
+                    <input type="text" name="dubvioFyrdh">
+                </div>
+
+
+                <div class="col-sm-4">
+                    <label>事件状态：</label>
+                    <select id="status" name="status">
+                        <option value="">请选择</option>
+                        <option value="2">正常</option>
+                        <option value="0">已通过</option>
+                        <option value="1">转入线索待审核</option>
+                        <option value="4">退回待审核</option>
+                        <option value="5">转入立案二庭待审核</option>
+                        <option value="6">转入监察处待审核</option>
+                        <option value="7">转入其他单位待审核</option>
+                        <option value="20">删除待审核</option>
+                        <option value="30">已删除</option>
+                        <option value="8">转入线索审批不通过</option>
+                        <option value="9">退回审批不通过</option>
+                        <option value="10">转入立案二庭审批不通过</option>
+                        <option value="11">转入监察处审批不通过</option>
+                        <option value="12">转入其他单位审批不通过</option>
+                        <option value="13">删除审批不通过</option>
+                    </select>
+                </div>
+
+                <!--<div class="col-sm-4">-->
+                <!--<label>法官ID：</label>-->
+                <!--<input type="text"  name="jbxxCbrId">-->
+                <!--</div>-->
+
+                <!--<div class="col-sm-4">-->
+                <!--<label>承办庭：</label>-->
+                <!--<input type="text"  name="jbxxCbtName">-->
+                <!--</div>-->
+
+                <!--<div class="col-sm-4">-->
+                <!--<label>案件类别：</label>-->
+                <!--&lt;!&ndash;<input type="text"  name="jbxxAjlb">&ndash;&gt;-->
+
+                <!--<select id="jbxxAjlb" name="jbxxAjlb" >-->
+                <!--<option value ="">请选择</option>-->
+                <!--<option value ="刑事">刑事</option>-->
+                <!--<option value ="民事">民事</option>-->
+                <!--<option value="执行">执行</option>-->
+                <!--<option value="行政">行政</option>-->
+                <!--</select>-->
+                <!--</div>-->
+                <!--<div class="col-sm-4">-->
+                <!--<label>立案日期：</label>-->
+                <input type="hidden" class="time-input" id="startTime_12" name="params[createTime]">
+                <!--</div>-->
+
+                <!--<div class="col-sm-4">-->
+                <!--<label>立案日期：</label>-->
+                <!--<input type="text"  name="jbxxLarq">-->
+                <input type="hidden" class="time-input" id="startTime" placeholder="请选择" name="params[jbxxLarq]"/>
+                <!--</div>-->
+            </div>
+            <div class="form-group select-info-container">
+
+
+                <!--                <div class="col-sm-4">-->
+                <!--                    <label>可疑事件来源：</label>-->
+                <!--                    &lt;!&ndash;<input type="text"  name="jbxxAjlb">&ndash;&gt;-->
+
+                <!--                    <select id="dubvioSource" name="dubvioSource" >-->
+                <!--                        <option value ="">请选择</option>-->
+                <!--                        <option value ="1">系统策略筛查</option>-->
+                <!--                        <option value ="2">信访录入</option>-->
+                <!--                    </select>-->
+                <!--                </div>-->
+            </div>
+            <!--<div class="form-group select-info-container">-->
+
+
+            <!--<div class="col-sm-4">-->
+            <!--&lt;!&ndash;<label>收案日期：</label>&ndash;&gt;-->
+            <!--<input type="hidden"  name="jbxxSarq">-->
+            <!--</div>-->
+
+            <!--</div>-->
+            <!--<div class="form-group select-info-container">-->
+
+            <!--<div class="col-sm-4 select-time">-->
+            <!--&lt;!&ndash;<label>分案日期：</label>&ndash;&gt;-->
+            <!--<input type="hidden"  name="jbxxFarq">-->
+            <!--</div>-->
+            <!--<div class="col-sm-4 select-time">-->
+            <!--&lt;!&ndash;<label>开庭日期：</label>&ndash;&gt;-->
+            <!--<input type="hidden"  name="jbxxKtrq">-->
+            <!--</div>-->
+            <!--<div class="col-sm-4 select-time">-->
+            <!--&lt;!&ndash;<label>结案日期：</label>&ndash;&gt;-->
+            <!--<input type="hidden"  name="jbxxJarq">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group select-info-container">-->
+
+            <!--<div class="col-sm-4 select-time">-->
+            <!--&lt;!&ndash;<label>归档日期：</label>&ndash;&gt;-->
+            <!--<input type="hidden"  name="jbxxGdrq">-->
+            <!--</div>-->
+
+            <!--</div>-->
+            <!--<div class="form-group select-info-container">-->
+            <!--<div class="col-sm-4">-->
+
+            <!--</div>-->
+            <!--</div>-->
+            <div class="form-group select-info-container">
+                <div class="col-sm-12 select-info-btn">
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i
+                            class="fa fa-search"></i>&nbsp;搜索</a>
+                    <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i
+                            class="fa fa-refresh"></i>&nbsp;重置</a>
+                </div>
+            </div>
+
+        </form>
+        <!--<div class="form-group select-info-container">-->
+        <!--<a class="btn-icon btn-icon-up" data-toggle="collapse" data-target="#case"><i class="fa fa-angle-up" aria-hidden="true"></i></a>-->
+        <!--<a class="btn-icon btn-icon-down" data-toggle="collapse" data-target="#case"><i class="fa fa-angle-down" aria-hidden="true"></i></a>-->
+        <!--</div>-->
+    </div>
+    <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+        <!--<a class="btn btn-success" onclick="operateComponent.add('module/dubvioEvent/add','可疑违纪事件')" shiro:hasPermission="module:dubvioEvent:add">-->
+        <!--<i class="fa fa-plus"></i> 新增-->
+        <!--</a>-->
+
+        <!--<a class="btn btn-warning btn-edit disabled" onclick="operateComponent.editFull('','module/dubvioEvent/edit/{id}','可疑违纪事件')" shiro:hasPermission="module:dubvioEvent:edit">-->
+        <!--<i class="fa fa-plus"></i> 案件详细-->
+        <!--</a>-->
+        <a class="btn btn-success" onclick="operateComponent.detailFull('module/dubvioEvent/add',' ','信访录入')"
+           shiro:hasPermission="module:dubvioEvent:add">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+        <a class="btn btn-primary btn-detail disabled"
+           onclick="operateComponent.detailFull('module/dubvioEvent/detail/{id}',null,'可疑违纪')"
+           shiro:hasPermission="module:dubvioEvent:detail">
+            <i class="fa fa-plus"></i> 详细
+        </a>
+
+        <a class="btn btn-info" onclick="importin()" shiro:hasPermission="module:dubvioEvent:import">
+            <i class="fa fa-upload"></i> 导入
+        </a>
+        <!--<a class="btn btn-danger btn-del disabled" onclick="operateComponent.removeAll('module/dubvioEvent/remove')" shiro:hasPermission="module:dubvioEvent:remove">-->
+        <!--<i class="fa fa-trash-o"></i> 批量删除-->
+        <!--</a>-->
+        <a class="btn btn-select">
+				<span id="exportToolbar" class="btn-group" style="width: 110px; display: inline-block">
+					<select id="sel_exportoption" class="">
+						<option value="">导出当页数据</option>
+						<option value="all">导出全部数据</option>
+						<option value="selected">导出选中数据</option>
+					</select>
+				</span>
+        </a>
+    </div>
+
+    <div class="col-sm-12 select-table table-striped">
+        <div id="dorps" style="position: absolute">
+            <ul>
+
+            </ul>
+        </div>
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<!-- 导入区域 -->
+<script id="importForm" type="text/template">
+    <form enctype="multipart/form-data" class="mt20 mb10">
+        <div class="col-xs-offset-1">
+            <input type="file" id="file" name="file"/>
+            <div class="mt10 pt5">
+                <a onclick="initSimpleTabl.importTemplate()" class="btn btn-default btn-xs"><i class="fa fa-file-excel-o"></i>
+                    下载模板</a>
+            </div>
+            <font color="red" class="pull-left mt10">
+                提示：仅允许导入“xls”或“xlsx”格式文件！
+            </font>
+        </div>
+    </form>
+</script>
+
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:dubvioEvent:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:dubvioEvent:removess')}]];
+    var releaseFlag = [[${@permission.hasPermi('module:dubvioEvent:releaseRemoveDubvioEvent')}]];
+    var releaseFlagTh = [[${@permission.hasPermi('module:dubvioEvent:releaseRemoveDubvioEventTh')}]];
+    var releaseFlagQt = [[${@permission.hasPermi('module:dubvioEvent:releaseRemoveDubvioEventQt')}]];
+    var releaseFlagLa = [[${@permission.hasPermi('module:dubvioEvent:releaseRemoveDubvioEventLa')}]];
+    var releaseFlagJcc = [[${@permission.hasPermi('module:dubvioEvent:releaseRemoveDubvioEventJcc')}]];
+    var prefix = ctx + "module/dubvioEvent";
+    var datas_18 = [[${@dict.getType('risks_grades')}]];
+    var datas_19 = [[${@dict.getType('clue_source')}]];
+    $(function () {
+        var options = {
+            url: prefix + "/secondList",
+            importUrl: prefix + "/importData",
+            importTemplateUrl: prefix + "/importTemplate",
+            search: false,
+            modalName: "信访",
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'dubvioId',
+                    title: '违纪事件ID',
+                    visible: false
+                },
+                {
+                    field: 'dubvioFyr',
+                    title: '反映人',
+                    width: 120,
+                    formatter: paramsMatter1
+                },
+                {
+                    field: 'dubvioFydx',
+                    title: '反映对象',
+                    width: 120,
+                    formatter: paramsMatter2
+                },
+                {
+                    field: 'dubvioFyrdh',
+                    title: '反映电话',
+                },
+                {
+                    field: 'dubvioStrategyName',
+                    title: '反映问题',
+                    class: 'colStyle',
+                    width: 120,
+                    formatter: paramsMatter
+                    /*formatter: function(value, row, index) {
+                        return $.table.tooltip(value);
+                    }*/
+                },
+                {
+                    field: 'jbfyName',
+                    title: '经办法院',
+                    align: 'center',
+                },
+                {
+                    field: 'dubvioSource',
+                    title: '信访事件来源',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return initSimpleTabl.selectDictLabel(datas_19, value);
+                    },
+
+                },
+                {
+                    field: 'jbxxXffysj',
+                    title: '反映时间',
+
+                },
+                {
+                    field: 'createBy',
+                    title: '创建人',
+                    visible: false,
+
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                    visible: false
+                },
+                {
+                    field: 'deleteFlag',
+                    title: '状态',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        if (row.deleteFlag == '0' && row.status == "2") {
+                            return "<span class='badge badge-'>正常</span>";
+                        } else if (row.deleteFlag == '0' && row.status == "0") {
+                            var name;
+                            if (row.dubvioCzjg == '0') {
+                                name = "退回已通过"
+                            } else if (row.dubvioCzjg == '1') {
+                                name = "转入立案二庭已通过"
+                            } else if (row.dubvioCzjg == '2') {
+                                name = "转入监察处已通过"
+                            } else if (row.dubvioCzjg == '3') {
+                                name = "转入其他单位已通过"
+                            } else if (row.dubvioCzjg == '4') {
+                                name = "转入线索已通过"
+                            }
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\')" class="btn btn-primary btn-rounded btn-xs"  title="点击可查看流程执行过程">' + name + '</a> ';
+                        } else if (row.deleteFlag == '0' && row.status == "1") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\')" class="btn btn-success btn-rounded btn-xs" title="点击可查看流程执行过程">转入线索待审核</a> ';
+                        } else if (row.deleteFlag == '0' && row.status == "4") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\')" class="btn btn-success btn-rounded btn-xs" title="点击可查看流程执行过程">退回待审核</a> ';
+                        } else if (row.deleteFlag == '0' && row.status == "5") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\')" class="btn btn-success btn-rounded btn-xs" title="点击可查看流程执行过程">转入立案二庭待审核</a> ';
+                        } else if (row.deleteFlag == '0' && row.status == "6") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\')" class="btn btn-success btn-rounded btn-xs" title="点击可查看流程执行过程">转入监察处待审核</a> ';
+                        } else if (row.deleteFlag == '0' && row.status == "7") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\')" class="btn btn-success btn-rounded btn-xs" title="点击可查看流程执行过程">转入其他单位待审核</a> ';
+                        } else if (row.deleteFlag == '0' && row.status == "8") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\')" class="btn btn-danger btn-rounded btn-xs" title="点击可查看流程执行过程">转入线索审批不通过</a> ';
+                        } else if (row.deleteFlag == '0' && row.status == "9") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\')" class="btn btn-danger btn-rounded btn-xs" title="点击可查看流程执行过程">退回审批不通过</a> ';
+                        } else if (row.deleteFlag == '0' && row.status == "10") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\')" class="btn btn-danger btn-rounded btn-xs" title="点击可查看流程执行过程">转入立案二庭审批不通过</a> ';
+                        } else if (row.deleteFlag == '0' && row.status == "11") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\')" class="btn btn-danger btn-rounded btn-xs" title="点击可查看流程执行过程">转入监察处审批不通过</a> ';
+                        } else if (row.deleteFlag == '0' && row.status == "12") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\')" class="btn btn-danger btn-rounded btn-xs" title="点击可查看流程执行过程">转入其他单位审批不通过</a> ';
+                        } else if (row.deleteFlag == '0' && row.status == "13") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\')" class="btn btn-danger btn-rounded btn-xs" title="点击可查看流程执行过程">删除审批不通过</a> ';
+                        } else if (row.deleteFlag == '0' && row.status == "3") {
+                            var name;
+                            if (row.dubvioCzjg == '0') {
+                                name = "退回已通过"
+                            } else if (row.dubvioCzjg == '1') {
+                                name = "转入立案二庭已通过"
+                            } else if (row.dubvioCzjg == '2') {
+                                name = "转入监察处已通过"
+                            } else if (row.dubvioCzjg == '3') {
+                                name = "转入其他单位已通过"
+                            } else if (row.dubvioCzjg == '4') {
+                                name = "转入线索已通过"
+                            }
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\')" class="btn btn-primary btn-rounded btn-xs" title="点击可查看流程执行过程">' + name + '</a> ';
+                        } else if (row.deleteFlag == '2' && row.status == "2") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\');" class="btn btn-success btn-rounded btn-xs" title="点击可查看流程执行过程">删除待审核</a> ';
+                        } else if (row.deleteFlag == '2' && row.status == "8") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\');" class="btn btn-success btn-rounded btn-xs" title="点击可查看流程执行过程">删除待审核</a> ';
+                        } else if (row.deleteFlag == '2' && row.status == "9") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\');" class="btn btn-success btn-rounded btn-xs" title="点击可查看流程执行过程">删除待审核</a> ';
+                        } else if (row.deleteFlag == '2' && row.status == "10") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\');" class="btn btn-success btn-rounded btn-xs" title="点击可查看流程执行过程">删除待审核</a> ';
+                        } else if (row.deleteFlag == '2' && row.status == "11") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\');" class="btn btn-success btn-rounded btn-xs" title="点击可查看流程执行过程">删除待审核</a> ';
+                        } else if (row.deleteFlag == '2' && row.status == "12") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\');" class="btn btn-success btn-rounded btn-xs" title="点击可查看流程执行过程">删除待审核</a> ';
+                        } else if (row.deleteFlag == '2' && row.status == "13") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\');" class="btn btn-success btn-rounded btn-xs" title="点击可查看流程执行过程">删除待审核</a> ';
+                        } else if (row.deleteFlag == '1' && row.status == "0") {
+                            return '<a href="#" onclick="selectProcess(\'' + row.dubvioId + '\');" class="btn btn-primary btn-rounded btn-xs" title="点击可查看流程执行过程">删除已通过</a> ';
+                        }
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="remove(\'' + row.dubvioId + '\'\,\'module/dubvioEvent/releaseRemoveDubvioEvent\'\,\'可疑违纪事件 \')" ><i class="fa fa-remove"></i>删除</a>';
+                        var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="operateComponent.editFull(\'' + row.dubvioId + '\'\,\'module/dubvioEvent/dubvioEdit/{id}\'\,\'可疑违纪事件\')"><i class="fa fa-edit"></i>编辑</a> ';
+                        if (row.deleteFlag == '0' && row.status == "2") {
+                            actions.push('<a class="btn btn-xs ' + releaseFlagTh + ' "  href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 0 + '\');" ><i class="fa fa-plus" ></i>退回</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagLa + ' " href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 1 + '\');"><i class="fa fa-plus" ></i>立案二庭</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagJcc + ' " href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 2 + '\');"><i class="fa fa-plus" ></i>监察处</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagQt + ' " href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 3 + '\');"><i class="fa fa-plus" ></i>其他单位</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlag + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 4 + '\');"><i class="fa fa-plus"></i>转入线索</a> ');
+                            return $.table.dropdownToggle(actions.join('')) + remove + edit;
+                        } else if (row.deleteFlag == '0' && row.status == "0") {
+                            var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            return remove + edit;
+                        } else if (row.deleteFlag == '0' && row.status == "1") {
+                            var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            return remove + edit;
+                        } else if (row.deleteFlag == '0' && row.status == "4") {
+                            var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            return remove + edit;
+                        } else if (row.deleteFlag == '0' && row.status == "5") {
+                            var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            return remove + edit;
+                        } else if (row.deleteFlag == '0' && row.status == "6") {
+                            var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            return remove + edit;
+                        } else if (row.deleteFlag == '0' && row.status == "7") {
+                            var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            return remove + edit;
+                        } else if (row.deleteFlag == '0' && row.status == "8") {
+                            // var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            // var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            //
+                            actions.push('<a class="btn btn-xs ' + releaseFlagTh + '"  href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 0 + '\');" ><i class="fa fa-plus" ></i>退回</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagLa + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 1 + '\');"><i class="fa fa-plus" ></i>立案二庭</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagJcc + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 2 + '\');"><i class="fa fa-plus" ></i>监察处</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagQt + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 3 + '\');"><i class="fa fa-plus" ></i>其他单位</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlag + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 4 + '\');"><i class="fa fa-plus"></i>转入线索</a> ');
+                            return $.table.dropdownToggle(actions.join('')) + remove + edit;
+
+                        } else if (row.deleteFlag == '0' && row.status == "9") {
+                            // var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            // var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+
+                            actions.push('<a class="btn btn-xs ' + releaseFlagTh + '"  href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 0 + '\');" ><i class="fa fa-plus" ></i>退回</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagLa + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 1 + '\');"><i class="fa fa-plus" ></i>立案二庭</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagJcc + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 2 + '\');"><i class="fa fa-plus" ></i>监察处</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagQt + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 3 + '\');"><i class="fa fa-plus" ></i>其他单位</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlag + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 4 + '\');"><i class="fa fa-plus"></i>转入线索</a> ');
+                            return $.table.dropdownToggle(actions.join('')) + remove + edit;
+
+                        } else if (row.deleteFlag == '0' && row.status == "10") {
+                            // var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            // var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            //
+                            actions.push('<a class="btn btn-xs ' + releaseFlagTh + '"  href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 0 + '\');" ><i class="fa fa-plus" ></i>退回</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagLa + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 1 + '\');"><i class="fa fa-plus" ></i>立案二庭</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagJcc + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 2 + '\');"><i class="fa fa-plus" ></i>监察处</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagQt + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 3 + '\');"><i class="fa fa-plus" ></i>其他单位</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlag + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 4 + '\');"><i class="fa fa-plus"></i>转入线索</a> ');
+                            return $.table.dropdownToggle(actions.join('')) + remove + edit;
+
+                        } else if (row.deleteFlag == '0' && row.status == "11") {
+                            // var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            // var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            //
+                            actions.push('<a class="btn btn-xs ' + releaseFlagTh + '"  href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 0 + '\');" ><i class="fa fa-plus" ></i>退回</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagLa + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 1 + '\');"><i class="fa fa-plus" ></i>立案二庭</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagJcc + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 2 + '\');"><i class="fa fa-plus" ></i>监察处</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagQt + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 3 + '\');"><i class="fa fa-plus" ></i>其他单位</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlag + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 4 + '\');"><i class="fa fa-plus"></i>转入线索</a> ');
+                            return $.table.dropdownToggle(actions.join('')) + remove + edit;
+                        } else if (row.deleteFlag == '0' && row.status == "12") {
+                            // var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            // var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            //
+                            actions.push('<a class="btn btn-xs ' + releaseFlagTh + '"  href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 0 + '\');" ><i class="fa fa-plus" ></i>退回</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagLa + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 1 + '\');"><i class="fa fa-plus" ></i>立案二庭</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagJcc + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 2 + '\');"><i class="fa fa-plus" ></i>监察处</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagQt + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 3 + '\');"><i class="fa fa-plus" ></i>其他单位</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlag + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 4 + '\');"><i class="fa fa-plus"></i>转入线索</a> ');
+                            return $.table.dropdownToggle(actions.join('')) + remove + edit;
+                        } else if (row.deleteFlag == '0' && row.status == "13") {
+                            // var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            // var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            // return remove + edit;
+                            actions.push('<a class="btn btn-xs ' + releaseFlagTh + ' "  href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 0 + '\');" ><i class="fa fa-plus" ></i>退回</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagLa + ' " href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 1 + '\');"><i class="fa fa-plus" ></i>立案二庭</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagJcc + ' " href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 2 + '\');"><i class="fa fa-plus" ></i>监察处</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlagQt + ' " href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 3 + '\');"><i class="fa fa-plus" ></i>其他单位</a> ');
+                            actions.push('<a class="btn btn-xs ' + releaseFlag + '" href="#" onclick="release(\'' + row.dubvioId + '\',\'' + 4 + '\');"><i class="fa fa-plus"></i>转入线索</a> ');
+                            return $.table.dropdownToggle(actions.join('')) + remove + edit;
+                        } else if (row.deleteFlag == '0' && row.status == "3") {
+                            var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            return remove + edit;
+                        } else if (row.deleteFlag == '2' && row.status == "2") {
+                            var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+
+                            return remove + edit;
+                        } else if (row.deleteFlag == '2' && row.status == "13") {
+                            var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            return remove + edit;
+                        } else if (row.deleteFlag == '2' && row.status == "8") {
+                            var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            return remove + edit;
+                        } else if (row.deleteFlag == '2' && row.status == "9") {
+                            var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            return remove + edit;
+                        } else if (row.deleteFlag == '2' && row.status == "10") {
+                            var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            return remove + edit;
+                        } else if (row.deleteFlag == '2' && row.status == "11") {
+                            var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            return remove + edit;
+                        } else if (row.deleteFlag == '2' && row.status == "12") {
+                            var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            return remove + edit;
+                        } else if (row.deleteFlag == '1' && row.status == "0") {
+                            var remove = '<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" disabled="disabled"  ><i class="fa fa-remove"></i>删除</a>';
+                            var edit = '<a class="btn btn-success btn-xs ' + editFlag + '" href="#" disabled="disabled" ><i class="fa fa-edit"></i>编辑</a> ';
+                            return remove + edit;
+                        }
+                    }
+                }]
+        };
+        initSimpleTabl.init(options);
+
+        $(document).on('click', function () {
+            $('#dorps').hide()
+        })
+
+        $('#bootstrap-table').on('click', '.dropdown-toggle', function () {
+            var lis = $(this).siblings('.dropdown-menus').html();
+            var top = $(this).offset().top;
+            var left = $(this).offset().left;
+            if ($(this).parent().hasClass('open')) {
+                $('#dorps').hide()
+            } else {
+                $('#dorps').css({'top': top - 166, 'left': left - 35}).show().find('ul').html(lis);
+            }
+        })
+    });
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime_12', theme: 'molv'});
+        laydate.render({elem: '#endTime_12', theme: 'molv'});
+        laydate.render({elem: '#startTime_13', theme: 'molv'});
+        laydate.render({elem: '#endTime_13', theme: 'molv'});
+        laydate.render({elem: '#startTime_14', theme: 'molv'});
+        laydate.render({elem: '#endTime_14', theme: 'molv'});
+        laydate.render({elem: '#startTime_15', theme: 'molv'});
+        laydate.render({elem: '#endTime_15', theme: 'molv'});
+        laydate.render({elem: '#startTime_16', theme: 'molv'});
+        laydate.render({elem: '#endTime_16', theme: 'molv'});
+        laydate.render({elem: '#startTime_17', theme: 'molv'});
+        laydate.render({elem: '#endTime_17', theme: 'molv'});
+    });
+
+    // function release(dubvioId,type){
+    //     $.modal.open("转入", prefix+"/releaseDubvioEvent/" + dubvioId+"&type="+type);
+    //
+    // }
+
+
+    function removeRelease(dubvioId) {
+        //$.modal.open("删除", prefix+"/removeRelease/" + dubvioId);
+
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: prefix + "/releaseRemoveDubvioEvent",
+            data: {
+                "dubvioId": dubvioId,
+                // "approver": approver,
+                // "approverName": approverName,
+            },
+            async: true,
+            error: function (request) {
+                $.modal.alertError("系统错误");
+            },
+            success: function (data) {
+                if (data.code === 0) {
+                    //modalComponent.msgWarning(data.msg);
+                    window.location.reload();
+                    modalComponent.close();
+                } else {
+                    modalComponent.msgWarning(data.msg)
+                }
+            }
+        });
+    }
+
+    function selectProcess(dubvioId) {
+        $.modal.open("查看流程履历", prefix + "/hisTaskList?matterId=" + dubvioId);
+    }
+
+    function clueDetail(dubvioId) {
+
+        var url = prefix + '/edits?dubvioId=' + dubvioId;
+        createMenuItem(url, "案件详情");
+    }
+
+    function remove(id, url, modalName) {
+        var userList = [[${userList}]];
+        var str = '';
+        $.each(userList, function (i, data) {
+            str += '<option value="' + data.userId + '">' + data.userName + '</option>';
+        });
+        try {
+            if (toolUtil.isEmpty(url)) {
+                throw Exception;
+            }
+            if (toolUtil.isEmpty(id)) {
+                throw Exception;
+            }
+            layer.confirm("确定删除该条" + modalName + "信息吗？<p><span id='a'>删除原因：</span><textarea class='form-control' id='cause'></textarea></p>" +
+                "<p><span>审批人：</span><select class='form-control' id='approver'>" + str + "</select></p>", {
+                icon: 3,
+                title: "系统提示",
+                btn: ['确认', '取消'],
+                btnclass: ['btn btn-primary', 'btn btn-danger'],
+            }, function (index) {
+                var cause = $("#cause").val();
+                var a = $("#a").text();
+                if (cause === '') {
+                    modalComponent.msgError('原因不能为空')
+                    return false;
+                }
+                if (str === '') {
+                    modalComponent.msgError('审批人不能为空')
+                    return false;
+                } else {
+                    layer.close();
+                    var data = {"ids": id, "cause": cause, "approver": $("#approver").val()};
+                    operateComponent.submit(ctx + url, "post", "json", data);
+                    window.location.reload();
+                }
+
+            });
+        } catch (e) {
+            modalComponent.msgError("参数有误！");
+        }
+    }
+
+    function release(dubvioId, dubvioCzjg) {
+
+
+        $.modal.openFull("转入", prefix + "/release?dubvioId=" + dubvioId + "&dubvioCzjg=" + dubvioCzjg + "&source=" + 2);
+    }
+
+
+    function paramsMatter(value, row, index) {
+
+        var values = row.dubvioStrategyName;//获取当前字段的值
+        //替换空格，因为字符串拼接的时候如果遇到空格，会自动将后面的部分截掉，所有这里用html的转义符
+        // 代替
+        if (values != null && values != "") {
+            values = values.replace(/\s+/g, '');
+            return "<p style='text-overflow:ellipsis;overflow: hidden;white-space:nowrap;width: 120px;margin: 0px;' title=" + values + ">" + row.dubvioStrategyName + "</p>";
+        }
+        return "";
+    }
+
+    function paramsMatter1(value, row, index) {
+
+        var values = row.dubvioFyr;//获取当前字段的值
+        //替换空格，因为字符串拼接的时候如果遇到空格，会自动将后面的部分截掉，所有这里用html的转义符
+        // 代替
+        if (values != null && values != "") {
+            values = values.replace(/\s+/g, '');
+            return "<p style='text-overflow:ellipsis;overflow: hidden;white-space:nowrap;width: 120px;margin: 0px;' title=" + values + ">" + row.dubvioFyr + "</p>";
+        }
+        return "";
+    }
+
+    function paramsMatter2(value, row, index) {
+
+        var values = row.dubvioFydx;//获取当前字段的值
+        //替换空格，因为字符串拼接的时候如果遇到空格，会自动将后面的部分截掉，所有这里用html的转义符
+        // 代替
+        if (values != null && values != "") {
+            values = values.replace(/\s+/g, '');
+            return "<p style='text-overflow:ellipsis;overflow: hidden;white-space:nowrap;width: 120px;margin: 0px;' title=" + values + ">" + row.dubvioFydx + "</p>";
+        }
+        return "";
+    }
+
+    function importin() {
+        var content = `<form enctype="multipart/form-data" class="mt20 mb10">
+        <div class="col-xs-offset-1" style="margin-top: 30px;margin-left: 101px;">
+            <input type="file" id="file" name="file"/>
+            <div class="mt10 pt5" style="margin-top: 10px;margin-bottom: 20px;">
+                <a onclick="initSimpleTabl.importTemplate()" class="btn btn-default btn-xs"><i class="fa fa-file-excel-o"></i> 下载模板</a>
+            </div>
+            <font color="red" class="pull-left mt10">
+                提示：仅允许导入“xls”或“xlsx”格式文件！
+            </font>
+        </div>
+    </form>`
+        layer.open({
+            type: 1,
+            area: ['400px', '230px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: '导入信访数据',
+            content: content,
+            btn: ['<i class="fa fa-check"></i> 导入', '<i class="fa fa-remove"></i> 取消'],
+            // 弹层外区域关闭
+            shadeClose: true,
+            btn1: function(index, layero){
+                var file = layero.find('#file').val();
+                if (file == '' || (!$.common.endWith(file, '.xls') && !$.common.endWith(file, '.xlsx'))){
+                    $.modal.msgWarning("请选择后缀为 “xls”或“xlsx”的文件。");
+                    return false;
+                }
+                var index = layer.load(2, {shade: false});
+                $.modal.disable();
+                var formData = new FormData();
+                formData.append("file", $('#file')[0].files[0]);
+                $.ajax({
+                    url: prefix + "/importData",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    success: function (result) {
+                        if (result.code == web_status.SUCCESS) {
+                            layer.closeAll();
+                            $.modal.alertSuccess(result.msg);
+                            initSimpleTabl.refresh();
+                        } else if (result.code == web_status.WARNING) {
+                            layer.close(index);
+                            $.modal.enable();
+                            $.modal.alertWarning(result.msg)
+                        } else {
+                            layer.close(index);
+                            $.modal.enable();
+                            $.modal.alertError(result.msg);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+</script>
+<!--bootstrap-table-export数据导出-->
+<script type="text/javascript">
+    $("#sel_exportoption").change(function () {
+        //刷新参数设置
+        $('#bootstrap-table').bootstrapTable('refreshOptions', {
+            exportDataType: $(this).val()
+        });
+    });
+</script>
+
+</body>
+</html>

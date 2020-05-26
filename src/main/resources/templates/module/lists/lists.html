@@ -1,0 +1,344 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <div class="container-div">
+        <div class="col-sm-12 select-info search-collapse">
+            <form id="case" class="form-horizontal">
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>立案人ID：</label>
+                      <input type="text"  name="zhcxlistOrganlarid">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>案件编号：</label>
+                      <input type="text"  name="zhcxlistStringajbh">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>归档人：</label>
+                      <input type="text"  name="zhcxlistStringgdr">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>承办人ID：</label>
+                      <input type="text"  name="zhcxlistOrganncbrid">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>案号：</label>
+                      <input type="text"  name="zhcxlistStringcah">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>结案日期：</label>
+                      <input type="text"  name="zhcxlistDatedjarq">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>开庭地点：</label>
+                      <input type="text"  name="zhcxlistStringktdd">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>案件类别ID：</label>
+                      <input type="text"  name="zhcxlistCodenajlbid">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>立案人：</label>
+                      <input type="text"  name="zhcxlistOrganlar">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>当事人：</label>
+                      <input type="text"  name="zhcxlistStringcdsr">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>审判程序ID：</label>
+                      <input type="text"  name="zhcxlistCodenspcxid">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>是否涉自贸区：</label>
+                      <input type="text"  name="zhcxlistCodesfszmq">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>审限情况：</label>
+                      <input type="text"  name="zhcxlistStringsxqk">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>承办审判庭ID：</label>
+                      <input type="text"  name="zhcxlistOrgancbsptid">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>归档日期：</label>
+                      <input type="text"  name="zhcxlistDategdrq">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>已交费(元)：</label>
+                      <input type="text"  name="zhcxlistNumericnjfzje">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>审判程序：</label>
+                      <input type="text"  name="zhcxlistCodenspcx">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>经办法院ID：</label>
+                      <input type="text"  name="zhcxlistOrgan6aaceid">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>案件类别：</label>
+                      <input type="text"  name="zhcxlistCodenajlb">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>结案案由：</label>
+                      <input type="text"  name="zhcxlistStringcay">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>承办审判庭：</label>
+                      <input type="text"  name="zhcxlistOrgancbspt">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>立案日期：</label>
+                      <input type="text"  name="zhcxlistDatedlarq">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>评查状态：</label>
+                      <input type="text"  name="zhcxlistCodenpczt">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>立案案由：</label>
+                      <input type="text"  name="zhcxlistStringlaay">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>提请报结日期：</label>
+                      <input type="text"  name="zhcxlistDatedtqbjrq">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>经办法院：</label>
+                      <input type="text"  name="zhcxlistOrgan6aace">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>收案日期：</label>
+                      <input type="text"  name="zhcxlistDatedsarq">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>超审限天数：</label>
+                      <input type="text"  name="zhcxlistNumericcsxts">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>承办人：</label>
+                      <input type="text"  name="zhcxlistOrganncbr">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>结案方式：</label>
+                      <input type="text"  name="zhcxlistStringjafs">
+                  </div>
+               </div>
+              <div class="form-group select-info-container">
+                  <div class="col-sm-4">
+                      <label>立案案由ID：</label>
+                      <input type="text"  name="zhcxlistStringlaayid">
+                  </div>
+                  <div class="col-sm-4">
+                      <label>是否超审限：</label>
+                      <input type="text"  name="zhcxlistCodesfcsx">
+                  </div>
+              </div>
+                <div class="form-group select-info-container">
+                    <div class="col-sm-12 select-info-btn">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+			<a class="btn btn-success" onclick="operateComponent.add('module/lists/add','案件列')" shiro:hasPermission="module:lists:add">
+				<i class="fa fa-plus"></i> 新增
+			</a>
+            <a class="btn btn-primary btn-detail disabled" onclick="$.operate.detail()" shiro:hasPermission="module:lists:detail">
+                <i class="fa fa-plus"></i> 详细
+            </a>
+            <a class="btn btn-warning btn-edit disabled" onclick="operateComponent.edit('','module/lists/edit/{id}','案件列')" shiro:hasPermission="module:lists:edit">
+                <i class="fa fa-plus"></i> 编辑
+            </a>
+			<a class="btn btn-danger btn-del disabled" onclick="operateComponent.removeAll('module/lists/remove')" shiro:hasPermission="module:lists:remove">
+				<i class="fa fa-trash-o"></i> 批量删除
+			</a>
+		</div>
+			
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('module:lists:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('module:lists:remove')}]];
+        var prefix = ctx + "module/lists";
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+				search: false,
+                columns: [{
+		            checkbox: true
+		        },
+                {
+                    field : 'zhcxlistOrganlarid',
+                    title : '立案人ID',
+                                    },
+                {
+                    field : 'zhcxlistStringajbh',
+                    title : '案件编号',
+                                    },
+                {
+                    field : 'zhcxlistStringgdr',
+                    title : '归档人',
+                                    },
+                {
+                    field : 'zhcxlistOrganncbrid',
+                    title : '承办人ID',
+                                    },
+                {
+                    field : 'zhcxlistStringcah',
+                    title : '案号',
+                                    },
+                {
+                    field : 'zhcxlistDatedjarq',
+                    title : '结案日期',
+                                    },
+                {
+                    field : 'zhcxlistStringktdd',
+                    title : '开庭地点',
+                                    },
+                {
+                    field : 'zhcxlistCodenajlbid',
+                    title : '案件类别ID',
+                                    },
+                {
+                    field : 'zhcxlistOrganlar',
+                    title : '立案人',
+                                    },
+                {
+                    field : 'zhcxlistStringcdsr',
+                    title : '当事人',
+                                    },
+                {
+                    field : 'zhcxlistCodenspcxid',
+                    title : '审判程序ID',
+                                    },
+                {
+                    field : 'zhcxlistCodesfszmq',
+                    title : '是否涉自贸区',
+                                    },
+                {
+                    field : 'zhcxlistStringsxqk',
+                    title : '审限情况',
+                                    },
+                {
+                    field : 'zhcxlistOrgancbsptid',
+                    title : '承办审判庭ID',
+                                    },
+                {
+                    field : 'zhcxlistDategdrq',
+                    title : '归档日期',
+                                    },
+                {
+                    field : 'zhcxlistNumericnjfzje',
+                    title : '已交费(元)',
+                                    },
+                {
+                    field : 'zhcxlistCodenspcx',
+                    title : '审判程序',
+                                    },
+                {
+                    field : 'zhcxlistOrgan6aaceid',
+                    title : '经办法院ID',
+                                    },
+                {
+                    field : 'zhcxlistCodenajlb',
+                    title : '案件类别',
+                                    },
+                {
+                    field : 'zhcxlistStringcay',
+                    title : '结案案由',
+                                    },
+                {
+                    field : 'zhcxlistOrgancbspt',
+                    title : '承办审判庭',
+                                    },
+                {
+                    field : 'zhcxlistDatedlarq',
+                    title : '立案日期',
+                                    },
+                {
+                    field : 'zhcxlistCodenpczt',
+                    title : '评查状态',
+                                    },
+                {
+                    field : 'zhcxlistStringlaay',
+                    title : '立案案由',
+                                    },
+                {
+                    field : 'zhcxlistDatedtqbjrq',
+                    title : '提请报结日期',
+                                    },
+                {
+                    field : 'zhcxlistOrgan6aace',
+                    title : '经办法院',
+                                    },
+                {
+                    field : 'zhcxlistDatedsarq',
+                    title : '收案日期',
+                                    },
+                {
+                    field : 'zhcxlistNumericcsxts',
+                    title : '超审限天数',
+                                    },
+                {
+                    field : 'zhcxlistOrganncbr',
+                    title : '承办人',
+                                    },
+                {
+                    field : 'zhcxlistStringjafs',
+                    title : '结案方式',
+                                    },
+                {
+                    field : 'zhcxlistStringlaayid',
+                    title : '立案案由ID',
+                                    },
+                {
+                    field : 'zhcxlistCodesfcsx',
+                    title : '是否超审限',
+                                    },
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="operateComponent.edit(\'' + row.zhcxlistStringajbh + '\'\,\'module/lists/edit/{id}\'\,\'案件列\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="operateComponent.remove(\'' + row.zhcxlistStringajbh + '\'\,\'module/lists/remove\'\,\'案件列\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            initSimpleTabl.init(options);
+        });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+    });
+    </script>
+</body>
+</html>

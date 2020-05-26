@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+<style type="text/css">
+    .progress-title{line-height: 1.52380952;margin-bottom: 24px;}
+    .progress-title h1{font-weight: bold}
+    .progress-desc{display: block;clear: both;line-height: 1.8;font-size: 12px;color: #727475;}
+    .progress-from{float: left;width: 60%;display: block;}
+    .progress-tips{float: left;width: 40%;display: block;}
+    .progress-from .item{margin: 20px auto; height: 50px;line-height: 50px;}
+    .progress-from .control-label{text-align: right;font-size: 16px;}
+    .progress-from .progress-input{width: 100%;border: 1px solid #bbb;font-size: 20px;height: 48px;line-height: 48px;display: block;padding: 5px 8px;}
+    .progress-from .progress-input:hover,.progress-from .progress-input:focus{ border-color: #c10b1e; }
+    .progress-from .red{color: #c10b1e;margin-left: 4px;}
+    .progress-input::-webkit-input-placeholder, .progress-input::-moz-placeholder, .progress-input::-ms-input-placeholder{color: #B9BABE;}
+    .progress-tips{margin-top: 20px;padding: 20px;border: 1px solid #d5d5d5;}
+    .progress-tips .tips-head{margin-bottom: 10px;}
+    .progress-tips .tips-head h4{font-size: 14px;font-weight: 700;color: #0d1c28;}
+    .progress-tips .tips-content{font-size: 12px;color: #45484b;}
+    .progress-tips .tips-content ol{padding-left: 12px;list-style: decimal outside none;}
+</style>
+
+<body class="gray-bg">
+    <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 select-info">
+                <div class="progress-title">
+                    <h1>查看廉政档案进度</h1>
+                    <div class="progress-desc">
+                        您可凭姓名、身份证号码查询廉政档案的进度！
+                    </div>
+                </div>
+                <div>
+                    <input type="hidden" name="jbqkCid" id="jbqkCid">
+                    <input type="hidden" name="isEdit" id="isEdit">
+                </div>
+                <form id="form-basicinformation-check" class="progress-from">
+                    <div class="form-group col-sm-12 item">
+                        <label class="control-label col-sm-3">您的姓名<span class="red">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="progress-input" name="jbqkXm" placeholder="请输入您的姓名">
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12 item">
+                        <label class="control-label col-sm-3">身份证号码<span class="red">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="progress-input" name="jbqkSfzh" placeholder="请输入您的身份证号码">
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12 item">
+                        <div class="form-control-static col-sm-offset-5">
+                            <button type="submit" class="btn btn-primary">提交</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="progress-tips">
+                    <div class="tips-head">
+                        <h4>温馨提示：</h4>
+                    </div>
+                    <div class="tips-content">
+                        <ol>
+                            <li>
+                                1、廉政档案信息的查询可能会出现数据延迟，如未查到相应的进度信息，按以下两种方式处理:
+                                <br/>
+                                (1) 访问廉政档案列表查询进度信息(即时）；
+                                <br/>
+                                (2) 请稍后再查。
+                            </li>
+                            <li>
+                                2、如需查询本人更多的办件信息，请咨询相关部门管理员。
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+<div th:include="include :: footer"></div>
+
+ <script type="text/javascript">
+        var prefix = ctx + "module/basicinformation";
+        $("#form-basicinformation-check").validate({
+            rules: {
+                jbqkXm:{
+                    required: true,
+                },
+                jbqkSfzh:{
+                    required: true,
+                },
+            },
+            submitHandler: function (form) {
+                var data=$('#form-basicinformation-check').serialize();
+                $.ajax({
+                    url:prefix + "/check",
+                    data:data,
+                    type: "POST",
+                    success:function (result) {
+                        if (result.code == 200) {
+                            $("#isEdit").val(result.isEdit);
+                            $("#jbqkCid").val(result.jbqkCid);
+                            layer.confirm(
+                                '<h3>'+result.msg+'</h3>',
+                                {
+                                    icon: 1,
+                                    area:['400px','300px'],
+                                    title:"查看廉政档案状态",
+                                    btn: ['修改廉政档案','确定']
+                                },
+                                function(){
+                                    var url = ctx + 'module/basicinformation/editincorrupt/'+ $("#jbqkCid").val();
+                                    createMenuItem(url, "修改廉政档案");
+                                    layer.closeAll()
+                                },
+                                function(){
+                                    layer.closeAll()
+                               });
+                        } else {
+                            layer.confirm(
+                                '<h3>'+result.msg+'</h3>',
+                                {
+                                    icon: 3,
+                                    title:"查看廉政档案状态",
+                                    area:['400px','300px'],
+                                    btn: ['完成廉政档案','确定']
+                                },
+                                function(){
+                                    var url = ctx + "module/incorrupt/editincorrupt";
+                                    createMenuItem(url, "填写廉政档案");
+                                    layer.closeAll()
+                                },
+                                function(){
+                                    layer.closeAll()
+                                });
+                        }
+                    }
+                })
+            }
+        });
+    </script>
+</body>
+</html>

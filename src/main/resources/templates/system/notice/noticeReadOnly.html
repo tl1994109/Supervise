@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <input type="hidden" id="noticeType" th:value="${noticeType}" />
+    <div class="container-div">
+		<div class="row">
+	        <div class="col-sm-12 select-table table-striped">
+	            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+	        </div>
+    	</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var types = [[${@dict.getType('sys_notice_type')}]];
+        var datas = [[${@dict.getType('sys_notice_status')}]];
+        var prefix = ctx + "system/notice"
+
+        $(function() {
+            var options = {
+                url: prefix + "/morelist?noticeType="+$("#noticeType").val(),
+                updateUrl: prefix + "/check/{id}",
+                modalName: "公告",
+                search: false,
+                columns: [{
+                    title: '序号',
+                    formatter: function (value, row, index) {
+                        return index + 1;
+                    }
+                },
+				{
+					field : 'noticeTitle', 
+					title : '标题'
+				},
+				{
+		            field: 'noticeType',
+		            title: '类型',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	return $.table.selectDictLabel(types, value);
+		            }
+		        },
+				{
+		            field: 'status',
+		            title: '状态',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	return $.table.selectDictLabel(datas, value);
+		            }
+		        },
+		        {
+		            field: 'noticeClickId',
+		            title: '阅读状态',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	console.log(value)
+		            	if(value!=null){
+		            		var value="<span class='badge badge-primary'>已读 </span>";
+		            	}else{
+		            		var value="<span class='badge badge-danger'>未读</span>";
+		            	}
+		            	return value;
+		            }
+		        },
+				{
+					field : 'createBy', 
+					title : '创建者' 
+				},
+				{
+		            field: 'launchTime',
+		            title: '发布时间',
+		            sortable: true
+		        },
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs" href="#" onclick="$.operate.checkFull(\'' + row.noticeId + '\')"><i class="fa fa-search"></i>查看</a> ');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

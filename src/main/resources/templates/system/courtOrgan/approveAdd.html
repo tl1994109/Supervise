@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-dept-edit">
+			<input id="treeId" name="parentId" type="hidden" th:value="${dept.deptId}"   />
+
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">姓名：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" onclick="selectPersonTree()" id="treeName" readonly="true" th:value="${dept.deptName}"/>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">序号：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="orderNum" id="orderNum">
+				</div>
+			</div>
+
+
+			<!--<div class="form-group">-->
+				<!--<label class="col-sm-3 control-label">部门/人员名称：</label>-->
+				<!--<div class="col-sm-8">-->
+					<!--<input class="form-control" type="text" name="deptName" id="deptName">-->
+				<!--</div>-->
+			<!--</div>-->
+
+			<!--<div class="form-group">-->
+				<!--<label class="col-sm-3 control-label">组织类型：</label>-->
+				<!--<div class="col-sm-8 sss">-->
+					<!--<label class="radio-box"> <input type="radio" name="deptType" value="1" /> 法院 </label>-->
+					<!--<label class="radio-box"> <input type="radio" name="deptType" value="2" /> 部门 </label>-->
+					<!--<label class="radio-box"> <input type="radio" name="deptType" value="3" /> 人员 </label>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="form-group">-->
+				<!--<label class="col-sm-3 control-label">显示排序：</label>-->
+				<!--<div class="col-sm-8">-->
+					<!--<input class="form-control" type="text" name="orderNum">-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="form-group">-->
+				<!--<label class="col-sm-3 control-label">负责人：</label>-->
+				<!--<div class="col-sm-8">-->
+					<!--<input class="form-control" type="text" name="leader">-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="form-group">-->
+				<!--<label class="col-sm-3 control-label">联系电话：</label>-->
+				<!--<div class="col-sm-8">-->
+					<!--<input class="form-control" type="text" name="phone">-->
+				<!--</div>-->
+			<!--</div>-->
+			<div class="form-group">
+				<label class="col-sm-3 control-label">身份证：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="idcard" id="idcard">
+				</div>
+			</div>
+			<!--<div class="form-group">-->
+				<!--<label class="col-sm-3 control-label">邮箱：</label>-->
+				<!--<div class="col-sm-8">-->
+					<!--<input class="form-control" type="text" name="email">-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="form-group">-->
+				<!--<label class="col-sm-3 control-label">部门状态：</label>-->
+				<!--<div class="col-sm-8">-->
+				    <!--<div class="radio-box" th:each="dict : ${@dict.getType('sys_normal_disable')}">-->
+						<!--<input type="radio" th:id="${dict.dictCode}" name="status" th:value="${dict.dictValue}" th:checked="${dict.isDefault == 'Y' ? true : false}">-->
+						<!--<label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			
+			<div class="form-group">
+				<div class="form-control-static col-sm-offset-5">
+					<button type="submit" class="btn btn-primary">提交</button>
+					<button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div th:include="include::footer"></div>
+	<script th:inline="javascript">
+		var prefix = ctx + "system/courtOrgan"
+
+
+
+
+
+        $("#form-dept-edit").validate({
+			rules:{
+                deptType:{
+                    required:true,
+                },
+                cid:{
+                    required:true,
+                },
+
+                idcard:{
+                    required:true,
+                },
+				deptName:{
+					required:true,
+					remote: {
+		                url: prefix + "/checkDeptNameUnique",
+		                type: "post",
+		                dataType: "json",
+		                data: {
+		                	"parentId": function() {
+		                		return $("input[name='parentId']").val();
+		                    },
+		                	"deptName" : function() {
+		                        return $.common.trim($("#deptName").val());
+		                    }
+		                },
+		                dataFilter: function(data, type) {
+		                	return $.validate.unique(data);
+		                }
+		            }
+				},
+				orderNum:{
+					required:true,
+					digits:true
+				},
+				email:{
+                    email:true,
+        		},
+
+			},
+			messages: {
+		        "deptName": {
+		            remote: "部门已经存在"
+		        }
+		    },
+			submitHandler:function(form){
+
+                var  idcard=$("#idcard").val();
+
+
+                if (isCardNo(idcard) == true) {
+                    $.operate.save(prefix + "/updateSave", $('#form-dept-edit').serialize());
+				}else {
+					modalComponent.msgWarning("请填写正确的身份证号")
+				}
+
+			}
+		});
+
+
+
+        // 验证身份证
+        function isCardNo(card) {
+            var pattern = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+            return pattern.test(card);
+        }
+
+        /*-选择人员树*/
+        function selectPersonTree() {
+            var treeId = $("#treeId").val();
+            var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+            var url = ctx + "system/courtOrgan/selectDeptTree/" + deptId;
+            var options = {
+                title: '选择人员',
+                width: "380",
+                height: "380",
+                url: ctx + "system/courtOrgan/selectSpDeptTree/" + deptId,
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmit(index, layero) {
+            var tree = layero.find("iframe")[0].contentWindow.$._tree;
+            if ($.tree.notAllowParents(tree)) {
+                var body = layer.getChildFrame('body', index);
+
+                $("#treeId").val(body.find('#treeId').val());
+                $("#idcard").val(body.find('#idcard').val());
+                $("#treeName").val(body.find('#treeName').val());
+                var name = body.find('#treeName').val();
+                var treeId=body.find('#treeId').val();
+                var idcard=body.find('#idcard').val();
+
+
+                $("input[name='jbqkXm']").val(name);
+                $.ajax({
+                    url: ctx + "system/courtOrgan/selectDeptById",
+                    type: "get",
+                    dataType: "json",
+                    data: {"deptId": treeId},
+                    success: function (data) {
+                        $("#jbqkCid").val(data.court.cid);
+                    }
+                })
+                layer.close(index);
+            }
+        }
+
+        $('input').on('ifChecked', function(event){
+            var deptType = $(event.target).val();
+            if (deptType == "1") {
+                $("#url").parents(".form-group").hide();
+                $("#perms").parents(".form-group").hide();
+                $("#icon").parents(".form-group").show();
+            } else if (deptType == "2") {
+                $("#url").parents(".form-group").show();
+                $("#perms").parents(".form-group").show();
+                $("#icon").parents(".form-group").hide();
+            } else if (deptType == "3") {
+                $("#url").parents(".form-group").hide();
+                $("#perms").parents(".form-group").show();
+                $("#icon").parents(".form-group").hide();
+            }
+        });
+
+
+		
+		// $(function(){
+		//     var type = [[${dept.deptType}]];
+		//     var radio_event = $(".sss").children();
+		// 	if(type == '2'){
+		// 	    radio_event[0].style.display="none";
+		// 	}else if(type=='3'){
+        //         radio_event[0].style.display="none";
+		// 	    radio_event[1].style.display="none";
+		// 	}
+		// });
+	</script>
+</body>
+</html>

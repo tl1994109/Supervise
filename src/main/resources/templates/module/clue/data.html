@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+	<div class="col-sm-12 select-table table-striped">
+		<table id="bootstrap-table" data-mobile-responsive="true"></table>
+	</div>
+
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:clue:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:clue:remove')}]];
+    var releaseFlag = [[${@permission.hasPermi('module:processMatter:addDubvioEvent')}]];
+    var listFlag = [[${@permission.hasPermi('module:clue:list')}]];
+    var datas_18 = [[${@dict.getType('risks_grades')}]];
+    var prefix = ctx + "module/clue";
+    $(function() {
+
+
+        var options = {
+            url: prefix + "/getSuspiciousCluesCount",
+            search: false,
+            queryParams: queryParams,
+            columns: [
+            //     {
+            //     checkbox: true
+            // },
+                {
+                    field : 'id',
+                    title : '可疑点编号',
+                },
+                {
+                    field : 'name',
+                    title : '可疑点',
+
+                },
+                {
+                    field : 'ms',
+                    title : '民事',
+                    formatter:function(value,row,index){
+                        var ms="1";
+
+
+                        if (row.ms==0){
+                            return "<font >"+row.ms+"</font>";
+						} else{
+
+                     return "<a style='text-decoration:none' onclick='clueDetail("+row.id+","+ms+")' ><font color='blue'>" + row.ms +"</font></a>";
+                        }
+                    }
+
+
+
+                },
+                {
+                    field : 'xs',
+                    title : '刑事',
+                    formatter:function(value,row,index){
+                        var xs="2";
+                        if (row.xs==0){
+                            return "<font >"+row.xs+"</font>";
+                        }else {
+                        return "<a style='text-decoration:none' onclick='clueDetail("+row.id+","+xs+" )' ><font color='blue'>" + row.xs +"</font></a>";
+                        }
+                        }
+                },
+                {
+                    field : 'xz',
+                    title : '行政',
+                    formatter:function(value,row,index){
+                        var xz="3";
+
+                        if (row.xz==0){
+                            return "<font >"+row.xz+"</font>";
+                        }else{
+
+                        return "<a style='text-decoration:none' onclick='clueDetail("+row.id+","+xz+" )' ><font color='blue'>" + row.xz +"</font></a>";
+                        }
+                        }
+
+                },
+                {
+                    field : 'zx',
+                    title : '执行',
+                    formatter:function(value,row,index){
+                        var zx="4";
+                        if (row.zx==0){
+                            return "<font >"+row.zx+"</font>";
+                        }else {
+
+                        return "<a style='text-decoration:none' onclick='clueDetail("+row.id+","+zx+" )' ><font color='blue'>" + row.zx +"</font></a>";
+                        }
+                        }
+                },
+
+                {
+                    field : 'total',
+                    title : '总数',
+                    formatter:function(value,row,index){
+                        var total="5";
+
+                        if (row.total==0){
+                            return "<font >"+row.total+"</font>";
+                        }else {
+
+                        return "<a style='text-decoration:none' onclick='clueDetail("+row.id+","+total+" )' ><font color='blue'>" + row.total +"</font></a>";
+                        }
+                    }
+                },
+
+                ]
+        };
+        initSimpleTabl.init(options);
+    });
+
+    function queryParams(params) {
+        return {
+            pageSize:       params.limit,
+            pageNum:        params.offset / params.limit + 1,
+            searchValue:    params.search,
+            orderByColumn:  params.sort,
+            isAsc:          params.order
+        };
+    }
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime', theme: 'molv'});
+        laydate.render({elem: '#endTime_12', theme: 'molv'});
+        laydate.render({elem: '#startTime_13', theme: 'molv'});
+        laydate.render({elem: '#endTime_13', theme: 'molv'});
+        laydate.render({elem: '#startTime_14', theme: 'molv'});
+        laydate.render({elem: '#endTime_14', theme: 'molv'});
+        laydate.render({elem: '#startTime_15', theme: 'molv'});
+        laydate.render({elem: '#endTime_15', theme: 'molv'});
+        laydate.render({elem: '#startTime_16', theme: 'molv'});
+        laydate.render({elem: '#endTime_16', theme: 'molv'});
+        laydate.render({elem: '#startTime_17', theme: 'molv'});
+        laydate.render({elem: '#endTime_17', theme: 'molv'});
+    });
+
+
+
+    /*策略列表-详细*/
+    function detail(clueId) {
+        var url = prefix + '/detail/' + clueId;
+        createMenuItem(url, "策略详情");
+    }
+
+    function clueDetail(id,name){
+        var url = prefix + '/clueDetail?id='+id+"&name="+name ;
+        createMenuItem(url, "线索详情");
+    }
+
+</script>
+</body>
+</html>

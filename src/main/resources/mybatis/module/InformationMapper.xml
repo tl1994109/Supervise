@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.module.information.mapper.InformationMapper">
+
+    <resultMap type="Information" id="InformationResult">
+        <result property="taskId" column="task_id"/>
+        <result property="taskName" column="task_name"/>
+        <result property="taskStatus" column="task_status"/>
+        <result property="taskProcessor" column="task_processor"/>
+        <result property="taskConsimmator" column="task_consimmator"/>
+        <result property="taskImportance" column="task_importance"/>
+        <result property="taskUrgency" column="task_urgency"/>
+        <result property="taskPlanStartdate" column="task_plan_startDate"/>
+        <result property="taskPlanEnddate" column="task_plan_endDate"/>
+        <result property="taskStartdate" column="task_startDate"/>
+        <result property="taskEnddate" column="task_endDate"/>
+        <result property="taskCreateby" column="task_createBy"/>
+        <result property="taskCreatedate" column="task_createDate"/>
+        <result property="taskType" column="task_type"/>
+        <result property="taskContent" column="task_content"/>
+        <result property="taskContent" column="task_content"/>
+        <result property="taskProcessorName" column="task_processorName"/>
+        <result property="taskCreateName" column="task_createName"/>
+        <result property="taskConsimmatorName" column="task_consimmatorName"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="lastUpdateBy" column="last_updateBy"/>
+        <result property="lastUpdateDate" column="last_updateDate"/>
+        <result property="taskStartContent" column="task_start_content"/>
+        <result property="taskEndContent" column="task_end_content"/>
+        <result property="appContent" column="appraise_taskId"/>
+        <result property="submitter" column="submitter"/>
+        <result property="appraise_level" column="appraise_level"/>
+    </resultMap>
+
+    <sql id="selectInformationVo">
+      select * from (
+        select  a.*,
+        p.person_name task_createName,(select GROUP_CONCAT(person_name) from sys_person where FIND_IN_SET(person_id,task_processorid)) task_processorName,person.person_name task_consimmatorName from (
+        select ti.*,u.person_id task_createid,(select GROUP_CONCAT(person_id) from sys_user where FIND_IN_SET(user_id,ti.task_processor)) task_processorid,sysuser.person_id task_consimmatorid from task_information ti
+         left join sys_user u on ti.task_createBy = u.user_id
+         left join sys_user sysuser on sysuser.user_id = ti.task_consimmator where ti.is_delete = '0') a
+        LEFT JOIN sys_person p on p.person_id = a.task_createid
+        LEFT join sys_person person on person.person_id = a.task_consimmatorid
+        where 1=1) t
+        left join task_appraise p on t.task_id = p.appraise_taskId
+    </sql>
+
+    <select id="selectInformationList" parameterType="Information" resultMap="InformationResult">
+        <include refid="selectInformationVo"/>
+        <where>
+            <if test="taskId != null and taskId != ''">and t.task_id like concat('%',#{taskId},'%')</if>
+            <if test="taskName != null and taskName != ''">and t.task_name like concat('%',#{taskName},'%')</if>
+            <if test="taskStatus != null and taskStatus != ''">and t.task_status = #{taskStatus}</if>
+            <if test="taskConsimmator != null and taskConsimmator != ''">and t.task_consimmatorName like
+                concat('%',#{taskConsimmator},'%')
+            </if>
+            <if test="taskImportance != null and taskImportance != ''">and t.task_importance = #{taskImportance}</if>
+            <if test="taskUrgency != null and taskUrgency != ''">and t.task_urgency = #{taskUrgency}</if>
+            <if test="taskPlanStartdate != null and taskPlanStartdate != ''">and t.task_plan_startDate like
+                concat('%',#{taskPlanStartdate},'%')
+            </if>
+            <if test="taskPlanEnddate != null and taskPlanEnddate != ''">
+                and date_format(t.task_plan_endDate,'%y%m%d') &lt; date_format(#{taskPlanEnddate},'%y%m%d')
+            </if>
+            <if test="params.beginTime_10 != null and params.beginTime_10 != ''">
+                and date_format(t.task_startDate,'%y%m%d') &gt;= date_format(#{params.beginTime_10},'%y%m%d')
+            </if>
+            <if test="params.endTime_10 != null and params.endTime_10 != ''">
+                and date_format(t.task_startDate,'%y%m%d') &lt;= date_format(#{params.endTime_10},'%y%m%d')
+            </if>
+            <if test="params.beginTime_11 != null and params.beginTime_11 != ''">
+                and date_format(t.task_endDate,'%y%m%d') &gt;= date_format(#{params.beginTime_11},'%y%m%d')
+            </if>
+            <if test="params.endTime_11 != null and params.endTime_11 != ''">
+                and date_format(t.task_endDate,'%y%m%d') &lt;= date_format(#{params.endTime_11},'%y%m%d')
+            </if>
+            <!--<if test="taskCreateby != null and taskCreateby != '' and (taskProcessor==null or taskProcessor=='') and (submitter==null or submitter=='')">and-->
+            <!--t.task_createBy = #{taskCreateby}-->
+            <!--</if>-->
+            <!--<if test="taskProcessor != null and taskProcessor != '' and (taskCreateby==null or taskCreateby=='') and (submitter==null or submitter =='')">and-->
+            <!--FIND_IN_SET(#{taskProcessor},cast(t.task_processor as SIGNED INTEGER))-->
+            <!--</if>-->
+            <if test="taskCreateby != null and taskCreateby != '' and taskProcessor!=null and taskProcessor!='' and submitter!=null and submitter!=''">
+                and (t.task_createBy = #{taskCreateby} or FIND_IN_SET(#{taskProcessor},t.task_processor) or
+                t.submitter=#{submitter})
+            </if>
+            <if test="params.beginTime_13 != null and params.beginTime_13 != ''">
+                and date_format(t.task_createDate,'%y%m%d') &gt;= date_format(#{params.beginTime_13},'%y%m%d')
+            </if>
+            <if test="params.endTime_13 != null and params.endTime_13 != ''">
+                and date_format(t.task_createDate,'%y%m%d') &lt;= date_format(#{params.endTime_13},'%y%m%d')
+            </if>
+            <if test="taskType!=null and taskType !=''">and t.task_type= #{taskType}</if>
+            <if test="taskContent!=null and taskContent !=''">and t.task_content= #{taskContent}</if>
+            <if test="taskCreateName!=null and taskCreateName !=''">and t.task_createName like
+                concat('%',#{taskCreateName},'%')
+            </if>
+            <if test="taskProcessorName!=null and taskProcessorName !=''">and t.task_processorName like
+                concat('%',#{taskProcessorName},'%')
+            </if>
+            <if test="taskConsimmatorName!=null and taskConsimmatorName !=''">and t.task_consimmatorName like
+                concat('%',#{taskConsimmatorName},'%')
+            </if>
+        </where>
+        and is_delete = '0'
+        order by task_createDate desc
+    </select>
+    <select id="selectInformationById" parameterType="String" resultMap="InformationResult">
+        <include refid="selectInformationVo"/>
+        where task_id = #{taskId}
+    </select>
+
+    <insert id="insertInformation" parameterType="Information">
+        insert into task_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null  and taskId != ''  ">task_id,</if>
+            <if test="taskName != null  and taskName != ''  ">task_name,</if>
+            <if test="taskStatus != null  and taskStatus != ''  ">task_status,</if>
+            <if test="taskProcessor != null  and taskProcessor != ''  ">task_processor,</if>
+            <if test="taskConsimmator != null  and taskConsimmator != ''  ">task_consimmator,</if>
+            <if test="taskImportance != null  and taskImportance != ''  ">task_importance,</if>
+            <if test="taskUrgency != null  and taskUrgency != ''  ">task_urgency,</if>
+            <if test="taskPlanStartdate != null  ">task_plan_startDate,</if>
+            <if test="taskPlanEnddate != null  ">task_plan_endDate,</if>
+            <if test="taskStartdate != null  ">task_startDate,</if>
+            <if test="taskEnddate != null  ">task_endDate,</if>
+            <if test="taskCreateby != null  and taskCreateby != ''  ">task_createBy,</if>
+            <if test="taskCreatedate != null  ">task_createDate,</if>
+            <if test="taskType !=null and taskType != ''">task_type,</if>
+            <if test="taskContent !=null and taskContent != ''">task_content,</if>
+            <if test="taskStartContent !=null and taskStartContent != ''">task_start_content,</if>
+            <if test="taskEndContent !=null and taskEndContent != ''">task_end_content,</if>
+            <if test="submitter!=null and submitter!=''">submitter,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null  and taskId != ''  ">#{taskId},</if>
+            <if test="taskName != null  and taskName != ''  ">#{taskName},</if>
+            <if test="taskStatus != null  and taskStatus != ''  ">#{taskStatus},</if>
+            <if test="taskProcessor != null  and taskProcessor != ''  ">#{taskProcessor},</if>
+            <if test="taskConsimmator != null  and taskConsimmator != ''  ">#{taskConsimmator},</if>
+            <if test="taskImportance != null  and taskImportance != ''  ">#{taskImportance},</if>
+            <if test="taskUrgency != null  and taskUrgency != ''  ">#{taskUrgency},</if>
+            <if test="taskPlanStartdate != null and taskPlanStartdate!='' ">#{taskPlanStartdate},</if>
+            <if test="taskPlanEnddate != null and taskPlanEnddate != '' ">#{taskPlanEnddate},</if>
+            <if test="taskStartdate != null and taskStartdate != '' ">#{taskStartdate},</if>
+            <if test="taskEnddate != null and taskEnddate != '' ">#{taskEnddate},</if>
+            <if test="taskCreateby != null  and taskCreateby != ''  ">#{taskCreateby},</if>
+            <if test="taskCreatedate != null">#{taskCreatedate},</if>
+            <if test="taskType !=null and taskType != ''">#{taskType},</if>
+            <if test="taskContent !=null and taskContent != ''">#{taskContent},</if>
+            <if test="taskStartContent !=null and taskStartContent != ''">#{taskStartContent},</if>
+            <if test="taskEndContent !=null and taskEndContent != ''">#{taskEndContent},</if>
+            <if test="submitter!=null and submitter!=''">#{submitter},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTask" parameterType="Information">
+        update task_information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskStartdate != null and taskStartdate!='' ">task_startDate = #{taskStartdate},</if>
+            <if test="taskStatus != null  and taskStatus != ''  ">task_status = #{taskStatus},</if>
+            <if test="taskEnddate != null and taskEnddate!=''">task_endDate = #{taskEnddate},</if>
+        </trim>
+        where task_id = #{taskId}
+    </update>
+
+    <update id="updateInformation" parameterType="Information">
+        update task_information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskName != null  and taskName != ''  ">task_name = #{taskName},</if>
+            <if test="taskStatus != null  and taskStatus != ''  ">task_status = #{taskStatus},</if>
+            <if test="taskProcessor != null">task_processor = #{taskProcessor},</if>
+            <if test="taskConsimmator != null  and taskConsimmator != ''  ">task_consimmator = #{taskConsimmator},</if>
+            <if test="taskImportance != null  and taskImportance != ''  ">task_importance = #{taskImportance},</if>
+            <if test="taskUrgency != null  and taskUrgency != ''  ">task_urgency = #{taskUrgency},</if>
+            <if test="taskPlanStartdate != null and taskPlanStartdate!='' ">task_plan_startDate =
+                #{taskPlanStartdate},
+            </if>
+            <if test="taskPlanEnddate != null and taskPlanEnddate!='' ">task_plan_endDate = #{taskPlanEnddate},</if>
+            <if test="taskStartdate != null and taskStartdate!='' ">task_startDate = #{taskStartdate},</if>
+            <if test="taskEnddate != null and taskEnddate!=''">task_endDate = #{taskEnddate},</if>
+            <if test="taskCreateby != null and taskCreateby!=''">task_createBy = #{taskCreateby},</if>
+            <if test="taskCreatedate != null and taskCreatedate !='' ">task_createDate = #{taskCreatedate},</if>
+            <if test="taskType != null and taskType != ''">task_type = #{taskType},</if>
+            <if test="taskContent !=null and taskContent != ''">task_content = #{taskContent},</if>
+            <if test="isDelete !=null and isDelete != ''">is_delete = #{isDelete},</if>
+            <if test="lastUpdateBy !=null and lastUpdateBy != ''">last_updateBy = #{lastUpdateBy},</if>
+            <if test="lastUpdateDate !=null and lastUpdateDate != ''">last_updateDate = #{lastUpdateDate},</if>
+            <if test="taskStartdate != null and taskStartdate=='' ">task_startDate = null,</if>
+            <if test="taskEnddate != null and taskEnddate==''">task_endDate = null,</if>
+            <if test="taskEndContent != null and taskEndContent!=''">task_end_content = #{taskEndContent},</if>
+            <if test="submitter!=null">submitter = #{submitter},</if>
+        </trim>
+        where task_id = #{taskId}
+    </update>
+
+    <delete id="deleteInformationById" parameterType="String">
+        delete from task_information where task_id = #{taskId}
+    </delete>
+
+    <delete id="deleteInformationByIds" parameterType="String">
+        delete from task_information where task_id in
+        <foreach item="taskId" collection="array" open="(" separator="," close=")">
+            #{taskId}
+        </foreach>
+    </delete>
+    <select id="queryAllCount" parameterType="String" resultType="java.lang.Integer">
+        select COUNT(1) from task_information i where i.task_createBy in (SELECT user_id from sys_user u where
+        u.person_id in (
+        select person_id from sys_person p where p.dept_id in (select dept_id from sys_dept d
+        <where>
+            <if test="parentDeptId!=null and parentDeptId!=''">
+                and FIND_IN_SET(#{parentDeptId},d.ancestors)
+            </if>
+        </where>
+        ))) and i.is_delete=0
+        <if test="taskCreatedate!=null">
+            and DATE_FORMAT(i.task_createDate, '%Y%m' ) = DATE_FORMAT(#{taskCreatedate}, '%Y%m' )
+        </if>
+        <if test="taskStatus!=null and taskStatus!=''">
+            and i.task_status = #{taskStatus}
+        </if>
+    </select>
+    <!--<select id="queryAddCount" resultType="java.lang.Integer">-->
+    <!--SELECT COUNT(1) as count FROM task_information WHERE DATE_FORMAT( task_createDate, '%Y%m' ) = DATE_FORMAT(CURDATE( ) , '%Y%m' ) and is_delete=0;-->
+    <!--</select>-->
+    <select id="queryCountByStatus" parameterType="String" resultType="java.lang.Integer">
+        SELECT  COUNT(1) as count  from  task_information where task_status=#{status} and is_delete=0;
+    </select>
+
+    <select id="queryCountWcAndJxz" parameterType="String" resultType="java.util.HashMap">
+   SELECT
+	COUNT(
+		CASE
+		WHEN t.task_status = '1' THEN
+			t.task_status
+		END
+	) AS 'jxz',
+	COUNT(
+		CASE
+		WHEN t.task_status = '2' THEN
+			t.task_status
+		END
+	) AS 'wc'
+
+FROM
+	task_information t where t.is_delete=0 and t.task_createBy in (SELECT user_id from sys_user u where u.person_id in (
+      select person_id from sys_person p where p.dept_id in (select dept_id from sys_dept d
+               where FIND_IN_SET(#{parentDeptId},d.ancestors)
+      )))
+    </select>
+
+    <select id="queryTaskCountByMonth" resultType="java.lang.Integer" parameterType="Information">
+        SELECT
+        COUNT(1) AS count
+        FROM
+        task_information t
+        WHERE
+        t.is_delete = 0
+        <if test="taskCreatedate!=null">
+            AND DATE_FORMAT(t.task_createDate, '%Y-%m') = #{taskCreatedate}
+        </if>
+        <if test="taskType!=null and taskType!=''">
+            and t.task_type=#{taskType}
+        </if>
+        <if test="parentDeptId!=null and parentDeptId!=''">
+            and t.task_createBy in (SELECT user_id from sys_user u where u.person_id in (
+            select person_id from sys_person p where p.dept_id in (select dept_id from sys_dept d
+            where FIND_IN_SET(#{parentDeptId},d.ancestors)
+            )))
+        </if>
+    </select>
+
+
+    <select id="queryByStatusAndMonth" parameterType="map" resultType="java.lang.Integer">
+        SELECT
+        COUNT(1) AS count
+        FROM
+        task_information t
+        WHERE
+        t.is_delete = 0
+        AND DATE_FORMAT(t.task_createDate, '%Y-%m') = #{time} and task_status in
+        <foreach item="status" collection="status" open="(" separator="," close=")">#{status}</foreach>
+        <if test="parentDeptId!=null and parentDeptId!=''">
+            and t.task_createBy in (SELECT user_id from sys_user u where u.person_id in (
+            select person_id from sys_person p where p.dept_id in (select dept_id from sys_dept d
+            where FIND_IN_SET(#{parentDeptId},d.ancestors)
+            )))
+        </if>
+    </select>
+
+    <select id="queryByMonthAndLevel" parameterType="map" resultType="java.lang.Integer">
+        SELECT
+        COUNT(1) AS count
+        FROM
+        task_information t
+        LEFT JOIN task_appraise a ON t.task_id = a.appraise_taskId
+        WHERE
+        t.is_delete = 0 and t.task_status='2'
+        AND DATE_FORMAT(t.task_createDate, '%Y-%m') = #{time}
+        AND a.appraise_level = #{level}
+        <if test="parentDeptId!=null and parentDeptId!=''">
+            and t.task_createBy in (SELECT user_id from sys_user u where u.person_id in (
+            select person_id from sys_person p where p.dept_id in (select dept_id from sys_dept d
+            where FIND_IN_SET(#{parentDeptId},d.ancestors)
+            )))
+        </if>
+    </select>
+
+
+    <select id="queryCountByTaskType" resultType="java.lang.Integer" parameterType="map">
+        SELECT
+        COUNT(1) AS count
+        FROM
+        task_information t
+        WHERE
+        t.is_delete = 0
+        AND t.task_type = #{type}
+        <if test="parentDeptId!=null and parentDeptId!=''">
+            and t.task_createBy in (SELECT user_id from sys_user u where u.person_id in (
+            select person_id from sys_person p where p.dept_id in (select dept_id from sys_dept d
+            where FIND_IN_SET(#{parentDeptId},d.ancestors)
+            )))
+        </if>
+    </select>
+
+
+    <select id="queryTaskCountByMonthAndImportance" resultType="java.lang.Integer" parameterType="map">
+        SELECT
+        COUNT(1) AS count
+        FROM
+        task_information t
+        WHERE
+        t.is_delete = 0
+        AND DATE_FORMAT(t.task_createDate, '%Y-%m') =#{time} and task_importance=#{importance}
+        <if test="parentDeptId!=null and parentDeptId!=''">
+            and t.task_createBy in (SELECT user_id from sys_user u where u.person_id in (
+            select person_id from sys_person p where p.dept_id in (select dept_id from sys_dept d
+            where FIND_IN_SET(#{parentDeptId},d.ancestors)
+            )))
+        </if>
+    </select>
+
+    <select id="mainSelectList" parameterType="String" resultMap="InformationResult">
+        select * from task_information where FIND_IN_SET(#{userid},task_processor) and (task_status='0' or task_status = '1' or task_status = '5') and is_delete= '0'
+        UNION all
+        select * from task_information where task_status = '3' and submitter = #{userid} and is_delete = '0'
+    </select>
+    <select id="mianselectListTaskStatus_Two" parameterType="String" resultMap="InformationResult">
+         select * from task_information where submitter = #{userid} and task_status in('2','4') and is_delete = '0'
+	     union ALL
+         select * from task_information where task_processor = #{userid} and task_status in ('2','4') and is_delete = '0'
+         union all
+         select * from task_information where task_createBy = #{userid} and task_status='6' and is_delete = '0'
+    </select>
+
+    <select id="selectRemindList" parameterType="Information" resultMap="InformationResult">
+        <include refid="selectInformationVo"/>
+        <where>
+            <if test="taskCreateName!=null and taskCreateName !=''">and t.task_createName like
+                concat('%',#{taskCreateName},'%')
+            </if>
+            <if test="taskProcessorName!=null and taskProcessorName !=''">and t.task_processorName like
+                concat('%',#{taskProcessorName},'%')
+            </if>
+            <if test="taskConsimmatorName!=null and taskConsimmatorName !=''">and t.task_consimmatorName like
+                concat('%',#{taskConsimmatorName},'%')
+            </if>
+            <if test="taskId != null and taskId != ''">and t.task_id like concat('%',#{taskId},'%')</if>
+            <if test="taskName != null and taskName != ''">and t.task_name like concat('%',#{taskName},'%')</if>
+            <if test="taskStatus != null and taskStatus != ''">and t.task_status = #{taskStatus}</if>
+            <if test="taskConsimmator != null and taskConsimmator != ''">and t.task_consimmatorName like
+                concat('%',#{taskConsimmator},'%')
+            </if>
+            <if test="taskImportance != null and taskImportance != ''">and t.task_importance = #{taskImportance}</if>
+            <if test="taskUrgency != null and taskUrgency != ''">and t.task_urgency = #{taskUrgency}</if>
+            <if test="taskPlanStartdate != null and taskPlanStartdate != ''">and t.task_plan_startDate like
+                concat('%',#{taskPlanStartdate},'%')
+            </if>
+            <if test="taskPlanEnddate != null and taskPlanEnddate != ''">
+                and date_format(t.task_plan_endDate,'%y%m%d') &lt; date_format(#{taskPlanEnddate},'%y%m%d')
+            </if>
+            <if test="params.beginTime_10 != null and params.beginTime_10 != ''">
+                and date_format(t.task_startDate,'%y%m%d') &gt;= date_format(#{params.beginTime_10},'%y%m%d')
+            </if>
+            <if test="params.endTime_10 != null and params.endTime_10 != ''">
+                and date_format(t.task_startDate,'%y%m%d') &lt;= date_format(#{params.endTime_10},'%y%m%d')
+            </if>
+            <if test="params.beginTime_11 != null and params.beginTime_11 != ''">
+                and date_format(t.task_endDate,'%y%m%d') &gt;= date_format(#{params.beginTime_11},'%y%m%d')
+            </if>
+            <if test="params.endTime_11 != null and params.endTime_11 != ''">
+                and date_format(t.task_endDate,'%y%m%d') &lt;= date_format(#{params.endTime_11},'%y%m%d')
+            </if>
+            <if test="taskId != null and taskId != ''"> and t.task_id = #{taskId}</if>
+            <if test="taskStatus != null and taskStatus != ''"> and t.task_status = #{taskStatus}</if>
+            <if test="taskProcessor != null and taskProcessor != ''"> and  FIND_IN_SET(#{taskProcessor},t.task_processor)</if>
+            <if test="taskPlanStartdate != null and taskPlanStartdate != ''"> and t.task_plan_startDate like concat('%',#{taskPlanStartdate},'%')</if>
+            <if test="taskPlanEnddate != null and taskPlanEnddate != ''"> and t.task_plan_endDate like concat('%',#{taskPlanEnddate},'%')</if>
+            <if test="params.beginTime_13 != null and params.beginTime_13 != ''">
+                and date_format(t.task_createDate,'%y%m%d') &gt;= date_format(#{params.beginTime_13},'%y%m%d')
+            </if>
+            <if test="params.endTime_13 != null and params.endTime_13 != ''">
+                and date_format(t.task_createDate,'%y%m%d') &lt;= date_format(#{params.endTime_13},'%y%m%d')
+            </if>
+            <if test="submitter!=null and submitter!=''">
+                and t.submitter = #{submitter}
+            </if>
+            <if test="isTXStatus!=null and isTXStatus!=''">
+                <choose>
+                    <when test="isTXStatus">
+                        and t.task_status = '0'
+                    </when>
+                    <when test="isTXStatus == 1">
+                        and t.task_status = '3'
+                    </when>
+                    <when test="isTXStatus == 2">
+                        and t.task_status = '1' and  datediff(CURDATE(),t.task_plan_endDate)=0
+                    </when>
+                    <when test="isTXStatus == 3">
+                        and t.task_status = '1' and  datediff(CURDATE(),t.task_plan_endDate)==1
+                    </when>
+                    <when test="isTXStatus == 4">
+                        and t.task_status = '5'
+                    </when>
+                </choose>
+            </if>
+        </where>
+         and is_delete = '0'
+    </select>
+</mapper>

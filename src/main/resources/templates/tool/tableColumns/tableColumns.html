@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    <div class="container-div">
+    	<input type="hidden" id="columnName" th:value="${columnName}"/>
+        <div class="col-sm-12 select-info search-collapse">
+            <form id="case" class="form-horizontal">
+                <div class="form-group select-info-container">
+                    <div class="col-sm-12 select-info-btn">
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+		<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+			<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="tool:tableColumns:add">
+				<i class="fa fa-plus"></i> 新增
+			</a>
+            <a class="btn btn-primary btn-detail disabled" onclick="$.operate.detail()" shiro:hasPermission="tool:tableColumns:detail">
+                <i class="fa fa-plus"></i> 详细
+            </a>
+            <a class="btn btn-warning btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="tool:tableColumns:edit">
+                <i class="fa fa-plus"></i> 编辑
+            </a>
+			<a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="tool:tableColumns:remove">
+				<i class="fa fa-trash-o"></i> 删除
+			</a>
+		</div>
+			
+		<div class="col-sm-12 select-table table-striped">
+			<table id="bootstrap-table" data-mobile-responsive="true"></table>
+		</div>
+    </div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('tool:tableColumns:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('tool:tableColumns:remove')}]];
+        var prefix = ctx + "tool/tableColumns"
+
+        $(function() {
+            var options = {
+                url: prefix + "/list?columnName="+$("#columnName").val(),
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                modalName: "字段属性",
+				search: false,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'columnId', 
+					title : 'ID' 
+				},
+				{
+					field : 'isKey', 
+					title : '主键生成规则(0无 1自增长 2 UUID)' 
+				},
+				{
+					field : 'columnName', 
+					title : '字段名称' 
+				},
+				{
+					field : 'dataType', 
+					title : '字段类型' 
+				},
+				{
+					field : 'isNullable', 
+					title : '非空验证（0:必填 1:可填）' 
+				},
+				{
+					field : 'columnComment', 
+					title : '字段备注' 
+				},
+				{
+					field : 'isSearch', 
+					title : '查询条件(0是 1否)' 
+				},
+				{
+					field : 'isVisible', 
+					title : '显示状态(0显示1隐藏)' 
+				},
+				{
+					field : 'isVisibleType', 
+					title : '显示方式(0输入框 1下拉框 2文本框)' 
+				},
+				{
+					field : 'dictType', 
+					title : '字典类型' 
+				},
+				{
+					field : 'visibleRows', 
+					title : '显示行数' 
+				},
+				{
+					field : 'visibleCols', 
+					title : '显示列数' 
+				},
+				{
+					field : 'isSortable', 
+					title : '排序方式(0无 1 desc 2 asc)' 
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.columnId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.columnId + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,785 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+
+<style type="text/css">
+
+    .select-info-container input, .select-info-container select {
+        width: 80%;
+    }
+
+    label.error{
+        position: absolute;
+        right: 20px;
+        width: 20%;
+        /* top: 3px; */
+        color: rgb(239, 57, 43);
+        font-size: 12px;
+        text-align: right;
+    }
+    #jbfyId-error.error{
+        z-index: 99999;
+    }
+
+    .form-header{
+        font-size: 15px;
+        color: #6379bb;
+        border-bottom: 1px solid #ddd;
+        margin: 8px 10px 25px 10px;
+        padding-bottom: 5px;
+        text-align: center;
+    }
+
+</style>
+<style type="text/css">
+    /* 新增样式20190419 */
+    .select2-container .select2-selection--single{height: 34px;}
+    .select2-container--default .select2-selection--single{border: 1px solid #ddd;}
+    .select2-container--default .select2-selection--single .select2-selection__rendered{line-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {padding: 0px 5px;}
+    .select-info-container input, .select-info-container select{width: 100%}
+    .select2-container{height: 34px;line-height: 34px}
+    .select2-container--default .select2-selection--multiple{height: 34px;width: 100%;border: 1px solid #ddd;}
+    .select2-container .select2-selection--multiple{min-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__rendered{height: 34px; }
+    .select2-container--default.select2-container--focus .select2-selection--multiple{border: 1px solid #ddd;}
+</style>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="col-sm-12 select-info search-collapse">
+        <form class="form-horizontal m" id="form-dubvioEvent-add">
+            <!--<h4 class="form-header h4">基本信息</h4>-->
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">序号：</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="jbxxXfxh" id="jbxxXfxh" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">线索来源：</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="jbxxXfly" id="jbxxXfly" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">反映人：</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="dubvioFyr" name="dubvioFyr" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">联系方式：</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="dubvioFyrdh" name="dubvioFyrdh" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">反映对象：</label>
+                        <div class="col-sm-8">
+                            <!--<span onclick="selectPersonTree()" style="position: absolute;left: 0;margin-left:80%;z-index:5;display: block;width: 17%;border-radius: 5px;text-align: center;height:30px; line-height: 30px;border: 1px solid #ddd;">选择</span>-->
+                            <input type="text" name="dubvioFydx" id="treeName" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">反映时间：</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="jbxxXffysj" id="startTime_14" class="time-input form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">经办法院：</label>
+                        <div class="col-xs-10 ssd">
+                            <select name="jbfyId" id="jbfyId" class="form-control">
+                                <option value="">请选择</option>
+                                <option th:each="deptList:${deptList}" th:value="${deptList.cid}"
+                                th:text="${deptList.deptName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">反映问题：</label>
+                        <div class="col-xs-10">
+                            <textarea id="dubvioStrategyName" name="dubvioStrategyName" rows="8" class="form-control"></textarea>
+                            <!--<input id="dubvioStrategyName" name="dubvioStrategyName" type="week">-->
+                            <!--<div class="summernote"></div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">处置情况：</label>
+                        <div class="col-xs-10">
+                            <textarea name="jbxxXfczqk" rows="8" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">信访承办人：</label>
+                        <div class="col-xs-10">
+                            <input type="text" name="jbxxXfcbr" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">处置结果：</label>
+                        <div class="col-xs-10">
+                            <textarea name="jbxxXfczjg" rows="8" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">备注：</label>
+                        <div class="col-xs-10">
+                            <textarea id="jbxxXfbz" name="jbxxXfbz" rows="8" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--<div id="main" class="main">-->
+
+            <!--</div>-->
+
+            <!--<div id="secondMain" class="secondMain">-->
+                <!--<div class=" select-info-container">-->
+                    <!--<div class="form-group col-sm-6">-->
+                        <!--<label class="col-sm-3 control-label">案号：</label>-->
+                        <!--<div class="col-sm-8">-->
+                            <!--<input type="text" name="jbxxAh" id="jbxxAh" class="jbxxAh">-->
+
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;                    <div class="form-group col-sm-6">&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        <label class="col-sm-3 control-label">反映问题类型：</label>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        &lt;!&ndash;<input type="text" name="dubvioStrategyName"  >&ndash;&gt;&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        <div class="col-sm-8">&ndash;&gt;-->
+                    <!--&lt;!&ndash;                            <select name="dubvioStrategyIds" id="dubvioStrategyIds">&ndash;&gt;-->
+
+                    <!--&lt;!&ndash;                                <option th:each="list:${strategyList}" th:value="${list.id}"&ndash;&gt;-->
+                    <!--&lt;!&ndash;                                        th:text="${list.name}"></option>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                            </select>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+
+                    <!--<div class="form-group col-sm-6">-->
+                        <!--<label class="col-sm-3 control-label">被告人：</label>-->
+                        <!--<div class="col-sm-8">-->
+                            <!--<input type="text" name="jbxxBgr">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="select-info-container">-->
+
+                    <!--<div class="form-group col-sm-6">-->
+
+
+                        <!--<label class="col-sm-3 control-label">经办法院：</label>-->
+                        <!--<div class="col-sm-8">-->
+                            <!--<select name="jbfyId" id="jbfyId" onchange="setCourt(this)">-->
+                                <!--<option value="">请选择</option>-->
+                                <!--<option th:each="deptList:${deptList}" th:value="${deptList.deptId}"-->
+                                        <!--th:text="${deptList.deptName}"></option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+
+                    <!--</div>-->
+
+
+                    <!--<div class="form-group col-sm-6" id="tCbt">-->
+
+                        <!--<label class="col-sm-3 control-label">承办庭：</label>-->
+
+                        <!--<div class="col-sm-8">-->
+                            <!--<select name="jbxxCbtId" id="jbxxCbtId" class="jbxxCbtId">-->
+<!--&lt;!&ndash;                                <option th:each="cbtList:${cbtList}" th:value="${cbtList.cbtId}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                        th:text="${cbtList.cbtName}"></option>&ndash;&gt;-->
+                            <!--</select>-->
+                        <!--</div>-->
+
+                    <!--</div>-->
+
+                <!--</div>-->
+                <!--<div class="select-info-container">-->
+
+                    <!--<div class="form-group col-sm-6">-->
+
+                        <!--<label class="col-sm-3 control-label">案件类别：</label>-->
+                        <!--<div class="col-sm-8">-->
+                            <!--<select id="jbxxAjlb" name="jbxxAjlb">-->
+                                <!--<option value="">请选择</option>-->
+                                <!--<option value="刑事">刑事</option>-->
+                                <!--<option value="民事">民事</option>-->
+                                <!--<option value="执行">执行</option>-->
+                                <!--<option value="行政">行政</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--&lt;!&ndash;                    <div class="form-group col-sm-6">&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        <label class="col-sm-3 control-label">创建时间：</label>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        <div class="col-sm-8">&ndash;&gt;-->
+                    <!--&lt;!&ndash;                            <input type="text" class="time-input" id="startTime" name="createTimes">&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+                    <!--<div class="form-group col-sm-6">-->
+                        <!--<label class="col-sm-3 control-label">归档日期：</label>-->
+                        <!--<div class="col-sm-8">-->
+                            <!--<input type="text" class="time-input" id="startTime_18" name="jbxxGdrq">-->
+
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="select-info-container">-->
+                    <!--<div class="form-group col-sm-6">-->
+                        <!--<label class="col-sm-3 control-label">立案日期：</label>-->
+                        <!--<div class="col-sm-8">-->
+                            <!--<input type="text" class="time-input" id="startTime_14" name="jbxxLarq">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group col-sm-6">-->
+                        <!--<label class="col-sm-3 control-label">分案日期：</label>-->
+                        <!--<div class="col-sm-8">-->
+                            <!--<input type="text" class="time-input" id="startTime_15" name="jbxxFarq">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group col-sm-6">-->
+                        <!--<label class="col-sm-3 control-label">开庭日期：</label>-->
+                        <!--<div class="col-sm-8">-->
+                            <!--<input type="text" class="time-input" id="startTime_17" name="jbxxKtrq">-->
+                            <!--&lt;!&ndash;                            <input type="text" class="time-input" id="startTime_20" name="jbxxKtrq">&ndash;&gt;-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="select-info-container">-->
+                    <!--<div class="form-group col-sm-6">-->
+                        <!--<label class="col-sm-3 control-label">结案日期：</label>-->
+                        <!--<div class="col-sm-8">-->
+                            <!--<input type="text" class="time-input" id="startTime_19" name="jbxxJarq">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group col-sm-6">-->
+
+                        <!--<label class="col-sm-3 control-label">收案日期：</label>-->
+                        <!--<div class="col-sm-8">-->
+                            <!--<input type="text" class="time-input" id="startTime_13" name="jbxxSarq">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="form-group">-->
+                <!--<div class="col-sm-12">-->
+                    <!--<label class="col-sm-2" style="width: 15.6%;text-align: right">反映问题：</label>-->
+                    <!--<div class="col-sm-9">-->
+                        <!--<textarea name="dubvioStrategyName" rows="8" style="width: 97.5%"></textarea>-->
+                        <!--&lt;!&ndash;<input id="dubvioStrategyName" name="dubvioStrategyName" type="week">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="summernote"></div>&ndash;&gt;-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <div class="form-group col-sm-12">
+                <div class="form-control-static col-sm-offset-5">
+                    <button type="button"  class="btn btn-primary" onclick="selectDubvioByFyr()">信访查重</button>
+                    <button type="submit" id="dubvioEventAdd" class="btn btn-primary" onclick="validateJbfy()">提交</button>
+                    <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+
+    $(function() {
+        $('.summernote').summernote({
+            height : '220px',
+            lang : 'zh-CN'
+        });
+        var content = $("#dubvioStrategyName").val();
+        $('#editor').code(content);
+
+
+    });
+
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime', theme: 'molv'});
+        laydate.render({elem: '#startTime_13', theme: 'molv'});
+        laydate.render({elem: '#endTime_13', theme: 'molv'});
+        laydate.render({elem: '#startTime_14', theme: 'molv'});
+        laydate.render({elem: '#endTime_14', theme: 'molv'});
+        laydate.render({elem: '#startTime_15', theme: 'molv'});
+        laydate.render({elem: '#endTime_15', theme: 'molv'});
+        laydate.render({elem: '#startTime_16', theme: 'molv'});
+        laydate.render({elem: '#endTime_16', theme: 'molv'});
+        laydate.render({elem: '#startTime_17', theme: 'molv'});
+        laydate.render({elem: '#endTime_17', theme: 'molv'});
+        laydate.render({elem: '#startTime_18', theme: 'molv'});
+        laydate.render({elem: '#startTime_19', theme: 'molv'});
+    });
+
+    var prefix = ctx + "module/dubvioEvent"
+
+
+    $("#form-dubvioEvent-add").validate({
+        rules: {
+            dubvioId: {
+                required: true,
+            },
+            dubvioStrategyId: {
+                required: true,
+            },
+            jbxxAjbh: {
+                required: true,
+            },
+            // jbxxAh: {
+            //     required: true,
+            // },
+            // dubvioFyrdh: {
+            //     required: true,
+            // },
+
+            jbxxAhs: {
+                required: true,
+            },
+            dubvioFyr: {
+                required: true,
+            },
+            dubvioFydx: {
+                required: true,
+            },
+
+            jbxxXffysj:{
+                required: true,
+            },
+            jbxxXfly:{
+                required: true,
+            },
+            dubvioStrategyName:{
+                required: true,
+            },
+            jbfyId: {
+                required: true
+            }
+            // jbxxXfczqk: {
+            //     required: true
+            // }
+
+
+
+        },
+        submitHandler: function (form) {
+            var row = 0;
+            /*var sHTML = $('.summernote').code();
+            $("#dubvioStrategyName").val(sHTML);*/
+            checkTel();
+        }
+    });
+
+
+    //隐藏div
+    $(function () {
+        $("#secondMain").show();
+        $("#main").hide();
+        //给div添加change事件
+        $("#ah").on("change", function () {
+            $("#main").hide();
+            if ($(this).val() == "" || $(this).val() == null) {
+                $("#main").hide();
+                $("#secondMain").show();
+            } else {
+                $("#main").show();
+                $("#secondMain").hide();
+            }
+        })
+
+    })
+
+    
+    function selectDubvioByFyr() {
+        var dubvioFyr = $("#dubvioFyr").val();
+        var dubvioStrategyName = $("#dubvioStrategyName").val();
+        if(dubvioFyr){
+            var url = prefix + "/selectDubvioByFyr";
+            var options = {
+                title: '历史反应问题',
+                url: url,
+                callBack: getcallbackData
+            };
+            $.modal.openOptions(options);
+        }else {
+            layer.alert('反映人未填！')
+        }
+    }
+    
+    function getcallbackData(index, layero) {
+        var iframeWin = window[layero.find('iframe')[0]['name']];
+        var res=iframeWin.gettabledata();
+        var  str="相似信访记录：\n";
+        for (var i = 0; i <res.length ; i++) {
+            var dubvioStrategyName;
+            if(res[i].dubvioStrategyName.length>10){
+                dubvioStrategyName=res[i].dubvioStrategyName.substring(0,10)+"...";
+            }else {
+                dubvioStrategyName=res[i].dubvioStrategyName;
+            }
+            str+="  "+res[i].jbxxXffysj+"     反映人："+res[i].dubvioFyr+"     反映对象："+res[i].dubvioFydx+"     反应问题："+dubvioStrategyName+"   \n";
+        }
+        $("#jbxxXfbz").val(str);
+        layer.close(index);
+    }
+
+
+    /*-选择人员树*/
+    function selectPersonTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = ctx + "system/courtOrgan/selectDeptTree/" + deptId;
+        var options = {
+            title: '选择人员',
+            width: "380",
+            height: "380",
+            url: ctx + "system/courtOrgan/selectDeptTree/" + deptId,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        if ($.tree.notAllowParents(tree)) {
+            var body = layer.getChildFrame('body', index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            var name = body.find('#treeName').val();
+            $("#ah").empty()
+            $("#main").hide();
+            $("#secondMain").show();
+            $.ajax({
+                url: ctx + "module/dubvioEvent/queyAhAndAjbhByAjbh",
+                type: "get",
+                dataType: "json",
+                data: {"name": name},
+                success: function (result) {
+                    var string = ' <option value="">请选择</option>';
+                    $("#tHead").find('.ah').append(string);
+                    for (var i = 0; i < result.length; i++) {
+                        var newOption = document.createElement("option");
+                        newOption.text = result[i].jbxx_ah;
+                        newOption.value = result[i].jbxx_ah;
+                        $("#tHead").find('.ah').append(newOption);
+                    }
+                }
+
+            })
+            $("#main").html("");
+            layer.close(index);
+
+
+        }
+    }
+
+    function doSubmits( ) {
+
+        var name = $.trim($("#treeName").val());
+        $("#ah").empty();
+        $("#main").hide();
+        $("#secondMain").show();
+
+        $("#main").html("");
+
+        if (name != null & name != undefined & name != "") {
+            $.ajax({
+                url: ctx + "module/dubvioEvent/queyAhAndAjbhByAjbh",
+                type: "get",
+                dataType: "json",
+                data: {"name": name},
+                success: function (result) {
+                    var string = ' <option value="">请选择</option>';
+                    $("#tHead").find('.ah').append(string);
+
+                    if (result.length != 0) {
+                        for (var i = 0; i < result.length; i++) {
+                            var newOption = document.createElement("option");
+                            newOption.text = result[i].jbxx_ah;
+                            newOption.value = result[i].jbxx_ah;
+                            $("#tHead").find('.ah').append(newOption);
+                        }
+                    }
+
+                }
+
+            })
+        }
+        layer.close(index);
+
+    }
+
+
+    function checkTel() {
+        $.operate.save(prefix + "/add", $('#form-dubvioEvent-add').serialize());
+    }
+
+    // function checkTel() {
+    //     var tel = $("#dubvioFyrdh").val();
+    //     var mobile = /^[1][3,4,5,7,8][0-9]{9}$/
+    //     var phone = /^0\d{2,3}-?\d{7,8}$/;
+    //     if (mobile.test(tel) || phone.test(tel)) {
+    //         $.operate.save(prefix + "/add", $('#form-dubvioEvent-add').serialize());
+    //     } else {
+    //         layer.msg('反映电话格式不正确，请输入正确的手机号或带区号的固定电话！', {
+    //             time: 1500,//3s后自动关闭
+    //             icon: 5
+    //         });
+    //     }
+    // }
+
+
+    $("#ah").change(function () {
+
+        var jbxxAh = $("#ah").val();
+
+
+        if (jbxxAh == "" || jbxxAh == null) {
+            $("#main").html("");
+
+        } else {
+            selectAhAll(jbxxAh);
+        }
+
+    });
+
+
+
+
+    // function selectAhAll(jbxxAh) {
+    //
+    //     var str = '';
+    //     $("#main").html("");
+    //     $.ajax({
+    //         url: ctx + "module/dubvioEvent/queryAllByAjbh",
+    //         type: "post",
+    //         dataType: "json",
+    //         data: {"jbxxAh": jbxxAh},
+    //         success: function (result) {
+    //
+    //             if (result.length != 0) {
+    //                 str = "\n" +
+    //                     "                <div class=\"select-info-container\">" +
+    //                     "                    <div class=\"form-group col-sm-6\">" +
+    //                     "                        <label class='col-sm-3 control-label'>经办法院：</label>" +
+    //                     "                        <div class=\"col-sm-8\">" +
+    //                     "                           <input type=\"text\" name=\"jbfyNames\" readonly=\"readonly\"  style=\"background-color:#eee\"  value=" + result.dubvioEventList[0].jbfyName + "  >" +
+    //                     "                        </div>" +
+    //                     "                    </div>" +
+    //                     "                    <div class=\"form-group col-sm-6\">" +
+    //                     "                        <label class='col-sm-3 control-label'>案号：</label>" +
+    //                     "                        <div class=\"col-sm-8\">" +
+    //                     "                           <input type=\"text\" name=\"jbxxAhs\" readonly=\"readonly\"   style=\"background-color:#eee\" value=" + result.dubvioEventList[0].jbxxAh + "   >" +
+    //                     "                        </div>" +
+    //                     "                    </div>\n" +
+    //                     // "                    <div class=\"form-group col-sm-6\">\n" +
+    //                     // "                        <label class='col-sm-3 control-label'>反映问题类型：</label>\n" +
+    //                     // "                        <div class=\"col-sm-8\">" +
+    //                     // "                           <input type=\"text\" name=\"dubvioStrategyName\" readonly=\"readonly\"   style=\"background-color:#eee\"  value=" + result.dubvioEventList[0].dubvioStrategyName + "  >\n" +
+    //                     // "                        </div>" +
+    //                     // "                    </div>\n" +
+    //                     "                    <!--<div class=\"col-sm-4\">-->\n" +
+    //                     "                    <!--<label>法官ID：</label>-->\n" +
+    //                     "                    <input type=\"hidden\"  name=\"jbxxCbrIds\" value=" + result.dubvioEventList[0].jbxxCbrId + ">\n" +
+    //                     "                    <input type=\"hidden\"  name=\"dubvioIds\" value=" + result.dubvioEventList[0].dubvioId + ">\n" +
+    //                     "                    <input type=\"hidden\"  name=\"dubvioStrategyIds\" value=" + result.dubvioEventList[0].dubvioStrategyId + ">\n" +
+    //                     "                    <input type=\"hidden\"  name=\"type\" value=" + 1 + ">\n" +
+    //                     "                    <!--</div>-->\n" +
+    //                     "                </div>\n" +
+    //                     "                <div class=\" select-info-container\">\n" +
+    //                     "\n" +
+    //                     "\n" +
+    //                     "                    <div class=\"form-group col-sm-6\">\n" +
+    //                     "                        <label class='col-sm-3 control-label'>法官姓名：</label>\n" +
+    //                     "                        <div class=\"col-sm-8\">" +
+    //                     "                        <input type=\"text\" name=\"jbxxCbrNames\" readonly=\"readonly\"  style=\"background-color:#eee\"  value=" + result.dubvioEventList[0].jbxxCbrName + "  >" +
+    //                     "                        </div>" +
+    //                     "                    </div>\n" +
+    //                     "                    <div class=\"form-group col-sm-6\">\n" +
+    //                     "                        <label class='col-sm-3 control-label'>被告人：</label>\n" +
+    //                     "                        <div class=\"col-sm-8\">" +
+    //                     "                        <input type=\"text\" name=\"jbxxBgrs\" readonly=\"readonly\"   style=\"background-color:#eee\" value=" + result.dubvioEventList[0].jbxxBgr + "  >" +
+    //                     "                        </div>" +
+    //                     "                    </div>\n" +
+    //                     "\n" +
+    //                     "                    <div class=\"form-group col-sm-6\">\n" +
+    //                     "                        <label class='col-sm-3 control-label'>承办庭：</label>\n" +
+    //                     "                        <div class=\"col-sm-8\">" +
+    //                     "                        <input type=\"text\" name=\"jbxxCbtNames\"  style=\"background-color:#eee\"  value=" + result.dubvioEventList[0].jbxxCbtName + " readonly='readonly' >" +
+    //                     "                        </div>" +
+    //                     "                    </div>\n" +
+    //                     "                    <!--<div class=\"col-sm-4\">-->\n" +
+    //                     "                    <!--<label>承办庭ID：</label>-->\n" +
+    //                     "                    <input type=\"hidden\"  name=\"jbxxCbtIds\" readonly=\"readonly\" value=" + result.dubvioEventList[0].jbxxCbtId + " >" +
+    //                     "                     <input type=\"hidden\"  name=\"jbxxAjbhs\" readonly=\"readonly\" value=" + result.dubvioEventList[0].jbxxAjbh + " >" +
+    //                     "                     <input type=\"hidden\"  name=\"jbfyIds\" readonly=\"readonly\"   value=" + result.dubvioEventList[0].jbfyId + " >" +
+    //                     "                    <!--</div>-->\n" +
+    //                     "                </div>\n" +
+    //                     "                <div class=\"select-info-container\">\n" +
+    //                     "                    <div class=\"form-group col-sm-6\">\n" +
+    //                     "                        <label class='col-sm-3 control-label'>案件类别：</label>\n" +
+    //                     "                        <div class=\"col-sm-8\">" +
+    //                     "                        <input type=\"text\" name=\"jbxxAjlbs\" readonly=\"readonly\"  style=\"background-color:#eee\" value=" + result.dubvioEventList[0].jbxxAjlb + "  >\n" +
+    //                     "                        </div>" +
+    //                     "                    </div>\n" +
+    //                     // "                    <div class=\"form-group col-sm-6\">\n" +
+    //                     // "                        <label class='col-sm-3 control-label'>风险等级：</label>\n" +
+    //                     // "                        <div class=\"col-sm-8\">" +
+    //                     // "                        <input type=\"text\" name=\"risksLevel\" readonly=\"readonly\"  style=\"background-color:#eee\" value=" + result.dubvioEventList[0].risksLevel + "  >\n" +
+    //                     // "                        </div>" +
+    //                     // "                    </div>\n" +
+    //                     "                    <div class=\"form-group col-sm-6\">\n" +
+    //                     "                        <label class='col-sm-3 control-label'>收案日期：</label>\n" +
+    //                     "                        <div class=\"col-sm-8\">" +
+    //                     "                        <input type=\"text\" name=\"jbxxSarqs\" readonly=\"readonly\" style=\"background-color:#eee\"  value=" + result.dubvioEventList[0].jbxxSarq + "  >" +
+    //                     "                        </div>" +
+    //                     "                    </div>\n" +
+    //                     "                </div>\n" +
+    //                     "                <div class=\"select-info-container\">\n" +
+    //                     "                    <div class=\"form-group col-sm-6\">\n" +
+    //                     "                        <label class='col-sm-3 control-label'>立案日期：</label>\n" +
+    //                     "                        <div class=\"col-sm-8\">" +
+    //                     "                        <input type=\"text\" name=\"jbxxLarqs\" readonly=\"readonly\" style=\"background-color:#eee\"  value=" + result.dubvioEventList[0].jbxxLarq + "  >" +
+    //                     "                        </div>" +
+    //                     "                    </div>\n" +
+    //                     "                    <div class=\"form-group col-sm-6\">\n" +
+    //                     "                        <label class='col-sm-3 control-label'>分案日期：</label>\n" +
+    //                     "                        <div class=\"col-sm-8\">" +
+    //                     "                        <input type=\"text\" name=\"jbxxFarqs\" readonly=\"readonly\" style=\"background-color:#eee\"  value=" + result.dubvioEventList[0].jbxxFarq + "  >" +
+    //                     "                        </div>" +
+    //                     "                    </div>\n" +
+    //                     "                    <div class=\"form-group col-sm-6\">\n" +
+    //                     "                        <label class='col-sm-3 control-label'>开庭日期：</label>\n" +
+    //                     "                        <div class=\"col-sm-8\">" +
+    //                     "                        <input type=\"text\" name=\"jbxxKtrqs\" readonly=\"readonly\" style=\"background-color:#eee\"  value=" + result.dubvioEventList[0].jbxxKtrq + "  >" +
+    //                     "                        </div>" +
+    //                     "                    </div>\n" +
+    //                     "                </div>\n" +
+    //                     "                <div class=\" select-info-container\">\n" +
+    //                     "                    <div class=\"form-group col-sm-6\">\n" +
+    //                     "                        <label class='col-sm-3 control-label'>结案日期：</label>\n" +
+    //                     "                        <div class=\"col-sm-8\">" +
+    //                     "                        <input type=\"text\" name=\"jbxxJarqs\" readonly=\"readonly\"  style=\"background-color:#eee\"  value=" + result.dubvioEventList[0].jbxxJarq + " >" +
+    //                     "                        </div>" +
+    //                     "                    </div>\n" +
+    //                     "                    <div class=\"form-group col-sm-6\">\n" +
+    //                     "                        <label class='col-sm-3 control-label'>归档日期：</label>\n" +
+    //                     "                        <div class=\"col-sm-8\">" +
+    //                     "                        <input type=\"text\" name=\"jbxxGdrqs\" readonly=\"readonly\"  style=\"background-color:#eee\"  value=" + result.dubvioEventList[0].jbxxGdrq + "  >" +
+    //                     "                        </div>" +
+    //                     "                    </div>\n" +
+    //                     // "                    <div class=\"form-group col-sm-6\">\n" +
+    //                     // "                        <label class='col-sm-3 control-label'>创建时间：</label>\n" +
+    //                     // "                        <div class=\"col-sm-8\">" +
+    //                     // "                        <input type=\"text\" name=\"createTimess\" readonly=\"readonly\" style=\"background-color:#eee\"  value=" + result.dubvioEventList[0].createTime + "  >\n" +
+    //                     // "                        </div>" +
+    //                     // "                    </div>\n" +
+    //                     "                </div>\n" +
+    //                     "            "
+    //
+    //                 $("#main").html(str);
+    //             }
+    //
+    //         }
+    //
+    //     })
+    // }
+
+
+   // function setCourt(obj){
+   //      var  val=obj.value;
+   //
+   //      $("#jbxxCbtId").empty();
+   //     $.ajax({
+   //         url: ctx + "module/dubvioEvent/queryCbtByFyId",
+   //         type: "get",
+   //         dataType: "json",
+   //         data: {"fyId": val},
+   //         success: function (result) {
+   //             var string = ' <option value="">请选择</option>';
+   //             $("#tCbt").find('.jbxxCbtId').append(string);
+   //
+   //             if (result.length != 0) {
+   //                 for (var i = 0; i < result.length; i++) {
+   //                     var newOption = document.createElement("option");
+   //                     newOption.text = result[i].deptName;
+   //                     newOption.value = result[i].cid;
+   //                     $("#tCbt").find('.jbxxCbtId').append(newOption);
+   //                 }
+   //             }
+   //
+   //         }
+   //
+   //     })
+   //
+   //
+   //
+   // }
+</script>
+
+<script type="text/javascript">
+    function  validateJbfy() {
+        $(".ssd").find(".select2-selection--single").css({"border":"1px dotted #cc5965","background-color":"#fbe2e2","border-color":"#c66161"});
+
+        $(".ssd").find(".select2-container").mouseover(function () {
+            $(".ssd").find(".select2-selection--single").css({"border":"1px dotted #ddd","background-color":"#fff"});
+        })
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datcent.project.tool.layout.mapper.LayoutMapper">
+    
+    <resultMap type="Layout" id="LayoutResult">
+        <result property="layoutId"    column="layout_id"    />
+        <result property="layoutName"    column="layout_name"    />
+        <result property="romanceType"    column="romance_type"    />
+        <result property="romanceTable"    column="romance_table"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+	
+	<sql id="selectLayoutVo">
+        select layout_id, layout_name, romance_type, romance_table, remark from tool_layout
+    </sql>
+	
+    <select id="selectLayoutList" parameterType="Layout" resultMap="LayoutResult">
+        <include refid="selectLayoutVo"/>
+        <where>  
+            <if test="layoutId != null and layoutId != ''"> and layout_id = #{layoutId}</if>
+             <if test="layoutName != null and layoutName != ''"> and layout_name = #{layoutName}</if>
+             <if test="romanceType != null and romanceType != ''"> and romance_type = #{romanceType}</if>
+             <if test="romanceTable != null and romanceTable != ''"> and romance_table = #{romanceTable}</if>
+             <if test="remark != null and remark != ''"> and remark = #{remark}</if>
+         </where>
+    </select>
+    
+    <select id="selectLayoutById" parameterType="String" resultMap="LayoutResult">
+        <include refid="selectLayoutVo"/>
+        where layout_id = #{layoutId}
+    </select>
+        
+    <insert id="insertLayout" parameterType="Layout">
+        insert into tool_layout
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="layoutId != null and layoutId != '' ">layout_id,</if>
+			<if test="layoutName != null and layoutName != '' ">layout_name,</if>
+			<if test="romanceType != null and romanceType != '' ">romance_type,</if>
+			<if test="romanceTable != null and romanceTable != '' ">romance_table,</if>
+			<if test="remark != null and remark != '' ">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="layoutId != null and layoutId != ''">#{layoutId},</if>
+			<if test="layoutName != null and layoutName != ''">#{layoutName},</if>
+			<if test="romanceType != null and romanceType != ''">#{romanceType},</if>
+			<if test="romanceTable != null and romanceTable != ''">#{romanceTable},</if>
+			<if test="remark != null and remark != ''">#{remark},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateLayout" parameterType="Layout">
+        update tool_layout
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="layoutName != null  and layoutName != ''  ">layout_name = #{layoutName},</if>
+            <if test="romanceType != null  and romanceType != ''  ">romance_type = #{romanceType},</if>
+            <if test="romanceTable != null  ">romance_table = #{romanceTable},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+        </trim>
+        where layout_id = #{layoutId}
+    </update>
+
+	<delete id="deleteLayoutById" parameterType="String">
+        delete from tool_layout where layout_id = #{layoutId}
+    </delete>
+	
+    <delete id="deleteLayoutByIds" parameterType="String">
+        delete from tool_layout where layout_id in 
+        <foreach item="layoutId" collection="array" open="(" separator="," close=")">
+            #{layoutId}
+        </foreach>
+    </delete>
+    
+</mapper>

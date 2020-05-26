@@ -1,0 +1,401 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+	<div class="col-sm-12 select-info search-collapse">
+		<form id="case" class="form-horizontal">
+			<!--<div class="form-group select-info-container">-->
+			<!--&lt;!&ndash;<label>线索ID：</label>&ndash;&gt;-->
+			<!--<input type="hidden"  name="id" id="id" th:value="${id}">-->
+			<!--<input type="hidden"  name="name" id="name" th:value="${name}">-->
+			<!--&lt;!&ndash;<label>线索来源(1系统策略筛查 2信访录入)：</label>&ndash;&gt;-->
+			<!--<input type="hidden"  name="clueSource">-->
+
+			<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+			<!--&lt;!&ndash;<label>可疑点：</label>&ndash;&gt;-->
+			<!--&lt;!&ndash;<input type="text"  name="dubvioStrategyName">&ndash;&gt;-->
+			<!--&lt;!&ndash;</div>&ndash;&gt;-->
+			<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+			<!--&lt;!&ndash;<label>反映人：</label>&ndash;&gt;-->
+			<!--&lt;!&ndash;<input type="text"  name="clueFyr">&ndash;&gt;-->
+			<!--&lt;!&ndash;</div>&ndash;&gt;-->
+			<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+			<!--&lt;!&ndash;<label>反映对象：</label>&ndash;&gt;-->
+			<!--&lt;!&ndash;<input type="text"  name="clueFydx">&ndash;&gt;-->
+			<!--&lt;!&ndash;</div>&ndash;&gt;-->
+			<!--</div>-->
+			<!--<div class="form-group select-info-container">-->
+			<!--<div class="col-sm-4">-->
+			<!--&lt;!&ndash;<label>反映电话：</label>&ndash;&gt;-->
+			<!--<input type="hidden"  name="clueFyrdh">-->
+			<!--</div>-->
+			<!--<div class="col-sm-4">-->
+			<!--<label>案号：</label>-->
+			<!--<input type="text"  name="jbxxAh">-->
+			<!--</div>-->
+
+			<!--<div class="col-sm-4">-->
+			<!--<label>反映问题：</label>-->
+			<!--<input type="text"  name="clueFywt">-->
+			<!--</div>-->
+			<!--<div class="col-sm-4">-->
+			<!--<label>法官姓名：</label>-->
+			<!--<input type="text"  name="jbxxCbrName">-->
+			<!--</div>-->
+			<!--</div>-->
+
+			<!--<div class="form-group select-info-container">-->
+			<!--<div class="col-sm-4">-->
+			<!--<label>法官ID：</label>-->
+			<!--<label>案件编号：</label>-->
+			<!--<input type="hidden"  name="jbxxAjbh">-->
+			<!--<input type="hidden"  name="jbxxCbrId">-->
+			<!--&lt;!&ndash;<label>线索状态：</label>&ndash;&gt;-->
+			<!--<input type="hidden"  name="clueStatus">-->
+			<!--&lt;!&ndash;<label>违纪事件ID：</label>&ndash;&gt;-->
+			<!--<input type="hidden"  name="dubvioId">-->
+			<!--&lt;!&ndash;<label>策略ID：</label>&ndash;&gt;-->
+			<!--<input type="hidden"  name="dubvioStrategyId">-->
+			<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+			<!--<div class="col-sm-4">-->
+			<!--<label>被告人：</label>-->
+			<!--<input type="text"  name="jbxxBgr">-->
+			<!--</div>-->
+			<!--<div class="col-sm-4">-->
+			<!--<label>承办庭名称：</label>-->
+			<!--<input type="text"  name="jbxxCbtName">-->
+			<!--</div>-->
+			<!--<div class="col-sm-4">-->
+			<!--<label>案件类别：</label>-->
+			<!--<input type="text"  name="jbxxAjlb">-->
+			<!--</div>-->
+			<!--<div class="col-sm-4">-->
+			<!--<label>收案日期：</label>-->
+			<!--<input type="hidden"  name="jbxxSarq">-->
+			<!--&lt;!&ndash;</div>&ndash;&gt;-->
+			<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+			<!--&lt;!&ndash;<label>承办庭ID：</label>&ndash;&gt;-->
+			<!--<input type="hidden"  name="jbxxCbtId">-->
+			<!--&lt;!&ndash;</div>&ndash;&gt;-->
+			<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+			<!--&lt;!&ndash;<label>立案日期：</label>&ndash;&gt;-->
+			<!--<input type="hidden"  name="jbxxLarq">-->
+			<!--&lt;!&ndash;</div>&ndash;&gt;-->
+			<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+			<!--&lt;!&ndash;<label>分案日期：</label>&ndash;&gt;-->
+			<!--<input type="hidden"  name="jbxxFarq">-->
+			<!--&lt;!&ndash;</div>&ndash;&gt;-->
+			<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+			<!--&lt;!&ndash;<label>开庭日期：</label>&ndash;&gt;-->
+			<!--<input type="hidden"  name="jbxxKtrq">-->
+			<!--&lt;!&ndash;</div>&ndash;&gt;-->
+			<!--&lt;!&ndash;<label>结案日期：</label>&ndash;&gt;-->
+			<!--<input type="hidden"  name="jbxxJarq">-->
+			<!--&lt;!&ndash;<label>归档日期：</label>&ndash;&gt;-->
+			<!--<input type="hidden"  name="jbxxGdrq">-->
+			<!--</div>-->
+
+			<div class="form-group select-info-container">
+				<!--<div class="col-sm-4">-->
+				<!--<label>风险等级：</label>-->
+				<!--<select id="risksLevel" name="risksLevel" th:with="type=${@dict.getType('risks_grades')}">-->
+				<!--<option value="">请选择</option>-->
+				<!--<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+				<!--</select>-->
+				<!--</div>-->
+				<div class="col-sm-4">
+					<label>开始时间：</label>
+					<input type="text"   class="time-input" id="startTime" placeholder="请选择" name="params[startTime]"/>
+				</div>
+
+				<div class="col-sm-4">
+					<label>结束时间：</label>
+					<input type="text"   class="time-input" id="endTime_12" placeholder="请选择" name="params[endTime]"/>
+				</div>
+				<!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
+				<!--&lt;!&ndash;<label>流程ID：</label>&ndash;&gt;-->
+				<!--&lt;!&ndash;<input type="text"  name="processId">&ndash;&gt;-->
+				<!--&lt;!&ndash;</div>&ndash;&gt;-->
+			</div>
+
+			<div class="form-group select-info-container">
+				<div class="col-sm-12 select-info-btn">
+					<a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+					<a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="col-sm-12 select-table table-striped">
+		<table id="bootstrap-table" data-mobile-responsive="true"></table>
+	</div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:clue:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:clue:remove')}]];
+    var releaseFlag = [[${@permission.hasPermi('module:processMatter:addDubvioEvent')}]];
+    var listFlag = [[${@permission.hasPermi('module:clue:list')}]];
+    var datas_18 = [[${@dict.getType('risks_grades')}]];
+    var prefix = ctx + "module/clue";
+    $(function() {
+
+
+        var options = {
+            url: prefix + "/queryFyCzjg",
+            search: false,
+            queryParams: queryParams,
+            columns: [
+            //     {
+            //     checkbox: true
+            // },
+                {
+                    field : 'dept_name',
+                    title : '单位名称',
+                    formatter:function(value,row,index){
+
+                                return "<a style='text-decoration:none' onclick='cbtDetail("+row.jbfy_id+")' ><font color='blue'>" + row.dept_name +"</font></a>";
+                            }
+
+                },
+                {
+                    field : 'jc',
+                    title : '旧存',
+                    formatter:function(value,row,index){
+                      var jcs="1";
+
+                        if (row.jc==0){
+                            return "<font >"+row.jc+"</font>";
+                        }else {
+                        return "<a style='text-decoration:none' onclick='detail("+row.jbfy_id+","+jcs+")' ><font color='blue'>" + row.jc +"</font></a>";
+                        }
+                    }
+
+                },
+
+                {
+                    field : 'xs',
+                    title : '新收',
+                    formatter:function(value,row,index){
+                        var xss="2"
+
+                        if (row.xs==0){
+                            return "<font >"+row.xs+"</font>";
+                        }else {
+
+
+                        return "<a style='text-decoration:none' onclick='detail("+row.jbfy_id+","+xss+")' ><font color='blue'>" + row.xs +"</font></a>";
+                        }
+                    }
+
+                },
+
+                {
+                    field : 'wj',
+                    title : '未结',
+                    formatter:function(value,row,index){
+                        var wjs="3"
+
+                        if (row.wj==0){
+                            return "<font >"+row.wj+"</font>";
+                        }else {
+
+
+                        return "<a style='text-decoration:none' onclick='detail("+row.jbfy_id+","+wjs+")' ><font color='blue'>" + row.wj +"</font></a>";
+                        }
+                    }
+
+                },
+                {
+                    field : 'yj',
+                    title : '已结',
+                    formatter:function(value,row,index){
+                        var yjs="4"
+
+                        if (row.yj==0){
+                            return "<font >"+row.yj+"</font>";
+                        }else{
+
+
+                        return "<a style='text-decoration:none' onclick='detail("+row.jbfy_id+","+yjs+")' ><font color='blue'>" + row.yj +"</font></a>";
+                        }
+                    }
+
+                },
+                {
+                    field : 'zcdc',
+                    title : '暂存待查',
+                    formatter:function(value,row,index){
+                        var zcdcs="5"
+                        if (row.zcdc==0){
+                            return "<font >"+row.zcdc+"</font>";
+                        }else {
+
+                        return "<a style='text-decoration:none' onclick='detail("+row.jbfy_id+","+zcdcs+")' ><font color='blue'>" + row.zcdc +"</font></a>";
+                        }
+                        }
+
+                },
+                {
+                    field : 'yylj',
+                    title : '予以了结',
+                    formatter:function(value,row,index){
+                        var yyljs="6"
+                        if (row.yylj==0){
+                            return "<font >"+row.yylj+"</font>";
+                        }else{
+
+
+                        return "<a style='text-decoration:none' onclick='detail("+row.jbfy_id+","+yyljs+")' ><font color='blue'>" + row.yylj +"</font></a>";
+                        }
+                    }
+
+                },
+                {
+                    field : 'thhx',
+                    title : '谈话函询',
+                    formatter:function(value,row,index){
+                        var thhxs="7"
+                        if (row.thhx==0){
+                            return "<font >"+row.thhx+"</font>";
+                        }else {
+
+                        return "<a style='text-decoration:none' onclick='detail("+row.jbfy_id+","+thhxs+")' ><font color='blue'>" + row.thhx +"</font></a>";
+                        }
+                    }
+
+                },
+                {
+                    field : 'cbhs',
+                    title : '初步核实',
+                    formatter:function(value,row,index){
+                        var cbhss="8"
+                        if (row.cbhs==0){
+                            return "<font >"+row.cbhs+"</font>";
+                        }else {
+                        return "<a style='text-decoration:none' onclick='detail("+row.jbfy_id+","+cbhss+")' ><font color='blue'>" + row.cbhs +"</font></a>";
+                        }
+                    }
+
+                },
+                {
+                    field : 'ladc',
+                    title : '立案调查',
+                    formatter:function(value,row,index){
+                        var ladcs="9"
+                        if (row.ladc==0){
+                            return "<font >"+row.ladc+"</font>";
+                        }else {
+                        return "<a style='text-decoration:none' onclick='detail("+row.jbfy_id+","+ladcs+")' ><font color='blue'>" + row.ladc +"</font></a>";
+                        }
+                        }
+
+                },
+                // {
+                //     field : 'ajsl',
+                //     title : '案件审理',
+                //     formatter:function(value,row,index){
+                //         var ajsls="10"
+                //         if (row.ajsl==0){
+                //             return "<font >"+row.ajsl+"</font>";
+                //         }else {
+				//
+                //         return "<a style='text-decoration:none' onclick='detail("+row.jbfy_id+","+ajsls+")' ><font color='blue'>" + row.ajsl +"</font></a>";
+                //         }
+                //         }
+				//
+                // },
+
+
+                ]
+        };
+        initSimpleTabl.init(options);
+    });
+
+    function queryParams(params) {
+        return {
+            pageSize:       params.limit,
+            pageNum:        params.offset / params.limit + 1,
+            searchValue:    params.search,
+            orderByColumn:  params.sort,
+            isAsc:          params.order
+        };
+    }
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({elem: '#startTime', theme: 'molv'});
+        laydate.render({elem: '#endTime_12', theme: 'molv'});
+        laydate.render({elem: '#startTime_13', theme: 'molv'});
+        laydate.render({elem: '#endTime_13', theme: 'molv'});
+        laydate.render({elem: '#startTime_14', theme: 'molv'});
+        laydate.render({elem: '#endTime_14', theme: 'molv'});
+        laydate.render({elem: '#startTime_15', theme: 'molv'});
+        laydate.render({elem: '#endTime_15', theme: 'molv'});
+        laydate.render({elem: '#startTime_16', theme: 'molv'});
+        laydate.render({elem: '#endTime_16', theme: 'molv'});
+        laydate.render({elem: '#startTime_17', theme: 'molv'});
+        laydate.render({elem: '#endTime_17', theme: 'molv'});
+    });
+
+
+
+    /*策略列表-详细*/
+    function detail(fyId,index) {
+        var  startTime=$("#startTime").val();
+        var  endTime=$("#endTime_12").val();
+
+        if(startTime==null||startTime==""||startTime==undefined){
+
+            startTime="2019-01-01"
+        }
+
+        if(endTime==null||endTime==""||endTime==undefined){
+
+            endTime=getNowFormatDate();
+        }
+
+        var url = prefix + '/fyczTjDetail?fyId='+fyId+"&startTime=" + startTime+"&endTime="+ endTime+"&index="+index;
+        createMenuItem(url, "线索详情");
+    }
+
+    function cbtDetail(id){
+        var  startTime=$("#startTime").val();
+        var  endTime=$("#endTime_12").val();
+
+        if(startTime==null||startTime==""||startTime==undefined){
+
+            startTime="2019-01-01"
+        }
+
+        if(endTime==null||endTime==""||endTime==undefined){
+
+            endTime=getNowFormatDate();
+        }
+        var url = prefix + '/cbtCzDetail?id='+id+"&startTime=" + startTime+"&endTime="+ endTime;
+        createMenuItem(url, "承办庭线索处置分类详情");
+    }
+
+
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+    }
+
+</script>
+</body>
+</html>

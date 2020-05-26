@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+<link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+
+<style type="text/css">
+    /* 新增样式20190419 */
+    .select2-container .select2-selection--single{height: 34px;}
+    .select2-container--default .select2-selection--single{border: 1px solid #ddd;}
+    .select2-container--default .select2-selection--single .select2-selection__rendered{line-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {padding: 0px 5px;}
+    .select-info-container input, .select-info-container select{width: 100%}
+    .select2-container{height: 34px;line-height: 34px}
+    .select2-container--default .select2-selection--multiple{height: 34px;width: 100%;border: 1px solid #ddd;}
+    .select2-container .select2-selection--multiple{min-height: 34px}
+    .select2-container--default .select2-selection--multiple .select2-selection__rendered{height: 34px; }
+    .select2-container--default.select2-container--focus .select2-selection--multiple{border: 1px solid #ddd;}
+</style>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="col-sm-12 select-info search-collapse">
+        <form class="form-horizontal m" id="form-knowledge-detail" th:object="${knowledge}">
+            <input type="hidden" th:field="*{knowledgeId}">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">标题：</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" th:field="*{knowledgeTitle}" name="knowledgeTitle" id="knowledgeTitle">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">类型：</label>
+                <div class="col-sm-8">
+                    <select id="knowledgeType"  class="form-control m-b" name="knowledgeType" th:with="type=${@dict.getType('knowledge_type')}">
+                        <option value="">请选择</option>
+                        <option th:field="*{knowledgeType}" th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">内容：</label>
+                <div class="col-sm-8">
+                    <input id="knowledgeContent" name="knowledgeContent" type="hidden" th:field="*{knowledgeContent}">
+                    <div class="summernote" name="summernote" id="summernote"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">说明：</label>
+                <div class="col-sm-8">
+                    <textarea rows="8" name="remark" class="form-control" id="remark" th:text="*{remark}" disabled ></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-control-static col-sm-offset-10">
+                    <button onclick="$.modal.close()" class="btn btn-danger" id="close" type="button">关闭</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+<script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.summernote').summernote({
+            height: '250px',
+            lang: 'zh-CN'
+        });
+
+        var knowledgeContent = $("#knowledgeContent").val();
+        $(".summernote").code(knowledgeContent);
+    });
+</script>
+</body>
+</html>

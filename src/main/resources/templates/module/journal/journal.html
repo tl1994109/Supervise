@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-info search-collapse">
+        <form id="case" class="form-horizontal">
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>任务名称：</label>
+                    <input type="text" name="journalTaskid">
+                </div>
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-12 select-info-btn">
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i
+                            class="fa fa-search"></i>&nbsp;搜索</a>
+                    <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i
+                            class="fa fa-refresh"></i>&nbsp;重置</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+    <!--<a class="btn btn-success" onclick="operateComponent.add('module/journal/add','任务日志')" shiro:hasPermission="module:journal:add">-->
+    <!--<i class="fa fa-plus"></i> 新增-->
+    <!--</a>-->
+    <!--<a class="btn btn-primary btn-detail disabled" onclick="$.operate.detail()" shiro:hasPermission="module:journal:detail">-->
+    <!--<i class="fa fa-plus"></i> 详细-->
+    <!--</a>-->
+    <!--<a class="btn btn-warning btn-edit disabled" onclick="operateComponent.edit('','module/journal/edit/{id}','任务日志')" shiro:hasPermission="module:journal:edit">-->
+    <!--<i class="fa fa-plus"></i> 编辑-->
+    <!--</a>-->
+    <a class="btn btn-danger btn-del disabled" onclick="operateComponent.removeAll('module/journal/remove')"
+       shiro:hasPermission="module:journal:remove">
+        <i class="fa fa-trash-o"></i> 批量删除
+    </a>
+    <a class="btn btn-select">
+				<span id="exportToolbar" class="btn-group" style="width: 110px; display: inline-block">
+					<select id="sel_exportoption" class="">
+						<option value="">导出当页数据</option>
+						<option value="all">导出全部数据</option>
+						<option value="selected">导出选中数据</option>
+					</select>
+				</span>
+    </a>
+    </div>
+
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('module:journal:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('module:journal:remove')}]];
+    var prefix = ctx + "module/journal";
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            search: false,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'journalId',
+                    title: '日志编号',
+                    visible: false,
+                },
+                {
+                    field: 'journalContent',
+                    title: '修改内容',
+                },
+                {
+                    field: 'journalTaskid',
+                    title: '任务名称',
+                },
+                {
+                    field: 'journalCreatedate',
+                    title: '修改时间',
+                },
+                {
+                    field: 'journalCreateby',
+                    title: '修改人',
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="operateComponent.edit(\'' + row.journalId + '\'\,\'module/journal/edit/{id}\'\,\'任务日志\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="operateComponent.remove(\'' + row.journalId + '\'\,\'module/journal/remove\'\,\'任务日志\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        initSimpleTabl.init(options);
+    });
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+    });
+</script>
+<!--bootstrap-table-export数据导出-->
+<script type="text/javascript">
+    $("#sel_exportoption").change(function () {
+        //刷新参数设置
+        $('#bootstrap-table').bootstrapTable('refreshOptions', {
+            exportDataType: $(this).val()
+        });
+    });
+</script>
+</body>
+</html>

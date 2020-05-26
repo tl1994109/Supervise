@@ -1,0 +1,105 @@
+<head th:fragment="header">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <!--360浏览器优先以webkit内核解析-->
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧监督管理平台（法院）</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="../static/img/logo.png" th:href="@{img/logo.png}"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+    <!-- bootstrap-table 表格插件样式 -->
+    <link th:href="@{/ajax/libs/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
+    <link th:href="@{/ajax/libs/bootstrap-treetable/bootstrap-treetable.css}" rel="stylesheet"/>
+    <link th:href="@{/css/animate.css}" rel="stylesheet"/>
+    <link th:href="@{/css/common.css}" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/ajax/libs/select/select2.css}" rel="stylesheet"/>
+    <link th:href="@{/datcent/css/ry-ui.css}" rel="stylesheet"/>
+
+    <!-- 富文本编辑器-->
+    <link th:href="@{/ajax/libs/summernote/summernote.css}" rel="stylesheet"/>
+    <link th:href="@{/ajax/libs/summernote/summernote-bs3.css}" rel="stylesheet"/>
+
+    <!--&lt;!&ndash;GooFlow插件引入&ndash;&gt;-->
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/gooFlow/codebase/GooFlow.css}"/>-->
+
+    <!--&lt;!&ndash;handsontable插件&ndash;&gt;-->
+    <!--<link data-jsfiddle="common" rel="stylesheet" media="screen" th:href="@{/handsontable/dist/handsontable.css}">-->
+    <!--<link data-jsfiddle="common" rel="stylesheet" media="screen" th:href="@{/handsontable/dist/pikaday/pikaday.css}">-->
+
+    <!--上传文件插件-->
+    <link th:href="@{/css/easy-upload.css}" rel="stylesheet"/>
+
+    <!--在IE9下兼容html5标签-->
+    <script th:src="@{/js/html5shiv.js}"></script>
+
+</head>
+<div th:fragment="footer">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
+    <script th:src="@{/js/jquery.form.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+    <script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+    <script th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
+    <script th:src="@{/datcent/js/ry-ui.js?v=2.4.0}"></script>
+    <script th:src="@{/datcent/index.js}"></script>
+    <script th:src="@{/ajax/libs/fullscreen/jquery.fullscreen.js}"></script>
+    <!-- 富文本编辑器-->
+    <script th:src="@{/ajax/libs/summernote/summernote.min.js}"></script>
+    <script th:src="@{/ajax/libs/summernote/summernote-zh-CN.js}"></script>
+    <!-- bootstrap-table 表格插件 -->
+    <script th:src="@{/ajax/libs/select/select2.js}"></script>
+    <script th:src="@{/ajax/libs/bootstrap-table/bootstrap-table.min.js}"></script>
+    <script th:src="@{/ajax/libs/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}"></script>
+    <script th:src="@{/ajax/libs/bootstrap-table/extensions/mobile/bootstrap-table-mobile.min.js}"></script>
+    <script th:src="@{/ajax/libs/bootstrap-table/extensions/toolbar/bootstrap-table-toolbar.min.js}"></script>
+    <!-- jquery-validate 表单验证插件 -->
+    <script th:src="@{/ajax/libs/validate/jquery.validate.min.js}"></script>
+    <script th:src="@{/ajax/libs/validate/messages_zh.min.js}"></script>
+    <script th:src="@{/ajax/libs/validate/jquery.validate.extend.js}"></script>
+    <!-- jquery-validate 表单树插件 -->
+    <script th:src="@{/ajax/libs/bootstrap-treetable/bootstrap-treetable.js}"></script>
+    <!-- jquery-export 表格导出插件 -->
+    <script th:src="@{/ajax/libs/bootstrap-table/extensions/export/bootstrap-table-export.js}"></script>
+    <script th:src="@{/ajax/libs/bootstrap-table/extensions/export/tableExport.js}"></script>
+    <!-- 遮罩层 -->
+    <script th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
+    <script th:src="@{/ajax/libs/iCheck/icheck.min.js}"></script>
+    <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+    <script th:src="@{/ajax/libs/layui/layui.js}"></script>
+    <script th:src="@{/datcent/js/common.js?v=2.4.0}"></script>
+    <script th:src="@{/datcent/js/ry-ui.js?v=2.4.0}"></script>
+    <script th:inline="javascript"> var ctx = [[@{
+        /}]]; </script>
+
+    <!--&lt;!&ndash;GooFlow插件引入&ndash;&gt;-->
+    <!--<script type="text/javascript" th:src="@{/gooFlow/GooFunc.js}"></script>-->
+    <!--<script type="text/javascript" th:src="@{/gooFlow/json2.js}"></script>-->
+    <!--<script type="text/javascript" th:src="@{/gooFlow/codebase/GooFlow.js}"></script>-->
+
+    <!--新增组件引入-->
+    <script type="text/javascript" th:src="@{/datcent/component/tableForm/tableForm.js}"></script>
+    <script type="text/javascript" th:src="@{/datcent/component/modal/modal.js}"></script>
+    <script type="text/javascript" th:src="@{/datcent/component/operate/operate.js}"></script>
+    <script type="text/javascript" th:src="@{/datcent/component/statusCode/statusCode.js}"></script>
+    <script type="text/javascript" th:src="@{/datcent/component/table/simpleTable.js}"></script>
+    <script type="text/javascript" th:src="@{/datcent/component/tool/toolUtil.js}"></script>
+    <script type="text/javascript" th:src="@{/datcent/component/tree/tree.js}"></script>
+    <script type="text/javascript" th:src="@{/datcent/component/validate/validate.js}"></script>
+    <!--handsontable插件-->
+    <!--<script type="text/javascript" data-jsfiddle="common" th:src="@{/handsontable/dist/handsontable.js}"></script>-->
+    <!--<script type="text/javascript" data-jsfiddle="common" th:src="@{/handsontable/dist/pikaday/pikaday.js}"></script>-->
+    <!--<script type="text/javascript" data-jsfiddle="common" th:src="@{/handsontable/dist/moment/moment.js}"></script>-->
+    <!--<script type="text/javascript" data-jsfiddle="common" th:src="@{/handsontable/dist/zeroclipboard/ZeroClipboard.js}"></script>-->
+    <!--<script type="text/javascript" data-jsfiddle="common" th:src="@{/handsontable/dist/jquery/jqueryHOT.js}"></script>-->
+    <!--分页插件-->
+    <!--<script type="text/javascript" th:src="@{/pagination/pagination.js}"></script>-->
+
+    <script type="text/javascript" th:src="@{/js/jquery.serializejson.min.js}"></script>
+   <!-- &lt;!&ndash;上传文件插件&ndash;&gt;
+    <script type="text/javascript" th:src="@{/js/easyUpload.js}"></script>-->
+</div>
