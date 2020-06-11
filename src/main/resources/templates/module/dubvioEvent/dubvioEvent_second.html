@@ -867,6 +867,23 @@
             exportDataType: $(this).val()
         });
     });
+
+
+    $(document).ready(function(){
+        $.ajax({
+            type:"post",
+            async:false,
+            url:"",
+            dataType:"json",
+            success:function (data) {
+                alert[data["retCode"]]
+            },
+            error:function () {
+                alert("fail")
+            }
+        });
+    });
+
 </script>
 
 </body>

@@ -42,11 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.datcent.framework.aspectj.lang.annotation.Log;
 import com.datcent.framework.aspectj.lang.enums.BusinessType;
 import com.datcent.project.module.dubvioEvent.domain.DubvioEvent;
@@ -143,6 +139,26 @@ public class DubvioEventController extends BaseController {
         mmap.put("userList", userList);
         return prefix + "/dubvioEvent_second";
     }
+
+
+
+
+
+    @GetMapping("/dubvioEventTest")
+    public String dubvioEventTest(ModelMap mmap) {
+        CourtOrgan courtOrgan = new CourtOrgan();
+        courtOrgan.setDeptType("1");
+        courtOrgan.setStatus("0");
+        List<CourtOrgan> thirdList = iCourtOrganService.selectNewDeptList(courtOrgan);
+        mmap.put("deptList", thirdList);
+        Person person = personService.selectPersonById(ShiroUtils.getUser().getPersonId());
+        List<User> userList = userService.selectUserListByDeptId(person.getDeptId());
+        mmap.put("userList", userList);
+        return prefix + "/dubvioEvent_test";
+    }
+
+
+
 
     /**
      * 查询可疑违纪事件列表

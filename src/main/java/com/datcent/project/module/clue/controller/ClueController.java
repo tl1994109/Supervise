@@ -39,6 +39,7 @@ import com.datcent.project.system.person.domain.Person;
 import com.datcent.project.system.person.service.IPersonService;
 import com.datcent.project.system.user.domain.User;
 import com.datcent.project.system.user.service.IUserService;
+import com.datcent.project.transaction.TaoTransaction;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -2716,23 +2717,12 @@ public class ClueController extends BaseController {
     }
 
 
-    public static void main(String[] args) {
-
-            List<String> list = new ArrayList<>();
-            list.add("赵云");
-            list.add("黄忠");
-            list.add("马超");
-            list.add("关羽");
-            list.add("张飞");
-
-
-            list.remove("马超");
-            // 获取迭代器
-
-
-            System.out.println(list);
-        }
-
-
-
+    @GetMapping("/insert")
+    @ResponseBody
+    @TaoTransaction
+    public int insert(Clue clue) {
+        int result=clueService.insertClue(clue);
+        int j=1/Integer.parseInt(clue.getClueId());
+        return result;
+    }
 }

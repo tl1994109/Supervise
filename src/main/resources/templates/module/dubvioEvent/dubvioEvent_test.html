@@ -1,0 +1,350 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+
+<style type="text/css">
+    .btn-icon {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 50%;
+        border: 1px solid #36a2f5;
+        text-align: center;
+    }
+
+    .btn-icon i {
+        font-size: 18px;
+        color: #36a2f5;
+    }
+
+    .btn-icon-up {
+        display: block;
+    }
+
+    .btn-icon-down {
+        display: none;
+    }
+
+    .colStyle {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .dropdown-menu {
+        border: medium none;
+        display: none;
+        float: left;
+        font-size: 12px;
+        left: 0;
+        list-style: none outside none;
+        padding: 0;
+        position: absolute;
+        text-shadow: none;
+        top: 100%;
+        z-index: 1000;
+        border-radius: 0;
+        box-shadow: 0 0 3px rgba(86, 96, 117, 0.3);
+    }
+
+    .btn-danger {
+        margin: 0 8px;
+    }
+
+    #dorps {
+        border: medium none;
+        background-color: #fff;
+        display: none;
+        font-size: 12px;
+        margin: 0px;
+        list-style: none outside none;
+        padding: 0;
+        position: absolute;
+        text-shadow: none;
+        z-index: 1000;
+        border-radius: 0;
+        box-shadow: 0 0 3px rgba(86, 96, 117, 0.3);
+    }
+
+    #dorps ul > li > a {
+        border-radius: 3px;
+        color: inherit;
+        line-height: 25px;
+        margin: 4px;
+        text-align: left;
+        font-weight: normal;
+    }
+
+    #dorps ul > li:hover {
+        background-color: #ccc;
+    }
+
+    #dorps ul > li > a.font-bold {
+        font-weight: 600;
+    }
+</style>
+
+
+<body class="gray-bg">
+<div class="container-div">
+    <div class="col-sm-12 select-info search-collapse">
+        <form id="case" class="form-horizontal">
+            <div class="form-group select-info-container">
+
+                <input type="hidden" name="dubvioId" id="dubvioId">
+
+                <!--<div class="col-sm-4">-->
+                <!--<label>策略ID：</label>-->
+                <!--<input type="text"  name="dubvioStrategyId">-->
+                <!--</div>-->
+                <!--                <div class="col-sm-4">-->
+                <!--                <label>可疑点：</label>-->
+                <!--                <input type="text"  name="dubvioStrategyName">-->
+                <!--            </div>-->
+
+                <!--<div class="col-sm-4">-->
+                <!--<label>线索状态：</label>-->
+                <!--<select id="status" name="status" >-->
+                <!--<option value ="">请选择</option>-->
+                <!--<option value ="0">已通过</option>-->
+                <!--<option value ="1">待审核</option>-->
+                <!--<option value="2">转入线索</option>-->
+                <!--</select>-->
+                <!--</div>-->
+
+                <!--<div class="col-sm-4">-->
+                <!--<label>案号：</label>-->
+                <!--<input type="text"  name="jbxxAh">-->
+                <!--</div>-->
+
+                <div class="col-sm-4">
+                    <label>反映对象：</label>
+                    <input type="text" name="dubvioFydx">
+                </div>
+
+                <div class="col-sm-4">
+                    <label>经办法院：</label>
+                    <select name="jbfyId" id="jbfyId">
+                        <option value="">请选择</option>
+                        <option th:each="deptList:${deptList}" th:value="${deptList.cid}"
+                                th:text="${deptList.deptName}"></option>
+                    </select>
+                </div>
+
+                <div class="col-sm-4">
+                    <label>反映人：</label>
+                    <input type="text" name="dubvioFyr">
+                </div>
+
+                <!--                <div class="col-sm-4">-->
+                <!--                    <label>风险等级：</label>-->
+                <!--                    <select id="risksLevel" name="risksLevel" th:with="type=${@dict.getType('risks_grades')}">-->
+                <!--                        <option value="">请选择</option>-->
+                <!--                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+                <!--                    </select>-->
+                <!--                </div>-->
+            </div>
+            <div class="form-group select-info-container">
+                <div class="col-sm-4">
+                    <label>反映电话：</label>
+                    <input type="text" name="dubvioFyrdh">
+                </div>
+
+
+                <div class="col-sm-4">
+                    <label>事件状态：</label>
+                    <select id="status" name="status">
+                        <option value="">请选择</option>
+                        <option value="2">正常</option>
+                        <option value="0">已通过</option>
+                        <option value="1">转入线索待审核</option>
+                        <option value="4">退回待审核</option>
+                        <option value="5">转入立案二庭待审核</option>
+                        <option value="6">转入监察处待审核</option>
+                        <option value="7">转入其他单位待审核</option>
+                        <option value="20">删除待审核</option>
+                        <option value="30">已删除</option>
+                        <option value="8">转入线索审批不通过</option>
+                        <option value="9">退回审批不通过</option>
+                        <option value="10">转入立案二庭审批不通过</option>
+                        <option value="11">转入监察处审批不通过</option>
+                        <option value="12">转入其他单位审批不通过</option>
+                        <option value="13">删除审批不通过</option>
+                    </select>
+                </div>
+
+                <!--<div class="col-sm-4">-->
+                <!--<label>法官ID：</label>-->
+                <!--<input type="text"  name="jbxxCbrId">-->
+                <!--</div>-->
+
+                <!--<div class="col-sm-4">-->
+                <!--<label>承办庭：</label>-->
+                <!--<input type="text"  name="jbxxCbtName">-->
+                <!--</div>-->
+
+                <!--<div class="col-sm-4">-->
+                <!--<label>案件类别：</label>-->
+                <!--&lt;!&ndash;<input type="text"  name="jbxxAjlb">&ndash;&gt;-->
+
+                <!--<select id="jbxxAjlb" name="jbxxAjlb" >-->
+                <!--<option value ="">请选择</option>-->
+                <!--<option value ="刑事">刑事</option>-->
+                <!--<option value ="民事">民事</option>-->
+                <!--<option value="执行">执行</option>-->
+                <!--<option value="行政">行政</option>-->
+                <!--</select>-->
+                <!--</div>-->
+                <!--<div class="col-sm-4">-->
+                <!--<label>立案日期：</label>-->
+                <input type="hidden" class="time-input" id="startTime_12" name="params[createTime]">
+                <!--</div>-->
+
+                <!--<div class="col-sm-4">-->
+                <!--<label>立案日期：</label>-->
+                <!--<input type="text"  name="jbxxLarq">-->
+                <input type="hidden" class="time-input" id="startTime" placeholder="请选择" name="params[jbxxLarq]"/>
+                <!--</div>-->
+            </div>
+            <div class="form-group select-info-container">
+
+
+                <!--                <div class="col-sm-4">-->
+                <!--                    <label>可疑事件来源：</label>-->
+                <!--                    &lt;!&ndash;<input type="text"  name="jbxxAjlb">&ndash;&gt;-->
+
+                <!--                    <select id="dubvioSource" name="dubvioSource" >-->
+                <!--                        <option value ="">请选择</option>-->
+                <!--                        <option value ="1">系统策略筛查</option>-->
+                <!--                        <option value ="2">信访录入</option>-->
+                <!--                    </select>-->
+                <!--                </div>-->
+            </div>
+            <!--<div class="form-group select-info-container">-->
+
+
+            <!--<div class="col-sm-4">-->
+            <!--&lt;!&ndash;<label>收案日期：</label>&ndash;&gt;-->
+            <!--<input type="hidden"  name="jbxxSarq">-->
+            <!--</div>-->
+
+            <!--</div>-->
+            <!--<div class="form-group select-info-container">-->
+
+            <!--<div class="col-sm-4 select-time">-->
+            <!--&lt;!&ndash;<label>分案日期：</label>&ndash;&gt;-->
+            <!--<input type="hidden"  name="jbxxFarq">-->
+            <!--</div>-->
+            <!--<div class="col-sm-4 select-time">-->
+            <!--&lt;!&ndash;<label>开庭日期：</label>&ndash;&gt;-->
+            <!--<input type="hidden"  name="jbxxKtrq">-->
+            <!--</div>-->
+            <!--<div class="col-sm-4 select-time">-->
+            <!--&lt;!&ndash;<label>结案日期：</label>&ndash;&gt;-->
+            <!--<input type="hidden"  name="jbxxJarq">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group select-info-container">-->
+
+            <!--<div class="col-sm-4 select-time">-->
+            <!--&lt;!&ndash;<label>归档日期：</label>&ndash;&gt;-->
+            <!--<input type="hidden"  name="jbxxGdrq">-->
+            <!--</div>-->
+
+            <!--</div>-->
+            <!--<div class="form-group select-info-container">-->
+            <!--<div class="col-sm-4">-->
+
+            <!--</div>-->
+            <!--</div>-->
+            <div class="form-group select-info-container">
+                <div class="col-sm-12 select-info-btn">
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="initSimpleTabl.search()"><i
+                            class="fa fa-search"></i>&nbsp;搜索</a>
+                    <a class="btn btn-warning btn-rounded btn-sm" onclick="formComponent.reset()"><i
+                            class="fa fa-refresh"></i>&nbsp;重置</a>
+                </div>
+            </div>
+
+        </form>
+        <!--<div class="form-group select-info-container">-->
+        <!--<a class="btn-icon btn-icon-up" data-toggle="collapse" data-target="#case"><i class="fa fa-angle-up" aria-hidden="true"></i></a>-->
+        <!--<a class="btn-icon btn-icon-down" data-toggle="collapse" data-target="#case"><i class="fa fa-angle-down" aria-hidden="true"></i></a>-->
+        <!--</div>-->
+    </div>
+    <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+        <!--<a class="btn btn-success" onclick="operateComponent.add('module/dubvioEvent/add','可疑违纪事件')" shiro:hasPermission="module:dubvioEvent:add">-->
+        <!--<i class="fa fa-plus"></i> 新增-->
+        <!--</a>-->
+
+        <!--<a class="btn btn-warning btn-edit disabled" onclick="operateComponent.editFull('','module/dubvioEvent/edit/{id}','可疑违纪事件')" shiro:hasPermission="module:dubvioEvent:edit">-->
+        <!--<i class="fa fa-plus"></i> 案件详细-->
+        <!--</a>-->
+        <a class="btn btn-success" onclick="operateComponent.detailFull('module/dubvioEvent/add',' ','信访录入')"
+           shiro:hasPermission="module:dubvioEvent:add">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+        <a class="btn btn-primary btn-detail disabled"
+           onclick="operateComponent.detailFull('module/dubvioEvent/detail/{id}',null,'可疑违纪')"
+           shiro:hasPermission="module:dubvioEvent:detail">
+            <i class="fa fa-plus"></i> 详细
+        </a>
+
+        <a class="btn btn-info" onclick="importin()" shiro:hasPermission="module:dubvioEvent:import">
+            <i class="fa fa-upload"></i> 导入
+        </a>
+        <!--<a class="btn btn-danger btn-del disabled" onclick="operateComponent.removeAll('module/dubvioEvent/remove')" shiro:hasPermission="module:dubvioEvent:remove">-->
+        <!--<i class="fa fa-trash-o"></i> 批量删除-->
+        <!--</a>-->
+        <a class="btn btn-select">
+				<span id="exportToolbar" class="btn-group" style="width: 110px; display: inline-block">
+					<select id="sel_exportoption" class="">
+						<option value="">导出当页数据</option>
+						<option value="all">导出全部数据</option>
+						<option value="selected">导出选中数据</option>
+					</select>
+				</span>
+        </a>
+    </div>
+
+    <div class="col-sm-12 select-table table-striped">
+        <div id="dorps" style="position: absolute">
+            <ul>
+
+            </ul>
+        </div>
+        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<!-- 导入区域 -->
+
+
+
+<!--bootstrap-table-export数据导出-->
+<script type="text/javascript">
+
+
+
+    $(document).ready(function(){
+
+        var urls="http://localhost/api/getInfo/"
+        console.log(urls);
+        $.ajax({
+            type:"get",
+            async:false,
+            url:urls,
+            dataType:"json",
+            success:function (data) {
+                alert(data.retMsg);
+            },
+            error:function () {
+                alert("fail")
+            }
+        });
+    });
+</script>
+</body>
+</html>
