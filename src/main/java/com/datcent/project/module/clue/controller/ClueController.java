@@ -558,7 +558,7 @@ public class ClueController extends BaseController {
     //@RequiresPermissions("module:clue:queryCountByFy")
     @GetMapping("/queryCountByFy")
     @ResponseBody
-    public Map<String, Object> queryCountByFy() {
+    public Object queryCountByFy() {
 
         String fyId = null;
         if (ShiroUtils.getUserId() != 1) {
@@ -613,10 +613,10 @@ public class ClueController extends BaseController {
         allList.add(thirdMap);
         allList.add(fourMap);
 
-        Map<String, Object> allMap = new HashMap<>();
-        allMap.put("data", allList);
-        allMap.put("status", "ok");
-        return allMap;
+//        Map<String, Object> allMap = new HashMap<>();
+//        allMap.put("data", allList);
+//        allMap.put("status", "ok");
+        return allList;
     }
 
     /**
